@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "echo \"Hello World\""
+    "start": "echo \"Hello World\"",
+    "release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/nunof07/space-patrol/issues"
   },
-  "homepage": "https://github.com/nunof07/space-patrol#readme"
+  "homepage": "https://github.com/nunof07/space-patrol#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "2.0.2",
+    "@semantic-release/git": "5.0.0",
+    "semantic-release": "15.4.0"
+  }
 }
