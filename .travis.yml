@@ -14,7 +14,7 @@ install:
 before_script:
   - npm prune
 script:
-  - npm run start
+  - npm run ci:build
 after_success:
   # fetch all tags (semantic-release needs this so it can check last release using git)
   - git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*

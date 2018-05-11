@@ -1,15 +1,15 @@
 import path from 'path';
 //import webpack from 'webpack';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import HtmlWebpackTemplate from 'html-webpack-template';
-// import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
-// import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-// import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
+import os from 'os';
+import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 // import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 module.exports = {
     entry: {
-        main: './src/index.js',
+        main: './src/index.ts',
         // vendor: [
         //     'phaser',
         //     'ramda',
@@ -41,21 +41,38 @@ module.exports = {
                     'css-loader',
                 ],
             },
+            {
+                test: /\.ts$/,
+                include: path.resolve(__dirname, 'src'),
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'cache-loader',
+                    },
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            workers: os.cpus().length - 1,
+                        },
+                    },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                            happyPackMode: true,
+                        },
+                    }
+                ],
+            },
         ],
     },
-    // resolve: {
-    //     extensions: ['.ts', '.js'],
-    //     plugins: [
-    //         new TsConfigPathsPlugin()
-    //     ]
-    // },
+    resolve: {
+        extensions: ['.ts', '.js'],
+        plugins: [
+            new TsConfigPathsPlugin(),
+        ],
+    },
     plugins: [
-        // new ForkTsCheckerWebpackPlugin({
-        //     tslint: true,
-        //     watch: './src',
-        //     workers: process.env.NODE_ENV === 'travis' ? 2 : ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
-        // }),
-        // new HardSourceWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Space Patrol',
             hash: false,
@@ -68,6 +85,12 @@ module.exports = {
             template: HtmlWebpackTemplate,
             appMountId: 'game',
             mobile: true,
+        }),
+        new ForkTsCheckerWebpackPlugin({
+            //tslint: true,
+            watch: './src',
+            workers: process.env.NODE_ENV === 'travis' ? 2 : ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
+            checkSyntacticErrors: true,
         }),
         // new CopyWebpackPlugin(['assets' ], { cache: true }),
         // // vars used by Phaser
