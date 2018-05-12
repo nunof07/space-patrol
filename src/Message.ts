@@ -6,6 +6,7 @@ export class Message {
     }
 
     public output(): void {
+        // tslint:disable-next-line:no-console
         console.log(this.msg);
     }
 }

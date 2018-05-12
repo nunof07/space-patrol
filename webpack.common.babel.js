@@ -101,7 +101,7 @@ module.exports = {
             mobile: true,
         }),
         new ForkTsCheckerWebpackPlugin({
-            //tslint: true,
+            tslint: true,
             watch: './src',
             workers: process.env.NODE_ENV === 'travis' ? 2 : ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
             checkSyntacticErrors: true,
