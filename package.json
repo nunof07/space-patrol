@@ -8,7 +8,8 @@
     "build": "webpack --config webpack.prod.babel.js",
     "start": "webpack-dev-server --open --config webpack.dev.babel.js",
     "release": "semantic-release",
-    "ci:build": "cross-env NODE_ENV=travis npm run build"
+    "ci:build": "cross-env NODE_ENV=travis npm run build",
+    "postinstall": "rm -rf .cache-loader"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "cross-env": "5.1.5",
     "css-loader": "0.28.11",
     "fork-ts-checker-webpack-plugin": "0.4.1",
+    "hard-source-webpack-plugin": "0.6.7",
     "html-webpack-plugin": "3.2.0",
     "html-webpack-template": "6.2.0",
     "license-banner-webpack-plugin": "2.0.0",

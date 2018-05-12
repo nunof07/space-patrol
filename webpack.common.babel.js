@@ -1,6 +1,7 @@
 import path from 'path';
 //import webpack from 'webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import HtmlWebpackTemplate from 'html-webpack-template';
 import os from 'os';
@@ -73,6 +74,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new HardSourceWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Space Patrol',
             hash: false,
