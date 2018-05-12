@@ -57,6 +57,18 @@ module.exports = {
                         },
                     },
                     {
+                        loader: 'babel-loader',
+                        options: {
+                            'babelrc': false,
+                            'presets': [
+                                ['env'],
+                            ],
+                            'plugins': [
+                                ['transform-runtime'],
+                            ],
+                        },
+                    },
+                    {
                         loader: 'ts-loader',
                         options: {
                             transpileOnly: true,
