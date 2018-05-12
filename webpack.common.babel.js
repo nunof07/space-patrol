@@ -61,7 +61,14 @@ module.exports = {
                         options: {
                             'babelrc': false,
                             'presets': [
-                                ['env'],
+                                [
+                                    'env',
+                                    {
+                                        "targets": {
+                                            "browsers": [">0.25%"],
+                                        },
+                                    },
+                                ],
                             ],
                             'plugins': [
                                 ['transform-runtime'],
