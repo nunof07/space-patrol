@@ -9,4 +9,8 @@ export class Message {
         // tslint:disable-next-line:no-console
         console.log(this.msg);
     }
+
+    public value(): string {
+        return this.msg;
+    }
 }

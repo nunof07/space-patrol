@@ -1,0 +1,5 @@
+--require setup-test.js
+--webpack-config webpack.test.babel.js
+--recursive
+--exit
+test/**/*.ts

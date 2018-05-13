@@ -18,16 +18,7 @@
             "@src/*": ["src/*"]
         }
     },
-    "files": [
-        "./src/index.ts"
-    ],
-    "include": [
-        "src/**/*",
-        "test/**/*"
-    ],
-    "exclude": [
-        "*.d.ts",
-        "dist",
-        "node_modules"
-    ]
+    "files": ["./src/index.ts"],
+    "include": ["src/**/*"],
+    "exclude": ["*.d.ts", "dist", "node_modules"]
 }

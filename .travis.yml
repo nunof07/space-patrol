@@ -14,6 +14,7 @@ install:
 before_script:
   - npm prune
 script:
+  - npm run test:coverage
   - npm run ci:build
 after_success:
   # fetch all tags (semantic-release needs this so it can check last release using git)

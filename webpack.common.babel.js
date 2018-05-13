@@ -7,6 +7,7 @@ import HtmlWebpackTemplate from 'html-webpack-template';
 import os from 'os';
 import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 // import CopyWebpackPlugin from 'copy-webpack-plugin';
+import babelLoader from './webpack.babel-loader';
 
 module.exports = {
     entry: {
@@ -27,9 +28,9 @@ module.exports = {
                     chunks: 'initial',
                     name: 'vendor',
                     test: 'vendor',
-                    enforce: true
+                    enforce: true,
                 },
-            }
+            },
         },
         runtimeChunk: true,
     },
@@ -37,10 +38,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                ],
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: /\.ts$/,
@@ -56,41 +54,21 @@ module.exports = {
                             workers: os.cpus().length - 1,
                         },
                     },
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            'babelrc': false,
-                            'presets': [
-                                [
-                                    'env',
-                                    {
-                                        "targets": {
-                                            "browsers": [">0.25%"],
-                                        },
-                                    },
-                                ],
-                            ],
-                            'plugins': [
-                                ['transform-runtime'],
-                            ],
-                        },
-                    },
+                    babelLoader,
                     {
                         loader: 'ts-loader',
                         options: {
                             transpileOnly: true,
                             happyPackMode: true,
                         },
-                    }
+                    },
                 ],
             },
         ],
     },
     resolve: {
         extensions: ['.ts', '.js'],
-        plugins: [
-            new TsConfigPathsPlugin(),
-        ],
+        plugins: [new TsConfigPathsPlugin()],
     },
     plugins: [
         new HardSourceWebpackPlugin(),
@@ -110,7 +88,10 @@ module.exports = {
         new ForkTsCheckerWebpackPlugin({
             tslint: true,
             watch: './src',
-            workers: process.env.NODE_ENV === 'travis' ? 2 : ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
+            workers:
+                process.env.NODE_ENV === 'travis'
+                    ? 2
+                    : ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
             checkSyntacticErrors: true,
         }),
         // new CopyWebpackPlugin(['assets' ], { cache: true }),
