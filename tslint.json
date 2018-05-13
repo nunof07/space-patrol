@@ -4,6 +4,7 @@
         "tslint-eslint-rules",
         "tslint-immutable",
         "tslint-no-subclass",
+        "tslint-sonarts",
         "tslint-plugin-prettier",
         "tslint-config-prettier"
     ],
