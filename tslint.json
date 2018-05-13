@@ -3,7 +3,9 @@
         "tslint-microsoft-contrib",
         "tslint-eslint-rules",
         "tslint-immutable",
-        "tslint-no-subclass"
+        "tslint-no-subclass",
+        "tslint-plugin-prettier",
+        "tslint-config-prettier"
     ],
     "rules": {
         "indent": [true, "spaces", 4],
@@ -14,8 +16,8 @@
         "function-name": [
             true,
             {
-
-                "method-regex": "^([a-z][\\w\\d]+)|(\\[Symbol\\.[a-z][\\w\\d]+\\])$", // original: "^[a-z][\\w\\d]+$"
+                "method-regex":
+                    "^([a-z][\\w\\d]+)|(\\[Symbol\\.[a-z][\\w\\d]+\\])$", // original: "^[a-z][\\w\\d]+$"
 
                 // unchanged
                 "private-method-regex": "^[a-z][\\w\\d]+$",
@@ -35,8 +37,16 @@
         "no-submodule-imports": [true, "@src"],
         "no-implicit-dependencies": false, // disable because custom local path mappings are erroneously flagged
         "no-duplicate-imports": false,
-        "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+        "trailing-comma": [
+            true,
+            { "multiline": "always", "singleline": "never" }
+        ],
+        "variable-name": [
+            true,
+            "ban-keywords",
+            "check-format",
+            "allow-leading-underscore"
+        ],
         "import-name": [true, { "phaser": "Phaser" }],
         "missing-jsdoc": false,
         "completed-docs": false,
@@ -73,7 +83,7 @@
         "no-multi-spaces": [
             true,
             {
-              "exceptions": { "PropertyAssignment": false }
+                "exceptions": { "PropertyAssignment": false }
             }
         ],
         "handle-callback-err": [true, "^(err|error)$"],
@@ -102,6 +112,9 @@
         "no-loop-statement": false,
 
         // tslint-no-subclass
-        "no-subclass": [true, "Phaser.Scene"]
+        "no-subclass": [true, "Phaser.Scene"],
+
+        // prettier
+        "prettier": true
     }
 }

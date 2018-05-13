@@ -1,63 +1,70 @@
 {
-  "name": "space-patrol",
-  "version": "1.0.0",
-  "description": "Shoot 'em up space game",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.prod.babel.js",
-    "start": "webpack-dev-server --open --config webpack.dev.babel.js",
-    "lint": "tslint --config tslint.json --project tsconfig.json --format stylish src/**/*.ts --exclude src/**/*.d.ts",
-    "release": "semantic-release",
-    "ci:build": "cross-env NODE_ENV=travis npm run build",
-    "postinstall": "rm -rf .cache-loader"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nunof07/space-patrol.git"
-  },
-  "author": "Nuno Freitas",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/nunof07/space-patrol/issues"
-  },
-  "homepage": "https://github.com/nunof07/space-patrol#readme",
-  "devDependencies": {
-    "@semantic-release/changelog": "2.0.2",
-    "@semantic-release/git": "5.0.0",
-    "babel-core": "6.26.3",
-    "babel-loader": "7.1.4",
-    "babel-plugin-transform-runtime": "6.23.0",
-    "babel-preset-env": "1.7.0",
-    "babel-register": "6.26.0",
-    "cache-loader": "1.2.2",
-    "clean-terminal-webpack-plugin": "1.0.1",
-    "clean-webpack-plugin": "0.1.19",
-    "cross-env": "5.1.5",
-    "css-loader": "0.28.11",
-    "fork-ts-checker-webpack-plugin": "0.4.1",
-    "hard-source-webpack-plugin": "0.6.7",
-    "html-webpack-plugin": "3.2.0",
-    "html-webpack-template": "6.2.0",
-    "license-banner-webpack-plugin": "2.0.0",
-    "semantic-release": "15.4.1",
-    "style-loader": "0.21.0",
-    "thread-loader": "1.1.5",
-    "ts-loader": "4.3.0",
-    "tsconfig-paths-webpack-plugin": "3.0.4",
-    "tslint": "5.10.0",
-    "tslint-eslint-rules": "5.2.0",
-    "tslint-immutable": "4.5.4",
-    "tslint-microsoft-contrib": "5.0.3",
-    "tslint-no-subclass": "0.2.1",
-    "typescript": "2.8.3",
-    "uglifyjs-webpack-plugin": "1.2.5",
-    "webpack": "4.8.2",
-    "webpack-cli": "2.1.3",
-    "webpack-dev-server": "3.1.4",
-    "webpack-merge": "4.1.2"
-  },
-  "dependencies": {
-    "babel-runtime": "6.26.0"
-  }
+    "name": "space-patrol",
+    "version": "1.0.0",
+    "description": "Shoot 'em up space game",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack --config webpack.prod.babel.js",
+        "start": "webpack-dev-server --open --config webpack.dev.babel.js",
+        "lint":
+            "tslint --config tslint.json --project tsconfig.json --format stylish src/**/*.ts --exclude src/**/*.d.ts",
+        "release": "semantic-release",
+        "ci:build": "cross-env NODE_ENV=travis npm run build",
+        "postinstall": "rm -rf .cache-loader",
+        "precommit": "pretty-quick --staged"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nunof07/space-patrol.git"
+    },
+    "author": "Nuno Freitas",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/nunof07/space-patrol/issues"
+    },
+    "homepage": "https://github.com/nunof07/space-patrol#readme",
+    "devDependencies": {
+        "@semantic-release/changelog": "2.0.2",
+        "@semantic-release/git": "5.0.0",
+        "babel-core": "6.26.3",
+        "babel-loader": "7.1.4",
+        "babel-plugin-transform-runtime": "6.23.0",
+        "babel-preset-env": "1.7.0",
+        "babel-register": "6.26.0",
+        "cache-loader": "1.2.2",
+        "clean-terminal-webpack-plugin": "1.0.1",
+        "clean-webpack-plugin": "0.1.19",
+        "cross-env": "5.1.5",
+        "css-loader": "0.28.11",
+        "fork-ts-checker-webpack-plugin": "0.4.1",
+        "hard-source-webpack-plugin": "0.6.7",
+        "html-webpack-plugin": "3.2.0",
+        "html-webpack-template": "6.2.0",
+        "husky": "0.14.3",
+        "license-banner-webpack-plugin": "2.0.0",
+        "prettier": "1.12.1",
+        "pretty-quick": "1.4.1",
+        "semantic-release": "15.4.1",
+        "style-loader": "0.21.0",
+        "thread-loader": "1.1.5",
+        "ts-loader": "4.3.0",
+        "tsconfig-paths-webpack-plugin": "3.0.4",
+        "tslint": "5.10.0",
+        "tslint-config-prettier": "1.12.0",
+        "tslint-eslint-rules": "5.2.0",
+        "tslint-immutable": "4.5.4",
+        "tslint-microsoft-contrib": "5.0.3",
+        "tslint-no-subclass": "0.2.1",
+        "tslint-plugin-prettier": "1.3.0",
+        "typescript": "2.8.3",
+        "uglifyjs-webpack-plugin": "1.2.5",
+        "webpack": "4.8.2",
+        "webpack-cli": "2.1.3",
+        "webpack-dev-server": "3.1.4",
+        "webpack-merge": "4.1.2"
+    },
+    "dependencies": {
+        "babel-runtime": "6.26.0"
+    }
 }
