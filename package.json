@@ -4,6 +4,7 @@
     "description": "Shoot 'em up space game",
     "main": "index.js",
     "scripts": {
+        "info": "npm-scripts-info",
         "build": "webpack --config webpack.prod.babel.js",
         "start": "webpack-dev-server --open --config webpack.dev.babel.js",
         "lint":
@@ -16,6 +17,20 @@
         "ci:build": "cross-env NODE_ENV=travis npm run build",
         "postinstall": "rm -rf .cache-loader",
         "precommit": "pretty-quick --staged"
+    },
+    "scripts-info": {
+        "info": "Display help information about available scripts",
+        "build": "Build all deliverables",
+        "start": "Start local server and watch for changes",
+        "lint": "Analyze source code for errors",
+        "test": "Run the tests",
+        "test:watch": "Run the tests and watch for changes",
+        "test:coverage": "Run the tests and report coverage",
+        "release": "Publish release",
+        "ci:build": "Build all deliverables (Travis)",
+        "postinstall":
+            "Run after npm install (cleanup Webpack's cache-loader folder)",
+        "precommit": "Run before commit (format code)"
     },
     "repository": {
         "type": "git",
@@ -52,6 +67,7 @@
         "license-banner-webpack-plugin": "2.0.0",
         "mocha": "5.1.1",
         "mocha-webpack": "2.0.0-beta.0",
+        "npm-scripts-info": "0.3.7",
         "null-loader": "0.1.1",
         "nyc": "11.7.3",
         "prettier": "1.12.1",
