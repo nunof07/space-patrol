@@ -33,7 +33,7 @@
         "space-within-parens": [true, 0],
         "arrow-parens": true,
         "cyclomatic-complexity": [true, 5],
-        "max-file-line-count": [true, 300],
+        "max-file-line-count": [true, 250],
         "no-parameter-reassignment": true,
         "no-submodule-imports": [true, "@src"],
         "no-implicit-dependencies": false, // disable because custom local path mappings are erroneously flagged
@@ -116,6 +116,10 @@
         "no-subclass": [true, "Phaser.Scene"],
 
         // prettier
-        "prettier": true
+        "prettier": true,
+
+        // SonarTS
+        "no-big-function": [true, 25],
+        "parameters-max-number": [true, 4]
     }
 }
