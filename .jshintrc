@@ -21,5 +21,7 @@
     "plusplus": true,
 
     "browser": false,
-    "node": true
+    "node": true,
+
+    "-W014": true
 }

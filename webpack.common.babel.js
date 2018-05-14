@@ -1,21 +1,16 @@
 import path from 'path';
-//import webpack from 'webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import HtmlWebpackTemplate from 'html-webpack-template';
 import os from 'os';
 import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-// import CopyWebpackPlugin from 'copy-webpack-plugin';
 import babelLoader from './webpack.babel-loader';
 
 module.exports = {
     entry: {
         main: './src/index.ts',
-        // vendor: [
-        //     'phaser',
-        //     'ramda',
-        // ],
+        vendor: ['ramda'],
     },
     output: {
         filename: '[name].js',
@@ -94,11 +89,5 @@ module.exports = {
                     : ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
             checkSyntacticErrors: true,
         }),
-        // new CopyWebpackPlugin(['assets' ], { cache: true }),
-        // // vars used by Phaser
-        // new webpack.DefinePlugin({
-        //     'CANVAS_RENDERER': JSON.stringify(true),
-        //     'WEBGL_RENDERER': JSON.stringify(true)
-        // })
     ],
 };

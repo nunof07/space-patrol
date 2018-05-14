@@ -23,7 +23,7 @@
  * 
  */
 (window.webpackJsonp = window.webpackJsonp || []).push([
-    [1],
+    [3],
     [
         function(t, e, n) {
             t.exports = !n(2)(function() {
@@ -54,9 +54,9 @@
             };
         },
         function(t, e, n) {
-            var r = n(14),
-                o = n(13),
-                i = n(11),
+            var r = n(16),
+                o = n(15),
+                i = n(13),
                 u = Object.defineProperty;
             e.f = n(0)
                 ? Object.defineProperty
@@ -87,7 +87,7 @@
             'use strict';
             e.__esModule = !0;
             var r,
-                o = n(21),
+                o = n(23),
                 i = (r = o) && r.__esModule ? r : { default: r };
             e.default = (function() {
                 function t(t, e) {
@@ -114,6 +114,8 @@
                         );
                 });
         },
+        ,
+        ,
         function(t, e, n) {
             'use strict';
             Object.defineProperty(e, '__esModule', { value: !0 }),
@@ -192,7 +194,7 @@
                 !n(2)(function() {
                     return (
                         7 !=
-                        Object.defineProperty(n(12)('div'), 'a', {
+                        Object.defineProperty(n(14)('div'), 'a', {
                             get: function() {
                                 return 7;
                             },
@@ -209,7 +211,7 @@
         },
         function(t, e, n) {
             var r = n(3),
-                o = n(10);
+                o = n(12);
             t.exports = n(0)
                 ? function(t, e, n) {
                       return r.f(t, e, o(1, n));
@@ -226,7 +228,7 @@
             };
         },
         function(t, e, n) {
-            var r = n(16);
+            var r = n(18);
             t.exports = function(t, e, n) {
                 if ((r(t), void 0 === e)) return t;
                 switch (n) {
@@ -251,9 +253,9 @@
         function(t, e, n) {
             var r = n(5),
                 o = n(4),
-                i = n(17),
-                u = n(15),
-                a = n(9),
+                i = n(19),
+                u = n(17),
+                a = n(11),
                 f = function(t, e, n) {
                     var s,
                         c,
@@ -325,18 +327,18 @@
                 (t.exports = f);
         },
         function(t, e, n) {
-            var r = n(18);
+            var r = n(20);
             r(r.S + r.F * !n(0), 'Object', { defineProperty: n(3).f });
         },
         function(t, e, n) {
-            n(19);
+            n(21);
             var r = n(4).Object;
             t.exports = function(t, e, n) {
                 return r.defineProperty(t, e, n);
             };
         },
         function(t, e, n) {
-            t.exports = { default: n(20), __esModule: !0 };
+            t.exports = { default: n(22), __esModule: !0 };
         },
         function(t, e, n) {
             'use strict';
@@ -439,7 +441,7 @@
                 f = null,
                 s = 0,
                 c = [],
-                l = n(23);
+                l = n(25);
             function p(t, e) {
                 for (var n = 0; n < t.length; n++) {
                     var r = t[n],
@@ -709,17 +711,17 @@
             };
         },
         function(t, e, n) {
-            (t.exports = n(25)(!1)).push([
+            (t.exports = n(27)(!1)).push([
                 t.i,
                 'html,\r\nbody {\r\n    height: 100%;\r\n    margin: 0;\r\n}\r\n\r\nbody {\r\n    background-color: #808080;\r\n}\r\n\r\n#game {\r\n    height: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n\r\ncanvas {\r\n    cursor: none;\r\n}\r\n',
                 '',
             ]);
         },
         function(t, e, n) {
-            var r = n(26);
+            var r = n(28);
             'string' == typeof r && (r = [[t.i, r, '']]);
             var o = { hmr: !0, transform: void 0, insertInto: void 0 };
-            n(24)(r, o);
+            n(26)(r, o);
             r.locals && (t.exports = r.locals);
         },
         function(t, e, n) {
@@ -729,14 +731,14 @@
                     var t = new o.NotCovered(10).add(5);
                     new r.Message('Hello World! ' + t).output();
                 }),
-                n(27);
-            var r = n(22),
-                o = n(8);
+                n(29);
+            var r = n(24),
+                o = n(10);
         },
         function(t, e, n) {
             'use strict';
-            (0, n(28).start)();
+            (0, n(30).start)();
         },
     ],
-    [[29, 0]],
+    [[31, 1]],
 ]);
