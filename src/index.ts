@@ -1,11 +1,7 @@
+// tslint:disable-next-line:no-relative-imports no-import-side-effect
+import './style.css';
+// tslint:disable-next-line:ordered-imports
 import { start } from '@src/start';
+import * as Phaser from 'phaser';
 
-start();
-
-// tslint:disable-next-line:no-any no-unsafe-any
-if ((<any>module).hot) {
-    // tslint:disable-next-line:no-any no-unsafe-any
-    (<any>module).hot.accept('@src/start', () => {
-        start();
-    });
-}
+start(Phaser.AUTO);

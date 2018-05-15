@@ -22,7 +22,7 @@
  * SOFTWARE.
  * 
  */ !(function(
-    r,
+    r
 ) {
     function e(e) {
         for (
@@ -47,7 +47,7 @@
         return r;
     }
     var t = {},
-        o = { 1: 0 },
+        o = { 0: 0 },
         u = [];
     function p(e) {
         if (t[e]) return t[e].exports;

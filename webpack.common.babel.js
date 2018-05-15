@@ -5,12 +5,13 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import HtmlWebpackTemplate from 'html-webpack-template';
 import os from 'os';
 import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import webpack from 'webpack';
 import babelLoader from './webpack.babel-loader';
 
 module.exports = {
     entry: {
         main: './src/index.ts',
-        vendor: ['ramda'],
+        vendor: ['phaser', 'ramda'],
     },
     output: {
         filename: '[name].js',
@@ -28,6 +29,15 @@ module.exports = {
             },
         },
         runtimeChunk: true,
+    },
+    performance: {
+        // exclude performance warnings about vendor size being too big
+        assetFilter: function(assetFilename) {
+            return (
+                !/\.map$/.test(assetFilename) &&
+                !/^(vendor\.)/.test(assetFilename)
+            );
+        },
     },
     module: {
         rules: [
@@ -88,6 +98,10 @@ module.exports = {
                     ? 2
                     : ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
             checkSyntacticErrors: true,
+        }),
+        new webpack.DefinePlugin({
+            'typeof CANVAS_RENDERER': JSON.stringify(true),
+            'typeof WEBGL_RENDERER': JSON.stringify(true),
         }),
     ],
 };
