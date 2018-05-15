@@ -1,4 +1,4 @@
---require setup-test.js
+--require test/bootstrap.js
 --webpack-config webpack.test.babel.js
 --recursive
 --exit

@@ -54,7 +54,6 @@
         "babel-preset-env": "1.7.0",
         "babel-register": "6.26.0",
         "cache-loader": "1.2.2",
-        "canvas-prebuilt": "1.6.5-prerelease.1",
         "chai": "4.1.2",
         "clean-terminal-webpack-plugin": "1.0.1",
         "clean-webpack-plugin": "0.1.19",
@@ -99,6 +98,7 @@
     "dependencies": {
         "babel-runtime": "6.26.0",
         "phaser": "3.7.1",
-        "ramda": "0.25.0"
+        "ramda": "0.25.0",
+        "request": "^2.86.0"
     }
 }
