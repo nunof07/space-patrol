@@ -4,14 +4,15 @@ module.exports = {
         babelrc: false,
         presets: [
             [
-                'env',
+                '@babel/preset-env',
                 {
                     targets: {
                         browsers: ['>0.25%'],
+                        uglify: true,
                     },
                 },
             ],
         ],
-        plugins: ['transform-runtime'],
+        plugins: ['@babel/plugin-transform-runtime'],
     },
 };
