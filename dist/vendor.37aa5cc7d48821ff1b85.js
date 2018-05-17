@@ -136,7 +136,7 @@
             var n = i(0),
                 r = i(15),
                 s = i(132),
-                o = i(12),
+                o = i(11),
                 a = new n({
                     Extends: o,
                     initialize: function(t, e) {
@@ -464,28 +464,23 @@
                 };
             t.exports = n;
         },
-        function(t, e, i) {
-            /**
-             * @author       Richard Davey <rich@photonstorm.com>
-             * @copyright    2018 Photon Storm Ltd.
-             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
-             */
-            var n = i(18),
-                r = i(5);
-            t.exports = function(t, e, i) {
-                var s = r(t, e, null);
-                if (null === s) return i;
-                if (Array.isArray(s)) return n.RND.pick(s);
-                if ('object' == typeof s) {
-                    if (s.hasOwnProperty('randInt'))
-                        return n.RND.integerInRange(s.randInt[0], s.randInt[1]);
-                    if (s.hasOwnProperty('randFloat'))
-                        return n.RND.realInRange(
-                            s.randFloat[0],
-                            s.randFloat[1]
-                        );
-                } else if ('function' == typeof s) return s(e);
-                return s;
+        function(t, e) {
+            t.exports = function(t) {
+                if ('object' != typeof t || t.nodeType || t === t.window)
+                    return !1;
+                try {
+                    if (
+                        t.constructor &&
+                        !{}.hasOwnProperty.call(
+                            t.constructor.prototype,
+                            'isPrototypeOf'
+                        )
+                    )
+                        return !1;
+                } catch (t) {
+                    return !1;
+                }
+                return !0;
             };
         },
         function(t, e, i) {
@@ -561,182 +556,22 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(0),
-                r = i(36),
-                s = i(212),
-                o = i(435),
-                a = i(133),
-                h = i(209),
-                u = new n({
-                    initialize: function(t, e, i, n) {
-                        void 0 === t && (t = 0),
-                            void 0 === e && (e = 0),
-                            void 0 === i && (i = 0),
-                            void 0 === n && (n = 0),
-                            (this.x = t),
-                            (this.y = e),
-                            (this.width = i),
-                            (this.height = n);
-                    },
-                    contains: function(t, e) {
-                        return r(this, t, e);
-                    },
-                    getPoint: function(t, e) {
-                        return s(this, t, e);
-                    },
-                    getPoints: function(t, e, i) {
-                        return o(this, t, e, i);
-                    },
-                    getRandomPoint: function(t) {
-                        return h(this, t);
-                    },
-                    setTo: function(t, e, i, n) {
-                        return (
-                            (this.x = t),
-                            (this.y = e),
-                            (this.width = i),
-                            (this.height = n),
-                            this
+            var n = i(18),
+                r = i(5);
+            t.exports = function(t, e, i) {
+                var s = r(t, e, null);
+                if (null === s) return i;
+                if (Array.isArray(s)) return n.RND.pick(s);
+                if ('object' == typeof s) {
+                    if (s.hasOwnProperty('randInt'))
+                        return n.RND.integerInRange(s.randInt[0], s.randInt[1]);
+                    if (s.hasOwnProperty('randFloat'))
+                        return n.RND.realInRange(
+                            s.randFloat[0],
+                            s.randFloat[1]
                         );
-                    },
-                    setEmpty: function() {
-                        return this.setTo(0, 0, 0, 0);
-                    },
-                    setPosition: function(t, e) {
-                        return (
-                            void 0 === e && (e = t),
-                            (this.x = t),
-                            (this.y = e),
-                            this
-                        );
-                    },
-                    setSize: function(t, e) {
-                        return (
-                            void 0 === e && (e = t),
-                            (this.width = t),
-                            (this.height = e),
-                            this
-                        );
-                    },
-                    isEmpty: function() {
-                        return this.width <= 0 || this.height <= 0;
-                    },
-                    getLineA: function(t) {
-                        return (
-                            void 0 === t && (t = new a()),
-                            t.setTo(this.x, this.y, this.right, this.y),
-                            t
-                        );
-                    },
-                    getLineB: function(t) {
-                        return (
-                            void 0 === t && (t = new a()),
-                            t.setTo(
-                                this.right,
-                                this.y,
-                                this.right,
-                                this.bottom
-                            ),
-                            t
-                        );
-                    },
-                    getLineC: function(t) {
-                        return (
-                            void 0 === t && (t = new a()),
-                            t.setTo(
-                                this.right,
-                                this.bottom,
-                                this.x,
-                                this.bottom
-                            ),
-                            t
-                        );
-                    },
-                    getLineD: function(t) {
-                        return (
-                            void 0 === t && (t = new a()),
-                            t.setTo(this.x, this.bottom, this.x, this.y),
-                            t
-                        );
-                    },
-                    left: {
-                        get: function() {
-                            return this.x;
-                        },
-                        set: function(t) {
-                            t >= this.right
-                                ? (this.width = 0)
-                                : (this.width = this.right - t),
-                                (this.x = t);
-                        },
-                    },
-                    right: {
-                        get: function() {
-                            return this.x + this.width;
-                        },
-                        set: function(t) {
-                            t <= this.x
-                                ? (this.width = 0)
-                                : (this.width = t - this.x);
-                        },
-                    },
-                    top: {
-                        get: function() {
-                            return this.y;
-                        },
-                        set: function(t) {
-                            t >= this.bottom
-                                ? (this.height = 0)
-                                : (this.height = this.bottom - t),
-                                (this.y = t);
-                        },
-                    },
-                    bottom: {
-                        get: function() {
-                            return this.y + this.height;
-                        },
-                        set: function(t) {
-                            t <= this.y
-                                ? (this.height = 0)
-                                : (this.height = t - this.y);
-                        },
-                    },
-                    centerX: {
-                        get: function() {
-                            return this.x + this.width / 2;
-                        },
-                        set: function(t) {
-                            this.x = t - this.width / 2;
-                        },
-                    },
-                    centerY: {
-                        get: function() {
-                            return this.y + this.height / 2;
-                        },
-                        set: function(t) {
-                            this.y = t - this.height / 2;
-                        },
-                    },
-                });
-            t.exports = u;
-        },
-        function(t, e) {
-            t.exports = function(t) {
-                if ('object' != typeof t || t.nodeType || t === t.window)
-                    return !1;
-                try {
-                    if (
-                        t.constructor &&
-                        !{}.hasOwnProperty.call(
-                            t.constructor.prototype,
-                            'isPrototypeOf'
-                        )
-                    )
-                        return !1;
-                } catch (t) {
-                    return !1;
-                }
-                return !0;
+                } else if ('function' == typeof s) return s(e);
+                return s;
             };
         },
         function(t, e, i) {
@@ -912,6 +747,171 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
+                r = i(36),
+                s = i(214),
+                o = i(438),
+                a = i(133),
+                h = i(211),
+                u = new n({
+                    initialize: function(t, e, i, n) {
+                        void 0 === t && (t = 0),
+                            void 0 === e && (e = 0),
+                            void 0 === i && (i = 0),
+                            void 0 === n && (n = 0),
+                            (this.x = t),
+                            (this.y = e),
+                            (this.width = i),
+                            (this.height = n);
+                    },
+                    contains: function(t, e) {
+                        return r(this, t, e);
+                    },
+                    getPoint: function(t, e) {
+                        return s(this, t, e);
+                    },
+                    getPoints: function(t, e, i) {
+                        return o(this, t, e, i);
+                    },
+                    getRandomPoint: function(t) {
+                        return h(this, t);
+                    },
+                    setTo: function(t, e, i, n) {
+                        return (
+                            (this.x = t),
+                            (this.y = e),
+                            (this.width = i),
+                            (this.height = n),
+                            this
+                        );
+                    },
+                    setEmpty: function() {
+                        return this.setTo(0, 0, 0, 0);
+                    },
+                    setPosition: function(t, e) {
+                        return (
+                            void 0 === e && (e = t),
+                            (this.x = t),
+                            (this.y = e),
+                            this
+                        );
+                    },
+                    setSize: function(t, e) {
+                        return (
+                            void 0 === e && (e = t),
+                            (this.width = t),
+                            (this.height = e),
+                            this
+                        );
+                    },
+                    isEmpty: function() {
+                        return this.width <= 0 || this.height <= 0;
+                    },
+                    getLineA: function(t) {
+                        return (
+                            void 0 === t && (t = new a()),
+                            t.setTo(this.x, this.y, this.right, this.y),
+                            t
+                        );
+                    },
+                    getLineB: function(t) {
+                        return (
+                            void 0 === t && (t = new a()),
+                            t.setTo(
+                                this.right,
+                                this.y,
+                                this.right,
+                                this.bottom
+                            ),
+                            t
+                        );
+                    },
+                    getLineC: function(t) {
+                        return (
+                            void 0 === t && (t = new a()),
+                            t.setTo(
+                                this.right,
+                                this.bottom,
+                                this.x,
+                                this.bottom
+                            ),
+                            t
+                        );
+                    },
+                    getLineD: function(t) {
+                        return (
+                            void 0 === t && (t = new a()),
+                            t.setTo(this.x, this.bottom, this.x, this.y),
+                            t
+                        );
+                    },
+                    left: {
+                        get: function() {
+                            return this.x;
+                        },
+                        set: function(t) {
+                            t >= this.right
+                                ? (this.width = 0)
+                                : (this.width = this.right - t),
+                                (this.x = t);
+                        },
+                    },
+                    right: {
+                        get: function() {
+                            return this.x + this.width;
+                        },
+                        set: function(t) {
+                            t <= this.x
+                                ? (this.width = 0)
+                                : (this.width = t - this.x);
+                        },
+                    },
+                    top: {
+                        get: function() {
+                            return this.y;
+                        },
+                        set: function(t) {
+                            t >= this.bottom
+                                ? (this.height = 0)
+                                : (this.height = this.bottom - t),
+                                (this.y = t);
+                        },
+                    },
+                    bottom: {
+                        get: function() {
+                            return this.y + this.height;
+                        },
+                        set: function(t) {
+                            t <= this.y
+                                ? (this.height = 0)
+                                : (this.height = t - this.y);
+                        },
+                    },
+                    centerX: {
+                        get: function() {
+                            return this.x + this.width / 2;
+                        },
+                        set: function(t) {
+                            this.x = t - this.width / 2;
+                        },
+                    },
+                    centerY: {
+                        get: function() {
+                            return this.y + this.height / 2;
+                        },
+                        set: function(t) {
+                            this.y = t - this.height / 2;
+                        },
+                    },
+                });
+            t.exports = u;
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
+            var n = i(0),
                 r = i(14),
                 s = new n({
                     initialize: function(t) {
@@ -964,66 +964,45 @@
                 r.register('GameObjectCreator', s, 'make'),
                 (t.exports = s);
         },
-        function(t, e, i) {
+        function(t, e) {
             /**
              * @author       Richard Davey <rich@photonstorm.com>
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = {},
-                r = new (i(0))({
-                    initialize: function(t) {
-                        (this.game = t), t.events.once('boot', this.boot, this);
+            var i = {},
+                n = {},
+                r = {
+                    register: function(t, e, n, r) {
+                        void 0 === r && (r = !1),
+                            (i[t] = { plugin: e, mapping: n, custom: r });
                     },
-                    boot: function() {
-                        this.game.events.once('destroy', this.destroy, this);
+                    registerCustom: function(t, e, i) {
+                        n[t] = { plugin: e, mapping: i };
                     },
-                    installGlobal: function(t, e) {
-                        for (
-                            var i = t.game,
-                                n = t.scene,
-                                r = t.settings.map,
-                                s = 0;
-                            s < e.length;
-                            s++
-                        ) {
-                            var o = e[s];
-                            i[o] &&
-                                ((t[o] = i[o]),
-                                r.hasOwnProperty(o) && (n[r[o]] = t[o]));
-                        }
+                    hasCore: function(t) {
+                        return i.hasOwnProperty(t);
                     },
-                    installLocal: function(t, e) {
-                        for (
-                            var i = t.scene,
-                                r = t.settings.map,
-                                s = t.settings.isBooted,
-                                o = 0;
-                            o < e.length;
-                            o++
-                        ) {
-                            var a = e[o];
-                            if (n[a]) {
-                                var h = n[a],
-                                    u = new h.plugin(i);
-                                (t[h.mapping] = u),
-                                    r.hasOwnProperty(h.mapping) &&
-                                        (i[r[h.mapping]] = u),
-                                    s && u.boot();
-                            }
-                        }
+                    hasCustom: function(t) {
+                        return n.hasOwnProperty(t);
+                    },
+                    getCore: function(t) {
+                        return i[t];
+                    },
+                    getCustom: function(t) {
+                        return n[t];
+                    },
+                    getCustomClass: function(t) {
+                        return n.hasOwnProperty(t) ? n[t].plugin : null;
                     },
                     remove: function(t) {
-                        delete n[t];
+                        i.hasOwnProperty(t) && delete i[t];
                     },
-                    destroy: function() {
-                        this.game = null;
+                    removeCustom: function(t) {
+                        n.hasOwnProperty(t) && delete n[t];
                     },
-                });
-            (r.register = function(t, e, i) {
-                n[t] = { plugin: e, mapping: i };
-            }),
-                (t.exports = r);
+                };
+            t.exports = r;
         },
         function(t, e, i) {
             /**
@@ -1032,26 +1011,26 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Alpha: i(1083),
-                Animation: i(436),
-                BlendMode: i(1082),
-                ComputedSize: i(1081),
-                Depth: i(1080),
-                Flip: i(1079),
-                GetBounds: i(1078),
-                Mask: i(1077),
-                MatrixStack: i(1076),
-                Origin: i(1075),
-                Pipeline: i(208),
-                ScaleMode: i(1074),
-                ScrollFactor: i(1073),
-                Size: i(1072),
-                Texture: i(1071),
-                Tint: i(1070),
-                ToJSON: i(1069),
-                Transform: i(1068),
+                Alpha: i(1089),
+                Animation: i(439),
+                BlendMode: i(1088),
+                ComputedSize: i(1087),
+                Depth: i(1086),
+                Flip: i(1085),
+                GetBounds: i(1084),
+                Mask: i(1083),
+                MatrixStack: i(1082),
+                Origin: i(1081),
+                Pipeline: i(210),
+                ScaleMode: i(1080),
+                ScrollFactor: i(1079),
+                Size: i(1078),
+                Texture: i(1077),
+                Tint: i(1076),
+                ToJSON: i(1075),
+                Transform: i(1074),
                 TransformMatrix: i(102),
-                Visible: i(1067),
+                Visible: i(1073),
             };
         },
         function(t, e) {
@@ -1317,7 +1296,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(439),
+            var n = i(442),
                 r = {
                     PI2: 2 * Math.PI,
                     TAU: 0.5 * Math.PI,
@@ -1328,13 +1307,32 @@
                 };
             t.exports = r;
         },
+        function(t, e) {
+            t.exports = {
+                LOADER_IDLE: 0,
+                LOADER_LOADING: 1,
+                LOADER_PROCESSING: 2,
+                LOADER_COMPLETE: 3,
+                LOADER_SHUTDOWN: 4,
+                LOADER_DESTROYED: 5,
+                FILE_PENDING: 10,
+                FILE_LOADING: 11,
+                FILE_LOADED: 12,
+                FILE_FAILED: 13,
+                FILE_PROCESSING: 14,
+                FILE_ERRORED: 16,
+                FILE_COMPLETE: 17,
+                FILE_DESTROYED: 18,
+                FILE_POPULATED: 19,
+            };
+        },
         function(t, e, i) {
             /**
              * @author       Richard Davey <rich@photonstorm.com>
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(11),
+            var n = i(8),
                 r = function() {
                     var t,
                         e,
@@ -1373,25 +1371,6 @@
                 };
             t.exports = r;
         },
-        function(t, e) {
-            t.exports = {
-                LOADER_IDLE: 0,
-                LOADER_LOADING: 1,
-                LOADER_PROCESSING: 2,
-                LOADER_COMPLETE: 3,
-                LOADER_SHUTDOWN: 4,
-                LOADER_DESTROYED: 5,
-                FILE_PENDING: 10,
-                FILE_LOADING: 11,
-                FILE_LOADED: 12,
-                FILE_FAILED: 13,
-                FILE_PROCESSING: 14,
-                FILE_ERRORED: 16,
-                FILE_COMPLETE: 17,
-                FILE_DESTROYED: 18,
-                FILE_POPULATED: 19,
-            };
-        },
         function(t, e, i) {
             /**
              * @author       Richard Davey <rich@photonstorm.com>
@@ -1399,11 +1378,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(1),
-                o = i(159),
-                a = i(158),
-                h = i(289),
+                o = i(160),
+                a = i(159),
+                h = i(291),
                 u = i(119),
                 l = new n({
                     initialize: function(t, e) {
@@ -1574,7 +1553,7 @@
                 o = i(91),
                 a = i(16),
                 h = i(32),
-                u = i(155);
+                u = i(156);
             !(function() {
                 (n._inertiaScale = 4),
                     (n._nextCollidingGroupId = 1),
@@ -2019,7 +1998,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(82),
-                r = i(8),
+                r = i(10),
                 s = i(106);
             t.exports = function(t, e, i) {
                 (e.x = r(i, 'x', 0)),
@@ -2078,7 +2057,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = {
-                VERSION: '3.7.1',
+                VERSION: '3.8.0',
                 BlendModes: i(82),
                 ScaleModes: i(106),
                 AUTO: 0,
@@ -2112,7 +2091,7 @@
                 r,
                 s,
                 o = i(25),
-                a = i(194),
+                a = i(196),
                 h = [],
                 u = !1;
             t.exports = {
@@ -2657,7 +2636,7 @@
             var n = i(0),
                 r = i(15),
                 s = i(2),
-                o = i(1014),
+                o = i(1020),
                 a = new n({
                     Extends: s,
                     Mixins: [
@@ -2799,12 +2778,12 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
                 h = i(5),
-                u = i(11),
+                u = i(8),
                 l = new n({
                     Extends: s,
                     initialize: function(t, e, i, n, o) {
@@ -2858,8 +2837,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(198),
-                s = i(414),
+                r = i(200),
+                s = i(417),
                 o = new n({
                     initialize: function(t, e, i, n) {
                         void 0 === t && (t = 0),
@@ -3062,7 +3041,7 @@
              */
             var n = i(0),
                 r = i(15),
-                s = i(297),
+                s = i(299),
                 o = new n({
                     Mixins: [r.Alpha, r.Flip, r.Visible],
                     initialize: function(t, e, i, n, r, s, o, a) {
@@ -3614,7 +3593,7 @@
                 o = i(22),
                 a = i(32),
                 h = i(29),
-                u = i(259);
+                u = i(261);
             (n.rectangle = function(t, e, i, n, a) {
                 a = a || {};
                 var h = {
@@ -3764,8 +3743,8 @@
                             for (m = y + 1; m < p.length; m++) {
                                 var M = p[m];
                                 if (a.overlaps(C.bounds, M.bounds)) {
-                                    var _ = C.vertices,
-                                        E = M.vertices;
+                                    var E = C.vertices,
+                                        _ = M.vertices;
                                     for (x = 0; x < C.vertices.length; x++)
                                         for (
                                             b = 0;
@@ -3774,20 +3753,20 @@
                                         ) {
                                             var P = h.magnitudeSquared(
                                                     h.sub(
-                                                        _[(x + 1) % _.length],
-                                                        E[b]
+                                                        E[(x + 1) % E.length],
+                                                        _[b]
                                                     )
                                                 ),
                                                 L = h.magnitudeSquared(
                                                     h.sub(
-                                                        _[x],
-                                                        E[(b + 1) % E.length]
+                                                        E[x],
+                                                        _[(b + 1) % _.length]
                                                     )
                                                 );
                                             P < 5 &&
                                                 L < 5 &&
-                                                ((_[x].isInternal = !0),
-                                                (E[b].isInternal = !0));
+                                                ((E[x].isInternal = !0),
+                                                (_[b].isInternal = !0));
                                         }
                                 }
                             }
@@ -3862,11 +3841,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = new n({
                     Extends: s,
                     initialize: function t(e, i, n, r, o) {
@@ -3988,7 +3967,7 @@
                 s = i(29),
                 o = i(91),
                 a = i(32),
-                h = i(155),
+                h = i(156),
                 u = i(16);
             (n._warming = 0.4),
                 (n._torqueDampen = 1),
@@ -4244,10 +4223,10 @@
              */
             var n = i(0),
                 r = i(71),
-                s = i(295),
-                o = i(294),
+                s = i(297),
+                o = i(296),
                 a = i(133),
-                h = i(204),
+                h = i(206),
                 u = new n({
                     initialize: function(t, e, i, n, r, s) {
                         void 0 === t && (t = 0),
@@ -4423,7 +4402,7 @@
             var n = i(0),
                 r = i(15),
                 s = i(2),
-                o = i(874),
+                o = i(880),
                 a = new n({
                     Extends: s,
                     Mixins: [
@@ -4475,8 +4454,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(193),
-                s = i(10),
+                r = i(195),
+                s = i(12),
                 o = i(4),
                 a = new n({
                     initialize: function(t) {
@@ -5291,7 +5270,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(869);
+            var n = i(875);
             t.exports = function(t, e) {
                 if ('string' == typeof t && n.hasOwnProperty(t)) {
                     if (e) {
@@ -5316,11 +5295,11 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(452),
+            var n = i(455),
                 r = i(0),
                 s = i(1),
                 o = i(5),
-                a = i(341),
+                a = i(343),
                 h = i(76),
                 u = i(35),
                 l = new r({
@@ -5432,9 +5411,9 @@
                         n.SetRotation(u, S, A);
                         var C = o(t, 'setScale.x', 1),
                             M = o(t, 'setScale.y', C),
-                            _ = o(t, 'setScale.stepX', 0),
-                            E = o(t, 'setScale.stepY', 0);
-                        n.SetScale(u, C, M, _, E);
+                            E = o(t, 'setScale.stepX', 0),
+                            _ = o(t, 'setScale.stepY', 0);
+                        n.SetScale(u, C, M, E, _);
                         var P = o(t, 'setAlpha.value', 1),
                             L = o(t, 'setAlpha.step', 0);
                         n.SetAlpha(u, P, L);
@@ -5755,7 +5734,7 @@
                         i
                     );
                 })();
-            }.call(this, i(968)));
+            }.call(this, i(974)));
         },
         function(t, e, i) {
             /**
@@ -6056,9 +6035,9 @@
              */
             var n = i(0),
                 r = i(37),
-                s = i(440),
-                o = i(438),
-                a = i(213),
+                s = i(443),
+                o = i(441),
+                a = i(215),
                 h = new n({
                     initialize: function(t, e, i) {
                         void 0 === t && (t = 0),
@@ -6171,17 +6150,17 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(141),
-                r = i(8),
+            var n = i(142),
+                r = i(10),
                 s = i(95),
                 o = i(96),
                 a = i(110),
-                h = i(234),
-                u = i(143),
+                h = i(235),
+                u = i(144),
                 l = i(5),
-                c = i(142),
-                d = i(140),
-                f = i(139);
+                c = i(143),
+                d = i(141),
+                f = i(140);
             t.exports = function(t, e, i) {
                 void 0 === i && (i = n);
                 for (
@@ -6198,19 +6177,19 @@
                         A = s(e, 'flipX', i.flipX),
                         C = s(e, 'flipY', i.flipY),
                         M = [],
-                        _ = 0;
-                    _ < g.length;
-                    _++
+                        E = 0;
+                    E < g.length;
+                    E++
                 )
                     for (
-                        var E = g[_].key, P = g[_].value, L = 0;
+                        var _ = g[E].key, P = g[E].value, L = 0;
                         L < p.length;
                         L++
                     ) {
-                        var k = c(E, P),
+                        var k = c(_, P),
                             F = f(
                                 p[L],
-                                E,
+                                _,
                                 k.getEnd,
                                 k.getStart,
                                 o(l(P, 'ease', x), m),
@@ -6445,47 +6424,47 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                CalculateFacesAt: i(148),
+                CalculateFacesAt: i(149),
                 CalculateFacesWithin: i(31),
-                Copy: i(529),
-                CreateFromTiles: i(528),
-                CullTiles: i(527),
-                Fill: i(526),
-                FilterTiles: i(525),
-                FindByIndex: i(524),
-                FindTile: i(523),
-                ForEachTile: i(522),
+                Copy: i(532),
+                CreateFromTiles: i(531),
+                CullTiles: i(530),
+                Fill: i(529),
+                FilterTiles: i(528),
+                FindByIndex: i(527),
+                FindTile: i(526),
+                ForEachTile: i(525),
                 GetTileAt: i(114),
-                GetTileAtWorldXY: i(521),
+                GetTileAtWorldXY: i(524),
                 GetTilesWithin: i(17),
-                GetTilesWithinShape: i(520),
-                GetTilesWithinWorldXY: i(519),
-                HasTileAt: i(248),
-                HasTileAtWorldXY: i(518),
+                GetTilesWithinShape: i(523),
+                GetTilesWithinWorldXY: i(522),
+                HasTileAt: i(249),
+                HasTileAtWorldXY: i(521),
                 IsInLayerBounds: i(90),
-                PutTileAt: i(147),
-                PutTileAtWorldXY: i(517),
-                PutTilesAt: i(516),
-                Randomize: i(515),
-                RemoveTileAt: i(247),
-                RemoveTileAtWorldXY: i(514),
-                RenderDebug: i(513),
-                ReplaceByIndex: i(249),
-                SetCollision: i(512),
-                SetCollisionBetween: i(511),
-                SetCollisionByExclusion: i(510),
-                SetCollisionByProperty: i(509),
-                SetCollisionFromCollisionGroup: i(508),
-                SetTileIndexCallback: i(507),
-                SetTileLocationCallback: i(506),
-                Shuffle: i(505),
-                SwapByIndex: i(504),
+                PutTileAt: i(148),
+                PutTileAtWorldXY: i(520),
+                PutTilesAt: i(519),
+                Randomize: i(518),
+                RemoveTileAt: i(248),
+                RemoveTileAtWorldXY: i(517),
+                RenderDebug: i(516),
+                ReplaceByIndex: i(250),
+                SetCollision: i(515),
+                SetCollisionBetween: i(514),
+                SetCollisionByExclusion: i(513),
+                SetCollisionByProperty: i(512),
+                SetCollisionFromCollisionGroup: i(511),
+                SetTileIndexCallback: i(510),
+                SetTileLocationCallback: i(509),
+                Shuffle: i(508),
+                SwapByIndex: i(507),
                 TileToWorldX: i(113),
-                TileToWorldXY: i(503),
+                TileToWorldXY: i(506),
                 TileToWorldY: i(112),
-                WeightedRandomize: i(502),
+                WeightedRandomize: i(505),
                 WorldToTileX: i(48),
-                WorldToTileXY: i(501),
+                WorldToTileXY: i(504),
                 WorldToTileY: i(47),
             };
         },
@@ -6557,18 +6536,18 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Bounce: i(560),
-                Collision: i(559),
-                Force: i(558),
-                Friction: i(557),
-                Gravity: i(556),
-                Mass: i(555),
-                Static: i(554),
-                Sensor: i(553),
-                SetBody: i(552),
-                Sleep: i(551),
-                Transform: i(550),
-                Velocity: i(549),
+                Bounce: i(565),
+                Collision: i(564),
+                Force: i(563),
+                Friction: i(562),
+                Gravity: i(561),
+                Mass: i(560),
+                Static: i(559),
+                Sensor: i(558),
+                SetBody: i(557),
+                Sleep: i(556),
+                Transform: i(555),
+                Velocity: i(554),
             };
         },
         function(t, e, i) {
@@ -6578,7 +6557,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(279),
+                r = i(281),
                 s = i(35),
                 o = new n({
                     Extends: s,
@@ -6665,7 +6644,7 @@
             var n = i(0),
                 r = i(15),
                 s = i(2),
-                o = i(786),
+                o = i(792),
                 a = new n({
                     Extends: s,
                     Mixins: [
@@ -6787,8 +6766,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(179),
-                r = i(344);
+            var n = i(180),
+                r = i(346);
             t.exports = function(t, e) {
                 if ((void 0 === e && (e = 90), !n(t))) return null;
                 if (
@@ -6811,7 +6790,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(180),
+            var n = i(181),
                 r = i(0),
                 s = i(3),
                 o = i(122),
@@ -6998,8 +6977,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(12),
-                s = i(19),
+                r = i(11),
+                s = i(20),
                 o = i(3),
                 a = new n({
                     Extends: r,
@@ -7182,7 +7161,7 @@
              */
             var n = i(0),
                 r = i(62),
-                s = i(12),
+                s = i(11),
                 o = i(3),
                 a = new n({
                     Extends: s,
@@ -7194,6 +7173,10 @@
                             (this.mute = !1),
                             (this.volume = 1),
                             (this.pauseOnBlur = !0),
+                            (this._rate = 1),
+                            (this._detune = 0),
+                            (this.locked = this.locked || !1),
+                            (this.unlocked = !1),
                             t.events.on(
                                 'blur',
                                 function() {
@@ -7208,11 +7191,8 @@
                                 },
                                 this
                             ),
-                            t.events.once('destroy', this.destroy, this),
-                            (this._rate = 1),
-                            (this._detune = 0),
-                            (this.locked = this.locked || !1),
-                            (this.unlocked = !1);
+                            t.events.on('prestep', this.update, this),
+                            t.events.once('destroy', this.destroy, this);
                     },
                     add: o,
                     addAudioSprite: function(t, e) {
@@ -7632,7 +7612,7 @@
                 r = i(2),
                 s = i(35),
                 o = i(4),
-                a = i(195),
+                a = i(197),
                 h = new n({
                     Extends: r,
                     initialize: function(t, e, i, n, h, u) {
@@ -7856,9 +7836,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(434),
-                s = i(211),
-                o = i(210),
+                r = i(437),
+                s = i(213),
+                o = i(212),
                 a = i(4),
                 h = new n({
                     initialize: function(t, e, i, n) {
@@ -7959,7 +7939,7 @@
                 o = i(0),
                 a = i(15),
                 h = i(2),
-                u = i(10),
+                u = i(12),
                 l = i(36),
                 c = new o({
                     Extends: h,
@@ -8040,6 +8020,50 @@
                     renderWebGL: function() {},
                 });
             t.exports = c;
+        },
+        function(t, e, i) {
+            (function(e) {
+                /**
+                 * @author       Richard Davey <rich@photonstorm.com>
+                 * @copyright    2018 Photon Storm Ltd.
+                 * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+                 */
+                i(1104);
+                var n = i(25),
+                    r = i(20),
+                    s = {
+                        Actions: i(455),
+                        Animation: i(1030),
+                        Cache: i(1029),
+                        Cameras: i(1028),
+                        Class: i(0),
+                        Create: i(1016),
+                        Curves: i(1010),
+                        Data: i(1007),
+                        Display: i(1005),
+                        DOM: i(975),
+                        Events: i(973),
+                        Game: i(971),
+                        GameObjects: i(935),
+                        Geom: i(310),
+                        Input: i(689),
+                        Loader: i(675),
+                        Math: i(653),
+                        Physics: i(610),
+                        Plugins: i(546),
+                        Renderer: i(544),
+                        Scene: i(359),
+                        Scenes: i(539),
+                        Sound: i(537),
+                        Structs: i(536),
+                        Textures: i(535),
+                        Tilemaps: i(533),
+                        Time: i(484),
+                        Tweens: i(482),
+                        Utils: i(478),
+                    };
+                (s = r(!1, s, n)), (t.exports = s), (e.Phaser = s);
+            }.call(this, i(456)));
         },
         ,
         ,
@@ -8711,8 +8735,8 @@
              */
             var n = i(26),
                 r = i(88),
-                s = i(246),
-                o = i(238);
+                s = i(247),
+                o = i(239);
             t.exports = function(t, e, i, a, h, u, l, c) {
                 void 0 === i && (i = 32),
                     void 0 === a && (a = 32),
@@ -8802,7 +8826,7 @@
              */
             var n = i(54),
                 r = i(90),
-                s = i(148),
+                s = i(149),
                 o = i(55);
             t.exports = function(t, e, i, a, h) {
                 if (!r(e, i, h)) return null;
@@ -9115,28 +9139,28 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(255);
+            var n = i(257);
             (n.Body = i(22)),
                 (n.Composite = i(56)),
-                (n.World = i(149)),
-                (n.Detector = i(153)),
-                (n.Grid = i(254)),
-                (n.Pairs = i(253)),
+                (n.World = i(150)),
+                (n.Detector = i(154)),
+                (n.Grid = i(256)),
+                (n.Pairs = i(255)),
                 (n.Pair = i(116)),
-                (n.Query = i(547)),
-                (n.Resolver = i(252)),
-                (n.SAT = i(152)),
+                (n.Query = i(552)),
+                (n.Resolver = i(254)),
+                (n.SAT = i(153)),
                 (n.Constraint = i(67)),
                 (n.Common = i(16)),
-                (n.Engine = i(251)),
+                (n.Engine = i(253)),
                 (n.Events = i(68)),
                 (n.Sleeping = i(91)),
-                (n.Plugin = i(150)),
+                (n.Plugin = i(151)),
                 (n.Bodies = i(57)),
-                (n.Composites = i(258)),
-                (n.Axes = i(155)),
+                (n.Composites = i(260)),
+                (n.Axes = i(156)),
                 (n.Bounds = i(32)),
-                (n.Svg = i(545)),
+                (n.Svg = i(550)),
                 (n.Vector = i(29)),
                 (n.Vertices = i(33)),
                 (n.World.add = n.Composite.add),
@@ -9301,7 +9325,7 @@
         function(t, e, i) {
             var n = {};
             t.exports = n;
-            var r = i(152),
+            var r = i(153),
                 s = i(116),
                 o = i(32);
             (n.collisions = function(t, e) {
@@ -9521,18 +9545,18 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Acceleration: i(578),
-                BodyScale: i(577),
-                BodyType: i(576),
-                Bounce: i(575),
-                CheckAgainst: i(574),
-                Collides: i(573),
-                Debug: i(572),
-                Friction: i(571),
-                Gravity: i(570),
-                Offset: i(569),
-                SetGameObject: i(568),
-                Velocity: i(567),
+                Acceleration: i(583),
+                BodyScale: i(582),
+                BodyType: i(581),
+                Bounce: i(580),
+                CheckAgainst: i(579),
+                Collides: i(578),
+                Debug: i(577),
+                Friction: i(576),
+                Gravity: i(575),
+                Offset: i(574),
+                SetGameObject: i(573),
+                Velocity: i(572),
             };
         },
         function(t, e, i) {
@@ -9542,12 +9566,12 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
-                u = i(386),
+                h = i(8),
+                u = i(389),
                 l = new n({
                     Extends: s,
                     initialize: function(t, e, i, n) {
@@ -9594,7 +9618,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(19),
+            var n = i(20),
                 r = i(119);
             t.exports = function(t, e) {
                 var i = void 0 === t ? r() : n({}, t);
@@ -9951,8 +9975,8 @@
                 s = i(15),
                 o = i(25),
                 a = i(2),
-                h = i(311),
-                u = i(818),
+                h = i(313),
+                u = i(824),
                 l = new r({
                     Extends: a,
                     Mixins: [
@@ -10090,17 +10114,17 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(189),
+            var n = i(191),
                 r = i(27),
                 s = i(0),
                 o = i(15),
                 a = i(25),
                 h = i(2),
-                u = i(824),
+                u = i(830),
                 l = i(5),
-                c = i(385),
-                d = i(823),
-                f = i(820),
+                c = i(388),
+                d = i(829),
+                f = i(826),
                 p = new s({
                     Extends: h,
                     Mixins: [
@@ -10476,9 +10500,9 @@
                 s = i(15),
                 o = i(25),
                 a = i(2),
-                h = i(832),
-                u = i(829),
-                l = i(828),
+                h = i(838),
+                u = i(835),
+                l = i(834),
                 c = new r({
                     Extends: a,
                     Mixins: [
@@ -10572,10 +10596,10 @@
             var n = i(0),
                 r = i(15),
                 s = i(2),
-                o = i(332),
+                o = i(334),
                 a = i(124),
-                h = i(330),
-                u = i(836),
+                h = i(332),
+                u = i(842),
                 l = new n({
                     Extends: s,
                     Mixins: [r.Depth, r.Visible, r.Pipeline, u],
@@ -10708,9 +10732,9 @@
              */
             var n = i(0),
                 r = i(98),
-                s = i(336),
-                o = i(335),
-                a = i(205),
+                s = i(338),
+                o = i(337),
+                a = i(207),
                 h = new n({
                     initialize: function(t, e, i, n) {
                         void 0 === t && (t = 0),
@@ -10812,15 +10836,15 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(200),
+            var n = i(202),
                 r = i(0),
-                s = i(187),
+                s = i(188),
                 o = i(15),
-                a = i(337),
+                a = i(339),
                 h = i(2),
                 u = i(5),
                 l = i(18),
-                c = i(876),
+                c = i(882),
                 d = new r({
                     Extends: h,
                     Mixins: [
@@ -11229,8 +11253,8 @@
             var n = i(0),
                 r = i(15),
                 s = i(2),
-                o = i(340),
-                a = i(888),
+                o = i(342),
+                a = i(894),
                 h = new n({
                     Extends: s,
                     Mixins: [
@@ -11333,13 +11357,13 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(180),
+            var n = i(181),
                 r = i(0),
                 s = i(15),
                 o = i(2),
-                a = i(10),
-                h = i(891),
-                u = i(338),
+                a = i(12),
+                h = i(897),
+                u = i(340),
                 l = i(4),
                 c = new r({
                     Extends: o,
@@ -11441,21 +11465,9 @@
                         );
                     },
                     getBoundsTransformMatrix: function() {
-                        var t = this.tempTransformMatrix;
-                        if (
-                            (t.applyITRS(
-                                this.x,
-                                this.y,
-                                this.rotation,
-                                this.scaleX,
-                                this.scaleY
-                            ),
-                            this.parentContainer)
-                        ) {
-                            var e = this.parentContainer.getTransformMatrix();
-                            t.multiply(e);
-                        }
-                        return t;
+                        return this.getWorldTransformMatrix(
+                            this.tempTransformMatrix
+                        );
                     },
                     add: function(t) {
                         return (
@@ -11673,11 +11685,11 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(895),
-                r = i(892),
+            var n = i(901),
+                r = i(898),
                 s = i(0),
                 o = i(15),
-                a = i(181),
+                a = i(182),
                 h = i(2),
                 u = i(124),
                 l = new s({
@@ -11770,9 +11782,9 @@
             var n = i(0),
                 r = i(15),
                 s = i(2),
-                o = i(340),
-                a = i(899),
-                h = i(898),
+                o = i(342),
+                a = i(905),
+                h = i(904),
                 u = new n({
                     Extends: s,
                     Mixins: [
@@ -11864,7 +11876,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(8);
+            var n = i(10);
             t.exports = function(t, e) {
                 var i = n(e, 'anims', null);
                 if (null === i) return t;
@@ -11915,38 +11927,38 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Matrix: i(928),
-                Add: i(921),
-                AddAt: i(920),
-                BringToTop: i(919),
-                CountAllMatching: i(918),
-                Each: i(917),
-                EachInRange: i(916),
-                FindClosestInSorted: i(423),
-                GetAll: i(915),
-                GetFirst: i(914),
-                GetRandom: i(178),
-                MoveDown: i(913),
-                MoveTo: i(912),
-                MoveUp: i(911),
-                NumberArray: i(910),
-                NumberArrayStep: i(909),
-                QuickSelect: i(342),
-                Range: i(341),
-                Remove: i(908),
-                RemoveAt: i(907),
-                RemoveBetween: i(906),
-                RemoveRandomElement: i(905),
-                Replace: i(904),
-                RotateLeft: i(429),
-                RotateRight: i(428),
+                Matrix: i(933),
+                Add: i(926),
+                AddAt: i(925),
+                BringToTop: i(924),
+                CountAllMatching: i(923),
+                Each: i(922),
+                EachInRange: i(921),
+                FindClosestInSorted: i(426),
+                GetAll: i(920),
+                GetFirst: i(919),
+                GetRandom: i(179),
+                MoveDown: i(918),
+                MoveTo: i(917),
+                MoveUp: i(916),
+                NumberArray: i(915),
+                NumberArrayStep: i(914),
+                QuickSelect: i(344),
+                Range: i(343),
+                Remove: i(361),
+                RemoveAt: i(913),
+                RemoveBetween: i(912),
+                RemoveRandomElement: i(911),
+                Replace: i(910),
+                RotateLeft: i(432),
+                RotateRight: i(431),
                 SafeRange: i(61),
-                SendToBack: i(903),
-                SetAll: i(902),
+                SendToBack: i(909),
+                SetAll: i(908),
                 Shuffle: i(131),
                 SpliceOne: i(100),
                 StableSort: i(122),
-                Swap: i(901),
+                Swap: i(907),
             };
         },
         function(t, e, i) {
@@ -11956,7 +11968,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(19),
+                r = i(20),
                 s = new n({
                     initialize: function(t, e, i, n, r, s, o) {
                         (this.texture = t),
@@ -12176,8 +12188,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(181),
-                s = i(346),
+                r = i(182),
+                s = i(348),
                 o = new n({
                     initialize: function(t, e, i, n, r) {
                         Array.isArray(i) || (i = [i]),
@@ -12306,10 +12318,10 @@
              */
             var n = i(0),
                 r = i(99),
-                s = i(944),
-                o = i(943),
-                a = i(383),
-                h = i(355),
+                s = i(190),
+                o = i(949),
+                a = i(948),
+                h = i(357),
                 u = new n({
                     initialize: function(t, e) {
                         (this.scene = t),
@@ -12339,10 +12351,11 @@
                             (this.context = t.context);
                         var e = t.plugins;
                         (this.plugins = e),
-                            e.installGlobal(this, a.Global),
-                            e.installLocal(this, a.CoreScene),
-                            e.installLocal(this, o(this)),
-                            e.installLocal(this, s(this)),
+                            e.addToScene(this, s.Global, [
+                                s.CoreScene,
+                                a(this),
+                                o(this),
+                            ]),
                             this.events.emit('boot', this),
                             (this.settings.isBooted = !0);
                     },
@@ -12528,6 +12541,16 @@
                 SEVEN: 55,
                 EIGHT: 56,
                 NINE: 57,
+                NUMPAD_ZERO: 96,
+                NUMPAD_ONE: 97,
+                NUMPAD_TWO: 98,
+                NUMPAD_THREE: 99,
+                NUMPAD_FOUR: 100,
+                NUMPAD_FIVE: 101,
+                NUMPAD_SIX: 102,
+                NUMPAD_SEVEN: 103,
+                NUMPAD_EIGHT: 104,
+                NUMPAD_NINE: 105,
                 A: 65,
                 B: 66,
                 C: 67,
@@ -12587,9 +12610,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(371),
-                s = i(958),
-                o = i(957),
+                r = i(375),
+                s = i(963),
+                o = i(962),
                 a = i(34),
                 h = i(127),
                 u = new n({
@@ -12794,8 +12817,8 @@
                             A = S[0],
                             C = S[1],
                             M = S[2],
-                            _ = S[3],
-                            E = S[4],
+                            E = S[3],
+                            _ = S[4],
                             P = S[5],
                             L = Math.sin,
                             k = Math.cos,
@@ -12822,14 +12845,14 @@
                                 var W = -N,
                                     G = -V;
                                 (r = l * A + c * M),
-                                    (s = l * C + c * _),
-                                    (o = d * A + f * M + (W * A + G * M + E)),
-                                    (a = d * C + f * _ + (W * C + G * _ + P)),
+                                    (s = l * C + c * E),
+                                    (o = d * A + f * M + (W * A + G * M + _)),
+                                    (a = d * C + f * E + (W * C + G * E + P)),
                                     (A = h * A + u * M),
-                                    (C = h * C + u * _),
+                                    (C = h * C + u * E),
                                     (M = r),
-                                    (_ = s),
-                                    (E = o),
+                                    (E = s),
+                                    (_ = o),
                                     (P = a),
                                     (N = 0),
                                     (V = 0);
@@ -12862,11 +12885,11 @@
                                                 ht = q.x - N,
                                                 ut = q.y - V,
                                                 lt = rt * A + st * M,
-                                                ct = rt * C + st * _,
+                                                ct = rt * C + st * E,
                                                 dt = ot * A + at * M,
-                                                ft = ot * C + at * _,
-                                                pt = ht * A + ut * M + E,
-                                                gt = ht * C + ut * _ + P,
+                                                ft = ot * C + at * E,
+                                                pt = ht * A + ut * M + _,
+                                                gt = ht * C + ut * E + P,
                                                 vt = Z * lt + Q * dt + pt,
                                                 yt = Z * ct + Q * ft + gt,
                                                 mt = Z * lt + et * dt + pt,
@@ -12957,13 +12980,13 @@
                                 A = n[2],
                                 C = n[3],
                                 M = n[4],
-                                _ = n[5],
-                                E = -m,
+                                E = n[5],
+                                _ = -m,
                                 P = -x,
                                 L = A * d + C * p,
                                 k = A * f + C * g,
-                                F = M * d + _ * p + (E * d + P * p + v),
-                                R = M * f + _ * g + (E * f + P * g + y);
+                                F = M * d + E * p + (_ * d + P * p + v),
+                                R = M * f + E * g + (_ * f + P * g + y);
                             (d = T * d + S * p),
                                 (f = T * f + S * g),
                                 (p = L),
@@ -12973,72 +12996,95 @@
                                 (m = 0),
                                 (x = 0);
                         }
-                        for (var O = t.x - m, B = t.y - x, D = 0; D < w; ++D) {
+                        for (
+                            var O, B = t.x - m, D = t.y - x, I = 0;
+                            I < w;
+                            ++I
+                        ) {
                             for (
-                                var I = Math.min(l, this.maxQuads), z = 0;
-                                z < I;
-                                ++z
+                                var z = Math.min(l, this.maxQuads), Y = 0;
+                                Y < z;
+                                ++Y
                             ) {
-                                var Y = u[b + z],
-                                    X = Y.frame,
-                                    N = s(16777215, Y.alpha),
-                                    V = X.uvs,
-                                    W = Y.flipX,
-                                    G = Y.flipY,
-                                    U = X.width * (W ? -1 : 1),
-                                    j = X.height * (G ? -1 : 1),
-                                    H = O + Y.x + X.x + X.width * (W ? 1 : 0),
-                                    q = B + Y.y + X.y + X.height * (G ? 1 : 0),
-                                    K = H + U,
-                                    J = q + j,
-                                    Z = H * d + q * p + v,
-                                    Q = H * f + q * g + y,
-                                    $ = K * d + J * p + v,
-                                    tt = K * f + J * g + y;
-                                this.setTexture2D(
-                                    X.texture.source[X.sourceIndex].glTexture,
-                                    0
-                                );
-                                var et =
-                                    this.vertexCount *
-                                    this.vertexComponentCount;
-                                r && ((Z |= 0), (Q |= 0), ($ |= 0), (tt |= 0)),
-                                    (o[et + 0] = Z),
-                                    (o[et + 1] = Q),
-                                    (o[et + 2] = V.x0),
-                                    (o[et + 3] = V.y0),
-                                    (h[et + 4] = N),
-                                    (o[et + 5] = Z),
-                                    (o[et + 6] = tt),
-                                    (o[et + 7] = V.x1),
-                                    (o[et + 8] = V.y1),
-                                    (h[et + 9] = N),
-                                    (o[et + 10] = $),
-                                    (o[et + 11] = tt),
-                                    (o[et + 12] = V.x2),
-                                    (o[et + 13] = V.y2),
-                                    (h[et + 14] = N),
-                                    (o[et + 15] = Z),
-                                    (o[et + 16] = Q),
-                                    (o[et + 17] = V.x0),
-                                    (o[et + 18] = V.y0),
-                                    (h[et + 19] = N),
-                                    (o[et + 20] = $),
-                                    (o[et + 21] = tt),
-                                    (o[et + 22] = V.x2),
-                                    (o[et + 23] = V.y2),
-                                    (h[et + 24] = N),
-                                    (o[et + 25] = $),
-                                    (o[et + 26] = Q),
-                                    (o[et + 27] = V.x3),
-                                    (o[et + 28] = V.y3),
-                                    (h[et + 29] = N),
-                                    (this.vertexCount += 6),
-                                    this.vertexCount >= this.vertexCapacity &&
-                                        this.flush();
+                                var X = u[b + Y],
+                                    N = X.frame,
+                                    V = X.alpha;
+                                if (0 !== V) {
+                                    var W = s(16777215, V),
+                                        G = N.uvs,
+                                        U = X.flipX,
+                                        j = X.flipY,
+                                        H = N.width * (U ? -1 : 1),
+                                        q = N.height * (j ? -1 : 1),
+                                        K =
+                                            B +
+                                            X.x +
+                                            N.x +
+                                            N.width * (U ? 1 : 0),
+                                        J =
+                                            D +
+                                            X.y +
+                                            N.y +
+                                            N.height * (j ? 1 : 0),
+                                        Z = K + H,
+                                        Q = J + q,
+                                        $ = K * d + J * p + v,
+                                        tt = K * f + J * g + y,
+                                        et = Z * d + Q * p + v,
+                                        it = Z * f + Q * g + y;
+                                    N.sourceIndex !== O &&
+                                        (this.setTexture2D(
+                                            N.texture.source[N.sourceIndex]
+                                                .glTexture,
+                                            0
+                                        ),
+                                        (O = N.sourceIndex));
+                                    var nt =
+                                        this.vertexCount *
+                                        this.vertexComponentCount;
+                                    r &&
+                                        (($ |= 0),
+                                        (tt |= 0),
+                                        (et |= 0),
+                                        (it |= 0)),
+                                        (o[nt + 0] = $),
+                                        (o[nt + 1] = tt),
+                                        (o[nt + 2] = G.x0),
+                                        (o[nt + 3] = G.y0),
+                                        (h[nt + 4] = W),
+                                        (o[nt + 5] = $),
+                                        (o[nt + 6] = it),
+                                        (o[nt + 7] = G.x1),
+                                        (o[nt + 8] = G.y1),
+                                        (h[nt + 9] = W),
+                                        (o[nt + 10] = et),
+                                        (o[nt + 11] = it),
+                                        (o[nt + 12] = G.x2),
+                                        (o[nt + 13] = G.y2),
+                                        (h[nt + 14] = W),
+                                        (o[nt + 15] = $),
+                                        (o[nt + 16] = tt),
+                                        (o[nt + 17] = G.x0),
+                                        (o[nt + 18] = G.y0),
+                                        (h[nt + 19] = W),
+                                        (o[nt + 20] = et),
+                                        (o[nt + 21] = it),
+                                        (o[nt + 22] = G.x2),
+                                        (o[nt + 23] = G.y2),
+                                        (h[nt + 24] = W),
+                                        (o[nt + 25] = et),
+                                        (o[nt + 26] = tt),
+                                        (o[nt + 27] = G.x3),
+                                        (o[nt + 28] = G.y3),
+                                        (h[nt + 29] = W),
+                                        (this.vertexCount += 6),
+                                        this.vertexCount >=
+                                            this.vertexCapacity &&
+                                            (this.flush(), (O = -1));
+                                }
                             }
-                            (b += I),
-                                (l -= I),
+                            (b += z),
+                                (l -= z),
                                 this.vertexCount >= this.vertexCapacity &&
                                     this.flush();
                         }
@@ -13074,8 +13120,8 @@
                                 v.y +
                                 v.height * (w ? 1 : 0),
                             M = (c ? 0 | A : A) + T,
-                            _ = (c ? 0 | C : C) + S,
-                            E = t.scaleX,
+                            E = (c ? 0 | C : C) + S,
+                            _ = t.scaleX,
                             P = t.scaleY,
                             L = t.rotation,
                             k = t._alphaTL,
@@ -13088,8 +13134,8 @@
                             z = t._tintBR,
                             Y = Math.sin(L),
                             X = Math.cos(L),
-                            N = X * E,
-                            V = Y * E,
+                            N = X * _,
+                            V = Y * _,
                             W = -Y * P,
                             G = X * P,
                             U = t.x,
@@ -13138,10 +13184,10 @@
                         var ct,
                             dt = A * r + C * o + u,
                             ft = A * s + C * h + l,
-                            pt = A * r + _ * o + u,
-                            gt = A * s + _ * h + l,
-                            vt = M * r + _ * o + u,
-                            yt = M * s + _ * h + l,
+                            pt = A * r + E * o + u,
+                            gt = A * s + E * h + l,
+                            vt = M * r + E * o + u,
+                            yt = M * s + E * h + l,
                             mt = M * r + C * o + u,
                             xt = M * s + C * h + l,
                             wt = d(B, k),
@@ -13222,14 +13268,14 @@
                             A = t.x,
                             C = t.y,
                             M = t.scaleX,
-                            _ = t.scaleY,
-                            E = t.rotation,
-                            P = Math.sin(E),
-                            L = Math.cos(E),
+                            E = t.scaleY,
+                            _ = t.rotation,
+                            P = Math.sin(_),
+                            L = Math.cos(_),
                             k = L * M,
                             F = P * M,
-                            R = -P * _,
-                            O = L * _,
+                            R = -P * E,
+                            O = L * E,
                             B = A,
                             D = C,
                             I = b[0],
@@ -13320,9 +13366,9 @@
                             A = this.vertexViewU32,
                             C = e.matrix.matrix,
                             M = e.width + 50,
-                            _ = e.height + 50,
-                            E = t.frame,
-                            P = t.texture.source[E.sourceIndex],
+                            E = e.height + 50,
+                            _ = t.frame,
+                            P = t.texture.source[_.sourceIndex],
                             L = e.scrollX * t.scrollFactorX,
                             k = e.scrollY * t.scrollFactorY,
                             F = t.fontData,
@@ -13336,8 +13382,8 @@
                             X = T(t._tintBR, D),
                             N = t.x,
                             V = t.y,
-                            W = E.cutX,
-                            G = E.cutY,
+                            W = _.cutX,
+                            G = _.cutY,
                             U = P.width,
                             j = P.height,
                             H = P.glTexture,
@@ -13360,8 +13406,8 @@
                             lt = 0,
                             ct = null,
                             dt = 0,
-                            ft = N + E.x,
-                            pt = V + E.y,
+                            ft = N + _.x,
+                            pt = V + _.y,
                             gt = t.rotation,
                             vt = t.scaleX,
                             yt = t.scaleY,
@@ -13374,8 +13420,8 @@
                             At = wt * yt,
                             Ct = ft,
                             Mt = pt,
-                            _t = C[0],
-                            Et = C[1],
+                            Et = C[0],
+                            _t = C[1],
                             Pt = C[2],
                             Lt = C[3],
                             kt = C[4],
@@ -13390,10 +13436,10 @@
                                 Yt = n[5],
                                 Xt = -L,
                                 Nt = -k,
-                                Vt = Ot * _t + Bt * Pt,
-                                Wt = Ot * Et + Bt * Lt,
-                                Gt = Dt * _t + It * Pt,
-                                Ut = Dt * Et + It * Lt;
+                                Vt = Ot * Et + Bt * Pt,
+                                Wt = Ot * _t + Bt * Lt,
+                                Gt = Dt * Et + It * Pt,
+                                Ut = Dt * _t + It * Lt;
                             (f = bt * Vt + Tt * Gt),
                                 (p = bt * Wt + Tt * Ut),
                                 (g = St * Vt + At * Gt),
@@ -13401,22 +13447,22 @@
                                 (y =
                                     Ct * Vt +
                                     Mt * Gt +
-                                    (zt * _t +
+                                    (zt * Et +
                                         Yt * Pt +
-                                        (Xt * _t + Nt * Pt + kt))),
+                                        (Xt * Et + Nt * Pt + kt))),
                                 (m =
                                     Ct * Wt +
                                     Mt * Ut +
-                                    (zt * Et +
+                                    (zt * _t +
                                         Yt * Lt +
-                                        (Xt * Et + Nt * Lt + Ft)));
+                                        (Xt * _t + Nt * Lt + Ft)));
                         } else
-                            (f = bt * _t + Tt * Pt),
-                                (p = bt * Et + Tt * Lt),
-                                (g = St * _t + At * Pt),
-                                (v = St * Et + At * Lt),
-                                (y = (Ct -= L) * _t + (Mt -= k) * Pt + kt),
-                                (m = Ct * Et + Mt * Lt + Ft);
+                            (f = bt * Et + Tt * Pt),
+                                (p = bt * _t + Tt * Lt),
+                                (g = St * Et + At * Pt),
+                                (v = St * _t + At * Lt),
+                                (y = (Ct -= L) * Et + (Mt -= k) * Pt + kt),
+                                (m = Ct * _t + Mt * Lt + Ft);
                         this.setTexture2D(H, 0);
                         for (var jt = 0; jt < b; ++jt)
                             if (10 !== (Z = w.charCodeAt(jt))) {
@@ -13463,19 +13509,19 @@
                                             (((r = nt * f + rt * g + y) < -50 ||
                                                 r > M ||
                                                 s < -50 ||
-                                                s > _) &&
+                                                s > E) &&
                                                 (o < -50 ||
                                                     o > M ||
                                                     h < -50 ||
-                                                    h > _) &&
+                                                    h > E) &&
                                                 (u < -50 ||
                                                     u > M ||
                                                     l < -50 ||
-                                                    l > _) &&
+                                                    l > E) &&
                                                 (c < -50 ||
                                                     c > M ||
                                                     d < -50 ||
-                                                    d > _)) ||
+                                                    d > E)) ||
                                                 (this.vertexCount + 6 >
                                                     this.vertexCapacity &&
                                                     this.flush(),
@@ -13553,8 +13599,8 @@
                             A,
                             C = this.renderer.config.roundPixels,
                             M = t.displayCallback,
-                            _ = t.text,
-                            E = _.length,
+                            E = t.text,
+                            _ = E.length,
                             P = a.getTintAppendFloatAlpha,
                             L = this.vertexViewF32,
                             k = this.vertexViewU32,
@@ -13607,12 +13653,12 @@
                             At = t.scaleX,
                             Ct = t.scaleY,
                             Mt = t.letterSpacing,
-                            _t = Math.sin(St),
-                            Et = Math.cos(St),
-                            Pt = Et * At,
-                            Lt = _t * At,
-                            kt = -_t * Ct,
-                            Ft = Et * Ct,
+                            Et = Math.sin(St),
+                            _t = Math.cos(St),
+                            Pt = _t * At,
+                            Lt = Et * At,
+                            kt = -Et * Ct,
+                            Ft = _t * Ct,
                             Rt = bt,
                             Ot = Tt,
                             Bt = R[0],
@@ -13667,11 +13713,11 @@
                                     t.cropWidth * t.scaleX,
                                     t.cropHeight * t.scaleY
                                 );
-                        for (var ee = 0; ee < E; ++ee)
+                        for (var ee = 0; ee < _; ++ee)
                             if (
                                 ((V = t.fontSize / t.fontData.size),
                                 (St = 0),
-                                10 !== (st = _.charCodeAt(ee)))
+                                10 !== (st = E.charCodeAt(ee)))
                             ) {
                                 if ((ot = W[st])) {
                                     if (
@@ -13733,8 +13779,8 @@
                                             (dt -= t.displayOriginY),
                                             (ct *= V),
                                             (dt *= V),
-                                            (_t = Math.sin(St)),
-                                            (Et = Math.cos(St)),
+                                            (Et = Math.sin(St)),
+                                            (_t = Math.cos(St)),
                                             (r = Rt =
                                                 (y = ct) * x +
                                                 (m = dt) * b +
@@ -13743,16 +13789,16 @@
                                             (o =
                                                 (pt = lt) *
                                                     (kt =
-                                                        (g = -_t * V) * x +
-                                                        (v = Et * V) * b) +
+                                                        (g = -Et * V) * x +
+                                                        (v = _t * V) * b) +
                                                 Rt),
                                             (h =
                                                 pt * (Ft = g * w + v * T) + Ot),
                                             (u =
                                                 (ft = ut) *
                                                     (Pt =
-                                                        (f = Et * V) * x +
-                                                        (p = _t * V) * b) +
+                                                        (f = _t * V) * x +
+                                                        (p = Et * V) * b) +
                                                 pt * kt +
                                                 Rt),
                                             (l =
@@ -13972,11 +14018,11 @@
                         A,
                         C,
                         M,
-                        _,
-                        E
+                        E,
+                        _
                     ) {
                         var P = null;
-                        E && (P = E.matrix),
+                        _ && (P = _.matrix),
                             this.renderer.setPipeline(this),
                             this.vertexCount + 6 > this.vertexCapacity &&
                                 this.flush(),
@@ -13990,7 +14036,7 @@
                             D = this.renderer.config.roundPixels,
                             I = this.vertexViewF32,
                             z = this.vertexViewU32,
-                            Y = _.matrix.matrix,
+                            Y = E.matrix.matrix,
                             X = o * (c ? 1 : 0) - g,
                             N = a * (d ? 1 : 0) - v,
                             V = X + o * (c ? -1 : 1),
@@ -14018,8 +14064,8 @@
                                 ut = P[3],
                                 lt = P[4],
                                 ct = P[5],
-                                dt = -_.scrollX * f,
-                                ft = -_.scrollY * p,
+                                dt = -E.scrollX * f,
+                                ft = -E.scrollY * p,
                                 pt = ot * tt + at * it,
                                 gt = ot * et + at * nt,
                                 vt = ht * tt + ut * it,
@@ -14046,8 +14092,8 @@
                                 (F = J * tt + Z * it),
                                 (R = J * et + Z * nt),
                                 (O =
-                                    (Q -= _.scrollX * f) * tt +
-                                    ($ -= _.scrollY * p) * it +
+                                    (Q -= E.scrollX * f) * tt +
+                                    ($ -= E.scrollY * p) * it +
                                     rt),
                                 (B = Q * et + $ * nt + st);
                         var mt,
@@ -14059,8 +14105,8 @@
                             At = V * k + W * R + B,
                             Ct = V * L + N * F + O,
                             Mt = V * k + N * R + B,
-                            _t = y / i + C,
-                            Et = m / n + M,
+                            Et = y / i + C,
+                            _t = m / n + M,
                             Pt = (y + x) / i + C,
                             Lt = (m + w) / n + M;
                         this.setTexture2D(e, 0),
@@ -14076,12 +14122,12 @@
                                 (Mt |= 0)),
                             (I[mt + 0] = xt),
                             (I[mt + 1] = wt),
-                            (I[mt + 2] = _t),
-                            (I[mt + 3] = Et),
+                            (I[mt + 2] = Et),
+                            (I[mt + 3] = _t),
                             (z[mt + 4] = b),
                             (I[mt + 5] = bt),
                             (I[mt + 6] = Tt),
-                            (I[mt + 7] = _t),
+                            (I[mt + 7] = Et),
                             (I[mt + 8] = Lt),
                             (z[mt + 9] = T),
                             (I[mt + 10] = St),
@@ -14091,8 +14137,8 @@
                             (z[mt + 14] = S),
                             (I[mt + 15] = xt),
                             (I[mt + 16] = wt),
-                            (I[mt + 17] = _t),
-                            (I[mt + 18] = Et),
+                            (I[mt + 17] = Et),
+                            (I[mt + 18] = _t),
                             (z[mt + 19] = b),
                             (I[mt + 20] = St),
                             (I[mt + 21] = At),
@@ -14102,7 +14148,7 @@
                             (I[mt + 25] = Ct),
                             (I[mt + 26] = Mt),
                             (I[mt + 27] = Pt),
-                            (I[mt + 28] = Et),
+                            (I[mt + 28] = _t),
                             (z[mt + 29] = A),
                             (this.vertexCount += 6);
                     },
@@ -14127,18 +14173,18 @@
                             C = l[5];
                         if (d) {
                             var M = d[0],
-                                _ = d[1],
-                                E = d[2],
+                                E = d[1],
+                                _ = d[2],
                                 P = d[3],
                                 L = d[4],
-                                k = w * _ + b * P,
-                                F = T * _ + S * P,
-                                R = A * _ + C * P + d[5];
-                            (w = w * M + b * E),
+                                k = w * E + b * P,
+                                F = T * E + S * P,
+                                R = A * E + C * P + d[5];
+                            (w = w * M + b * _),
                                 (b = k),
-                                (T = T * M + S * E),
+                                (T = T * M + S * _),
                                 (S = F),
-                                (A = A * M + C * E + L),
+                                (A = A * M + C * _ + L),
                                 (C = R);
                         }
                         var O,
@@ -14213,8 +14259,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(959),
-                s = i(185),
+                r = i(964),
+                s = i(186),
                 o = new n({
                     Extends: s,
                     initialize: function(t) {
@@ -14617,6 +14663,36 @@
             })();
         },
         function(t, e) {
+            t.exports = {
+                Global: [
+                    'anims',
+                    'cache',
+                    'plugins',
+                    'registry',
+                    'sound',
+                    'textures',
+                ],
+                CoreScene: [
+                    'EventEmitter',
+                    'CameraManager',
+                    'GameObjectCreator',
+                    'GameObjectFactory',
+                    'ScenePlugin',
+                    'DisplayList',
+                    'UpdateList',
+                ],
+                DefaultScene: [
+                    'CameraManager3D',
+                    'Clock',
+                    'DataManagerPlugin',
+                    'InputPlugin',
+                    'Loader',
+                    'TweenManager',
+                    'LightsPlugin',
+                ],
+            };
+        },
+        function(t, e) {
             t.exports = function(t, e, i) {
                 var n;
                 return (
@@ -14669,7 +14745,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
+            var n = i(12);
             t.exports = function(t, e) {
                 if ((void 0 === e && (e = new n()), 0 === t.length)) return e;
                 for (
@@ -15130,21 +15206,21 @@
                             A = u * g - c * f,
                             C = u * v - d * f,
                             M = l * g - c * p,
-                            _ = l * v - d * p,
-                            E = c * v - d * g,
-                            P = y * E - m * _ + x * M + w * C - b * A + T * S;
+                            E = l * v - d * p,
+                            _ = c * v - d * g,
+                            P = y * _ - m * E + x * M + w * C - b * A + T * S;
                         return P
                             ? ((P = 1 / P),
-                              (t[0] = (o * E - a * _ + h * M) * P),
-                              (t[1] = (n * _ - i * E - r * M) * P),
+                              (t[0] = (o * _ - a * E + h * M) * P),
+                              (t[1] = (n * E - i * _ - r * M) * P),
                               (t[2] = (p * T - g * b + v * w) * P),
                               (t[3] = (c * b - l * T - d * w) * P),
-                              (t[4] = (a * C - s * E - h * A) * P),
-                              (t[5] = (e * E - n * C + r * A) * P),
+                              (t[4] = (a * C - s * _ - h * A) * P),
+                              (t[5] = (e * _ - n * C + r * A) * P),
                               (t[6] = (g * x - f * T - v * m) * P),
                               (t[7] = (u * T - c * x + d * m) * P),
-                              (t[8] = (s * _ - o * C + h * S) * P),
-                              (t[9] = (i * C - e * _ - r * S) * P),
+                              (t[8] = (s * E - o * C + h * S) * P),
+                              (t[9] = (i * C - e * E - r * S) * P),
                               (t[10] = (f * b - p * x + v * y) * P),
                               (t[11] = (l * x - u * b - d * y) * P),
                               (t[12] = (o * A - s * M - a * S) * P),
@@ -15511,8 +15587,8 @@
                             A = s * n * u - r * a,
                             C = n * r * u - s * a,
                             M = r * r * u + h,
-                            _ = s * r * u + n * a,
-                            E = n * s * u + r * a,
+                            E = s * r * u + n * a,
+                            _ = n * s * u + r * a,
                             P = r * s * u - n * a,
                             L = s * s * u + h;
                         return (
@@ -15520,14 +15596,14 @@
                             (i[1] = c * T + g * S + x * A),
                             (i[2] = d * T + v * S + w * A),
                             (i[3] = f * T + y * S + b * A),
-                            (i[4] = l * C + p * M + m * _),
-                            (i[5] = c * C + g * M + x * _),
-                            (i[6] = d * C + v * M + w * _),
-                            (i[7] = f * C + y * M + b * _),
-                            (i[8] = l * E + p * P + m * L),
-                            (i[9] = c * E + g * P + x * L),
-                            (i[10] = d * E + v * P + w * L),
-                            (i[11] = f * E + y * P + b * L),
+                            (i[4] = l * C + p * M + m * E),
+                            (i[5] = c * C + g * M + x * E),
+                            (i[6] = d * C + v * M + w * E),
+                            (i[7] = f * C + y * M + b * E),
+                            (i[8] = l * _ + p * P + m * L),
+                            (i[9] = c * _ + g * P + x * L),
+                            (i[10] = d * _ + v * P + w * L),
+                            (i[11] = f * _ + y * P + b * L),
                             this
                         );
                     },
@@ -15890,15 +15966,15 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(196),
-                s = i(409),
-                o = i(408),
-                a = i(407),
+                r = i(198),
+                s = i(412),
+                o = i(411),
+                a = i(410),
                 h = i(76),
                 u = i(130),
                 l = i(4),
                 c = i(77),
-                d = i(195),
+                d = i(197),
                 f = new c(),
                 p = new d(),
                 g = new c(),
@@ -16241,10 +16317,10 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(415),
-                r = i(413),
-                s = i(411),
-                o = i(410);
+            var n = i(418),
+                r = i(416),
+                s = i(414),
+                o = i(413);
             t.exports = function(t) {
                 switch (typeof t) {
                     case 'string':
@@ -16266,11 +16342,11 @@
              */
             var n = i(0),
                 r = i(51),
-                s = i(12),
-                o = i(416),
-                a = i(10),
+                s = i(11),
+                o = i(419),
+                a = i(12),
                 h = i(102),
-                u = i(199),
+                u = i(201),
                 l = i(4),
                 c = new n({
                     Extends: s,
@@ -16949,49 +17025,6 @@
                 BOTTOM_RIGHT: 12,
             };
         },
-        function(t, e, i) {
-            (function(e) {
-                /**
-                 * @author       Richard Davey <rich@photonstorm.com>
-                 * @copyright    2018 Photon Storm Ltd.
-                 * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
-                 */
-                i(1098);
-                var n = i(25),
-                    r = i(19),
-                    s = {
-                        Actions: i(452),
-                        Animation: i(1024),
-                        Cache: i(1023),
-                        Cameras: i(1022),
-                        Class: i(0),
-                        Create: i(1010),
-                        Curves: i(1004),
-                        Data: i(1001),
-                        Display: i(999),
-                        DOM: i(969),
-                        EventEmitter: i(967),
-                        Game: i(966),
-                        GameObjects: i(930),
-                        Geom: i(308),
-                        Input: i(683),
-                        Loader: i(669),
-                        Math: i(648),
-                        Physics: i(605),
-                        Renderer: i(541),
-                        Scene: i(357),
-                        Scenes: i(536),
-                        Sound: i(534),
-                        Structs: i(533),
-                        Textures: i(532),
-                        Tilemaps: i(530),
-                        Time: i(481),
-                        Tweens: i(479),
-                        Utils: i(475),
-                    };
-                (s = r(!1, s, n)), (t.exports = s), (e.Phaser = s);
-            }.call(this, i(453)));
-        },
         ,
         ,
         ,
@@ -17012,7 +17045,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(12),
+                r = i(11),
                 s = i(109),
                 o = i(94),
                 a = new n({
@@ -17292,15 +17325,15 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(62),
-                r = i(141),
-                s = i(8),
+                r = i(142),
+                s = i(10),
                 o = i(95),
                 a = i(96),
                 h = i(110),
-                u = i(143),
-                l = i(233),
+                u = i(144),
+                l = i(234),
                 c = i(5),
-                d = i(230),
+                d = i(231),
                 f = i(109);
             t.exports = function(t, e) {
                 var i = new d(t),
@@ -17344,9 +17377,9 @@
                 }
                 var M = c(e, 'onLoop', !1);
                 if (M) {
-                    var _ = c(e, 'onLoopScope', m),
-                        E = c(e, 'onLoopParams', []);
-                    i.setCallback('onLoop', M, x.concat(E), _);
+                    var E = c(e, 'onLoopScope', m),
+                        _ = c(e, 'onLoopParams', []);
+                    i.setCallback('onLoop', M, x.concat(_), E);
                 }
                 var P = c(e, 'onYoyo', !1);
                 if (P) {
@@ -17369,15 +17402,15 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(141),
-                r = i(8),
+            var n = i(142),
+                r = i(10),
                 s = i(95),
                 o = i(96),
                 a = i(110),
                 h = i(5),
-                u = i(142),
-                l = i(140),
-                c = i(139);
+                u = i(143),
+                l = i(141),
+                c = i(140);
             t.exports = function(t, e, i) {
                 void 0 === i && (i = n);
                 var d = h(e, 'from', 0),
@@ -17417,8 +17450,8 @@
                     (M.paused = s(e, 'paused', !1)),
                     (M.useFrames = s(e, 'useFrames', !1));
                 for (
-                    var _ = h(e, 'callbackScope', M),
-                        E = [M, null],
+                    var E = h(e, 'callbackScope', M),
+                        _ = [M, null],
                         P = l.TYPES,
                         L = 0;
                     L < P.length;
@@ -17427,9 +17460,9 @@
                     var k = P[L],
                         F = h(e, k, !1);
                     if (F) {
-                        var R = h(e, k + 'Scope', _),
+                        var R = h(e, k + 'Scope', E),
                             O = h(e, k + 'Params', []);
-                        M.setCallback(k, F, E.concat(O), R);
+                        M.setCallback(k, F, _.concat(O), R);
                     }
                 }
                 return M;
@@ -17457,7 +17490,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(477);
+            var n = i(480);
             t.exports = function(t) {
                 var e,
                     i = [];
@@ -17569,7 +17602,7 @@
                 r = i(15),
                 s = i(25),
                 o = i(2),
-                a = i(486),
+                a = i(489),
                 h = i(115),
                 u = i(34),
                 l = new n({
@@ -17667,8 +17700,8 @@
                                                 ))
                                             ) {
                                                 var M = r.x / h,
-                                                    _ = r.y / l,
-                                                    E = (r.x + e.width) / h,
+                                                    E = r.y / l,
+                                                    _ = (r.x + e.width) / h,
                                                     P = (r.y + e.height) / l,
                                                     L = T,
                                                     k = S,
@@ -17685,7 +17718,7 @@
                                                 (w[y + 0] = L),
                                                     (w[y + 1] = k),
                                                     (w[y + 2] = M),
-                                                    (w[y + 3] = _),
+                                                    (w[y + 3] = E),
                                                     (b[y + 4] = z),
                                                     (w[y + 5] = F),
                                                     (w[y + 6] = R),
@@ -17694,23 +17727,23 @@
                                                     (b[y + 9] = z),
                                                     (w[y + 10] = O),
                                                     (w[y + 11] = B),
-                                                    (w[y + 12] = E),
+                                                    (w[y + 12] = _),
                                                     (w[y + 13] = P),
                                                     (b[y + 14] = z),
                                                     (w[y + 15] = L),
                                                     (w[y + 16] = k),
                                                     (w[y + 17] = M),
-                                                    (w[y + 18] = _),
+                                                    (w[y + 18] = E),
                                                     (b[y + 19] = z),
                                                     (w[y + 20] = O),
                                                     (w[y + 21] = B),
-                                                    (w[y + 22] = E),
+                                                    (w[y + 22] = _),
                                                     (w[y + 23] = P),
                                                     (b[y + 24] = z),
                                                     (w[y + 25] = D),
                                                     (w[y + 26] = I),
-                                                    (w[y + 27] = E),
-                                                    (w[y + 28] = _),
+                                                    (w[y + 27] = _),
+                                                    (w[y + 28] = E),
                                                     (b[y + 29] = z),
                                                     (y += 30),
                                                     (m += 6);
@@ -17882,7 +17915,7 @@
              */
             var n = i(0),
                 r = i(15),
-                s = i(489),
+                s = i(492),
                 o = i(2),
                 a = i(115),
                 h = new n({
@@ -18103,12 +18136,12 @@
              */
             var n = i(0),
                 r = i(51),
-                s = i(237),
-                o = i(19),
+                s = i(238),
+                o = i(20),
                 a = i(26),
                 h = i(89),
-                u = i(282),
-                l = i(236),
+                u = i(284),
+                l = i(237),
                 c = i(54),
                 d = i(115),
                 f = i(111),
@@ -18782,8 +18815,8 @@
              */
             var n = i(26),
                 r = i(88),
-                s = i(491),
-                o = i(490);
+                s = i(494),
+                o = i(493);
             t.exports = function(t, e, i) {
                 if (0 === e.layer.length)
                     return (
@@ -18834,8 +18867,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(495),
-                r = i(243),
+            var n = i(498),
+                r = i(244),
                 s = function(t) {
                     return { x: t.x, y: t.y };
                 },
@@ -18961,12 +18994,12 @@
              */
             var n = i(26),
                 r = i(88),
-                s = i(499),
-                o = i(497),
-                a = i(496),
-                h = i(494),
-                u = i(493),
-                l = i(492);
+                s = i(502),
+                o = i(500),
+                a = i(499),
+                h = i(497),
+                u = i(496),
+                l = i(495);
             t.exports = function(t, e, i) {
                 if ('orthogonal' !== e.orientation)
                     return (
@@ -19005,7 +19038,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(26),
-                r = i(145);
+                r = i(146);
             t.exports = function(t, e, i, s, o) {
                 var a = e
                         .trim()
@@ -19024,10 +19057,10 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(26),
-                r = i(145),
-                s = i(245),
-                o = i(244),
-                a = i(239);
+                r = i(146),
+                s = i(246),
+                o = i(245),
+                a = i(240);
             t.exports = function(t, e, i, h, u, l) {
                 var c;
                 switch (e) {
@@ -19058,7 +19091,7 @@
              */
             var n = i(54),
                 r = i(90),
-                s = i(148);
+                s = i(149);
             t.exports = function(t, e, i, o, a) {
                 if (
                     (void 0 === i && (i = !1),
@@ -19107,20 +19140,46 @@
             /**
              * @author       Richard Davey <rich@photonstorm.com>
              * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser3-plugin-template/blob/master/LICENSE|MIT License}
+             */
+            var n = new (i(0))({
+                initialize: function(t) {
+                    (this.pluginManager = t),
+                        (this.game = t.game),
+                        this.scene,
+                        this.systems;
+                },
+                init: function() {},
+                start: function() {},
+                stop: function() {},
+                boot: function() {},
+                destroy: function() {
+                    (this.pluginManager = null),
+                        (this.game = null),
+                        (this.scene = null),
+                        (this.systems = null);
+                },
+            });
+            t.exports = n;
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(57),
                 r = i(0),
                 s = i(16),
                 o = i(56),
-                a = i(251),
-                h = i(12),
+                a = i(253),
+                h = i(11),
                 u = i(1),
                 l = i(5),
                 c = i(22),
                 d = i(68),
-                f = i(154),
-                p = i(149),
+                f = i(155),
+                p = i(150),
                 g = i(29),
                 v = new r({
                     Extends: h,
@@ -19505,12 +19564,12 @@
         function(t, e, i) {
             var n = {};
             t.exports = n;
-            var r = i(149),
+            var r = i(150),
                 s = i(91),
-                o = i(252),
-                a = i(253),
-                h = i(546),
-                u = i(254),
+                o = i(254),
+                a = i(255),
+                h = i(551),
+                u = i(256),
                 l = i(68),
                 c = i(56),
                 d = i(67),
@@ -19866,14 +19925,14 @@
                                         s.mult(s.perp(A), g.angularVelocity),
                                         u
                                     ),
-                                    _ = s.add(
+                                    E = s.add(
                                         v.velocity,
                                         s.mult(s.perp(C), v.angularVelocity),
                                         l
                                     ),
-                                    E = s.sub(M, _, c),
-                                    P = s.dot(y, E),
-                                    L = s.dot(m, E),
+                                    _ = s.sub(M, E, c),
+                                    P = s.dot(y, _),
+                                    L = s.dot(m, _),
                                     k = Math.abs(L),
                                     F = o.sign(L),
                                     R = (1 + f.restitution) * P,
@@ -20019,7 +20078,7 @@
             var n = {};
             t.exports = n;
             var r = i(116),
-                s = i(153),
+                s = i(154),
                 o = i(16);
             !(function() {
                 (n.create = function(t) {
@@ -20161,7 +20220,7 @@
         function(t, e, i) {
             var n = {};
             t.exports = n;
-            var r = i(150),
+            var r = i(151),
                 s = i(16);
             (n.name = 'matter-js'),
                 (n.version = '0.13.1'),
@@ -20189,12 +20248,12 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(436),
+            var n = i(439),
                 r = i(0),
                 s = i(117),
                 o = i(2),
                 a = i(1),
-                h = i(208),
+                h = i(210),
                 u = i(35),
                 l = i(4),
                 c = new r({
@@ -20243,7 +20302,7 @@
                 s = i(2),
                 o = i(1),
                 a = i(73),
-                h = i(208),
+                h = i(210),
                 u = i(4),
                 l = new n({
                     Extends: a,
@@ -20626,8 +20685,8 @@
                     var A = 0,
                         C = 0,
                         M = 0;
-                    var _ = [],
-                        E = [];
+                    var E = [],
+                        _ = [];
                     var P = e,
                         L = e;
                     if (L.length < 3) return i;
@@ -20670,16 +20729,16 @@
                                     (m[1] = (y[1] + v[1]) / 2),
                                     r.push(m),
                                     k < A
-                                        ? (p(_, P, k, A + 1),
-                                          _.push(m),
+                                        ? (p(E, P, k, A + 1),
                                           E.push(m),
-                                          0 !== C && p(E, P, C, P.length),
-                                          p(E, P, 0, k + 1))
-                                        : (0 !== k && p(_, P, k, P.length),
-                                          p(_, P, 0, A + 1),
                                           _.push(m),
+                                          0 !== C && p(_, P, C, P.length),
+                                          p(_, P, 0, k + 1))
+                                        : (0 !== k && p(E, P, k, P.length),
+                                          p(E, P, 0, A + 1),
                                           E.push(m),
-                                          p(E, P, C, k + 1));
+                                          _.push(m),
+                                          p(_, P, C, k + 1));
                             else {
                                 if (
                                     (C > A && (A += e.length),
@@ -20693,19 +20752,19 @@
                                         (T = d(f(P, k), f(P, F))) < S &&
                                         ((S = T), (M = F % e.length));
                                 k < M
-                                    ? (p(_, P, k, M + 1),
-                                      0 !== M && p(E, P, M, L.length),
-                                      p(E, P, 0, k + 1))
-                                    : (0 !== k && p(_, P, k, L.length),
-                                      p(_, P, 0, M + 1),
-                                      p(E, P, M, k + 1));
+                                    ? (p(E, P, k, M + 1),
+                                      0 !== M && p(_, P, M, L.length),
+                                      p(_, P, 0, k + 1))
+                                    : (0 !== k && p(E, P, k, L.length),
+                                      p(E, P, 0, M + 1),
+                                      p(_, P, M, k + 1));
                             }
                             return (
-                                _.length < E.length
-                                    ? (t(_, i, n, r, u, l, c),
-                                      t(E, i, n, r, u, l, c))
-                                    : (t(E, i, n, r, u, l, c),
-                                      t(_, i, n, r, u, l, c)),
+                                E.length < _.length
+                                    ? (t(E, i, n, r, u, l, c),
+                                      t(_, i, n, r, u, l, c))
+                                    : (t(_, i, n, r, u, l, c),
+                                      t(E, i, n, r, u, l, c)),
                                 i
                             );
                         }
@@ -20846,13 +20905,13 @@
              */
             var n = i(57),
                 r = i(0),
-                s = i(258),
+                s = i(260),
                 o = i(67),
-                a = i(561),
-                h = i(257),
-                u = i(256),
-                l = i(154),
-                c = i(548),
+                a = i(566),
+                h = i(259),
+                u = i(258),
+                l = i(155),
+                c = i(553),
                 d = new r({
                     initialize: function(t) {
                         (this.world = t),
@@ -20985,15 +21044,15 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(267),
+            var n = i(269),
                 r = i(0),
                 s = i(93),
-                o = i(266),
-                a = i(12),
+                o = i(268),
+                a = i(11),
                 h = i(1),
                 u = i(72),
                 l = i(76),
-                c = i(565),
+                c = i(570),
                 d = i(26),
                 f = i(92),
                 p = new r({
@@ -21337,7 +21396,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(156),
+                r = i(157),
                 s = i(35),
                 o = new n({
                     Extends: s,
@@ -21382,7 +21441,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(156),
+                r = i(157),
                 s = i(73),
                 o = new n({
                     Extends: s,
@@ -21427,7 +21486,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(156),
+                r = i(157),
                 s = new n({
                     Mixins: [
                         r.Acceleration,
@@ -21463,9 +21522,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(264),
-                s = i(263),
-                o = i(262),
+                r = i(266),
+                s = i(265),
+                o = i(264),
                 a = new n({
                     initialize: function(t) {
                         (this.world = t), (this.sys = t.scene.sys);
@@ -21510,7 +21569,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(579),
+                r = i(584),
                 s = new n({
                     initialize: function(t, e) {
                         void 0 === t && (t = 32),
@@ -21727,9 +21786,9 @@
              */
             var n = i(0),
                 r = i(93),
-                s = i(581),
+                s = i(586),
                 o = i(92),
-                a = i(580),
+                a = i(585),
                 h = new n({
                     initialize: function(t, e, i, n, s) {
                         void 0 === n && (n = 16),
@@ -22214,7 +22273,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(342);
+            var n = i(344);
             function r(t) {
                 if (!(this instanceof r))
                     return new r(t, ['.left', '.top', '.right', '.bottom']);
@@ -22760,8 +22819,8 @@
             var n = i(37),
                 r = i(0),
                 s = i(58),
-                o = i(192),
-                a = i(10),
+                o = i(194),
+                a = i(12),
                 h = i(36),
                 u = i(102),
                 l = i(4),
@@ -23324,26 +23383,26 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(275),
+            var n = i(277),
                 r = i(28),
                 s = i(0),
-                o = i(274),
+                o = i(276),
                 a = i(58),
                 h = i(63),
-                u = i(12),
-                l = i(273),
-                c = i(272),
+                u = i(11),
+                l = i(275),
+                c = i(274),
                 d = i(5),
-                f = i(271),
-                p = i(590),
-                g = i(10),
-                v = i(270),
-                y = i(589),
-                m = i(584),
-                x = i(583),
+                f = i(273),
+                p = i(595),
+                g = i(12),
+                v = i(272),
+                y = i(594),
+                m = i(589),
+                x = i(588),
                 w = i(76),
-                b = i(268),
-                T = i(269),
+                b = i(270),
+                T = i(271),
                 S = i(4),
                 A = i(52),
                 C = new s({
@@ -24302,18 +24361,18 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Acceleration: i(602),
-                Angular: i(601),
-                Bounce: i(600),
-                Debug: i(599),
-                Drag: i(598),
-                Enable: i(597),
-                Friction: i(596),
-                Gravity: i(595),
-                Immovable: i(594),
-                Mass: i(593),
-                Size: i(592),
-                Velocity: i(591),
+                Acceleration: i(607),
+                Angular: i(606),
+                Bounce: i(605),
+                Debug: i(604),
+                Drag: i(603),
+                Enable: i(602),
+                Friction: i(601),
+                Gravity: i(600),
+                Immovable: i(599),
+                Mass: i(598),
+                Size: i(597),
+                Velocity: i(596),
             };
         },
         function(t, e, i) {
@@ -24323,7 +24382,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(279),
+                r = i(281),
                 s = i(73),
                 o = new n({
                     Extends: s,
@@ -24353,12 +24412,12 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(280),
+            var n = i(282),
                 r = i(118),
                 s = i(0),
                 o = i(58),
-                a = i(278),
-                h = i(277),
+                a = i(280),
+                h = i(279),
                 u = new s({
                     initialize: function(t) {
                         (this.world = t),
@@ -24451,7 +24510,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(283);
+            var n = i(285);
             t.exports = function(t, e) {
                 return n(t) / n(e) / n(t - e);
             };
@@ -24468,11 +24527,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = new n({
                     Extends: s,
                     initialize: function(t, e, i, n) {
@@ -24519,8 +24578,8 @@
             var n = i(0),
                 r = i(21),
                 s = i(1),
-                o = i(159),
-                a = i(11),
+                o = i(160),
+                a = i(8),
                 h = new n({
                     Extends: r,
                     initialize: function(t, e, i, n) {
@@ -24613,8 +24672,8 @@
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(287),
-                u = i(11),
+                h = i(289),
+                u = i(8),
                 l = new n({
                     Extends: s,
                     initialize: function(t, e, i, n, r) {
@@ -24706,7 +24765,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(158);
+            var n = i(159);
             t.exports = function(t, e) {
                 var i = n(e, t.xhrSettings),
                     r = new XMLHttpRequest();
@@ -24895,41 +24954,41 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
-            (n.Area = i(721)),
-                (n.Ceil = i(720)),
-                (n.CeilAll = i(719)),
-                (n.CenterOn = i(296)),
-                (n.Clone = i(718)),
+            var n = i(12);
+            (n.Area = i(727)),
+                (n.Ceil = i(726)),
+                (n.CeilAll = i(725)),
+                (n.CenterOn = i(298)),
+                (n.Clone = i(724)),
                 (n.Contains = i(36)),
-                (n.ContainsPoint = i(717)),
-                (n.ContainsRect = i(716)),
-                (n.CopyFrom = i(715)),
-                (n.Decompose = i(303)),
-                (n.Equals = i(714)),
-                (n.FitInside = i(713)),
-                (n.FitOutside = i(712)),
-                (n.Floor = i(711)),
-                (n.FloorAll = i(710)),
-                (n.FromPoints = i(193)),
-                (n.GetAspectRatio = i(161)),
-                (n.GetCenter = i(709)),
-                (n.GetPoint = i(212)),
-                (n.GetPoints = i(435)),
-                (n.GetSize = i(708)),
-                (n.Inflate = i(707)),
-                (n.MarchingAnts = i(430)),
-                (n.MergePoints = i(706)),
-                (n.MergeRect = i(705)),
-                (n.MergeXY = i(704)),
-                (n.Offset = i(703)),
-                (n.OffsetPoint = i(702)),
-                (n.Overlaps = i(701)),
+                (n.ContainsPoint = i(723)),
+                (n.ContainsRect = i(722)),
+                (n.CopyFrom = i(721)),
+                (n.Decompose = i(305)),
+                (n.Equals = i(720)),
+                (n.FitInside = i(719)),
+                (n.FitOutside = i(718)),
+                (n.Floor = i(717)),
+                (n.FloorAll = i(716)),
+                (n.FromPoints = i(195)),
+                (n.GetAspectRatio = i(162)),
+                (n.GetCenter = i(715)),
+                (n.GetPoint = i(214)),
+                (n.GetPoints = i(438)),
+                (n.GetSize = i(714)),
+                (n.Inflate = i(713)),
+                (n.MarchingAnts = i(433)),
+                (n.MergePoints = i(712)),
+                (n.MergeRect = i(711)),
+                (n.MergeXY = i(710)),
+                (n.Offset = i(709)),
+                (n.OffsetPoint = i(708)),
+                (n.Overlaps = i(707)),
                 (n.Perimeter = i(134)),
-                (n.PerimeterPoint = i(700)),
-                (n.Random = i(209)),
-                (n.Scale = i(699)),
-                (n.Union = i(338)),
+                (n.PerimeterPoint = i(706)),
+                (n.Random = i(211)),
+                (n.Scale = i(705)),
+                (n.Union = i(340)),
                 (t.exports = n);
         },
         function(t, e, i) {
@@ -24939,7 +24998,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(162),
+                r = i(163),
                 s = new n({
                     initialize: function(t) {
                         (this.area = 0), (this.points = []), t && this.setTo(t);
@@ -25097,20 +25156,20 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                CircleToCircle: i(768),
-                CircleToRectangle: i(767),
-                GetRectangleIntersection: i(766),
-                LineToCircle: i(305),
+                CircleToCircle: i(774),
+                CircleToRectangle: i(773),
+                GetRectangleIntersection: i(772),
+                LineToCircle: i(307),
                 LineToLine: i(120),
-                LineToRectangle: i(765),
-                PointToLine: i(304),
-                PointToLineSegment: i(764),
-                RectangleToRectangle: i(306),
-                RectangleToTriangle: i(763),
-                RectangleToValues: i(762),
-                TriangleToCircle: i(761),
-                TriangleToLine: i(760),
-                TriangleToTriangle: i(759),
+                LineToRectangle: i(771),
+                PointToLine: i(306),
+                PointToLineSegment: i(770),
+                RectangleToRectangle: i(308),
+                RectangleToTriangle: i(769),
+                RectangleToValues: i(768),
+                TriangleToCircle: i(767),
+                TriangleToLine: i(766),
+                TriangleToTriangle: i(765),
             };
         },
         function(t, e, i) {
@@ -25120,14 +25179,14 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Circle: i(778),
-                Ellipse: i(337),
-                Intersects: i(307),
-                Line: i(758),
-                Point: i(740),
-                Polygon: i(726),
-                Rectangle: i(297),
-                Triangle: i(698),
+                Circle: i(784),
+                Ellipse: i(339),
+                Intersects: i(309),
+                Line: i(764),
+                Point: i(746),
+                Polygon: i(732),
+                Rectangle: i(299),
+                Triangle: i(704),
             };
         },
         function(t, e, i) {
@@ -25137,8 +25196,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(310),
-                s = i(186),
+                r = i(312),
+                s = i(187),
                 o = i(34),
                 a = new n({
                     initialize: function() {
@@ -25500,23 +25559,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = i(837);
-        },
-        function(t, e, i) {
-            /**
-             * @author       Richard Davey <rich@photonstorm.com>
-             * @copyright    2018 Photon Storm Ltd.
-             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
-             */
-            t.exports = { In: i(840), Out: i(839), InOut: i(838) };
-        },
-        function(t, e, i) {
-            /**
-             * @author       Richard Davey <rich@photonstorm.com>
-             * @copyright    2018 Photon Storm Ltd.
-             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
-             */
-            t.exports = { In: i(843), Out: i(842), InOut: i(841) };
+            t.exports = i(843);
         },
         function(t, e, i) {
             /**
@@ -25540,7 +25583,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = i(850);
+            t.exports = { In: i(852), Out: i(851), InOut: i(850) };
         },
         function(t, e, i) {
             /**
@@ -25548,7 +25591,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { In: i(853), Out: i(852), InOut: i(851) };
+            t.exports = { In: i(855), Out: i(854), InOut: i(853) };
         },
         function(t, e, i) {
             /**
@@ -25556,7 +25599,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { In: i(856), Out: i(855), InOut: i(854) };
+            t.exports = i(856);
         },
         function(t, e, i) {
             /**
@@ -25589,6 +25632,22 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = { In: i(868), Out: i(867), InOut: i(866) };
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
+            t.exports = { In: i(871), Out: i(870), InOut: i(869) };
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
+            t.exports = { In: i(874), Out: i(873), InOut: i(872) };
         },
         function(t, e) {
             t.exports = function(t, e) {
@@ -25685,16 +25744,16 @@
             var n = i(82),
                 r = i(0),
                 s = i(15),
-                o = i(329),
-                a = i(328),
-                h = i(870),
+                o = i(331),
+                a = i(330),
+                h = i(876),
                 u = i(1),
-                l = i(178),
-                c = i(314),
+                l = i(179),
+                c = i(316),
                 d = i(72),
-                f = i(331),
-                p = i(313),
-                g = i(10),
+                f = i(333),
+                p = i(315),
+                g = i(12),
                 v = i(122),
                 y = i(4),
                 m = i(52),
@@ -26527,7 +26586,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(187),
+            var n = i(188),
                 r = i(2);
             t.exports = function(t, e, i, s, o, a, h) {
                 if (
@@ -26574,23 +26633,23 @@
                         y.scale(f, p),
                         (y.fillStyle = '#fff'),
                         (y.globalAlpha = e.alpha);
-                    for (var _ = 0, E = v.length; _ < E; ++_)
-                        switch (v[_]) {
+                    for (var E = 0, _ = v.length; E < _; ++E)
+                        switch (v[E]) {
                             case n.ARC:
                                 y.arc(
-                                    v[_ + 1],
-                                    v[_ + 2],
-                                    v[_ + 3],
-                                    v[_ + 4],
-                                    v[_ + 5],
-                                    v[_ + 6]
+                                    v[E + 1],
+                                    v[E + 2],
+                                    v[E + 3],
+                                    v[E + 4],
+                                    v[E + 5],
+                                    v[E + 6]
                                 ),
-                                    (_ += 6);
+                                    (E += 6);
                                 break;
                             case n.LINE_STYLE:
-                                (T = v[_ + 1]),
-                                    (w = v[_ + 2]),
-                                    (m = v[_ + 3]),
+                                (T = v[E + 1]),
+                                    (w = v[E + 2]),
+                                    (m = v[E + 3]),
                                     (S = (16711680 & w) >>> 16),
                                     (A = (65280 & w) >>> 8),
                                     (C = 255 & w),
@@ -26605,11 +26664,11 @@
                                         m +
                                         ')'),
                                     (y.lineWidth = T),
-                                    (_ += 3);
+                                    (E += 3);
                                 break;
                             case n.FILL_STYLE:
-                                (b = v[_ + 1]),
-                                    (x = v[_ + 2]),
+                                (b = v[E + 1]),
+                                    (x = v[E + 2]),
                                     (S = (16711680 & b) >>> 16),
                                     (A = (65280 & b) >>> 8),
                                     (C = 255 & b),
@@ -26623,7 +26682,7 @@
                                         ',' +
                                         x +
                                         ')'),
-                                    (_ += 2);
+                                    (E += 2);
                                 break;
                             case n.BEGIN_PATH:
                                 y.beginPath();
@@ -26640,48 +26699,48 @@
                             case n.FILL_RECT:
                                 h
                                     ? y.rect(
-                                          v[_ + 1],
-                                          v[_ + 2],
-                                          v[_ + 3],
-                                          v[_ + 4]
+                                          v[E + 1],
+                                          v[E + 2],
+                                          v[E + 3],
+                                          v[E + 4]
                                       )
                                     : y.fillRect(
-                                          v[_ + 1],
-                                          v[_ + 2],
-                                          v[_ + 3],
-                                          v[_ + 4]
+                                          v[E + 1],
+                                          v[E + 2],
+                                          v[E + 3],
+                                          v[E + 4]
                                       ),
-                                    (_ += 4);
+                                    (E += 4);
                                 break;
                             case n.FILL_TRIANGLE:
                                 y.beginPath(),
-                                    y.moveTo(v[_ + 1], v[_ + 2]),
-                                    y.lineTo(v[_ + 3], v[_ + 4]),
-                                    y.lineTo(v[_ + 5], v[_ + 6]),
+                                    y.moveTo(v[E + 1], v[E + 2]),
+                                    y.lineTo(v[E + 3], v[E + 4]),
+                                    y.lineTo(v[E + 5], v[E + 6]),
                                     y.closePath(),
                                     h || y.fill(),
-                                    (_ += 6);
+                                    (E += 6);
                                 break;
                             case n.STROKE_TRIANGLE:
                                 y.beginPath(),
-                                    y.moveTo(v[_ + 1], v[_ + 2]),
-                                    y.lineTo(v[_ + 3], v[_ + 4]),
-                                    y.lineTo(v[_ + 5], v[_ + 6]),
+                                    y.moveTo(v[E + 1], v[E + 2]),
+                                    y.lineTo(v[E + 3], v[E + 4]),
+                                    y.lineTo(v[E + 5], v[E + 6]),
                                     y.closePath(),
                                     h || y.stroke(),
-                                    (_ += 6);
+                                    (E += 6);
                                 break;
                             case n.LINE_TO:
-                                y.lineTo(v[_ + 1], v[_ + 2]), (_ += 2);
+                                y.lineTo(v[E + 1], v[E + 2]), (E += 2);
                                 break;
                             case n.MOVE_TO:
-                                y.moveTo(v[_ + 1], v[_ + 2]), (_ += 2);
+                                y.moveTo(v[E + 1], v[E + 2]), (E += 2);
                                 break;
                             case n.LINE_FX_TO:
-                                y.lineTo(v[_ + 1], v[_ + 2]), (_ += 5);
+                                y.lineTo(v[E + 1], v[E + 2]), (E += 5);
                                 break;
                             case n.MOVE_FX_TO:
-                                y.moveTo(v[_ + 1], v[_ + 2]), (_ += 5);
+                                y.moveTo(v[E + 1], v[E + 2]), (E += 5);
                                 break;
                             case n.SAVE:
                                 y.save();
@@ -26690,13 +26749,13 @@
                                 y.restore();
                                 break;
                             case n.TRANSLATE:
-                                y.translate(v[_ + 1], v[_ + 2]), (_ += 2);
+                                y.translate(v[E + 1], v[E + 2]), (E += 2);
                                 break;
                             case n.SCALE:
-                                y.scale(v[_ + 1], v[_ + 2]), (_ += 2);
+                                y.scale(v[E + 1], v[E + 2]), (E += 2);
                                 break;
                             case n.ROTATE:
-                                y.rotate(v[_ + 1]), (_ += 1);
+                                y.rotate(v[E + 1]), (E += 1);
                         }
                     y.restore();
                 }
@@ -26720,8 +26779,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(334),
-                r = i(170),
+            var n = i(336),
+                r = i(171),
                 s = i(104),
                 o = i(18);
             t.exports = function(t, e, i, a) {
@@ -26739,7 +26798,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(170),
+            var n = i(171),
                 r = i(104),
                 s = i(18),
                 o = i(6);
@@ -26755,22 +26814,22 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(171);
-            (n.Area = i(885)),
-                (n.Circumference = i(334)),
-                (n.CircumferencePoint = i(170)),
-                (n.Clone = i(884)),
+            var n = i(172);
+            (n.Area = i(891)),
+                (n.Circumference = i(336)),
+                (n.CircumferencePoint = i(171)),
+                (n.Clone = i(890)),
                 (n.Contains = i(98)),
-                (n.ContainsPoint = i(883)),
-                (n.ContainsRect = i(882)),
-                (n.CopyFrom = i(881)),
-                (n.Equals = i(880)),
-                (n.GetBounds = i(879)),
-                (n.GetPoint = i(336)),
-                (n.GetPoints = i(335)),
-                (n.Offset = i(878)),
-                (n.OffsetPoint = i(877)),
-                (n.Random = i(205)),
+                (n.ContainsPoint = i(889)),
+                (n.ContainsRect = i(888)),
+                (n.CopyFrom = i(887)),
+                (n.Equals = i(886)),
+                (n.GetBounds = i(885)),
+                (n.GetPoint = i(338)),
+                (n.GetPoints = i(337)),
+                (n.Offset = i(884)),
+                (n.OffsetPoint = i(883)),
+                (n.Random = i(207)),
                 (t.exports = n);
         },
         function(t, e, i) {
@@ -26779,7 +26838,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
+            var n = i(12);
             t.exports = function(t, e, i) {
                 void 0 === i && (i = new n());
                 var r = Math.min(t.x, e.x),
@@ -26901,8 +26960,8 @@
                         }
                     } else (c = 0), (f = 0), (d += u), (w = null);
                 var M = t.fontSize / t.fontData.size,
-                    _ = M * t.scaleX,
-                    E = M * t.scaleY,
+                    E = M * t.scaleX,
+                    _ = M * t.scaleY,
                     P = {
                         local: {
                             x: r * M,
@@ -26911,10 +26970,10 @@
                             height: a * M,
                         },
                         global: {
-                            x: t.x + r * _,
-                            y: t.y + s * E,
-                            width: o * _,
-                            height: a * E,
+                            x: t.x + r * E,
+                            y: t.y + s * _,
+                            width: o * E,
+                            height: a * _,
                         },
                     };
                 return (
@@ -27039,14 +27098,14 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                AtlasXML: i(940),
-                Canvas: i(939),
-                Image: i(938),
-                JSONArray: i(937),
-                JSONHash: i(936),
-                SpriteSheet: i(935),
-                SpriteSheetFromAtlas: i(934),
-                UnityYAML: i(933),
+                AtlasXML: i(945),
+                Canvas: i(944),
+                Image: i(943),
+                JSONArray: i(942),
+                JSONHash: i(941),
+                SpriteSheet: i(940),
+                SpriteSheetFromAtlas: i(939),
+                UnityYAML: i(938),
             };
         },
         function(t, e, i) {
@@ -27077,7 +27136,8 @@
                             this.init(r);
                     },
                     init: function(t) {
-                        this.renderer.gl &&
+                        this.renderer &&
+                            this.renderer.gl &&
                             (this.isCanvas
                                 ? (this.glTexture = this.renderer.canvasToTexture(
                                       this.image
@@ -27120,15 +27180,15 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(27),
-                r = i(941),
+                r = i(946),
                 s = i(0),
                 o = i(50),
                 a = i(25),
-                h = i(12),
-                u = i(402),
+                h = i(11),
+                u = i(405),
                 l = i(5),
-                c = i(345),
-                d = i(182),
+                c = i(347),
+                d = i(183),
                 f = new s({
                     Extends: h,
                     initialize: function(t) {
@@ -27760,7 +27820,7 @@
              */
             var n = i(126),
                 r = i(0),
-                s = i(348),
+                s = i(350),
                 o = new r({
                     Extends: n,
                     initialize: function(t) {
@@ -27808,9 +27868,14 @@
                                         (t.unlocked = !0);
                                 });
                             };
-                        document.body.addEventListener('touchstart', e, !1),
+                        document.body &&
+                            (document.body.addEventListener(
+                                'touchstart',
+                                e,
+                                !1
+                            ),
                             document.body.addEventListener('touchend', e, !1),
-                            document.body.addEventListener('click', e, !1);
+                            document.body.addEventListener('click', e, !1));
                     },
                     onBlur: function() {
                         this.context.suspend();
@@ -27876,8 +27941,8 @@
              */
             var n = i(125),
                 r = i(0),
-                s = i(12),
-                o = i(19),
+                s = i(11),
+                o = i(20),
                 a = new r({
                     Extends: s,
                     initialize: function(t, e, i) {
@@ -27950,8 +28015,8 @@
              */
             var n = i(126),
                 r = i(0),
-                s = i(12),
-                o = i(350),
+                s = i(11),
+                o = i(352),
                 a = i(3),
                 h = new r({
                     Extends: s,
@@ -28326,7 +28391,7 @@
              */
             var n = i(126),
                 r = i(0),
-                s = i(352),
+                s = i(354),
                 o = new r({
                     Extends: n,
                     initialize: function(t) {
@@ -28511,9 +28576,9 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(353),
-                r = i(351),
-                s = i(349),
+            var n = i(355),
+                r = i(353),
+                s = i(351),
                 o = {
                     create: function(t) {
                         var e = t.config.audio,
@@ -28536,7 +28601,7 @@
             var n = i(99),
                 r = i(5),
                 s = i(74),
-                o = i(942),
+                o = i(947),
                 a = {
                     create: function(t) {
                         return (
@@ -28578,7 +28643,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(183),
+                r = i(184),
                 s = new n({
                     initialize: function(t) {
                         (this.sys = new r(this, t)),
@@ -28619,8 +28684,8 @@
                 r = i(99),
                 s = i(5),
                 o = i(3),
-                a = i(357),
-                h = i(183),
+                a = i(359),
+                h = i(184),
                 u = new n({
                     initialize: function(t, e) {
                         if (
@@ -29215,6 +29280,239 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
+            var n = i(100);
+            t.exports = function(t, e, i, r) {
+                var s;
+                if ((void 0 === r && (r = t), !Array.isArray(e)))
+                    return -1 !== (s = t.indexOf(e))
+                        ? (n(t, s), i && i.call(r, e), e)
+                        : null;
+                for (var o = e.length - 1; o >= 0; ) {
+                    var a = e[o];
+                    -1 !== (s = t.indexOf(a))
+                        ? (n(t, s), i && i.call(r, a))
+                        : e.pop(),
+                        o--;
+                }
+                return e;
+            };
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
+            var n = i(0),
+                r = i(11),
+                s = i(7),
+                o = i(13),
+                a = i(9),
+                h = i(1),
+                u = i(14),
+                l = i(361),
+                c = new n({
+                    Extends: r,
+                    initialize: function(t) {
+                        r.call(this),
+                            (this.game = t),
+                            (this.plugins = []),
+                            (this.scenePlugins = []),
+                            (this._pendingGlobal = []),
+                            (this._pendingScene = []),
+                            t.isBooted
+                                ? this.boot()
+                                : t.events.once('boot', this.boot, this);
+                    },
+                    boot: function() {
+                        var t,
+                            e,
+                            i,
+                            n,
+                            r,
+                            s,
+                            o = this.game.config,
+                            a = o.installGlobalPlugins;
+                        for (
+                            a = a.concat(this._pendingGlobal), t = 0;
+                            t < a.length;
+                            t++
+                        )
+                            (e = a[t]),
+                                (i = h(e, 'key', null)),
+                                (n = h(e, 'plugin', null)),
+                                (r = h(e, 'start', !1)),
+                                i && n && this.install(i, n, r);
+                        for (
+                            a = (a = o.installScenePlugins).concat(
+                                this._pendingScene
+                            ),
+                                t = 0;
+                            t < a.length;
+                            t++
+                        )
+                            (e = a[t]),
+                                (i = h(e, 'key', null)),
+                                (n = h(e, 'plugin', null)),
+                                (s = h(e, 'mapping', null)),
+                                i && n && this.installScenePlugin(i, n, s);
+                        (this._pendingGlobal = []),
+                            (this._pendingScene = []),
+                            this.game.events.once(
+                                'destroy',
+                                this.destroy,
+                                this
+                            );
+                    },
+                    addToScene: function(t, e, i) {
+                        var n,
+                            r,
+                            s = this.game,
+                            o = t.scene,
+                            a = t.settings.map,
+                            h = t.settings.isBooted;
+                        for (n = 0; n < e.length; n++)
+                            s[(r = e[n])] &&
+                                ((t[r] = s[r]),
+                                a.hasOwnProperty(r) && (o[a[r]] = t[r]));
+                        for (var l = 0; l < i.length; l++) {
+                            var c = i[l];
+                            for (n = 0; n < c.length; n++)
+                                if (((r = c[n]), u.hasCore(r))) {
+                                    var d = u.getCore(r),
+                                        f = new d.plugin(o, this);
+                                    (t[d.mapping] = f),
+                                        d.custom
+                                            ? (o[d.mapping] = f)
+                                            : a.hasOwnProperty(d.mapping) &&
+                                              (o[a[d.mapping]] = f),
+                                        h && f.boot();
+                                }
+                        }
+                    },
+                    getDefaultScenePlugins: function() {
+                        var t = this.game.config.defaultPlugins;
+                        return (t = t.concat(this.scenePlugins));
+                    },
+                    installScenePlugin: function(t, e, i, n) {
+                        if ('function' == typeof e) {
+                            if (u.hasCore(t))
+                                console.warn('Scene Plugin key in use: ' + t);
+                            else if (
+                                (u.register(t, e, i, !0),
+                                this.scenePlugins.push(t),
+                                n)
+                            ) {
+                                var r = new e(n, this);
+                                (n.sys[t] = r),
+                                    i && '' !== i && (n[i] = r),
+                                    r.boot();
+                            }
+                        } else console.warn('Invalid Scene Plugin: ' + t);
+                    },
+                    install: function(t, e, i) {
+                        if ((void 0 === i && (i = !1), 'function' == typeof e))
+                            if (u.hasCustom(t))
+                                console.warn('Plugin key in use: ' + t);
+                            else if (this.game.isBooted) {
+                                if ((u.registerCustom(t, e), i))
+                                    return this.start(t);
+                            } else
+                                this._pendingGlobal.push({
+                                    key: t,
+                                    plugin: e,
+                                    start: i,
+                                });
+                        else console.warn('Invalid Plugin: ' + t);
+                    },
+                    getIndex: function(t) {
+                        for (var e = this.plugins, i = 0; i < e.length; i++) {
+                            if (e[i].key === t) return i;
+                        }
+                        return -1;
+                    },
+                    getEntry: function(t) {
+                        var e = this.getIndex(t);
+                        if (-1 !== e) return this.plugins[e];
+                    },
+                    isActive: function(t) {
+                        var e = this.getEntry(t);
+                        return e && e.active;
+                    },
+                    start: function(t, e) {
+                        void 0 === e && (e = t);
+                        var i = this.getEntry(e);
+                        if (i && !i.active) (i.active = !0), i.plugin.start();
+                        else if (!i) {
+                            var n = this.getClass(t);
+                            if (n) {
+                                var r = new n(this);
+                                (i = { key: e, plugin: r, active: !0 }),
+                                    this.plugins.push(i),
+                                    r.init(),
+                                    r.start();
+                            }
+                        }
+                        return i ? i.plugin : null;
+                    },
+                    stop: function(t) {
+                        var e = this.getEntry(t);
+                        return (
+                            e && e.active && ((e.active = !1), e.plugin.stop()),
+                            this
+                        );
+                    },
+                    get: function(t, e) {
+                        void 0 === e && (e = !0);
+                        var i = this.getEntry(t);
+                        if (i) return i.plugin;
+                        var n = this.getClass(t);
+                        if (n && e) {
+                            var r = new n(this);
+                            return (
+                                (i = { key: t, plugin: r, active: !0 }),
+                                this.plugins.push(i),
+                                r.init(),
+                                r.start(),
+                                r
+                            );
+                        }
+                        return n || null;
+                    },
+                    getClass: function(t) {
+                        return u.getCustomClass(t);
+                    },
+                    removeGlobalPlugin: function(t) {
+                        var e = this.getEntry(t);
+                        e && l(this.plugins, e), u.removeCustom(t);
+                    },
+                    removeScenePlugin: function(t) {
+                        l(this.scenePlugins, t), u.remove(t);
+                    },
+                    registerGameObject: function(t, e, i) {
+                        return (
+                            e && a.register(t, e), i && o.register(t, i), this
+                        );
+                    },
+                    registerFileType: function(t, e) {
+                        s.register(t, e);
+                    },
+                    destroy: function() {
+                        for (var t = 0; t < this.plugins.length; t++)
+                            this.plugins[t].destroy();
+                        (this.game = null),
+                            (this.plugins = []),
+                            (this.scenePlugins = []);
+                    },
+                });
+            t.exports = c;
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
             var n = i(4);
             t.exports = function(t, e, i, r, s, o, a, h) {
                 void 0 === h && (h = new n());
@@ -29481,7 +29779,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(188),
+                r = i(189),
                 s = new n({
                     initialize: function(t) {
                         (this.manager = t),
@@ -29615,8 +29913,8 @@
              */
             var n = i(0),
                 r = i(1),
-                s = i(950),
-                o = i(948),
+                s = i(955),
+                o = i(953),
                 a = new n({
                     initialize: function(t, e, i) {
                         if ((void 0 === i && (i = {}), e.length < 2)) return !1;
@@ -29727,13 +30025,13 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(12),
-                s = i(364),
-                o = i(184),
-                a = i(363),
-                h = i(947),
-                u = i(946),
-                l = i(945),
+                r = i(11),
+                s = i(368),
+                o = i(185),
+                a = i(367),
+                h = i(952),
+                u = i(951),
+                l = i(950),
                 c = new n({
                     Extends: r,
                     initialize: function(t) {
@@ -29926,8 +30224,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(367),
-                r = i(366),
+            var n = i(371),
+                r = i(370),
                 s = new (i(0))({
                     initialize: function(t, e, i) {
                         (this.manager = t),
@@ -29966,8 +30264,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(12),
-                s = i(368),
+                r = i(11),
+                s = i(372),
                 o = new n({
                     Extends: r,
                     initialize: function(t) {
@@ -30083,15 +30381,15 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(12),
-                s = i(369),
-                o = i(365),
-                a = i(362),
-                h = i(361),
-                u = i(10),
-                l = i(360),
+                r = i(11),
+                s = i(373),
+                o = i(369),
+                a = i(366),
+                h = i(365),
+                u = i(12),
+                l = i(364),
                 c = i(102),
-                d = i(359),
+                d = i(363),
                 f = new n({
                     initialize: function(t, e) {
                         (this.game = t),
@@ -30121,6 +30419,7 @@
                             this.mouse.boot(),
                             this.touch.boot(),
                             this.gamepad.boot(),
+                            this.game.events.on('prestep', this.update, this),
                             this.game.events.once(
                                 'destroy',
                                 this.destroy,
@@ -31330,11 +31629,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(187),
-                s = i(372),
-                o = i(371),
-                a = i(961),
-                h = i(960),
+                r = i(188),
+                s = i(376),
+                o = i(375),
+                a = i(966),
+                h = i(965),
                 u = i(34),
                 l = i(127),
                 c = function(t, e, i, n, r) {
@@ -31481,20 +31780,20 @@
                             A = m[0],
                             C = m[1],
                             M = m[2],
-                            _ = m[3],
-                            E = d * A + f * M,
-                            P = d * C + f * _,
+                            E = m[3],
+                            _ = d * A + f * M,
+                            P = d * C + f * E,
                             L = p * A + g * M,
-                            k = p * C + g * _,
+                            k = p * C + g * E,
                             F = v * A + y * M + m[4],
-                            R = v * C + y * _ + m[5],
-                            O = s * E + o * L + F,
+                            R = v * C + y * E + m[5],
+                            O = s * _ + o * L + F,
                             B = s * P + o * k + R,
-                            D = s * E + S * L + F,
+                            D = s * _ + S * L + F,
                             I = s * P + S * k + R,
-                            z = T * E + S * L + F,
+                            z = T * _ + S * L + F,
                             Y = T * P + S * k + R,
-                            X = T * E + o * L + F,
+                            X = T * _ + o * L + F,
                             N = T * P + o * k + R,
                             V = u.getTintAppendFloatAlphaAndSwap(l, c);
                         (x[b + 0] = O),
@@ -31548,18 +31847,18 @@
                             A = w[0],
                             C = w[1],
                             M = w[2],
-                            _ = w[3],
-                            E = p * A + g * M,
-                            P = p * C + g * _,
+                            E = w[3],
+                            _ = p * A + g * M,
+                            P = p * C + g * E,
                             L = v * A + y * M,
-                            k = v * C + y * _,
+                            k = v * C + y * E,
                             F = m * A + x * M + w[4],
-                            R = m * C + x * _ + w[5],
-                            O = s * E + o * L + F,
+                            R = m * C + x * E + w[5],
+                            O = s * _ + o * L + F,
                             B = s * P + o * k + R,
-                            D = a * E + h * L + F,
+                            D = a * _ + h * L + F,
                             I = a * P + h * k + R,
-                            z = l * E + c * L + F,
+                            z = l * _ + c * L + F,
                             Y = l * P + c * k + R,
                             X = u.getTintAppendFloatAlphaAndSwap(d, f);
                         (b[S + 0] = O),
@@ -31666,8 +31965,8 @@
                                 A,
                                 C,
                                 M,
-                                _,
                                 E,
+                                _,
                                 P,
                                 L,
                                 k,
@@ -31704,7 +32003,7 @@
                                 (z =
                                     this.vertexCount *
                                     this.vertexComponentCount),
-                                (E =
+                                (_ =
                                     (T = B[x + 0]) * W +
                                     (S = B[x + 1]) * U +
                                     H),
@@ -31716,10 +32015,10 @@
                                 (k = A * G + C * j + q),
                                 (F =
                                     (M = B[b + 0]) * W +
-                                    (_ = B[b + 1]) * U +
+                                    (E = B[b + 1]) * U +
                                     H),
-                                (R = M * G + _ * j + q),
-                                (D[z + 0] = E),
+                                (R = M * G + E * j + q),
+                                (D[z + 0] = _),
                                 (D[z + 1] = P),
                                 (I[z + 2] = K),
                                 (D[z + 3] = L),
@@ -31760,8 +32059,8 @@
                                 A = s.length,
                                 C = this.polygonCache,
                                 M = this.vertexViewF32,
-                                _ = this.vertexViewU32,
-                                E = u.getTintAppendFloatAlphaAndSwap,
+                                E = this.vertexViewU32,
+                                _ = u.getTintAppendFloatAlphaAndSwap,
                                 P = 0;
                             P + 1 < A;
                             P += 1
@@ -31804,22 +32103,22 @@
                                 ] =
                                     w[6]),
                                 (M[T + 1] = w[7]),
-                                (_[T + 2] = E(w[8], h)),
+                                (E[T + 2] = _(w[8], h)),
                                 (M[T + 3] = w[0]),
                                 (M[T + 4] = w[1]),
-                                (_[T + 5] = E(w[2], h)),
+                                (E[T + 5] = _(w[2], h)),
                                 (M[T + 6] = b[9]),
                                 (M[T + 7] = b[10]),
-                                (_[T + 8] = E(b[11], h)),
+                                (E[T + 8] = _(b[11], h)),
                                 (M[T + 9] = w[0]),
                                 (M[T + 10] = w[1]),
-                                (_[T + 11] = E(w[2], h)),
+                                (E[T + 11] = _(w[2], h)),
                                 (M[T + 12] = w[6]),
                                 (M[T + 13] = w[7]),
-                                (_[T + 14] = E(w[8], h)),
+                                (E[T + 14] = _(w[8], h)),
                                 (M[T + 15] = b[3]),
                                 (M[T + 16] = b[4]),
-                                (_[T + 17] = E(b[5], h)),
+                                (E[T + 17] = _(b[5], h)),
                                 (this.vertexCount += 6);
                         C.length = 0;
                     },
@@ -31854,8 +32153,8 @@
                             A = b[2],
                             C = b[3],
                             M = g * T + v * A,
-                            _ = g * S + v * C,
-                            E = y * T + m * A,
+                            E = g * S + v * C,
+                            _ = y * T + m * A,
                             P = y * S + m * C,
                             L = x * T + w * A + b[4],
                             k = x * S + w * C + b[5],
@@ -31876,14 +32175,14 @@
                             j = h + X,
                             H = s + I,
                             q = o + z,
-                            K = N * M + V * E + L,
-                            J = N * _ + V * P + k,
-                            Z = W * M + G * E + L,
-                            Q = W * _ + G * P + k,
-                            $ = U * M + j * E + L,
-                            tt = U * _ + j * P + k,
-                            et = H * M + q * E + L,
-                            it = H * _ + q * P + k,
+                            K = N * M + V * _ + L,
+                            J = N * E + V * P + k,
+                            Z = W * M + G * _ + L,
+                            Q = W * E + G * P + k,
+                            $ = U * M + j * _ + L,
+                            tt = U * E + j * P + k,
+                            et = H * M + q * _ + L,
+                            it = H * E + q * P + k,
                             nt = u.getTintAppendFloatAlphaAndSwap,
                             rt = nt(d, p),
                             st = nt(f, p),
@@ -31932,8 +32231,8 @@
                                 A = t.scaleY,
                                 C = t.rotation,
                                 M = t.commandBuffer,
-                                _ = t.alpha,
-                                E = 1,
+                                E = t.alpha,
+                                _ = 1,
                                 P = 1,
                                 L = 0,
                                 k = 0,
@@ -32022,7 +32321,7 @@
                                                         X + j(V) * N,
                                                         F,
                                                         L,
-                                                        E * _
+                                                        _ * E
                                                     )),
                                                     v.push(O),
                                                     (B += 0.01)),
@@ -32042,20 +32341,20 @@
                                             (D = Y + H((z = W * B + V)) * N),
                                                 (I = X + j(z) * N),
                                                 O.points.push(
-                                                    new c(D, I, F, L, E * _)
+                                                    new c(D, I, F, L, _ * E)
                                                 ),
                                                 (B += 0.01);
                                         (D = Y + H((z = W + V)) * N),
                                             (I = X + j(z) * N),
                                             O.points.push(
-                                                new c(D, I, F, L, E * _)
+                                                new c(D, I, F, L, _ * E)
                                             ),
                                             (bt += 6);
                                         break;
                                     case r.LINE_STYLE:
                                         (F = M[bt + 1]),
                                             (L = M[bt + 2]),
-                                            (E = M[bt + 3]),
+                                            (_ = M[bt + 3]),
                                             (bt += 3);
                                         break;
                                     case r.FILL_STYLE:
@@ -32081,7 +32380,7 @@
                                                 C,
                                                 v[y].points,
                                                 k,
-                                                P * _,
+                                                P * E,
                                                 s,
                                                 o,
                                                 a,
@@ -32103,7 +32402,7 @@
                                                     U.points,
                                                     F,
                                                     L,
-                                                    E * _,
+                                                    _ * E,
                                                     s,
                                                     o,
                                                     a,
@@ -32126,7 +32425,7 @@
                                             M[bt + 3],
                                             M[bt + 4],
                                             k,
-                                            P * _,
+                                            P * E,
                                             s,
                                             o,
                                             a,
@@ -32151,7 +32450,7 @@
                                             M[bt + 5],
                                             M[bt + 6],
                                             k,
-                                            P * _,
+                                            P * E,
                                             s,
                                             o,
                                             a,
@@ -32177,7 +32476,7 @@
                                             M[bt + 6],
                                             F,
                                             L,
-                                            E * _,
+                                            _ * E,
                                             s,
                                             o,
                                             a,
@@ -32196,7 +32495,7 @@
                                                       M[bt + 2],
                                                       F,
                                                       L,
-                                                      E * _
+                                                      _ * E
                                                   )
                                               )
                                             : ((O = new d(
@@ -32204,7 +32503,7 @@
                                                   M[bt + 2],
                                                   F,
                                                   L,
-                                                  E * _
+                                                  _ * E
                                               )),
                                               v.push(O)),
                                             (bt += 2);
@@ -32215,7 +32514,7 @@
                                             M[bt + 2],
                                             F,
                                             L,
-                                            E * _
+                                            _ * E
                                         )),
                                             v.push(O),
                                             (bt += 2);
@@ -32228,7 +32527,7 @@
                                                       M[bt + 2],
                                                       M[bt + 3],
                                                       M[bt + 4],
-                                                      M[bt + 5] * _
+                                                      M[bt + 5] * E
                                                   )
                                               )
                                             : ((O = new d(
@@ -32236,7 +32535,7 @@
                                                   M[bt + 2],
                                                   M[bt + 3],
                                                   M[bt + 4],
-                                                  M[bt + 5] * _
+                                                  M[bt + 5] * E
                                               )),
                                               v.push(O)),
                                             (bt += 5);
@@ -32247,7 +32546,7 @@
                                             M[bt + 2],
                                             M[bt + 3],
                                             M[bt + 4],
-                                            M[bt + 5] * _
+                                            M[bt + 5] * E
                                         )),
                                             v.push(O),
                                             (bt += 5);
@@ -32328,8 +32627,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(963),
-                s = i(962),
+                r = i(968),
+                s = i(967),
                 o = i(127),
                 a = new n({
                     Extends: o,
@@ -32482,11 +32781,11 @@
                 s = i(128),
                 o = i(100),
                 a = i(34),
-                h = i(375),
-                u = i(374),
-                l = i(373),
-                c = i(186),
-                d = i(185),
+                h = i(379),
+                u = i(378),
+                l = i(377),
+                c = i(187),
+                d = i(186),
                 f = new n({
                     initialize: function(t) {
                         var e = this,
@@ -32510,6 +32809,8 @@
                             resolution: i.resolution,
                             autoResize: i.autoResize,
                             roundPixels: i.roundPixels,
+                            maxTextures: i.maxTextures,
+                            maxTextureSize: i.maxTextureSize,
                         }),
                             (this.game = t),
                             (this.type = r.WEBGL),
@@ -32578,50 +32879,79 @@
                             (this.supportedExtensions = null),
                             (this.extensions = {}),
                             (this.glFormats = []),
+                            (this.compression = {
+                                ETC1: !1,
+                                PVRTC: !1,
+                                S3TC: !1,
+                            }),
                             this.init(this.config);
                     },
                     init: function(t) {
-                        var e = this.canvas,
-                            i = t.backgroundColor,
-                            n =
-                                e.getContext('webgl', t.contextCreation) ||
-                                e.getContext(
-                                    'experimental-webgl',
-                                    t.contextCreation
-                                );
-                        if (!n || n.isContextLost())
+                        var e,
+                            i = this.canvas,
+                            n = t.backgroundColor;
+                        if (
+                            !(e = this.game.config.context
+                                ? this.game.config.context
+                                : i.getContext('webgl', t.contextCreation) ||
+                                  i.getContext(
+                                      'experimental-webgl',
+                                      t.contextCreation
+                                  )) ||
+                            e.isContextLost()
+                        )
                             throw ((this.contextLost = !0),
                             new Error(
                                 'This browser does not support WebGL. Try using the Canvas pipeline.'
                             ));
-                        this.gl = n;
+                        (this.gl = e), (this.game.context = e);
                         for (var s = 0; s <= 16; s++)
                             this.blendModes.push({
-                                func: [n.ONE, n.ONE_MINUS_SRC_ALPHA],
-                                equation: n.FUNC_ADD,
+                                func: [e.ONE, e.ONE_MINUS_SRC_ALPHA],
+                                equation: e.FUNC_ADD,
                             });
-                        (this.blendModes[1].func = [n.ONE, n.DST_ALPHA]),
+                        (this.blendModes[1].func = [e.ONE, e.DST_ALPHA]),
                             (this.blendModes[2].func = [
-                                n.DST_COLOR,
-                                n.ONE_MINUS_SRC_ALPHA,
+                                e.DST_COLOR,
+                                e.ONE_MINUS_SRC_ALPHA,
                             ]),
                             (this.blendModes[3].func = [
-                                n.ONE,
-                                n.ONE_MINUS_SRC_COLOR,
+                                e.ONE,
+                                e.ONE_MINUS_SRC_COLOR,
                             ]),
-                            (this.glFormats[0] = n.BYTE),
-                            (this.glFormats[1] = n.SHORT),
-                            (this.glFormats[2] = n.UNSIGNED_BYTE),
-                            (this.glFormats[3] = n.UNSIGNED_SHORT),
-                            (this.glFormats[4] = n.FLOAT),
-                            (this.supportedExtensions = n.getSupportedExtensions()),
-                            n.disable(n.DEPTH_TEST),
-                            n.disable(n.CULL_FACE),
-                            n.disable(n.SCISSOR_TEST),
-                            n.enable(n.BLEND),
-                            n.clearColor(i.redGL, i.greenGL, i.blueGL, 1);
-                        for (var o = 0; o < this.currentTextures.length; ++o)
-                            this.currentTextures[o] = null;
+                            (this.glFormats[0] = e.BYTE),
+                            (this.glFormats[1] = e.SHORT),
+                            (this.glFormats[2] = e.UNSIGNED_BYTE),
+                            (this.glFormats[3] = e.UNSIGNED_SHORT),
+                            (this.glFormats[4] = e.FLOAT);
+                        var o = e.getSupportedExtensions();
+                        t.maxTextures ||
+                            (t.maxTextures = e.getParameter(
+                                e.MAX_TEXTURE_IMAGE_UNITS
+                            )),
+                            t.maxTextureSize ||
+                                (t.maxTextureSize = e.getParameter(
+                                    e.MAX_TEXTURE_SIZE
+                                ));
+                        var a = 'WEBGL_compressed_texture_',
+                            h = 'WEBKIT_' + a;
+                        (this.compression.ETC1 =
+                            e.getExtension(a + 'etc1') ||
+                            e.getExtension(h + 'etc1')),
+                            (this.compression.PVRTC =
+                                e.getExtension(a + 'pvrtc') ||
+                                e.getExtension(h + 'pvrtc')),
+                            (this.compression.S3TC =
+                                e.getExtension(a + 's3tc') ||
+                                e.getExtension(h + 's3tc')),
+                            (this.supportedExtensions = o),
+                            e.disable(e.DEPTH_TEST),
+                            e.disable(e.CULL_FACE),
+                            e.disable(e.SCISSOR_TEST),
+                            e.enable(e.BLEND),
+                            e.clearColor(n.redGL, n.greenGL, n.blueGL, 1);
+                        for (var f = 0; f < this.currentTextures.length; ++f)
+                            this.currentTextures[f] = null;
                         return (
                             (this.pipelines = {}),
                             this.addPipeline(
@@ -33378,6 +33708,12 @@
                             this
                         );
                     },
+                    getMaxTextures: function() {
+                        return this.config.maxTextures;
+                    },
+                    getMaxTextureSize: function() {
+                        return this.config.maxTextureSize;
+                    },
                     destroy: function() {
                         for (var t in this.pipelines)
                             this.pipelines[t].destroy(),
@@ -33453,7 +33789,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(82),
-                r = i(377);
+                r = i(381);
             t.exports = function() {
                 var t = [],
                     e = r.supportNewBlendModes;
@@ -33583,14 +33919,14 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(381),
-                r = i(380),
+            var n = i(385),
+                r = i(384),
                 s = i(0),
                 o = i(25),
-                a = i(379),
-                h = i(378),
+                a = i(383),
+                h = i(382),
                 u = i(106),
-                l = i(194),
+                l = i(196),
                 c = new s({
                     initialize: function(t) {
                         (this.game = t),
@@ -33610,9 +33946,9 @@
                                 ? u.NEAREST
                                 : u.LINEAR),
                             (this.gameCanvas = t.canvas),
-                            (this.gameContext = this.gameCanvas.getContext(
-                                '2d'
-                            )),
+                            (this.gameContext = this.game.config.context
+                                ? this.game.config.context
+                                : this.gameCanvas.getContext('2d')),
                             (this.currentContext = this.gameContext),
                             (this.drawImage = a(this.config.roundPixels)),
                             (this.blitImage = n(this.config.roundPixels)),
@@ -33747,29 +34083,6 @@
                 });
             t.exports = c;
         },
-        function(t, e) {
-            t.exports = {
-                Global: ['anims', 'cache', 'registry', 'sound', 'textures'],
-                CoreScene: [
-                    'EventEmitter',
-                    'CameraManager',
-                    'GameObjectCreator',
-                    'GameObjectFactory',
-                    'ScenePlugin',
-                    'DisplayList',
-                    'UpdateList',
-                ],
-                DefaultScene: [
-                    'CameraManager3D',
-                    'Clock',
-                    'DataManagerPlugin',
-                    'InputPlugin',
-                    'Loader',
-                    'TweenManager',
-                    'LightsPlugin',
-                ],
-            };
-        },
         function(t, e, i) {
             /**
              * @author       Richard Davey <rich@photonstorm.com>
@@ -33893,7 +34206,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(198);
+            var n = i(200);
             t.exports = function(t, e, i) {
                 void 0 === e && (e = 1), void 0 === i && (i = 1);
                 var r = Math.floor(6 * t),
@@ -33953,24 +34266,24 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(50);
-            (n.ColorToRGBA = i(977)),
-                (n.ComponentToHex = i(391)),
-                (n.GetColor = i(198)),
-                (n.GetColor32 = i(414)),
-                (n.HexStringToColor = i(415)),
-                (n.HSLToColor = i(976)),
-                (n.HSVColorWheel = i(975)),
-                (n.HSVToRGB = i(389)),
-                (n.HueToComponent = i(390)),
-                (n.IntegerToColor = i(413)),
-                (n.IntegerToRGB = i(412)),
-                (n.Interpolate = i(974)),
-                (n.ObjectToColor = i(411)),
-                (n.RandomRGB = i(973)),
-                (n.RGBStringToColor = i(410)),
-                (n.RGBToHSV = i(972)),
-                (n.RGBToString = i(971)),
-                (n.ValueToColor = i(199)),
+            (n.ColorToRGBA = i(983)),
+                (n.ComponentToHex = i(394)),
+                (n.GetColor = i(200)),
+                (n.GetColor32 = i(417)),
+                (n.HexStringToColor = i(418)),
+                (n.HSLToColor = i(982)),
+                (n.HSVColorWheel = i(981)),
+                (n.HSVToRGB = i(392)),
+                (n.HueToComponent = i(393)),
+                (n.IntegerToColor = i(416)),
+                (n.IntegerToRGB = i(415)),
+                (n.Interpolate = i(980)),
+                (n.ObjectToColor = i(414)),
+                (n.RandomRGB = i(979)),
+                (n.RGBStringToColor = i(413)),
+                (n.RGBToHSV = i(978)),
+                (n.RGBToString = i(977)),
+                (n.ValueToColor = i(201)),
                 (t.exports = n);
         },
         function(t, e) {
@@ -34006,7 +34319,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(191),
+            var n = i(193),
                 r = i(0),
                 s = i(75),
                 o = i(4),
@@ -34098,7 +34411,7 @@
              */
             var n = i(0),
                 r = i(75),
-                s = i(395),
+                s = i(398),
                 o = i(4),
                 a = new n({
                     Extends: r,
@@ -34164,8 +34477,8 @@
              */
             var n = i(0),
                 r = i(75),
-                s = i(193),
-                o = i(10),
+                s = i(195),
+                o = i(12),
                 a = i(4),
                 h = new a(),
                 u = new n({
@@ -34253,7 +34566,7 @@
                 r = i(75),
                 s = i(51),
                 o = i(5),
-                a = i(192),
+                a = i(194),
                 h = i(4),
                 u = new n({
                     Extends: r,
@@ -34458,7 +34771,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(399),
+                r = i(402),
                 s = i(75),
                 o = i(4),
                 a = new n({
@@ -34557,7 +34870,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(401),
+            var n = i(404),
                 r = i(27),
                 s = i(5);
             t.exports = function(t) {
@@ -34593,7 +34906,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(197),
+            var n = i(199),
                 r = i(0),
                 s = new (i(77))(),
                 o = new r({
@@ -34640,7 +34953,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(197),
+            var n = i(199),
                 r = i(0),
                 s = new (i(77))(),
                 o = new r({
@@ -35008,19 +35321,19 @@
                         A = s * l - o * u,
                         C = c * v - d * g,
                         M = c * y - f * g,
-                        _ = c * m - p * g,
-                        E = d * y - f * v,
+                        E = c * m - p * g,
+                        _ = d * y - f * v,
                         P = d * m - p * v,
                         L = f * m - p * y,
-                        k = x * L - w * P + b * E + T * _ - S * M + A * C;
+                        k = x * L - w * P + b * _ + T * E - S * M + A * C;
                     return k
                         ? ((k = 1 / k),
-                          (i[0] = (h * L - u * P + l * E) * k),
-                          (i[1] = (u * _ - a * L - l * M) * k),
-                          (i[2] = (a * P - h * _ + l * C) * k),
-                          (i[3] = (s * P - r * L - o * E) * k),
-                          (i[4] = (n * L - s * _ + o * M) * k),
-                          (i[5] = (r * _ - n * P - o * C) * k),
+                          (i[0] = (h * L - u * P + l * _) * k),
+                          (i[1] = (u * E - a * L - l * M) * k),
+                          (i[2] = (a * P - h * E + l * C) * k),
+                          (i[3] = (s * P - r * L - o * _) * k),
+                          (i[4] = (n * L - s * E + o * M) * k),
+                          (i[5] = (r * E - n * P - o * C) * k),
                           (i[6] = (v * A - y * S + m * T) * k),
                           (i[7] = (y * b - g * A - m * w) * k),
                           (i[8] = (g * S - v * b + m * x) * k),
@@ -35038,7 +35351,7 @@
              */
             var n = i(0),
                 r = i(77),
-                s = i(405),
+                s = i(408),
                 o = new Int8Array([1, 2, 0]),
                 a = new Float32Array([0, 0, 0]),
                 h = new r(1, 0, 0),
@@ -35384,8 +35697,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(77),
-                r = i(196),
-                s = i(406),
+                r = i(198),
+                s = i(409),
                 o = new r(),
                 a = new s(),
                 h = new n();
@@ -35480,7 +35793,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(50),
-                r = i(412);
+                r = i(415);
             t.exports = function(t) {
                 var e = r(t);
                 return new n(e.r, e.g, e.b, e.a);
@@ -35524,7 +35837,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Fade: i(1019), Flash: i(1018), Shake: i(1017) };
+            t.exports = { Fade: i(1025), Flash: i(1024), Shake: i(1023) };
         },
         function(t, e, i) {
             /**
@@ -35716,7 +36029,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(420),
+            var n = i(423),
                 r = new (i(0))({
                     initialize: function(t) {
                         (this.game = t),
@@ -35776,8 +36089,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(202),
-                s = i(12),
+                r = i(204),
+                s = i(11),
                 o = new n({
                     initialize: function() {
                         (this.entries = new r()), (this.events = new s());
@@ -35822,12 +36135,12 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(424),
+            var n = i(427),
                 r = i(0),
-                s = i(202),
-                o = i(12),
+                s = i(204),
+                o = i(11),
                 a = i(5),
-                h = i(201),
+                h = i(203),
                 u = new r({
                     Extends: o,
                     initialize: function(t) {
@@ -35902,14 +36215,24 @@
                         var d,
                             f,
                             p = n < r ? 1 : -1;
-                        if (((r += p), Array.isArray(l)))
-                            for (d = 0; d < l.length; d++)
-                                (f = i + h(l[d], o, '0', 1) + s),
-                                    c.has(f) && u.push({ key: t, frame: f });
+                        if (((r += p), e))
+                            if (Array.isArray(l))
+                                for (d = 0; d < l.length; d++)
+                                    (f = i + h(l[d], o, '0', 1) + s),
+                                        c.has(f) &&
+                                            u.push({ key: t, frame: f });
+                            else
+                                for (d = n; d !== r; d += p)
+                                    (f = i + h(d, o, '0', 1) + s),
+                                        c.has(f) &&
+                                            u.push({ key: t, frame: f });
                         else
-                            for (d = n; d !== r; d += p)
-                                (f = i + h(d, o, '0', 1) + s),
-                                    c.has(f) && u.push({ key: t, frame: f });
+                            for (
+                                l = c.getFrameNames(), d = 0;
+                                d < l.length;
+                                d++
+                            )
+                                u.push({ key: t, frame: l[d] });
                         return u;
                     },
                     generateFrameNumbers: function(t, e) {
@@ -36066,8 +36389,8 @@
              */
             var n = i(28),
                 r = i(0),
-                s = i(423),
-                o = i(422),
+                s = i(426),
+                o = i(425),
                 a = i(5),
                 h = new r({
                     initialize: function(t, e, i) {
@@ -36216,7 +36539,7 @@
                     nextFrame: function(t) {
                         var e = t.currentFrame;
                         e.isLast
-                            ? t.yoyo
+                            ? t._yoyo
                                 ? ((t.forward = !1),
                                   t.updateFrame(e.prevFrame),
                                   this.getNextTick(t))
@@ -36625,7 +36948,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(212),
+            var n = i(214),
                 r = i(134);
             t.exports = function(t, e, i, s) {
                 void 0 === s && (s = []), e || (e = r(t) / i);
@@ -36905,8 +37228,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(437),
-                r = i(214),
+            var n = i(440),
+                r = i(216),
                 s = i(104),
                 o = i(18);
             t.exports = function(t, e, i, a) {
@@ -37066,7 +37389,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(214),
+            var n = i(216),
                 r = i(104),
                 s = i(18),
                 o = i(6);
@@ -37194,7 +37517,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(446),
+            var n = i(449),
                 r = i(81),
                 s = i(78);
             t.exports = function(t, e, i, o) {
@@ -37272,17 +37595,17 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(215),
+            var n = i(217),
                 r = [];
-            (r[n.BOTTOM_CENTER] = i(450)),
-                (r[n.BOTTOM_LEFT] = i(449)),
-                (r[n.BOTTOM_RIGHT] = i(448)),
-                (r[n.CENTER] = i(447)),
-                (r[n.LEFT_CENTER] = i(445)),
-                (r[n.RIGHT_CENTER] = i(444)),
-                (r[n.TOP_CENTER] = i(443)),
-                (r[n.TOP_LEFT] = i(442)),
-                (r[n.TOP_RIGHT] = i(441));
+            (r[n.BOTTOM_CENTER] = i(453)),
+                (r[n.BOTTOM_LEFT] = i(452)),
+                (r[n.BOTTOM_RIGHT] = i(451)),
+                (r[n.CENTER] = i(450)),
+                (r[n.LEFT_CENTER] = i(448)),
+                (r[n.RIGHT_CENTER] = i(447)),
+                (r[n.TOP_CENTER] = i(446)),
+                (r[n.TOP_LEFT] = i(445)),
+                (r[n.TOP_RIGHT] = i(444));
             t.exports = function(t, e, i, n, s) {
                 return r[i](t, e, n, s);
             };
@@ -37294,55 +37617,55 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Angle: i(1088),
-                Call: i(1087),
-                GetFirst: i(1086),
-                GetLast: i(1085),
-                GridAlign: i(1084),
-                IncAlpha: i(1066),
-                IncX: i(1065),
-                IncXY: i(1064),
-                IncY: i(1063),
-                PlaceOnCircle: i(1062),
-                PlaceOnEllipse: i(1061),
-                PlaceOnLine: i(1060),
-                PlaceOnRectangle: i(1059),
-                PlaceOnTriangle: i(1058),
-                PlayAnimation: i(1057),
+                Angle: i(1094),
+                Call: i(1093),
+                GetFirst: i(1092),
+                GetLast: i(1091),
+                GridAlign: i(1090),
+                IncAlpha: i(1072),
+                IncX: i(1071),
+                IncXY: i(1070),
+                IncY: i(1069),
+                PlaceOnCircle: i(1068),
+                PlaceOnEllipse: i(1067),
+                PlaceOnLine: i(1066),
+                PlaceOnRectangle: i(1065),
+                PlaceOnTriangle: i(1064),
+                PlayAnimation: i(1063),
                 PropertyValueInc: i(30),
                 PropertyValueSet: i(24),
-                RandomCircle: i(1056),
-                RandomEllipse: i(1055),
-                RandomLine: i(1054),
-                RandomRectangle: i(1053),
-                RandomTriangle: i(1052),
-                Rotate: i(1051),
-                RotateAround: i(1050),
-                RotateAroundDistance: i(1049),
-                ScaleX: i(1048),
-                ScaleXY: i(1047),
-                ScaleY: i(1046),
-                SetAlpha: i(1045),
-                SetBlendMode: i(1044),
-                SetDepth: i(1043),
-                SetHitArea: i(1042),
-                SetOrigin: i(1041),
-                SetRotation: i(1040),
-                SetScale: i(1039),
-                SetScaleX: i(1038),
-                SetScaleY: i(1037),
-                SetTint: i(1036),
-                SetVisible: i(1035),
-                SetX: i(1034),
-                SetXY: i(1033),
-                SetY: i(1032),
-                ShiftPosition: i(1031),
-                Shuffle: i(1030),
-                SmootherStep: i(1029),
-                SmoothStep: i(1028),
-                Spread: i(1027),
-                ToggleVisible: i(1026),
-                WrapInRectangle: i(1025),
+                RandomCircle: i(1062),
+                RandomEllipse: i(1061),
+                RandomLine: i(1060),
+                RandomRectangle: i(1059),
+                RandomTriangle: i(1058),
+                Rotate: i(1057),
+                RotateAround: i(1056),
+                RotateAroundDistance: i(1055),
+                ScaleX: i(1054),
+                ScaleXY: i(1053),
+                ScaleY: i(1052),
+                SetAlpha: i(1051),
+                SetBlendMode: i(1050),
+                SetDepth: i(1049),
+                SetHitArea: i(1048),
+                SetOrigin: i(1047),
+                SetRotation: i(1046),
+                SetScale: i(1045),
+                SetScaleX: i(1044),
+                SetScaleY: i(1043),
+                SetTint: i(1042),
+                SetVisible: i(1041),
+                SetX: i(1040),
+                SetXY: i(1039),
+                SetY: i(1038),
+                ShiftPosition: i(1037),
+                Shuffle: i(1036),
+                SmootherStep: i(1035),
+                SmoothStep: i(1034),
+                Spread: i(1033),
+                ToggleVisible: i(1032),
+                WrapInRectangle: i(1031),
             };
         },
         function(t, e) {
@@ -37675,15 +37998,15 @@
                     (r[i] = t(e[i])), (i += 1);
                 return r;
             }
-            function _(t) {
+            function E(t) {
                 return '[object String]' === Object.prototype.toString.call(t);
             }
-            var E = r(function(t) {
+            var _ = r(function(t) {
                     return (
                         !!m(t) ||
                         (!!t &&
                             ('object' == typeof t &&
-                                (!_(t) &&
+                                (!E(t) &&
                                     (1 === t.nodeType
                                         ? !!t.length
                                         : 0 === t.length ||
@@ -37740,7 +38063,7 @@
             var O =
                 'undefined' != typeof Symbol ? Symbol.iterator : '@@iterator';
             function B(t, e, i) {
-                if (('function' == typeof t && (t = L(t)), E(i)))
+                if (('function' == typeof t && (t = L(t)), _(i)))
                     return (function(t, e, i) {
                         for (var n = 0, r = i.length; n < r; ) {
                             if (
@@ -38181,7 +38504,7 @@
             function At(t) {
                 return function e(i) {
                     for (var n, r, s, o = [], a = 0, h = i.length; a < h; ) {
-                        if (E(i[a]))
+                        if (_(i[a]))
                             for (
                                 s = 0, r = (n = t ? e(i[a]) : i[a]).length;
                                 s < r;
@@ -38218,7 +38541,7 @@
                             return e['@@transducer/result'](t);
                         },
                         '@@transducer/step': function(t, i) {
-                            return E(i) ? B(e, t, i) : B(e, t, [i]);
+                            return _(i) ? B(e, t, i) : B(e, t, [i]);
                         },
                     };
                 },
@@ -38237,14 +38560,14 @@
                         }
                     )
                 ),
-                _t = v(function(t, e, i) {
+                Et = v(function(t, e, i) {
                     if (t > e)
                         throw new Error(
                             'min must not be greater than max in clamp(min, max, value)'
                         );
                     return i < t ? t : i > e ? e : i;
                 });
-            function Et(t) {
+            function _t(t) {
                 return new RegExp(
                     t.source,
                     (t.global ? 'g' : '') +
@@ -38279,7 +38602,7 @@
                     case 'Date':
                         return new Date(t.valueOf());
                     case 'RegExp':
-                        return Et(t);
+                        return _t(t);
                     default:
                         return t;
                 }
@@ -38331,7 +38654,7 @@
                 );
             }
             var Xt = r(function(t) {
-                return _(t)
+                return E(t)
                     ? t
                           .split('')
                           .reverse()
@@ -38730,8 +39053,8 @@
                         if (m(e)) return t.concat(e);
                         throw new TypeError(ue(e) + ' is not an array');
                     }
-                    if (_(t)) {
-                        if (_(e)) return t + e;
+                    if (E(t)) {
+                        if (E(e)) return t + e;
                         throw new TypeError(ue(e) + ' is not a string');
                     }
                     if (null != t && mt(t['fantasy-land/concat']))
@@ -38934,7 +39257,7 @@
                 Me = v(function(t, e, i) {
                     return y(s(e), t, i);
                 }),
-                _e = u(function t(e, i) {
+                Ee = u(function t(e, i) {
                     switch (e.length) {
                         case 0:
                             return i;
@@ -38950,7 +39273,7 @@
                                     : dt(n, t(r, i[n]), i);
                     }
                 }),
-                Ee = u(function(t, e) {
+                _e = u(function(t, e) {
                     return t / e;
                 }),
                 Pe = (function() {
@@ -39129,7 +39452,7 @@
                 }),
                 Ye = u(function(t, e) {
                     var i = t < 0 ? e.length + t : t;
-                    return _(e) ? e.charAt(i) : e[i];
+                    return E(e) ? e.charAt(i) : e[i];
                 }),
                 Xe = Ye(-1),
                 Ne = u(
@@ -39205,7 +39528,7 @@
                                     ? t.constructor.empty()
                                     : m(t)
                                         ? []
-                                        : _(t)
+                                        : E(t)
                                             ? ''
                                             : se(t)
                                                 ? {}
@@ -39485,12 +39808,12 @@
                         return Ht(t, e, i);
                     }, e);
                 }),
-                _i = v(function(t, e, i) {
+                Ei = v(function(t, e, i) {
                     t = t < i.length && t >= 0 ? t : i.length;
                     var n = Array.prototype.slice.call(i, 0);
                     return n.splice(t, 0, e), n;
                 }),
-                Ei = v(function(t, e, i) {
+                _i = v(function(t, e, i) {
                     return (
                         (t = t < i.length && t >= 0 ? t : i.length),
                         [].concat(
@@ -39640,7 +39963,7 @@
                 Yi = {
                     '@@transducer/init': Object,
                     '@@transducer/step': function(t, e) {
-                        return Bi(t, E(e) ? Di(e[0], e[1]) : e);
+                        return Bi(t, _(e) ? Di(e[0], e[1]) : e);
                     },
                     '@@transducer/result': xi,
                 };
@@ -39651,7 +39974,7 @@
                               e(
                                   (function(t) {
                                       if (x(t)) return t;
-                                      if (E(t)) return Ii;
+                                      if (_(t)) return Ii;
                                       if ('string' == typeof t) return zi;
                                       if ('object' == typeof t) return Yi;
                                       throw new Error(
@@ -39880,10 +40203,10 @@
                 Mn = u(function(t, e) {
                     return t % e;
                 }),
-                _n = u(function(t, e) {
+                En = u(function(t, e) {
                     return t * e;
                 }),
-                En = r(function(t) {
+                _n = r(function(t) {
                     return -t;
                 }),
                 Pn = u(ne(w(['any'], tt, et))),
@@ -39973,7 +40296,7 @@
             var Kn = u(function(t, e) {
                     return c([t], e);
                 }),
-                Jn = J(_n, 1),
+                Jn = J(En, 1),
                 Zn = u(function(t, e) {
                     return p(e.length, function() {
                         for (var i = [], n = 0; n < e.length; )
@@ -40131,7 +40454,7 @@
                         t
                     );
                 })(),
-                _r = u(
+                Er = u(
                     w(
                         ['takeWhile'],
                         u(function(t, e) {
@@ -40144,7 +40467,7 @@
                         }
                     )
                 ),
-                Er = (function() {
+                _r = (function() {
                     function t(t, e) {
                         (this.xf = e), (this.f = t);
                     }
@@ -40163,7 +40486,7 @@
                     w(
                         [],
                         u(function(t, e) {
-                            return new Er(t, e);
+                            return new _r(t, e);
                         }),
                         function(t, e) {
                             return t(e), e;
@@ -40180,7 +40503,7 @@
                                 ue(t)
                         );
                     var i;
-                    return Et(t).test(e);
+                    return _t(t).test(e);
                 }),
                 kr = Wi(0, 'toLowerCase'),
                 Fr = r(function(t) {
@@ -40430,7 +40753,7 @@
                     return Mt;
                 }),
                 i.d(e, 'clamp', function() {
-                    return _t;
+                    return Et;
                 }),
                 i.d(e, 'clone', function() {
                     return kt;
@@ -40496,10 +40819,10 @@
                     return Ae;
                 }),
                 i.d(e, 'dissocPath', function() {
-                    return _e;
+                    return Ee;
                 }),
                 i.d(e, 'divide', function() {
-                    return Ee;
+                    return _e;
                 }),
                 i.d(e, 'drop', function() {
                     return Le;
@@ -40616,10 +40939,10 @@
                     return Mi;
                 }),
                 i.d(e, 'insert', function() {
-                    return _i;
+                    return Ei;
                 }),
                 i.d(e, 'insertAll', function() {
-                    return Ei;
+                    return _i;
                 }),
                 i.d(e, 'intersection', function() {
                     return Ri;
@@ -40763,13 +41086,13 @@
                     return Mn;
                 }),
                 i.d(e, 'multiply', function() {
-                    return _n;
+                    return En;
                 }),
                 i.d(e, 'nAry', function() {
                     return vt;
                 }),
                 i.d(e, 'negate', function() {
-                    return En;
+                    return _n;
                 }),
                 i.d(e, 'none', function() {
                     return Pn;
@@ -40970,7 +41293,7 @@
                     return Cr;
                 }),
                 i.d(e, 'takeWhile', function() {
-                    return _r;
+                    return Er;
                 }),
                 i.d(e, 'tap', function() {
                     return Pr;
@@ -41112,10 +41435,10 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Format: i(469),
-                Pad: i(201),
-                Reverse: i(468),
-                UppercaseFirst: i(356),
+                Format: i(472),
+                Pad: i(203),
+                Reverse: i(471),
+                UppercaseFirst: i(358),
             };
         },
         function(t, e, i) {
@@ -41160,17 +41483,17 @@
              */
             t.exports = {
                 Clone: i(62),
-                Extend: i(19),
-                GetAdvancedValue: i(8),
+                Extend: i(20),
+                GetAdvancedValue: i(10),
                 GetFastValue: i(1),
-                GetMinMaxValue: i(473),
+                GetMinMaxValue: i(476),
                 GetValue: i(5),
-                HasAll: i(472),
-                HasAny: i(314),
+                HasAll: i(475),
+                HasAny: i(316),
                 HasValue: i(72),
-                IsPlainObject: i(11),
+                IsPlainObject: i(8),
                 Merge: i(74),
-                MergeRight: i(471),
+                MergeRight: i(474),
             };
         },
         function(t, e, i) {
@@ -41179,7 +41502,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Array: i(180), Objects: i(474), String: i(470) };
+            t.exports = { Array: i(181), Objects: i(477), String: i(473) };
         },
         function(t, e, i) {
             /**
@@ -41188,9 +41511,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(232),
+                r = i(233),
                 s = i(14),
-                o = i(231),
+                o = i(232),
                 a = i(94),
                 h = i(109),
                 u = new n({
@@ -41439,12 +41762,12 @@
                 GetBoolean: i(95),
                 GetEaseFunction: i(96),
                 GetNewValue: i(110),
-                GetProps: i(234),
-                GetTargets: i(143),
-                GetTweens: i(233),
-                GetValueOp: i(142),
-                NumberTweenBuilder: i(232),
-                TimelineBuilder: i(231),
+                GetProps: i(235),
+                GetTargets: i(144),
+                GetTweens: i(234),
+                GetValueOp: i(143),
+                NumberTweenBuilder: i(233),
+                TimelineBuilder: i(232),
                 TweenBuilder: i(109),
             };
         },
@@ -41455,13 +41778,13 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(94),
-                r = i(19),
+                r = i(20),
                 s = {
-                    Builders: i(478),
-                    TweenManager: i(476),
-                    Tween: i(140),
-                    TweenData: i(139),
-                    Timeline: i(230),
+                    Builders: i(481),
+                    TweenManager: i(479),
+                    Tween: i(141),
+                    TweenData: i(140),
+                    Timeline: i(231),
                 };
             (s = r(!1, s, n)), (t.exports = s);
         },
@@ -41473,7 +41796,7 @@
              */
             var n = i(0),
                 r = i(14),
-                s = i(235),
+                s = i(236),
                 o = new n({
                     initialize: function(t) {
                         (this.scene = t),
@@ -41600,7 +41923,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Clock: i(480), TimerEvent: i(235) };
+            t.exports = { Clock: i(483), TimerEvent: i(236) };
         },
         function(t, e, i) {
             /**
@@ -41609,7 +41932,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(9),
-                r = i(144);
+                r = i(145);
             n.register('tilemap', function(t, e, i, n, s, o, a) {
                 return (
                     null === t && (t = void 0),
@@ -41628,7 +41951,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(13),
-                r = i(144);
+                r = i(145);
             n.register('tilemap', function(t) {
                 var e = void 0 !== t ? t : {};
                 return r(
@@ -41712,8 +42035,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(485)),
-                (r = i(484)),
+            (n = i(488)),
+                (r = i(487)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -41794,8 +42117,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(488)),
-                (r = i(487)),
+            (n = i(491)),
+                (r = i(490)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -41874,7 +42197,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(19);
+            var n = i(20);
             t.exports = function(t) {
                 for (var e, i, r, s, o, a = 0; a < t.layers.length; a++) {
                     (e = t.layers[a]), (s = null);
@@ -41929,8 +42252,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(1),
-                r = i(241),
-                s = i(240);
+                r = i(242),
+                s = i(241);
             t.exports = function(t) {
                 for (var e = [], i = 0; i < t.layers.length; i++)
                     if ('objectgroup' === t.layers[i].type) {
@@ -41974,8 +42297,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(111),
-                r = i(242),
-                s = i(241);
+                r = i(243),
+                s = i(242);
             t.exports = function(t) {
                 for (
                     var e, i = [], o = [], a = null, h = 0;
@@ -42083,10 +42406,10 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(498),
+            var n = i(501),
                 r = i(1),
                 s = i(89),
-                o = i(243),
+                o = i(244),
                 a = i(54);
             t.exports = function(t, e) {
                 for (var i = [], h = 0; h < t.layers.length; h++)
@@ -42165,11 +42488,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Parse: i(246),
-                Parse2DArray: i(145),
-                ParseCSV: i(245),
-                Impact: i(239),
-                Tiled: i(244),
+                Parse: i(247),
+                Parse2DArray: i(146),
+                ParseCSV: i(246),
+                Impact: i(240),
+                Tiled: i(245),
             };
         },
         function(t, e, i) {
@@ -42358,7 +42681,7 @@
              */
             var n = i(55),
                 r = i(31),
-                s = i(146);
+                s = i(147);
             t.exports = function(t, e, i, o) {
                 void 0 === e && (e = !0),
                     void 0 === i && (i = !0),
@@ -42381,7 +42704,7 @@
              */
             var n = i(55),
                 r = i(31),
-                s = i(146);
+                s = i(147);
             t.exports = function(t, e, i, o, a) {
                 if (
                     (void 0 === i && (i = !0),
@@ -42406,7 +42729,7 @@
              */
             var n = i(55),
                 r = i(31),
-                s = i(146);
+                s = i(147);
             t.exports = function(t, e, i, o) {
                 void 0 === e && (e = !0),
                     void 0 === i && (i = !0),
@@ -42427,7 +42750,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(17),
-                r = i(392);
+                r = i(395);
             t.exports = function(t, e, i) {
                 void 0 === e && (e = {});
                 for (
@@ -42478,7 +42801,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(247),
+            var n = i(248),
                 r = i(48),
                 s = i(47);
             t.exports = function(t, e, i, o, a, h) {
@@ -42494,7 +42817,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(17),
-                r = i(178);
+                r = i(179);
             t.exports = function(t, e, i, s, o, a) {
                 var h,
                     u = n(t, e, i, s, null, a);
@@ -42511,7 +42834,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(31),
-                r = i(147);
+                r = i(148);
             t.exports = function(t, e, i, s, o) {
                 if (!Array.isArray(t)) return null;
                 void 0 === s && (s = !0), Array.isArray(t[0]) || (t = [t]);
@@ -42529,7 +42852,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(147),
+            var n = i(148),
                 r = i(48),
                 s = i(47);
             t.exports = function(t, e, i, o, a, h) {
@@ -42544,7 +42867,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(248),
+            var n = i(249),
                 r = i(48),
                 s = i(47);
             t.exports = function(t, e, i, o) {
@@ -42576,9 +42899,9 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(308),
+            var n = i(310),
                 r = i(17),
-                s = i(307),
+                s = i(309),
                 o = i(3),
                 a = i(113),
                 h = i(112),
@@ -42750,12 +43073,12 @@
                         A = u * m + l * w + T,
                         C = c * y + d * x + b,
                         M = c * m + d * w + T,
-                        _ = 0;
-                    _ < g;
-                    ++_
+                        E = 0;
+                    E < g;
+                    ++E
                 )
-                    for (var E = 0; E < p; ++E) {
-                        var P = f[_][E];
+                    for (var _ = 0; _ < p; ++_) {
+                        var P = f[E][_];
                         if (null !== P && -1 !== P.index) {
                             var L = P.pixelX * y + P.pixelY * x + b,
                                 k = P.pixelX * m + P.pixelY * w + T;
@@ -42779,7 +43102,7 @@
             var n = i(113),
                 r = i(112),
                 s = i(17),
-                o = i(249);
+                o = i(250);
             t.exports = function(t, e, i, a, h, u) {
                 void 0 === i && (i = {}), Array.isArray(t) || (t = [t]);
                 var l = u.tilemapLayer;
@@ -42840,20 +43163,20 @@
              */
             t.exports = {
                 Components: i(115),
-                Parsers: i(500),
+                Parsers: i(503),
                 Formats: i(26),
-                ImageCollection: i(242),
-                ParseToTilemap: i(144),
+                ImageCollection: i(243),
+                ParseToTilemap: i(145),
                 Tile: i(54),
-                Tilemap: i(238),
-                TilemapCreator: i(483),
-                TilemapFactory: i(482),
+                Tilemap: i(239),
+                TilemapCreator: i(486),
+                TilemapFactory: i(485),
                 Tileset: i(111),
                 LayerData: i(89),
                 MapData: i(88),
-                ObjectLayer: i(240),
-                DynamicTilemapLayer: i(237),
-                StaticTilemapLayer: i(236),
+                ObjectLayer: i(241),
+                DynamicTilemapLayer: i(238),
+                StaticTilemapLayer: i(237),
             };
         },
         function(t, e) {
@@ -42865,15 +43188,15 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(19),
-                r = i(531),
+            var n = i(20),
+                r = i(534),
                 s = {
                     FilterMode: r,
-                    Frame: i(181),
-                    Parsers: i(345),
-                    Texture: i(182),
-                    TextureManager: i(347),
-                    TextureSource: i(346),
+                    Frame: i(182),
+                    Parsers: i(347),
+                    Texture: i(183),
+                    TextureManager: i(349),
+                    TextureSource: i(348),
                 };
             (s = n(!1, s, r)), (t.exports = s);
         },
@@ -42885,9 +43208,9 @@
              */
             t.exports = {
                 List: i(124),
-                Map: i(202),
-                ProcessQueue: i(271),
-                RTree: i(270),
+                Map: i(204),
+                ProcessQueue: i(273),
+                RTree: i(272),
                 Set: i(76),
             };
         },
@@ -42899,15 +43222,15 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                SoundManagerCreator: i(354),
+                SoundManagerCreator: i(356),
                 BaseSound: i(125),
                 BaseSoundManager: i(126),
-                WebAudioSound: i(348),
-                WebAudioSoundManager: i(349),
-                HTML5AudioSound: i(352),
-                HTML5AudioSoundManager: i(353),
-                NoAudioSound: i(350),
-                NoAudioSoundManager: i(351),
+                WebAudioSound: i(350),
+                WebAudioSoundManager: i(351),
+                HTML5AudioSound: i(354),
+                HTML5AudioSoundManager: i(355),
+                NoAudioSound: i(352),
+                NoAudioSoundManager: i(353),
             };
         },
         function(t, e, i) {
@@ -43234,12 +43557,12 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(99),
-                r = i(19),
+                r = i(20),
                 s = {
-                    SceneManager: i(358),
-                    ScenePlugin: i(535),
-                    Settings: i(355),
-                    Systems: i(183),
+                    SceneManager: i(360),
+                    ScenePlugin: i(538),
+                    Settings: i(357),
+                    Systems: i(184),
                 };
             (s = r(!1, s, n)), (t.exports = s);
         },
@@ -43250,10 +43573,10 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                BitmapMaskPipeline: i(374),
-                FlatTintPipeline: i(373),
-                ForwardDiffuseLightPipeline: i(186),
-                TextureTintPipeline: i(185),
+                BitmapMaskPipeline: i(378),
+                FlatTintPipeline: i(377),
+                ForwardDiffuseLightPipeline: i(187),
+                TextureTintPipeline: i(186),
             };
         },
         function(t, e, i) {
@@ -43265,8 +43588,8 @@
             t.exports = {
                 Utils: i(34),
                 WebGLPipeline: i(127),
-                WebGLRenderer: i(376),
-                Pipelines: i(537),
+                WebGLRenderer: i(380),
+                Pipelines: i(540),
                 BYTE: 0,
                 SHORT: 1,
                 UNSIGNED_BYTE: 2,
@@ -43280,7 +43603,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Canvas: i(380), WebGL: i(375) };
+            t.exports = { Canvas: i(384), WebGL: i(379) };
         },
         function(t, e, i) {
             /**
@@ -43289,10 +43612,10 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                BlitImage: i(381),
-                CanvasRenderer: i(382),
-                DrawImage: i(379),
-                GetBlendModes: i(378),
+                BlitImage: i(385),
+                CanvasRenderer: i(386),
+                DrawImage: i(383),
+                GetBlendModes: i(382),
             };
         },
         function(t, e, i) {
@@ -43301,10 +43624,43 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Canvas: i(540), Snapshot: i(539), WebGL: i(538) };
+            t.exports = { Canvas: i(543), Snapshot: i(542), WebGL: i(541) };
         },
         function(t, e, i) {
-            var n = i(151),
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser3-plugin-template/blob/master/LICENSE|MIT License}
+             */
+            var n = i(251),
+                r = new (i(0))({
+                    Extends: n,
+                    initialize: function(t, e) {
+                        n.call(this, e),
+                            (this.scene = t),
+                            (this.systems = t.sys),
+                            t.sys.events.once('boot', this.boot, this);
+                    },
+                    boot: function() {},
+                });
+            t.exports = r;
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
+            t.exports = {
+                BasePlugin: i(251),
+                DefaultPlugins: i(190),
+                PluginCache: i(14),
+                PluginManager: i(362),
+                ScenePlugin: i(545),
+            };
+        },
+        function(t, e, i) {
+            var n = i(152),
                 r = {
                     name: 'matter-wrap',
                     version: '0.1.4',
@@ -43384,7 +43740,7 @@
             t.exports = r;
         },
         function(t, e, i) {
-            var n = i(151),
+            var n = i(152),
                 r = {
                     name: 'matter-attractors',
                     version: '0.1.7',
@@ -43459,16 +43815,16 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(260),
+                r = i(262),
                 s = i(1),
                 o = i(5),
-                a = i(543),
-                h = i(255),
-                u = i(542),
+                a = i(548),
+                h = i(257),
+                u = i(547),
                 l = i(74),
-                c = i(150),
+                c = i(151),
                 d = i(14),
-                f = i(250),
+                f = i(252),
                 p = new n({
                     initialize: function(t) {
                         (this.scene = t),
@@ -43839,7 +44195,7 @@
             var n = {};
             t.exports = n;
             var r = i(29),
-                s = i(152),
+                s = i(153),
                 o = i(32),
                 a = i(57),
                 h = i(33);
@@ -43915,7 +44271,7 @@
                 r = i(0),
                 s = i(56),
                 o = i(67),
-                a = i(153),
+                a = i(154),
                 h = i(1),
                 u = i(74),
                 l = i(91),
@@ -44078,8 +44434,8 @@
              */
             var n = i(22),
                 r = i(18),
-                s = i(207),
-                o = i(206),
+                s = i(209),
+                o = i(208),
                 a = {
                     x: {
                         get: function() {
@@ -44577,14 +44933,14 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Factory: i(260),
-                Image: i(257),
-                Matter: i(151),
-                MatterPhysics: i(544),
-                PolyDecomp: i(259),
-                Sprite: i(256),
-                TileBody: i(154),
-                World: i(250),
+                Factory: i(262),
+                Image: i(259),
+                Matter: i(152),
+                MatterPhysics: i(549),
+                PolyDecomp: i(261),
+                Sprite: i(258),
+                TileBody: i(155),
+                World: i(252),
             };
         },
         function(t, e) {
@@ -44693,8 +45049,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(93),
-                r = i(564),
-                s = i(563);
+                r = i(569),
+                s = i(568);
             t.exports = function(t, e, i) {
                 var o = null;
                 e.collides === n.LITE || i.collides === n.FIXED
@@ -44722,11 +45078,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(265),
+                r = i(267),
                 s = i(1),
                 o = i(74),
                 a = i(14),
-                h = i(261),
+                h = i(263),
                 u = new n({
                     initialize: function(t) {
                         (this.scene = t),
@@ -45210,16 +45566,16 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Body: i(267),
+                Body: i(269),
                 COLLIDES: i(93),
-                CollisionMap: i(266),
-                Factory: i(265),
-                Image: i(263),
-                ImpactBody: i(264),
-                ImpactPhysics: i(566),
-                Sprite: i(262),
+                CollisionMap: i(268),
+                Factory: i(267),
+                Image: i(265),
+                ImpactBody: i(266),
+                ImpactPhysics: i(571),
+                Sprite: i(264),
                 TYPE: i(92),
-                World: i(261),
+                World: i(263),
             };
         },
         function(t, e, i) {
@@ -45228,7 +45584,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(272);
+            var n = i(274);
             t.exports = function(t, e, i, r) {
                 var s = n(t, e, i, r);
                 if (
@@ -45272,7 +45628,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(273);
+            var n = i(275);
             t.exports = function(t, e, i, r) {
                 var s = n(t, e, i, r);
                 if (
@@ -45325,7 +45681,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(585);
+            var n = i(590);
             t.exports = function(t, e, i, r, s) {
                 var o = 0;
                 return (
@@ -45365,7 +45721,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(587);
+            var n = i(592);
             t.exports = function(t, e, i, r, s) {
                 var o = 0;
                 return (
@@ -45396,9 +45752,9 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(588),
-                r = i(586),
-                s = i(269);
+            var n = i(593),
+                r = i(591),
+                s = i(271);
             t.exports = function(t, e, i, o, a, h) {
                 var u = o.left,
                     l = o.top,
@@ -45671,12 +46027,12 @@
             var n = i(0),
                 r = i(51),
                 s = i(63),
-                o = i(281),
+                o = i(283),
                 a = i(1),
                 h = i(74),
                 u = i(14),
                 l = i(4),
-                c = i(276),
+                c = i(278),
                 d = new n({
                     initialize: function(t) {
                         (this.scene = t),
@@ -45844,18 +46200,18 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(58),
-                r = i(19),
+                r = i(20),
                 s = {
-                    ArcadePhysics: i(603),
-                    Body: i(275),
-                    Collider: i(274),
-                    Factory: i(281),
-                    Group: i(278),
-                    Image: i(280),
+                    ArcadePhysics: i(608),
+                    Body: i(277),
+                    Collider: i(276),
+                    Factory: i(283),
+                    Group: i(280),
+                    Image: i(282),
                     Sprite: i(118),
-                    StaticBody: i(268),
-                    StaticGroup: i(277),
-                    World: i(276),
+                    StaticBody: i(270),
+                    StaticGroup: i(279),
+                    World: i(278),
                 };
             (s = r(!1, s, n)), (t.exports = s);
         },
@@ -45865,7 +46221,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Arcade: i(604), Impact: i(582), Matter: i(562) };
+            t.exports = { Arcade: i(609), Impact: i(587), Matter: i(567) };
         },
         function(t, e) {
             t.exports = function(t, e, i) {
@@ -45991,7 +46347,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Ceil: i(622), Floor: i(621), To: i(620) };
+            t.exports = { Ceil: i(627), Floor: i(626), To: i(625) };
         },
         function(t, e) {
             t.exports = function(t) {
@@ -46004,7 +46360,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { GetNext: i(311), IsSize: i(128), IsValue: i(624) };
+            t.exports = { GetNext: i(313), IsSize: i(128), IsValue: i(629) };
         },
         function(t, e, i) {
             /**
@@ -46012,7 +46368,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(190);
+            var n = i(192);
             t.exports = function(t, e) {
                 var i = t.length - 1,
                     r = i * e,
@@ -46030,7 +46386,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(191);
+            var n = i(193);
             t.exports = function(t, e) {
                 var i = t.length - 1,
                     r = i * e,
@@ -46064,7 +46420,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(284);
+            var n = i(286);
             t.exports = function(t, e) {
                 for (var i = 0, r = t.length - 1, s = 0; s <= r; s++)
                     i +=
@@ -46082,11 +46438,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Bezier: i(628),
-                CatmullRom: i(627),
-                CubicBezier: i(399),
-                Linear: i(626),
-                QuadraticBezier: i(395),
+                Bezier: i(633),
+                CatmullRom: i(632),
+                CubicBezier: i(402),
+                Linear: i(631),
+                QuadraticBezier: i(398),
             };
         },
         function(t, e) {
@@ -46121,11 +46477,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Ceil: i(634),
-                Equal: i(633),
-                Floor: i(632),
-                GreaterThan: i(631),
-                LessThan: i(630),
+                Ceil: i(639),
+                Equal: i(638),
+                Floor: i(637),
+                GreaterThan: i(636),
+                LessThan: i(635),
             };
         },
         function(t, e, i) {
@@ -46135,18 +46491,18 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Back: i(326),
-                Bounce: i(325),
-                Circular: i(324),
-                Cubic: i(323),
-                Elastic: i(322),
-                Expo: i(321),
-                Linear: i(320),
-                Quadratic: i(319),
-                Quartic: i(318),
-                Quintic: i(317),
-                Sine: i(316),
-                Stepped: i(315),
+                Back: i(328),
+                Bounce: i(327),
+                Circular: i(326),
+                Cubic: i(325),
+                Elastic: i(324),
+                Expo: i(323),
+                Linear: i(322),
+                Quadratic: i(321),
+                Quartic: i(320),
+                Quintic: i(319),
+                Sine: i(318),
+                Stepped: i(317),
             };
         },
         function(t, e) {
@@ -46170,7 +46526,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { Between: i(63), Power: i(638), Squared: i(637) };
+            t.exports = { Between: i(63), Power: i(643), Squared: i(642) };
         },
         function(t, e) {
             t.exports = function(t, e) {
@@ -46205,7 +46561,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(285);
+            var n = i(287);
             t.exports = function(t) {
                 return n(t + Math.PI);
             };
@@ -46237,16 +46593,16 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Between: i(646),
-                BetweenY: i(645),
-                BetweenPoints: i(644),
-                BetweenPointsY: i(643),
-                Reverse: i(642),
-                RotateTo: i(641),
-                ShortestBetween: i(640),
-                Normalize: i(285),
-                Wrap: i(207),
-                WrapDegrees: i(206),
+                Between: i(651),
+                BetweenY: i(650),
+                BetweenPoints: i(649),
+                BetweenPointsY: i(648),
+                Reverse: i(647),
+                RotateTo: i(646),
+                ShortestBetween: i(645),
+                Normalize: i(287),
+                Wrap: i(209),
+                WrapDegrees: i(208),
             };
         },
         function(t, e, i) {
@@ -46256,57 +46612,57 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(18),
-                r = i(19),
+                r = i(20),
                 s = {
-                    Angle: i(647),
-                    Distance: i(639),
-                    Easing: i(636),
-                    Fuzzy: i(635),
-                    Interpolation: i(629),
-                    Pow2: i(625),
-                    Snap: i(623),
-                    RandomDataGenerator: i(439),
-                    Average: i(619),
-                    Bernstein: i(284),
-                    Between: i(388),
-                    CatmullRom: i(191),
-                    CeilTo: i(618),
+                    Angle: i(652),
+                    Distance: i(644),
+                    Easing: i(641),
+                    Fuzzy: i(640),
+                    Interpolation: i(634),
+                    Pow2: i(630),
+                    Snap: i(628),
+                    RandomDataGenerator: i(442),
+                    Average: i(624),
+                    Bernstein: i(286),
+                    Between: i(391),
+                    CatmullRom: i(193),
+                    CeilTo: i(623),
                     Clamp: i(28),
                     DegToRad: i(51),
-                    Difference: i(617),
-                    Factorial: i(283),
-                    FloatBetween: i(327),
-                    FloorTo: i(616),
+                    Difference: i(622),
+                    Factorial: i(285),
+                    FloatBetween: i(329),
+                    FloorTo: i(621),
                     FromPercent: i(104),
-                    GetSpeed: i(615),
-                    IsEven: i(614),
-                    IsEvenStrict: i(613),
-                    Linear: i(190),
-                    MaxAdd: i(612),
-                    MinSub: i(611),
-                    Percent: i(610),
-                    RadToDeg: i(192),
-                    RandomXY: i(609),
-                    RandomXYZ: i(409),
-                    RandomXYZW: i(408),
-                    Rotate: i(282),
-                    RotateAround: i(433),
-                    RotateAroundDistance: i(203),
-                    RoundAwayFromZero: i(343),
-                    RoundTo: i(608),
-                    SinCosTableGenerator: i(607),
-                    SmootherStep: i(426),
-                    SmoothStep: i(425),
-                    TransformXY: i(359),
-                    Within: i(606),
+                    GetSpeed: i(620),
+                    IsEven: i(619),
+                    IsEvenStrict: i(618),
+                    Linear: i(192),
+                    MaxAdd: i(617),
+                    MinSub: i(616),
+                    Percent: i(615),
+                    RadToDeg: i(194),
+                    RandomXY: i(614),
+                    RandomXYZ: i(412),
+                    RandomXYZW: i(411),
+                    Rotate: i(284),
+                    RotateAround: i(436),
+                    RotateAroundDistance: i(205),
+                    RoundAwayFromZero: i(345),
+                    RoundTo: i(613),
+                    SinCosTableGenerator: i(612),
+                    SmootherStep: i(429),
+                    SmoothStep: i(428),
+                    TransformXY: i(363),
+                    Within: i(611),
                     Wrap: i(52),
                     Vector2: i(4),
                     Vector3: i(77),
-                    Vector4: i(195),
-                    Matrix3: i(405),
-                    Matrix4: i(196),
-                    Quaternion: i(406),
-                    RotateVec3: i(407),
+                    Vector4: i(197),
+                    Matrix3: i(408),
+                    Matrix4: i(198),
+                    Quaternion: i(409),
+                    RotateVec3: i(410),
                 };
             (s = r(!1, s, n)), (t.exports = s);
         },
@@ -46317,9 +46673,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(76),
-                o = i(12),
+                o = i(11),
                 a = i(7),
                 h = i(1),
                 u = i(14),
@@ -46639,9 +46995,9 @@
                 r = i(7),
                 s = i(1),
                 o = i(60),
-                a = i(11),
+                a = i(8),
                 h = i(59),
-                u = i(286),
+                u = i(288),
                 l = new n({
                     Extends: h,
                     initialize: function(t, e, i, n, r, l) {
@@ -46765,11 +47121,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = i(26),
                 l = new n({
                     Extends: s,
@@ -46819,11 +47175,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = new n({
                     Extends: s,
                     initialize: function(t, e, i, n) {
@@ -46929,11 +47285,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = new n({
                     Extends: s,
                     initialize: function(t, e, i, n) {
@@ -46954,7 +47310,7 @@
                             url: i,
                             xhrSettings: n,
                         };
-                        s.call(this, u);
+                        s.call(this, t, u);
                     },
                     onProcess: function() {
                         (this.state = r.FILE_PROCESSING),
@@ -46983,56 +47339,76 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
-                u = i(14),
-                l = new n({
+                h = i(8),
+                u = new n({
                     Extends: s,
-                    initialize: function(t, e, i, n) {
-                        var r = 'js';
+                    initialize: function(t, e, i, n, o, u) {
+                        var l = 'js';
                         if (h(e)) {
-                            var o = e;
-                            (e = a(o, 'key')),
-                                (i = a(o, 'url')),
-                                (n = a(o, 'xhrSettings')),
-                                (r = a(o, 'extension', r));
+                            var c = e;
+                            (e = a(c, 'key')),
+                                (i = a(c, 'url')),
+                                (u = a(c, 'xhrSettings')),
+                                (l = a(c, 'extension', l)),
+                                (n = a(c, 'systemKey')),
+                                (o = a(c, 'sceneKey'));
                         }
-                        'function' == typeof i &&
-                            ((window[e] = i), window[e].register(u));
-                        var l = {
-                            type: 'script',
+                        var d = {
+                            type: 'scenePlugin',
                             cache: !1,
-                            extension: r,
+                            extension: l,
                             responseType: 'text',
                             key: e,
                             url: i,
-                            xhrSettings: n,
+                            xhrSettings: u,
+                            config: { systemKey: n, sceneKey: o },
                         };
-                        s.call(this, l);
+                        s.call(this, t, d),
+                            'function' == typeof i &&
+                                ((this.data = i),
+                                (this.state = r.FILE_POPULATED));
                     },
                     onProcess: function() {
-                        (this.state = r.FILE_PROCESSING),
-                            (this.data = document.createElement('script')),
-                            (this.data.language = 'javascript'),
-                            (this.data.type = 'text/javascript'),
-                            (this.data.defer = !1),
-                            (this.data.text = this.xhrLoader.responseText),
-                            document.head.appendChild(this.data),
-                            window[this.key].register(u),
+                        var t = this.loader.systems.plugins,
+                            e = this.config,
+                            i = this.key,
+                            n = a(e, 'systemKey', i),
+                            s = a(e, 'sceneKey', i);
+                        this.state === r.FILE_POPULATED
+                            ? t.installScenePlugin(
+                                  n,
+                                  this.data,
+                                  s,
+                                  this.loader.scene
+                              )
+                            : ((this.state = r.FILE_PROCESSING),
+                              (this.data = document.createElement('script')),
+                              (this.data.language = 'javascript'),
+                              (this.data.type = 'text/javascript'),
+                              (this.data.defer = !1),
+                              (this.data.text = this.xhrLoader.responseText),
+                              document.head.appendChild(this.data),
+                              t.installScenePlugin(
+                                  n,
+                                  window[this.key],
+                                  s,
+                                  this.loader.scene
+                              )),
                             this.onProcessComplete();
                     },
                 });
-            o.register('plugin', function(t, e, i) {
+            o.register('scenePlugin', function(t, e, i, n, r) {
                 if (Array.isArray(t))
-                    for (var n = 0; n < t.length; n++)
-                        this.addFile(new l(this, t[n]));
-                else this.addFile(new l(this, t, e, i));
+                    for (var s = 0; s < t.length; s++)
+                        this.addFile(new u(this, t[s]));
+                else this.addFile(new u(this, t, e, i, n, r));
                 return this;
             }),
-                (t.exports = l);
+                (t.exports = u);
         },
         function(t, e, i) {
             /**
@@ -47041,7 +47417,72 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
+                s = i(21),
+                o = i(7),
+                a = i(1),
+                h = i(8),
+                u = new n({
+                    Extends: s,
+                    initialize: function(t, e, i, n, o) {
+                        var u = 'js';
+                        if (h(e)) {
+                            var l = e;
+                            (e = a(l, 'key')),
+                                (i = a(l, 'url')),
+                                (o = a(l, 'xhrSettings')),
+                                (u = a(l, 'extension', u)),
+                                (n = a(l, 'start'));
+                        }
+                        var c = {
+                            type: 'plugin',
+                            cache: !1,
+                            extension: u,
+                            responseType: 'text',
+                            key: e,
+                            url: i,
+                            xhrSettings: o,
+                            config: { start: n },
+                        };
+                        s.call(this, t, c),
+                            'function' == typeof i &&
+                                ((this.data = i),
+                                (this.state = r.FILE_POPULATED));
+                    },
+                    onProcess: function() {
+                        var t = this.loader.systems.plugins,
+                            e = this.config,
+                            i = a(e, 'start', !1);
+                        this.state === r.FILE_POPULATED
+                            ? t.install(this.key, this.data, i)
+                            : ((this.state = r.FILE_PROCESSING),
+                              (this.data = document.createElement('script')),
+                              (this.data.language = 'javascript'),
+                              (this.data.type = 'text/javascript'),
+                              (this.data.defer = !1),
+                              (this.data.text = this.xhrLoader.responseText),
+                              document.head.appendChild(this.data),
+                              t.install(this.key, window[this.key], i)),
+                            this.onProcessComplete();
+                    },
+                });
+            o.register('plugin', function(t, e, i, n) {
+                if (Array.isArray(t))
+                    for (var r = 0; r < t.length; r++)
+                        this.addFile(new u(this, t[r]));
+                else this.addFile(new u(this, t, e, i, n));
+                return this;
+            }),
+                (t.exports = u);
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
+            var n = i(0),
+                r = i(19),
                 s = i(7),
                 o = i(49),
                 a = new n({
@@ -47078,7 +47519,7 @@
                 r = i(7),
                 s = i(1),
                 o = i(60),
-                a = i(11),
+                a = i(8),
                 h = i(49),
                 u = i(59),
                 l = new n({
@@ -47198,11 +47639,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = new n({
                     Extends: s,
                     initialize: function(t, e, i, n, r, o) {
@@ -47299,11 +47740,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = new n({
                     Extends: s,
                     initialize: function(t, e, i, n) {
@@ -47351,10 +47792,10 @@
                 r = i(7),
                 s = i(1),
                 o = i(60),
-                a = i(11),
+                a = i(8),
                 h = i(59),
-                u = i(339),
-                l = i(157),
+                u = i(341),
+                l = i(158),
                 c = new n({
                     Extends: h,
                     initialize: function(t, e, i, n, r, u) {
@@ -47416,11 +47857,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(20),
+                r = i(19),
                 s = i(21),
                 o = i(7),
                 a = i(1),
-                h = i(11),
+                h = i(8),
                 u = new n({
                     Extends: s,
                     initialize: function(t, e, i, n, r) {
@@ -47469,11 +47910,11 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(288),
+            var n = i(290),
                 r = i(0),
                 s = i(7),
                 o = i(1),
-                a = i(11),
+                a = i(8),
                 h = i(49),
                 u = i(59),
                 l = new r({
@@ -47555,9 +47996,9 @@
                 r = i(7),
                 s = i(1),
                 o = i(60),
-                a = i(11),
+                a = i(8),
                 h = i(59),
-                u = i(157),
+                u = i(158),
                 l = new n({
                     Extends: h,
                     initialize: function(t, e, i, n, r, l) {
@@ -47619,7 +48060,7 @@
                 r = i(7),
                 s = i(1),
                 o = i(60),
-                a = i(11),
+                a = i(8),
                 h = i(49),
                 u = i(59),
                 l = new n({
@@ -47721,30 +48162,31 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                AnimationJSONFile: i(667),
-                AtlasJSONFile: i(666),
-                AtlasXMLFile: i(665),
-                AudioFile: i(288),
-                AudioSpriteFile: i(664),
-                BinaryFile: i(663),
-                BitmapFontFile: i(662),
-                GLSLFile: i(661),
-                HTML5AudioFile: i(287),
-                HTMLFile: i(660),
+                AnimationJSONFile: i(673),
+                AtlasJSONFile: i(672),
+                AtlasXMLFile: i(671),
+                AudioFile: i(290),
+                AudioSpriteFile: i(670),
+                BinaryFile: i(669),
+                BitmapFontFile: i(668),
+                GLSLFile: i(667),
+                HTML5AudioFile: i(289),
+                HTMLFile: i(666),
                 ImageFile: i(60),
                 JSONFile: i(49),
-                MultiAtlasFile: i(659),
-                PackFile: i(658),
-                PluginFile: i(657),
-                ScriptFile: i(656),
-                SpriteSheetFile: i(655),
-                SVGFile: i(654),
-                TextFile: i(286),
-                TilemapCSVFile: i(653),
-                TilemapImpactFile: i(652),
-                TilemapJSONFile: i(651),
-                UnityAtlasFile: i(650),
-                XMLFile: i(157),
+                MultiAtlasFile: i(665),
+                PackFile: i(664),
+                PluginFile: i(663),
+                ScenePluginFile: i(662),
+                ScriptFile: i(661),
+                SpriteSheetFile: i(660),
+                SVGFile: i(659),
+                TextFile: i(288),
+                TilemapCSVFile: i(658),
+                TilemapImpactFile: i(657),
+                TilemapJSONFile: i(656),
+                UnityAtlasFile: i(655),
+                XMLFile: i(158),
             };
         },
         function(t, e, i) {
@@ -47753,17 +48195,17 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(20),
-                r = i(19),
+            var n = i(19),
+                r = i(20),
                 s = {
-                    FileTypes: i(668),
+                    FileTypes: i(674),
                     File: i(21),
                     FileTypesManager: i(7),
-                    GetURL: i(159),
-                    LoaderPlugin: i(649),
-                    MergeXHRSettings: i(158),
+                    GetURL: i(160),
+                    LoaderPlugin: i(654),
+                    MergeXHRSettings: i(159),
                     MultiFile: i(59),
-                    XHRLoader: i(289),
+                    XHRLoader: i(291),
                     XHRSettings: i(119),
                 };
             (s = r(!1, s, n)), (t.exports = s);
@@ -47774,7 +48216,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { TouchManager: i(360) };
+            t.exports = { TouchManager: i(364) };
         },
         function(t, e, i) {
             /**
@@ -47782,7 +48224,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { MouseManager: i(362) };
+            t.exports = { MouseManager: i(366) };
         },
         function(t, e) {
             t.exports = function(t, e) {
@@ -47811,14 +48253,14 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                KeyboardManager: i(365),
-                Key: i(364),
-                KeyCodes: i(184),
-                KeyCombo: i(363),
-                JustDown: i(675),
-                JustUp: i(674),
-                DownDuration: i(673),
-                UpDuration: i(672),
+                KeyboardManager: i(369),
+                Key: i(368),
+                KeyCodes: i(185),
+                KeyCombo: i(367),
+                JustDown: i(681),
+                JustUp: i(680),
+                DownDuration: i(679),
+                UpDuration: i(678),
             };
         },
         function(t, e, i) {
@@ -47831,12 +48273,12 @@
                 r = i(37),
                 s = i(0),
                 o = i(63),
-                a = i(171),
+                a = i(172),
                 h = i(98),
-                u = i(12),
-                l = i(290),
+                u = i(11),
+                l = i(292),
                 c = i(14),
-                d = i(10),
+                d = i(12),
                 f = i(36),
                 p = i(69),
                 g = i(71),
@@ -48566,9 +49008,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                DUALSHOCK_4: i(680),
-                SNES_USB: i(679),
-                XBOX_360: i(678),
+                DUALSHOCK_4: i(686),
+                SNES_USB: i(685),
+                XBOX_360: i(684),
             };
         },
         function(t, e, i) {
@@ -48578,11 +49020,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Axis: i(367),
-                Button: i(366),
-                Gamepad: i(368),
-                GamepadManager: i(369),
-                Configs: i(681),
+                Axis: i(371),
+                Button: i(370),
+                Gamepad: i(372),
+                GamepadManager: i(373),
+                Configs: i(687),
             };
         },
         function(t, e, i) {
@@ -48592,14 +49034,14 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                CreateInteractiveObject: i(290),
-                Gamepad: i(682),
-                InputManager: i(370),
-                InputPlugin: i(677),
-                Keyboard: i(676),
-                Mouse: i(671),
-                Pointer: i(361),
-                Touch: i(670),
+                CreateInteractiveObject: i(292),
+                Gamepad: i(688),
+                InputManager: i(374),
+                InputPlugin: i(683),
+                Keyboard: i(682),
+                Mouse: i(677),
+                Pointer: i(365),
+                Touch: i(676),
             };
         },
         function(t, e, i) {
@@ -48608,7 +49050,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(160);
+            var n = i(161);
             t.exports = function(t, e, i) {
                 return n(t, e.x, e.y, i);
             };
@@ -48619,8 +49061,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(160),
-                r = i(291);
+            var n = i(161),
+                r = i(293);
             t.exports = function(t, e) {
                 var i = r(t);
                 return n(t, i.x, i.y, e);
@@ -48750,8 +49192,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(293),
-                r = i(292);
+            var n = i(295),
+                r = i(294);
             t.exports = function(t, e, i, s) {
                 void 0 === s && (s = n);
                 var o = s(t),
@@ -48777,7 +49219,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(372),
+            var n = i(376),
                 r = i(69);
             t.exports = function(t, e, i, s, o) {
                 void 0 === e && (e = null),
@@ -48832,30 +49274,30 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(69);
-            (n.Area = i(697)),
-                (n.BuildEquilateral = i(696)),
-                (n.BuildFromPolygon = i(695)),
-                (n.BuildRight = i(694)),
-                (n.CenterOn = i(693)),
-                (n.Centroid = i(293)),
-                (n.CircumCenter = i(692)),
-                (n.CircumCircle = i(691)),
-                (n.Clone = i(690)),
+            (n.Area = i(703)),
+                (n.BuildEquilateral = i(702)),
+                (n.BuildFromPolygon = i(701)),
+                (n.BuildRight = i(700)),
+                (n.CenterOn = i(699)),
+                (n.Centroid = i(295)),
+                (n.CircumCenter = i(698)),
+                (n.CircumCircle = i(697)),
+                (n.Clone = i(696)),
                 (n.Contains = i(71)),
-                (n.ContainsArray = i(164)),
-                (n.ContainsPoint = i(689)),
-                (n.CopyFrom = i(688)),
-                (n.Decompose = i(302)),
-                (n.Equals = i(687)),
-                (n.GetPoint = i(295)),
-                (n.GetPoints = i(294)),
-                (n.InCenter = i(291)),
-                (n.Perimeter = i(686)),
-                (n.Offset = i(292)),
-                (n.Random = i(204)),
-                (n.Rotate = i(685)),
-                (n.RotateAroundPoint = i(684)),
-                (n.RotateAroundXY = i(160)),
+                (n.ContainsArray = i(165)),
+                (n.ContainsPoint = i(695)),
+                (n.CopyFrom = i(694)),
+                (n.Decompose = i(304)),
+                (n.Equals = i(693)),
+                (n.GetPoint = i(297)),
+                (n.GetPoints = i(296)),
+                (n.InCenter = i(293)),
+                (n.Perimeter = i(692)),
+                (n.Offset = i(294)),
+                (n.Random = i(206)),
+                (n.Rotate = i(691)),
+                (n.RotateAroundPoint = i(690)),
+                (n.RotateAroundXY = i(161)),
                 (t.exports = n);
         },
         function(t, e) {
@@ -48955,7 +49397,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(296);
+            var n = i(298);
             t.exports = function(t, e, i) {
                 var r = t.centerX,
                     s = t.centerY;
@@ -49016,7 +49458,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(161);
+            var n = i(162);
             t.exports = function(t, e) {
                 var i = n(t);
                 return (
@@ -49036,7 +49478,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(161);
+            var n = i(162);
             t.exports = function(t, e) {
                 var i = n(t);
                 return (
@@ -49097,7 +49539,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
+            var n = i(12);
             t.exports = function(t) {
                 return new n(t.x, t.y, t.width, t.height);
             };
@@ -49137,7 +49579,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
+            var n = i(12);
             t.exports = function(t, e) {
                 void 0 === e && (e = new n());
                 for (
@@ -49165,7 +49607,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(162);
+            var n = i(163);
             t.exports = function(t, e) {
                 return n(t, e.x, e.y);
             };
@@ -49176,7 +49618,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(298);
+            var n = i(300);
             t.exports = function(t) {
                 return new n(t.points);
             };
@@ -49187,12 +49629,12 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(298);
-            (n.Clone = i(725)),
-                (n.Contains = i(162)),
-                (n.ContainsPoint = i(724)),
-                (n.GetAABB = i(723)),
-                (n.GetNumberArray = i(722)),
+            var n = i(300);
+            (n.Clone = i(731)),
+                (n.Contains = i(163)),
+                (n.ContainsPoint = i(730)),
+                (n.GetAABB = i(729)),
+                (n.GetNumberArray = i(728)),
                 (t.exports = n);
         },
         function(t, e, i) {
@@ -49201,7 +49643,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(300);
+            var n = i(302);
             t.exports = function(t, e) {
                 if (0 !== t.x || 0 !== t.y) {
                     var i = n(t);
@@ -49230,7 +49672,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(6),
-                r = i(299);
+                r = i(301);
             t.exports = function(t, e, i) {
                 void 0 === i && (i = new n());
                 var s = (t.x * e.x + t.y * e.y) / r(e);
@@ -49276,7 +49718,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
+            var n = i(12);
             t.exports = function(t, e) {
                 void 0 === e && (e = new n());
                 for (
@@ -49367,21 +49809,21 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(6);
-            (n.Ceil = i(739)),
-                (n.Clone = i(738)),
-                (n.CopyFrom = i(737)),
-                (n.Equals = i(736)),
-                (n.Floor = i(735)),
-                (n.GetCentroid = i(734)),
-                (n.GetMagnitude = i(300)),
-                (n.GetMagnitudeSq = i(299)),
-                (n.GetRectangleFromPoints = i(733)),
-                (n.Interpolate = i(732)),
-                (n.Invert = i(731)),
-                (n.Negative = i(730)),
-                (n.Project = i(729)),
-                (n.ProjectUnit = i(728)),
-                (n.SetMagnitude = i(727)),
+            (n.Ceil = i(745)),
+                (n.Clone = i(744)),
+                (n.CopyFrom = i(743)),
+                (n.Equals = i(742)),
+                (n.Floor = i(741)),
+                (n.GetCentroid = i(740)),
+                (n.GetMagnitude = i(302)),
+                (n.GetMagnitudeSq = i(301)),
+                (n.GetRectangleFromPoints = i(739)),
+                (n.Interpolate = i(738)),
+                (n.Invert = i(737)),
+                (n.Negative = i(736)),
+                (n.Project = i(735)),
+                (n.ProjectUnit = i(734)),
+                (n.SetMagnitude = i(733)),
                 (t.exports = n);
         },
         function(t, e) {
@@ -49411,7 +49853,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(163);
+            var n = i(164);
             t.exports = function(t, e, i) {
                 return n(t, e.x, e.y, i);
             };
@@ -49422,7 +49864,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(163);
+            var n = i(164);
             t.exports = function(t, e) {
                 var i = (t.x1 + t.x2) / 2,
                     r = (t.y1 + t.y2) / 2;
@@ -49436,7 +49878,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(70),
-                r = i(301);
+                r = i(303);
             t.exports = function(t, e) {
                 return 2 * r(e) - Math.PI - n(t);
             };
@@ -49552,30 +49994,30 @@
              */
             var n = i(133);
             (n.Angle = i(70)),
-                (n.BresenhamPoints = i(427)),
-                (n.CenterOn = i(757)),
-                (n.Clone = i(756)),
-                (n.CopyFrom = i(755)),
-                (n.Equals = i(754)),
-                (n.GetMidPoint = i(753)),
-                (n.GetNormal = i(752)),
-                (n.GetPoint = i(434)),
-                (n.GetPoints = i(211)),
-                (n.Height = i(751)),
+                (n.BresenhamPoints = i(430)),
+                (n.CenterOn = i(763)),
+                (n.Clone = i(762)),
+                (n.CopyFrom = i(761)),
+                (n.Equals = i(760)),
+                (n.GetMidPoint = i(759)),
+                (n.GetNormal = i(758)),
+                (n.GetPoint = i(437)),
+                (n.GetPoints = i(213)),
+                (n.Height = i(757)),
                 (n.Length = i(103)),
-                (n.NormalAngle = i(301)),
-                (n.NormalX = i(750)),
-                (n.NormalY = i(749)),
-                (n.Offset = i(748)),
-                (n.PerpSlope = i(747)),
-                (n.Random = i(210)),
-                (n.ReflectAngle = i(746)),
-                (n.Rotate = i(745)),
-                (n.RotateAroundPoint = i(744)),
-                (n.RotateAroundXY = i(163)),
-                (n.SetToAngle = i(743)),
-                (n.Slope = i(742)),
-                (n.Width = i(741)),
+                (n.NormalAngle = i(303)),
+                (n.NormalX = i(756)),
+                (n.NormalY = i(755)),
+                (n.Offset = i(754)),
+                (n.PerpSlope = i(753)),
+                (n.Random = i(212)),
+                (n.ReflectAngle = i(752)),
+                (n.Rotate = i(751)),
+                (n.RotateAroundPoint = i(750)),
+                (n.RotateAroundXY = i(164)),
+                (n.SetToAngle = i(749)),
+                (n.Slope = i(748)),
+                (n.Width = i(747)),
                 (t.exports = n);
         },
         function(t, e, i) {
@@ -49584,8 +50026,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(164),
-                r = i(302),
+            var n = i(165),
+                r = i(304),
                 s = i(120);
             t.exports = function(t, e) {
                 if (
@@ -49635,7 +50077,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(305),
+            var n = i(307),
                 r = i(71);
             t.exports = function(t, e) {
                 return !(
@@ -49671,8 +50113,8 @@
              */
             var n = i(120),
                 r = i(36),
-                s = i(164),
-                o = i(303);
+                s = i(165),
+                o = i(305);
             t.exports = function(t, e) {
                 if (
                     e.left > t.right ||
@@ -49704,7 +50146,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(304);
+            var n = i(306);
             t.exports = function(t, e) {
                 if (!n(t, e)) return !1;
                 var i = Math.min(e.x1, e.x2),
@@ -49759,8 +50201,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10),
-                r = i(306);
+            var n = i(12),
+                r = i(308);
             t.exports = function(t, e, i) {
                 return (
                     void 0 === i && (i = new n()),
@@ -49815,7 +50257,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
+            var n = i(12);
             t.exports = function(t, e) {
                 return (
                     void 0 === e && (e = new n()),
@@ -49887,21 +50329,21 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(105);
-            (n.Area = i(777)),
-                (n.Circumference = i(437)),
-                (n.CircumferencePoint = i(214)),
-                (n.Clone = i(776)),
+            (n.Area = i(783)),
+                (n.Circumference = i(440)),
+                (n.CircumferencePoint = i(216)),
+                (n.Clone = i(782)),
                 (n.Contains = i(37)),
-                (n.ContainsPoint = i(775)),
-                (n.ContainsRect = i(774)),
-                (n.CopyFrom = i(773)),
-                (n.Equals = i(772)),
-                (n.GetBounds = i(771)),
-                (n.GetPoint = i(440)),
-                (n.GetPoints = i(438)),
-                (n.Offset = i(770)),
-                (n.OffsetPoint = i(769)),
-                (n.Random = i(213)),
+                (n.ContainsPoint = i(781)),
+                (n.ContainsRect = i(780)),
+                (n.CopyFrom = i(779)),
+                (n.Equals = i(778)),
+                (n.GetBounds = i(777)),
+                (n.GetPoint = i(443)),
+                (n.GetPoints = i(441)),
+                (n.Offset = i(776)),
+                (n.OffsetPoint = i(775)),
+                (n.Random = i(215)),
                 (t.exports = n);
         },
         function(t, e, i) {
@@ -49911,7 +50353,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(309),
+                r = i(311),
                 s = i(14),
                 o = new n({
                     Extends: r,
@@ -49943,9 +50385,10 @@
              */
             var n = i(23),
                 r = i(13),
-                s = i(8),
-                o = i(165);
+                s = i(10),
+                o = i(166);
             r.register('quad', function(t, e) {
+                void 0 === t && (t = {});
                 var i = s(t, 'x', 0),
                     r = s(t, 'y', 0),
                     a = s(t, 'key', null),
@@ -49962,10 +50405,11 @@
              */
             var n = i(23),
                 r = i(13),
-                s = i(8),
+                s = i(10),
                 o = i(5),
                 a = i(121);
             r.register('mesh', function(t, e) {
+                void 0 === t && (t = {});
                 var i = s(t, 'key', null),
                     r = s(t, 'frame', null),
                     h = o(t, 'vertices', []),
@@ -49982,7 +50426,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(165);
+            var n = i(166);
             i(9).register('quad', function(t, e, i, r) {
                 return this.displayList.add(new n(this.scene, t, e, i, r));
             });
@@ -50024,8 +50468,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(785)),
-                (r = i(784)),
+            (n = i(791)),
+                (r = i(790)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -50035,7 +50479,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(13),
-                r = i(8),
+                r = i(10),
                 s = i(135);
             n.register('zone', function(t) {
                 var e = r(t, 'x', 0),
@@ -50053,9 +50497,10 @@
              */
             var n = i(23),
                 r = i(13),
-                s = i(8),
-                o = i(166);
+                s = i(10),
+                o = i(167);
             r.register('tileSprite', function(t, e) {
+                void 0 === t && (t = {});
                 var i = s(t, 'x', 0),
                     r = s(t, 'y', 0),
                     a = s(t, 'width', 512),
@@ -50074,9 +50519,10 @@
              */
             var n = i(23),
                 r = i(13),
-                s = i(8),
-                o = i(167);
+                s = i(10),
+                o = i(168);
             r.register('text', function(t, e) {
+                void 0 === t && (t = {});
                 var i = s(t, 'text', ''),
                     r = s(t, 'style', null),
                     a = s(t, 'padding', null);
@@ -50097,12 +50543,13 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(176),
+            var n = i(177),
                 r = i(23),
                 s = i(13),
-                o = i(8),
+                o = i(10),
                 a = i(5);
             s.register('bitmapText', function(t, e) {
+                void 0 === t && (t = {});
                 var i = a(t, 'font', ''),
                     s = o(t, 'text', ''),
                     h = o(t, 'size', !1),
@@ -50117,11 +50564,12 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(23),
-                r = i(177),
+                r = i(178),
                 s = i(13),
-                o = i(8),
+                o = i(10),
                 a = i(35);
             s.register('sprite', function(t, e) {
+                void 0 === t && (t = {});
                 var i = o(t, 'key', null),
                     s = o(t, 'frame', null),
                     h = new a(this.scene, 0, 0, i, s);
@@ -50137,11 +50585,12 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(23),
-                r = i(177),
+                r = i(178),
                 s = i(13),
-                o = i(8),
+                o = i(10),
                 a = i(130);
             s.register('sprite3D', function(t, e) {
+                void 0 === t && (t = {});
                 var i = o(t, 'key', null),
                     s = o(t, 'frame', null),
                     h = new a(this.scene, 0, 0, i, s);
@@ -50158,9 +50607,10 @@
              */
             var n = i(23),
                 r = i(13),
-                s = i(8),
-                o = i(168);
+                s = i(10),
+                o = i(169);
             r.register('renderTexture', function(t, e) {
+                void 0 === t && (t = {});
                 var i = s(t, 'x', 0),
                     r = s(t, 'y', 0),
                     a = s(t, 'width', 32),
@@ -50176,10 +50626,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(13),
-                r = i(8),
+                r = i(10),
                 s = i(1),
-                o = i(169);
+                o = i(170);
             n.register('particles', function(t, e) {
+                void 0 === t && (t = {});
                 var i = r(t, 'key', null),
                     n = r(t, 'frame', null),
                     a = s(t, 'emitters', null),
@@ -50200,9 +50651,10 @@
              */
             var n = i(23),
                 r = i(13),
-                s = i(8),
+                s = i(10),
                 o = i(73);
             r.register('image', function(t, e) {
+                void 0 === t && (t = {});
                 var i = s(t, 'key', null),
                     r = s(t, 'frame', null),
                     a = new o(this.scene, 0, 0, i, r);
@@ -50228,9 +50680,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(13),
-                r = i(172);
+                r = i(173);
             n.register('graphics', function(t, e) {
-                void 0 !== e && (t.add = e);
+                void 0 === t && (t = {}), void 0 !== e && (t.add = e);
                 var i = new r(this.scene, t);
                 return t.add && this.scene.sys.displayList.add(i), i;
             });
@@ -50241,11 +50693,12 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(173),
+            var n = i(174),
                 r = i(23),
                 s = i(13),
-                o = i(8);
+                o = i(10);
             s.register('dynamicBitmapText', function(t, e) {
+                void 0 === t && (t = {});
                 var i = o(t, 'font', ''),
                     s = o(t, 'text', ''),
                     a = o(t, 'size', !1),
@@ -50262,10 +50715,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(23),
-                r = i(174),
+                r = i(175),
                 s = i(13),
-                o = i(8);
+                o = i(10);
             s.register('container', function(t, e) {
+                void 0 === t && (t = {});
                 var i = o(t, 'x', 0),
                     s = o(t, 'y', 0),
                     a = new r(this.scene, i, s);
@@ -50278,11 +50732,12 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(175),
+            var n = i(176),
                 r = i(23),
                 s = i(13),
-                o = i(8);
+                o = i(10);
             s.register('blitter', function(t, e) {
+                void 0 === t && (t = {});
                 var i = o(t, 'key', null),
                     s = o(t, 'frame', null),
                     a = new n(this.scene, 0, 0, i, s);
@@ -50306,7 +50761,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(166);
+            var n = i(167);
             i(9).register('tileSprite', function(t, e, i, r, s, o) {
                 return this.displayList.add(
                     new n(this.scene, t, e, i, r, s, o)
@@ -50319,7 +50774,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(167);
+            var n = i(168);
             i(9).register('text', function(t, e, i, r) {
                 return this.displayList.add(new n(this.scene, t, e, i, r));
             });
@@ -50330,7 +50785,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(176);
+            var n = i(177);
             i(9).register('bitmapText', function(t, e, i, r, s) {
                 return this.displayList.add(new n(this.scene, t, e, i, r, s));
             });
@@ -50371,7 +50826,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(9),
-                r = i(168);
+                r = i(169);
             n.register('renderTexture', function(t, e, i, n) {
                 return this.displayList.add(new r(this.scene, t, e, i, n));
             });
@@ -50383,7 +50838,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(9),
-                r = i(312);
+                r = i(314);
             n.register('follower', function(t, e, i, n, s) {
                 var o = new r(this.scene, t, e, i, n, s);
                 return this.displayList.add(o), this.updateList.add(o), o;
@@ -50396,7 +50851,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(9),
-                r = i(169);
+                r = i(170);
             n.register('particles', function(t, e, i) {
                 var n = new r(this.scene, t, e, i);
                 return this.displayList.add(n), this.updateList.add(n), n;
@@ -50433,7 +50888,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(172);
+            var n = i(173);
             i(9).register('graphics', function(t) {
                 return this.displayList.add(new n(this.scene, t));
             });
@@ -50444,7 +50899,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(173);
+            var n = i(174);
             i(9).register('dynamicBitmapText', function(t, e, i, r, s) {
                 return this.displayList.add(new n(this.scene, t, e, i, r, s));
             });
@@ -50456,7 +50911,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(174);
+            var n = i(175);
             i(9).register('container', function(t, e, i) {
                 return this.displayList.add(new n(this.scene, t, e, i));
             });
@@ -50467,7 +50922,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(175);
+            var n = i(176);
             i(9).register('blitter', function(t, e, i, r) {
                 return this.displayList.add(new n(this.scene, t, e, i, r));
             });
@@ -50559,8 +51014,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(817)),
-                (r = i(816)),
+            (n = i(823)),
+                (r = i(822)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -50637,9 +51092,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(8),
+                r = i(10),
                 s = i(5),
-                o = i(819),
+                o = i(825),
                 a = {
                     fontFamily: ['fontFamily', 'Courier'],
                     fontSize: ['fontSize', '16px'],
@@ -51002,8 +51457,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(822)),
-                (r = i(821)),
+            (n = i(828)),
+                (r = i(827)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e) {
@@ -51123,9 +51578,9 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(826),
-                r = i(19),
-                s = { Parse: i(825) };
+            var n = i(832),
+                r = i(20),
+                s = { Parse: i(831) };
             (s = r(!1, s, n)), (t.exports = s);
         },
         function(t, e) {
@@ -51376,8 +51831,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(831)),
-                (r = i(830)),
+            (n = i(837)),
+                (r = i(836)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -51387,9 +51842,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                DeathZone: i(329),
-                EdgeZone: i(328),
-                RandomZone: i(313),
+                DeathZone: i(331),
+                EdgeZone: i(330),
+                RandomZone: i(315),
             };
         },
         function(t, e, i) {
@@ -51440,11 +51895,11 @@
                                         A = -b,
                                         C = -T,
                                         M = m.x - p,
-                                        _ = m.y - g;
-                                    v && ((M |= 0), (_ |= 0)),
+                                        E = m.y - g;
+                                    v && ((M |= 0), (E |= 0)),
                                         (a.globalAlpha = x),
                                         a.save(),
-                                        a.translate(M, _),
+                                        a.translate(M, E),
                                         a.rotate(m.rotation),
                                         a.scale(m.scaleX, m.scaleY),
                                         a.drawImage(
@@ -51490,8 +51945,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(835)),
-                (r = i(834)),
+            (n = i(841)),
+                (r = i(840)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e) {
@@ -51766,18 +52221,18 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(326),
-                r = i(325),
-                s = i(324),
-                o = i(323),
-                a = i(322),
-                h = i(321),
-                u = i(320),
-                l = i(319),
-                c = i(318),
-                d = i(317),
-                f = i(316),
-                p = i(315);
+            var n = i(328),
+                r = i(327),
+                s = i(326),
+                o = i(325),
+                a = i(324),
+                h = i(323),
+                u = i(322),
+                l = i(321),
+                c = i(320),
+                d = i(319),
+                f = i(318),
+                p = i(317);
             t.exports = {
                 Power0: u,
                 Power1: l.Out,
@@ -51835,7 +52290,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(327),
+                r = i(329),
                 s = i(96),
                 o = i(1),
                 a = i(52),
@@ -51982,11 +52437,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                GravityWell: i(332),
-                Particle: i(331),
-                ParticleEmitter: i(330),
-                ParticleEmitterManager: i(169),
-                Zones: i(833),
+                GravityWell: i(334),
+                Particle: i(333),
+                ParticleEmitter: i(332),
+                ParticleEmitterManager: i(170),
+                Zones: i(839),
             };
         },
         function(t, e, i) {
@@ -52023,8 +52478,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(873)),
-                (r = i(872)),
+            (n = i(879)),
+                (r = i(878)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -52048,9 +52503,9 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(875)),
-                (r = i(333)),
-                (r = i(333)),
+            (n = i(881)),
+                (r = i(335)),
+                (r = i(335)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e) {
@@ -52069,7 +52524,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10);
+            var n = i(12);
             t.exports = function(t, e) {
                 return (
                     void 0 === e && (e = new n()),
@@ -52129,7 +52584,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(171);
+            var n = i(172);
             t.exports = function(t) {
                 return new n(t.x, t.y, t.width, t.height);
             };
@@ -52177,8 +52632,8 @@
                         A = 0,
                         C = null,
                         M = 0,
-                        _ = t.currentContext,
-                        E = e.frame.source.image,
+                        E = t.currentContext,
+                        _ = e.frame.source.image,
                         P = h.cutX,
                         L = h.cutY,
                         k = 0,
@@ -52186,29 +52641,29 @@
                     if (
                         (t.currentBlendMode !== e.blendMode &&
                             ((t.currentBlendMode = e.blendMode),
-                            (_.globalCompositeOperation =
+                            (E.globalCompositeOperation =
                                 t.blendModes[e.blendMode])),
                         t.currentAlpha !== e.alpha &&
                             ((t.currentAlpha = e.alpha),
-                            (_.globalAlpha = e.alpha)),
+                            (E.globalAlpha = e.alpha)),
                         t.currentScaleMode !== e.scaleMode &&
                             (t.currentScaleMode = e.scaleMode),
-                        _.save(),
+                        E.save(),
                         void 0 !== s)
                     ) {
                         var R = s.matrix;
-                        _.transform(R[0], R[1], R[2], R[3], R[4], R[5]);
+                        E.transform(R[0], R[1], R[2], R[3], R[4], R[5]);
                     }
-                    _.translate(e.x, e.y),
-                        _.rotate(e.rotation),
-                        _.translate(-e.displayOriginX, -e.displayOriginY),
-                        _.scale(e.scaleX, e.scaleY),
+                    E.translate(e.x, e.y),
+                        E.rotate(e.rotation),
+                        E.translate(-e.displayOriginX, -e.displayOriginY),
+                        E.scale(e.scaleX, e.scaleY),
                         e.cropWidth > 0 &&
                             e.cropHeight > 0 &&
-                            (_.save(),
-                            _.beginPath(),
-                            _.rect(0, 0, e.cropWidth, e.cropHeight),
-                            _.clip());
+                            (E.save(),
+                            E.beginPath(),
+                            E.rect(0, 0, e.cropWidth, e.cropHeight),
+                            E.clip());
                     for (var O = t.config.roundPixels, B = 0; B < a; ++B)
                         if (
                             ((F = e.fontSize / e.fontData.size),
@@ -52254,20 +52709,20 @@
                                     (S -= l),
                                     (A -= c),
                                     O && ((S |= 0), (A |= 0)),
-                                    _.save(),
-                                    _.translate(S, A),
-                                    _.rotate(k),
-                                    _.scale(F, F),
-                                    _.drawImage(E, x, w, b, T, 0, 0, b, T),
-                                    _.restore(),
+                                    E.save(),
+                                    E.translate(S, A),
+                                    E.rotate(k),
+                                    E.scale(F, F),
+                                    E.drawImage(_, x, w, b, T, 0, 0, b, T),
+                                    E.restore(),
                                     (p += m.xAdvance),
                                     (v += 1),
                                     (C = m),
                                     (M = y);
                             }
                         } else (p = 0), (v = 0), (g += f), (C = null);
-                    e.cropWidth > 0 && e.cropHeight > 0 && _.restore(),
-                        _.restore();
+                    e.cropWidth > 0 && e.cropHeight > 0 && E.restore(),
+                        E.restore();
                 }
             };
         },
@@ -52294,8 +52749,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(887)),
-                (r = i(886)),
+            (n = i(893)),
+                (r = i(892)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -52397,8 +52852,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(890)),
-                (r = i(889)),
+            (n = i(896)),
+                (r = i(895)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -52552,8 +53007,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(894)),
-                (r = i(893)),
+            (n = i(900)),
+                (r = i(899)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -52592,8 +53047,8 @@
                         A = 0,
                         C = t.currentContext,
                         M = e.frame.source.image,
-                        _ = h.cutX,
-                        E = h.cutY,
+                        E = h.cutX,
+                        _ = h.cutY,
                         P = e.fontSize / e.fontData.size;
                     t.currentBlendMode !== e.blendMode &&
                         ((t.currentBlendMode = e.blendMode),
@@ -52619,8 +53074,8 @@
                         if (10 !== (g = o.charCodeAt(O))) {
                             if ((v = u[g])) {
                                 if (
-                                    ((y = _ + v.x),
-                                    (m = E + v.y),
+                                    ((y = E + v.x),
+                                    (m = _ + v.y),
                                     (x = v.width),
                                     (w = v.height),
                                     (b = p + v.xOffset + d),
@@ -52674,8 +53129,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(897)),
-                (r = i(896)),
+            (n = i(903)),
+                (r = i(902)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -52684,7 +53139,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(339);
+            var n = i(341);
             t.exports = function(t, e, i, r, s, o, a) {
                 var h = t.sys.textures.getFrame(i, r),
                     u = t.sys.cache.xml.get(s);
@@ -52897,30 +53352,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(100);
-            t.exports = function(t, e, i, r) {
-                var s;
-                if ((void 0 === r && (r = t), !Array.isArray(e)))
-                    return -1 !== (s = t.indexOf(e))
-                        ? (n(t, s), i && i.call(r, e), e)
-                        : null;
-                for (var o = e.length - 1; o >= 0; ) {
-                    var a = e[o];
-                    -1 !== (s = t.indexOf(a))
-                        ? (n(t, s), i && i.call(r, a))
-                        : e.pop(),
-                        o--;
-                }
-                return e;
-            };
-        },
-        function(t, e, i) {
-            /**
-             * @author       Richard Davey <rich@photonstorm.com>
-             * @copyright    2018 Photon Storm Ltd.
-             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
-             */
-            var n = i(343);
+            var n = i(345);
             t.exports = function(t, e, i) {
                 void 0 === t && (t = 0),
                     void 0 === e && (e = null),
@@ -53070,8 +53502,7 @@
             t.exports = function(t, e) {
                 var i = t.indexOf(e);
                 return (
-                    -1 !== i && i < t.length - 2 && (t.splice(i, 1), t.push(e)),
-                    e
+                    -1 !== i && i < t.length && (t.splice(i, 1), t.push(e)), e
                 );
             };
         },
@@ -53167,8 +53598,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(201),
-                r = i(179);
+            var n = i(203),
+                r = i(180);
             t.exports = function(t) {
                 var e = '';
                 if (!r(t)) return e;
@@ -53195,15 +53626,15 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                CheckMatrix: i(179),
-                MatrixToString: i(927),
-                ReverseColumns: i(926),
-                ReverseRows: i(925),
-                Rotate180: i(924),
-                RotateLeft: i(923),
+                CheckMatrix: i(180),
+                MatrixToString: i(932),
+                ReverseColumns: i(931),
+                ReverseRows: i(930),
+                Rotate180: i(929),
+                RotateLeft: i(928),
                 RotateMatrix: i(123),
-                RotateRight: i(922),
-                TransposeMatrix: i(344),
+                RotateRight: i(927),
+                TransposeMatrix: i(346),
             };
         },
         function(t, e, i) {
@@ -53285,73 +53716,73 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = {
-                DisplayList: i(929),
+                DisplayList: i(934),
                 GameObjectCreator: i(13),
                 GameObjectFactory: i(9),
-                UpdateList: i(900),
+                UpdateList: i(906),
                 Components: i(15),
                 BuildGameObject: i(23),
-                BuildGameObjectAnimation: i(177),
+                BuildGameObjectAnimation: i(178),
                 GameObject: i(2),
-                BitmapText: i(176),
-                Blitter: i(175),
-                Container: i(174),
-                DynamicBitmapText: i(173),
-                Graphics: i(172),
+                BitmapText: i(177),
+                Blitter: i(176),
+                Container: i(175),
+                DynamicBitmapText: i(174),
+                Graphics: i(173),
                 Group: i(97),
                 Image: i(73),
-                Particles: i(871),
-                PathFollower: i(312),
-                RenderTexture: i(168),
-                RetroFont: i(827),
+                Particles: i(877),
+                PathFollower: i(314),
+                RenderTexture: i(169),
+                RetroFont: i(833),
                 Sprite3D: i(130),
                 Sprite: i(35),
-                Text: i(167),
-                TileSprite: i(166),
+                Text: i(168),
+                TileSprite: i(167),
                 Zone: i(135),
                 Factories: {
-                    Blitter: i(815),
-                    Container: i(814),
-                    DynamicBitmapText: i(813),
-                    Graphics: i(812),
-                    Group: i(811),
-                    Image: i(810),
-                    Particles: i(809),
-                    PathFollower: i(808),
-                    RenderTexture: i(807),
-                    Sprite3D: i(806),
-                    Sprite: i(805),
-                    StaticBitmapText: i(804),
-                    Text: i(803),
-                    TileSprite: i(802),
-                    Zone: i(801),
+                    Blitter: i(821),
+                    Container: i(820),
+                    DynamicBitmapText: i(819),
+                    Graphics: i(818),
+                    Group: i(817),
+                    Image: i(816),
+                    Particles: i(815),
+                    PathFollower: i(814),
+                    RenderTexture: i(813),
+                    Sprite3D: i(812),
+                    Sprite: i(811),
+                    StaticBitmapText: i(810),
+                    Text: i(809),
+                    TileSprite: i(808),
+                    Zone: i(807),
                 },
                 Creators: {
-                    Blitter: i(800),
-                    Container: i(799),
-                    DynamicBitmapText: i(798),
-                    Graphics: i(797),
-                    Group: i(796),
-                    Image: i(795),
-                    Particles: i(794),
-                    RenderTexture: i(793),
-                    Sprite3D: i(792),
-                    Sprite: i(791),
-                    StaticBitmapText: i(790),
-                    Text: i(789),
-                    TileSprite: i(788),
-                    Zone: i(787),
+                    Blitter: i(806),
+                    Container: i(805),
+                    DynamicBitmapText: i(804),
+                    Graphics: i(803),
+                    Group: i(802),
+                    Image: i(801),
+                    Particles: i(800),
+                    RenderTexture: i(799),
+                    Sprite3D: i(798),
+                    Sprite: i(797),
+                    StaticBitmapText: i(796),
+                    Text: i(795),
+                    TileSprite: i(794),
+                    Zone: i(793),
                 },
             };
             (n.Mesh = i(121)),
-                (n.Quad = i(165)),
-                (n.Factories.Mesh = i(783)),
-                (n.Factories.Quad = i(782)),
-                (n.Creators.Mesh = i(781)),
-                (n.Creators.Quad = i(780)),
-                (n.Light = i(310)),
-                i(309),
-                i(779),
+                (n.Quad = i(166)),
+                (n.Factories.Mesh = i(789)),
+                (n.Factories.Quad = i(788)),
+                (n.Creators.Mesh = i(787)),
+                (n.Creators.Quad = i(786)),
+                (n.Light = i(312)),
+                i(311),
+                i(785),
                 (t.exports = n);
         },
         function(t, e) {
@@ -53393,7 +53824,7 @@
             var n = i(0),
                 r = i(5),
                 s = i(3),
-                o = i(384),
+                o = i(387),
                 a = new n({
                     initialize: function(t, e) {
                         (this.game = t),
@@ -53616,7 +54047,7 @@
                     a < 0 && (a = x + a),
                     -1 !== h && (x = a + (h + 1));
                 for (
-                    var M = u, _ = u, E = 0, P = e.sourceIndex, L = 0;
+                    var M = u, E = u, _ = 0, P = e.sourceIndex, L = 0;
                     L < m;
                     L++
                 ) {
@@ -53624,7 +54055,7 @@
                         var O = 0 === R,
                             B = R === y - 1;
                         if (
-                            ((o = t.add(E, P, c + M, d + _, r, s)),
+                            ((o = t.add(_, P, c + M, d + E, r, s)),
                             O || k || B || F)
                         ) {
                             var D = O ? w : 0,
@@ -53637,9 +54068,9 @@
                                 (o.cutHeight = Y),
                                 o.setTrim(r, s, D, I, z, Y);
                         }
-                        (M += l), (M += O ? b : B || r), E++;
+                        (M += l), (M += O ? b : B || r), _++;
                     }
-                    (M = u), (_ += l), (_ += k ? A : F ? C : s);
+                    (M = u), (E += l), (E += k ? A : F ? C : s);
                 }
                 return t;
             };
@@ -53835,7 +54266,7 @@
              */
             var n = i(0),
                 r = i(128),
-                s = i(182),
+                s = i(183),
                 o = new n({
                     Extends: s,
                     initialize: function(t, e, i, n, r) {
@@ -53889,6 +54320,7 @@
                 game: 'game',
                 anims: 'anims',
                 cache: 'cache',
+                plugins: 'plugins',
                 registry: 'registry',
                 sound: 'sound',
                 textures: 'textures',
@@ -53918,7 +54350,7 @@
              */
             var n = i(1);
             t.exports = function(t) {
-                var e = t.game.config.defaultPlugins,
+                var e = t.plugins.getDefaultScenePlugins(),
                     i = n(t.settings, 'plugins', !1);
                 return Array.isArray(i) ? i : e || [];
             };
@@ -53930,7 +54362,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(1),
-                r = i(356);
+                r = i(358);
             t.exports = function(t) {
                 var e = t.game.config.defaultPhysicsSystem,
                     i = n(t.settings, 'physics', !1);
@@ -53993,7 +54425,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(184),
+            var n = i(185),
                 r = {};
             for (var s in n) r[n[s]] = s;
             t.exports = r;
@@ -54026,7 +54458,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(949);
+            var n = i(954);
             t.exports = function(t, e) {
                 if (e.matched) return !0;
                 var i = !1,
@@ -54240,12 +54672,12 @@
             t.exports = {
                 os: i(101),
                 browser: i(129),
-                features: i(188),
-                input: i(954),
-                audio: i(953),
-                video: i(952),
-                fullscreen: i(951),
-                canvasFeatures: i(377),
+                features: i(189),
+                input: i(959),
+                audio: i(958),
+                video: i(957),
+                fullscreen: i(956),
+                canvasFeatures: i(381),
             };
         },
         function(t, e, i) {
@@ -54514,10 +54946,10 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(393),
+            var n = i(396),
                 r = i(27),
                 s = i(25),
-                o = i(188);
+                o = i(189);
             t.exports = function(t) {
                 var e,
                     a,
@@ -54550,8 +54982,8 @@
                         (t.canvas.style.height =
                             (h.height * h.zoom).toString() + 'px')),
                     h.renderType !== s.HEADLESS &&
-                        ((e = i(382)),
-                        (a = i(376)),
+                        ((e = i(386)),
+                        (a = i(380)),
                         h.renderType === s.WEBGL
                             ? ((t.renderer = new a(t)), (t.context = null))
                             : ((t.renderer = new e(t)),
@@ -54566,73 +54998,76 @@
              */
             var n = i(0),
                 r = i(25),
-                s = i(5),
-                o = i(18),
-                a = i(3),
-                h = i(383),
-                u = i(199),
-                l = new n({
+                s = i(1),
+                o = i(5),
+                a = i(8),
+                h = i(18),
+                u = i(3),
+                l = i(190),
+                c = i(201),
+                d = new n({
                     initialize: function(t) {
                         void 0 === t && (t = {});
-                        (this.width = s(t, 'width', 1024)),
-                            (this.height = s(t, 'height', 768)),
-                            (this.zoom = s(t, 'zoom', 1)),
-                            (this.resolution = s(t, 'resolution', 1)),
-                            (this.renderType = s(t, 'type', r.AUTO)),
-                            (this.parent = s(t, 'parent', null)),
-                            (this.canvas = s(t, 'canvas', null)),
-                            (this.canvasStyle = s(t, 'canvasStyle', null)),
-                            (this.sceneConfig = s(t, 'scene', null)),
-                            (this.seed = s(t, 'seed', [
+                        (this.width = o(t, 'width', 1024)),
+                            (this.height = o(t, 'height', 768)),
+                            (this.zoom = o(t, 'zoom', 1)),
+                            (this.resolution = o(t, 'resolution', 1)),
+                            (this.renderType = o(t, 'type', r.AUTO)),
+                            (this.parent = o(t, 'parent', null)),
+                            (this.canvas = o(t, 'canvas', null)),
+                            (this.context = o(t, 'context', null)),
+                            (this.canvasStyle = o(t, 'canvasStyle', null)),
+                            (this.sceneConfig = o(t, 'scene', null)),
+                            (this.seed = o(t, 'seed', [
                                 (Date.now() * Math.random()).toString(),
                             ])),
-                            o.RND.init(this.seed),
-                            (this.gameTitle = s(t, 'title', '')),
-                            (this.gameURL = s(t, 'url', 'https://phaser.io')),
-                            (this.gameVersion = s(t, 'version', '')),
-                            (this.inputKeyboard = s(t, 'input.keyboard', !0)),
-                            (this.inputKeyboardEventTarget = s(
+                            h.RND.init(this.seed),
+                            (this.gameTitle = o(t, 'title', '')),
+                            (this.gameURL = o(t, 'url', 'https://phaser.io')),
+                            (this.gameVersion = o(t, 'version', '')),
+                            (this.inputKeyboard = o(t, 'input.keyboard', !0)),
+                            (this.inputKeyboardEventTarget = o(
                                 t,
                                 'input.keyboard.target',
                                 window
                             )),
-                            (this.inputMouse = s(t, 'input.mouse', !0)),
-                            (this.inputMouseEventTarget = s(
+                            (this.inputMouse = o(t, 'input.mouse', !0)),
+                            (this.inputMouseEventTarget = o(
                                 t,
                                 'input.mouse.target',
                                 null
                             )),
-                            (this.inputMouseCapture = s(
+                            (this.inputMouseCapture = o(
                                 t,
                                 'input.mouse.capture',
                                 !0
                             )),
-                            (this.inputTouch = s(t, 'input.touch', !0)),
-                            (this.inputTouchEventTarget = s(
+                            (this.inputTouch = o(t, 'input.touch', !0)),
+                            (this.inputTouchEventTarget = o(
                                 t,
                                 'input.touch.target',
                                 null
                             )),
-                            (this.inputTouchCapture = s(
+                            (this.inputTouchCapture = o(
                                 t,
                                 'input.touch.capture',
                                 !0
                             )),
-                            (this.inputGamepad = s(t, 'input.gamepad', !1)),
-                            (this.disableContextMenu = s(
+                            (this.inputGamepad = o(t, 'input.gamepad', !1)),
+                            (this.disableContextMenu = o(
                                 t,
                                 'disableContextMenu',
                                 !1
                             )),
-                            (this.audio = s(t, 'audio')),
-                            (this.hideBanner = !1 === s(t, 'banner', null)),
-                            (this.hidePhaser = s(t, 'banner.hidePhaser', !1)),
-                            (this.bannerTextColor = s(
+                            (this.audio = o(t, 'audio')),
+                            (this.hideBanner = !1 === o(t, 'banner', null)),
+                            (this.hidePhaser = o(t, 'banner.hidePhaser', !1)),
+                            (this.bannerTextColor = o(
                                 t,
                                 'banner.text',
                                 '#ffffff'
                             )),
-                            (this.bannerBackgroundColor = s(
+                            (this.bannerBackgroundColor = o(
                                 t,
                                 'banner.background',
                                 [
@@ -54646,94 +55081,112 @@
                             '' === this.gameTitle &&
                                 this.hidePhaser &&
                                 (this.hideBanner = !0),
-                            (this.fps = s(t, 'fps', null));
-                        var e = s(t, 'render', t);
-                        (this.antialias = s(e, 'antialias', !0)),
-                            (this.pixelArt = s(e, 'pixelArt', !1)),
-                            (this.autoResize = s(e, 'autoResize', !1)),
-                            (this.roundPixels = s(e, 'roundPixels', !1)),
-                            (this.transparent = s(e, 'transparent', !1)),
-                            (this.clearBeforeRender = s(
+                            (this.fps = o(t, 'fps', null));
+                        var e = o(t, 'render', t);
+                        (this.antialias = o(e, 'antialias', !0)),
+                            (this.pixelArt = o(e, 'pixelArt', !1)),
+                            (this.autoResize = o(e, 'autoResize', !1)),
+                            (this.roundPixels = o(e, 'roundPixels', !1)),
+                            (this.transparent = o(e, 'transparent', !1)),
+                            (this.clearBeforeRender = o(
                                 e,
                                 'clearBeforeRender',
                                 !0
                             )),
-                            (this.premultipliedAlpha = s(
+                            (this.premultipliedAlpha = o(
                                 e,
                                 'premultipliedAlpha',
                                 !0
                             )),
-                            (this.preserveDrawingBuffer = s(
+                            (this.preserveDrawingBuffer = o(
                                 e,
                                 'preserveDrawingBuffer',
                                 !1
                             )),
-                            (this.failIfMajorPerformanceCaveat = s(
+                            (this.failIfMajorPerformanceCaveat = o(
                                 e,
                                 'failIfMajorPerformanceCaveat',
                                 !1
                             )),
-                            (this.powerPreference = s(
+                            (this.powerPreference = o(
                                 e,
                                 'powerPreference',
                                 'default'
                             ));
-                        var i = s(t, 'backgroundColor', 0);
-                        (this.backgroundColor = u(i)),
+                        var i = o(t, 'backgroundColor', 0);
+                        (this.backgroundColor = c(i)),
                             0 === i &&
                                 this.transparent &&
                                 (this.backgroundColor.alpha = 0),
-                            (this.preBoot = s(t, 'callbacks.preBoot', a)),
-                            (this.postBoot = s(t, 'callbacks.postBoot', a)),
-                            (this.physics = s(t, 'physics', {})),
-                            (this.defaultPhysicsSystem = s(
+                            (this.preBoot = o(t, 'callbacks.preBoot', u)),
+                            (this.postBoot = o(t, 'callbacks.postBoot', u)),
+                            (this.physics = o(t, 'physics', {})),
+                            (this.defaultPhysicsSystem = o(
                                 this.physics,
                                 'default',
                                 !1
                             )),
-                            (this.loaderBaseURL = s(t, 'loader.baseURL', '')),
-                            (this.loaderPath = s(t, 'loader.path', '')),
-                            (this.loaderMaxParallelDownloads = s(
+                            (this.loaderBaseURL = o(t, 'loader.baseURL', '')),
+                            (this.loaderPath = o(t, 'loader.path', '')),
+                            (this.loaderMaxParallelDownloads = o(
                                 t,
                                 'loader.maxParallelDownloads',
                                 32
                             )),
-                            (this.loaderCrossOrigin = s(
+                            (this.loaderCrossOrigin = o(
                                 t,
                                 'loader.crossOrigin',
                                 void 0
                             )),
-                            (this.loaderResponseType = s(
+                            (this.loaderResponseType = o(
                                 t,
                                 'loader.responseType',
                                 ''
                             )),
-                            (this.loaderAsync = s(t, 'loader.async', !0)),
-                            (this.loaderUser = s(t, 'loader.user', '')),
-                            (this.loaderPassword = s(t, 'loader.password', '')),
-                            (this.loaderTimeout = s(t, 'loader.timeout', 0)),
-                            (this.defaultPlugins = s(
-                                t,
-                                'plugins',
-                                h.DefaultScene
-                            ));
-                        var n =
+                            (this.loaderAsync = o(t, 'loader.async', !0)),
+                            (this.loaderUser = o(t, 'loader.user', '')),
+                            (this.loaderPassword = o(t, 'loader.password', '')),
+                            (this.loaderTimeout = o(t, 'loader.timeout', 0)),
+                            (this.installGlobalPlugins = []),
+                            (this.installScenePlugins = []);
+                        var n = o(t, 'plugins', null),
+                            d = l.DefaultScene;
+                        n &&
+                            (Array.isArray(n)
+                                ? (this.defaultPlugins = n)
+                                : a(n) &&
+                                  ((this.installGlobalPlugins = s(
+                                      n,
+                                      'global',
+                                      []
+                                  )),
+                                  (this.installScenePlugins = s(
+                                      n,
+                                      'scene',
+                                      []
+                                  )),
+                                  Array.isArray(n.default)
+                                      ? (d = n.default)
+                                      : Array.isArray(n.defaultMerge) &&
+                                        (d = d.concat(n.defaultMerge)))),
+                            (this.defaultPlugins = d);
+                        var f =
                             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAg';
-                        (this.defaultImage = s(
+                        (this.defaultImage = o(
                             t,
                             'images.default',
-                            n +
+                            f +
                                 'AQMAAABJtOi3AAAAA1BMVEX///+nxBvIAAAAAXRSTlMAQObYZgAAABVJREFUeF7NwIEAAAAAgKD9qdeocAMAoAABm3DkcAAAAABJRU5ErkJggg=='
                         )),
-                            (this.missingImage = s(
+                            (this.missingImage = o(
                                 t,
                                 'images.missing',
-                                n +
+                                f +
                                     'CAIAAAD8GO2jAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJ9JREFUeNq01ssOwyAMRFG46v//Mt1ESmgh+DFmE2GPOBARKb2NVjo+17PXLD8a1+pl5+A+wSgFygymWYHBb0FtsKhJDdZlncG2IzJ4ayoMDv20wTmSMzClEgbWYNTAkQ0Z+OJ+A/eWnAaR9+oxCF4Os0H8htsMUp+pwcgBBiMNnAwF8GqIgL2hAzaGFFgZauDPKABmowZ4GL369/0rwACp2yA/ttmvsQAAAABJRU5ErkJggg=='
                             ));
                     },
                 });
-            t.exports = l;
+            t.exports = d;
         },
         function(t, e, i) {
             /**
@@ -54741,27 +55194,26 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(189),
-                r = i(421),
-                s = i(419),
+            var n = i(191),
+                r = i(424),
+                s = i(422),
                 o = i(27),
                 a = i(0),
-                h = i(965),
-                u = i(964),
+                h = i(970),
+                u = i(969),
                 l = i(132),
-                c = i(956),
-                d = i(955),
-                f = i(387),
-                p = i(12),
-                g = i(370),
-                v = i(3),
-                y = i(14),
-                m = i(358),
-                x = i(354),
-                w = i(347),
-                b = i(932),
-                T = i(931),
-                S = new a({
+                c = i(961),
+                d = i(960),
+                f = i(390),
+                p = i(11),
+                g = i(374),
+                v = i(362),
+                y = i(360),
+                m = i(356),
+                x = i(349),
+                w = i(937),
+                b = i(936),
+                T = new a({
                     initialize: function(t) {
                         (this.config = new h(t)),
                             (this.renderer = null),
@@ -54771,16 +55223,15 @@
                             (this.isRunning = !1),
                             (this.events = new p()),
                             (this.anims = new r(this)),
-                            (this.textures = new w(this)),
+                            (this.textures = new x(this)),
                             (this.cache = new s(this)),
                             (this.registry = new l(this)),
                             (this.input = new g(this, this.config)),
-                            (this.scene = new m(this, this.config.sceneConfig)),
+                            (this.scene = new y(this, this.config.sceneConfig)),
                             (this.device = d),
-                            (this.sound = x.create(this)),
-                            (this.loop = new b(this, this.config.fps)),
-                            (this.plugins = new y(this, this.config)),
-                            (this.onStepCallback = v),
+                            (this.sound = m.create(this)),
+                            (this.loop = new w(this, this.config.fps)),
+                            (this.plugins = new v(this, this.config)),
                             (this.pendingDestroy = !1),
                             (this.removeCanvas = !1),
                             f(this.boot.bind(this));
@@ -54800,32 +55251,35 @@
                             this.renderer
                                 ? this.loop.start(this.step.bind(this))
                                 : this.loop.start(this.headlessStep.bind(this)),
-                            T(this.events),
-                            this.events.on('hidden', this.onHidden, this),
-                            this.events.on('visible', this.onVisible, this),
-                            this.events.on('blur', this.onBlur, this),
-                            this.events.on('focus', this.onFocus, this);
+                            b(this.events);
+                        var t = this.events;
+                        t.on('hidden', this.onHidden, this),
+                            t.on('visible', this.onVisible, this),
+                            t.on('blur', this.onBlur, this),
+                            t.on('focus', this.onFocus, this);
                     },
                     step: function(t, e) {
                         if (this.pendingDestroy) return this.runDestroy();
-                        this.input.update(t, e),
-                            this.sound.update(t, e),
-                            this.onStepCallback(),
-                            this.scene.update(t, e);
-                        var i = this.renderer;
-                        i.preRender(),
-                            this.events.emit('prerender', i),
-                            this.scene.render(i),
-                            i.postRender(),
-                            this.events.emit('postrender', i);
+                        var i = this.events;
+                        i.emit('prestep', t, e),
+                            i.emit('step', t, e),
+                            this.scene.update(t, e),
+                            i.emit('poststep', t, e);
+                        var n = this.renderer;
+                        n.preRender(),
+                            i.emit('prerender', n, t, e),
+                            this.scene.render(n),
+                            n.postRender(),
+                            i.emit('postrender', n, t, e);
                     },
                     headlessStep: function(t, e) {
-                        this.input.update(t, e),
-                            this.sound.update(t, e),
-                            this.onStepCallback(),
+                        var i = this.events;
+                        i.emit('prestep', t, e),
+                            i.emit('step', t, e),
                             this.scene.update(t, e),
-                            this.events.emit('prerender'),
-                            this.events.emit('postrender');
+                            i.emit('poststep', t, e),
+                            i.emit('prerender'),
+                            i.emit('postrender');
                     },
                     onHidden: function() {
                         this.loop.pause(), this.events.emit('pause');
@@ -54855,7 +55309,6 @@
                             this.events.removeAllListeners(),
                             this.scene.destroy(),
                             this.renderer && this.renderer.destroy(),
-                            (this.onStepCallback = null),
                             this.removeCanvas &&
                                 this.canvas &&
                                 (o.remove(this.canvas),
@@ -54867,7 +55320,7 @@
                             (this.pendingDestroy = !1);
                     },
                 });
-            t.exports = S;
+            t.exports = T;
         },
         function(t, e, i) {
             /**
@@ -54876,7 +55329,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(12),
+                r = i(11),
                 s = i(14),
                 o = new n({
                     Extends: r,
@@ -54891,6 +55344,14 @@
                     },
                 });
             s.register('EventEmitter', o, 'events'), (t.exports = o);
+        },
+        function(t, e, i) {
+            /**
+             * @author       Richard Davey <rich@photonstorm.com>
+             * @copyright    2018 Photon Storm Ltd.
+             * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
+             */
+            t.exports = { EventEmitter: i(972) };
         },
         function(t, e) {
             var i,
@@ -55017,11 +55478,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                AddToDOM: i(189),
-                DOMContentLoaded: i(387),
-                ParseXML: i(386),
-                RemoveFromDOM: i(385),
-                RequestAnimationFrame: i(384),
+                AddToDOM: i(191),
+                DOMContentLoaded: i(390),
+                ParseXML: i(389),
+                RemoveFromDOM: i(388),
+                RequestAnimationFrame: i(387),
             };
         },
         function(t, e, i) {
@@ -55030,7 +55491,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { BitmapMask: i(432), GeometryMask: i(431) };
+            t.exports = { BitmapMask: i(435), GeometryMask: i(434) };
         },
         function(t, e, i) {
             /**
@@ -55038,7 +55499,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(391);
+            var n = i(394);
             t.exports = function(t, e, i, r, s) {
                 return (
                     void 0 === r && (r = 255),
@@ -55077,7 +55538,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(388),
+            var n = i(391),
                 r = i(50);
             t.exports = function(t, e) {
                 return (
@@ -55093,7 +55554,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(190),
+            var n = i(192),
                 r = function(t, e, i, r, s, o, a, h) {
                     void 0 === a && (a = 100), void 0 === h && (h = 0);
                     var u = h / a;
@@ -55123,7 +55584,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(389);
+            var n = i(392);
             t.exports = function(t, e) {
                 void 0 === t && (t = 1), void 0 === e && (e = 1);
                 for (var i = [], r = 0; r <= 359; r++) i.push(n(r / 359, t, e));
@@ -55137,7 +55598,7 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(50),
-                r = i(390);
+                r = i(393);
             t.exports = function(t, e, i) {
                 var s = i,
                     o = i,
@@ -55197,11 +55658,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Interpolation: i(393),
+                Interpolation: i(396),
                 Pool: i(27),
-                Smoothing: i(194),
-                TouchAction: i(979),
-                UserSelect: i(978),
+                Smoothing: i(196),
+                TouchAction: i(985),
+                UserSelect: i(984),
             };
         },
         function(t, e) {
@@ -55221,13 +55682,13 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                CenterOn: i(446),
+                CenterOn: i(449),
                 GetBottom: i(45),
                 GetCenterX: i(81),
                 GetCenterY: i(78),
                 GetLeft: i(43),
-                GetOffsetX: i(982),
-                GetOffsetY: i(981),
+                GetOffsetX: i(988),
+                GetOffsetY: i(987),
                 GetRight: i(41),
                 GetTop: i(39),
                 SetBottom: i(44),
@@ -55485,18 +55946,18 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                BottomCenter: i(995),
-                BottomLeft: i(994),
-                BottomRight: i(993),
-                LeftBottom: i(992),
-                LeftCenter: i(991),
-                LeftTop: i(990),
-                RightBottom: i(989),
-                RightCenter: i(988),
-                RightTop: i(987),
-                TopCenter: i(986),
-                TopLeft: i(985),
-                TopRight: i(984),
+                BottomCenter: i(1001),
+                BottomLeft: i(1e3),
+                BottomRight: i(999),
+                LeftBottom: i(998),
+                LeftCenter: i(997),
+                LeftTop: i(996),
+                RightBottom: i(995),
+                RightCenter: i(994),
+                RightTop: i(993),
+                TopCenter: i(992),
+                TopLeft: i(991),
+                TopRight: i(990),
             };
         },
         function(t, e, i) {
@@ -55506,16 +55967,16 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                BottomCenter: i(450),
-                BottomLeft: i(449),
-                BottomRight: i(448),
-                Center: i(447),
-                LeftCenter: i(445),
-                QuickSet: i(451),
-                RightCenter: i(444),
-                TopCenter: i(443),
-                TopLeft: i(442),
-                TopRight: i(441),
+                BottomCenter: i(453),
+                BottomLeft: i(452),
+                BottomRight: i(451),
+                Center: i(450),
+                LeftCenter: i(448),
+                QuickSet: i(454),
+                RightCenter: i(447),
+                TopCenter: i(446),
+                TopLeft: i(445),
+                TopRight: i(444),
             };
         },
         function(t, e, i) {
@@ -55524,9 +55985,9 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(215),
-                r = i(19),
-                s = { In: i(997), To: i(996) };
+            var n = i(217),
+                r = i(20),
+                s = { In: i(1003), To: i(1002) };
             (s = r(!1, s, n)), (t.exports = s);
         },
         function(t, e, i) {
@@ -55536,11 +55997,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Align: i(998),
-                Bounds: i(983),
-                Canvas: i(980),
-                Color: i(392),
-                Masks: i(970),
+                Align: i(1004),
+                Bounds: i(989),
+                Canvas: i(986),
+                Color: i(395),
+                Masks: i(976),
             };
         },
         function(t, e, i) {
@@ -55590,7 +56051,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { DataManager: i(132), DataManagerPlugin: i(1e3) };
+            t.exports = { DataManager: i(132), DataManagerPlugin: i(1006) };
         },
         function(t, e, i) {
             /**
@@ -55632,14 +56093,14 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(400),
-                s = i(398),
+                r = i(403),
+                s = i(401),
                 o = i(9),
-                a = i(397),
-                h = i(1002),
-                u = i(396),
-                l = i(10),
-                c = i(394),
+                a = i(400),
+                h = i(1008),
+                u = i(399),
+                l = i(12),
+                c = i(397),
                 d = i(4),
                 f = new n({
                     initialize: function(t, e) {
@@ -55908,13 +56369,13 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Path: i(1003),
-                CubicBezier: i(400),
+                Path: i(1009),
+                CubicBezier: i(403),
                 Curve: i(75),
-                Ellipse: i(398),
-                Line: i(397),
-                QuadraticBezier: i(396),
-                Spline: i(394),
+                Ellipse: i(401),
+                Line: i(400),
+                QuadraticBezier: i(399),
+                Spline: i(397),
             };
         },
         function(t, e) {
@@ -56024,11 +56485,11 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                ARNE16: i(401),
-                C64: i(1008),
-                CGA: i(1007),
-                JMP: i(1006),
-                MSX: i(1005),
+                ARNE16: i(404),
+                C64: i(1014),
+                CGA: i(1013),
+                JMP: i(1012),
+                MSX: i(1011),
             };
         },
         function(t, e, i) {
@@ -56037,7 +56498,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { GenerateTexture: i(402), Palettes: i(1009) };
+            t.exports = { GenerateTexture: i(405), Palettes: i(1015) };
         },
         function(t, e, i) {
             /**
@@ -56046,8 +56507,8 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             var n = i(0),
-                r = i(404),
-                s = i(403),
+                r = i(407),
+                s = i(406),
                 o = i(14),
                 a = new n({
                     initialize: function(t) {
@@ -56156,8 +56617,8 @@
              */
             var n = i(3),
                 r = i(3);
-            (n = i(1013)),
-                (r = i(1012)),
+            (n = i(1019)),
+                (r = i(1018)),
                 (t.exports = { renderWebGL: n, renderCanvas: r });
         },
         function(t, e, i) {
@@ -56167,10 +56628,10 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Camera: i(197),
-                CameraManager: i(1011),
-                OrthographicCamera: i(404),
-                PerspectiveCamera: i(403),
+                Camera: i(199),
+                CameraManager: i(1017),
+                OrthographicCamera: i(407),
+                PerspectiveCamera: i(406),
             };
         },
         function(t, e, i) {
@@ -56179,7 +56640,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(200),
+            var n = i(202),
                 r = i(0),
                 s = i(1),
                 o = i(14),
@@ -56771,9 +57232,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Camera: i(200),
-                CameraManager: i(1016),
-                Effects: i(416),
+                Camera: i(202),
+                CameraManager: i(1022),
+                Effects: i(419),
             };
         },
         function(t, e, i) {
@@ -56783,10 +57244,10 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Fixed: i(418),
-                FixedKeyControl: i(418),
-                Smoothed: i(417),
-                SmoothedKeyControl: i(417),
+                Fixed: i(421),
+                FixedKeyControl: i(421),
+                Smoothed: i(420),
+                SmoothedKeyControl: i(420),
             };
         },
         function(t, e, i) {
@@ -56796,9 +57257,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Controls: i(1021),
-                Scene2D: i(1020),
-                Sprite3D: i(1015),
+                Controls: i(1027),
+                Scene2D: i(1026),
+                Sprite3D: i(1021),
             };
         },
         function(t, e, i) {
@@ -56807,7 +57268,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            t.exports = { BaseCache: i(420), CacheManager: i(419) };
+            t.exports = { BaseCache: i(423), CacheManager: i(422) };
         },
         function(t, e, i) {
             /**
@@ -56816,9 +57277,9 @@
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
             t.exports = {
-                Animation: i(424),
-                AnimationFrame: i(422),
-                AnimationManager: i(421),
+                Animation: i(427),
+                AnimationFrame: i(425),
+                AnimationManager: i(424),
             };
         },
         function(t, e, i) {
@@ -56861,7 +57322,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(425);
+            var n = i(428);
             t.exports = function(t, e, i, r, s) {
                 void 0 === s && (s = !1);
                 var o,
@@ -56877,7 +57338,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(426);
+            var n = i(429);
             t.exports = function(t, e, i, r, s) {
                 void 0 === s && (s = !1);
                 var o,
@@ -57135,7 +57596,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(203);
+            var n = i(205);
             t.exports = function(t, e, i, r) {
                 var s = e.x,
                     o = e.y;
@@ -57150,7 +57611,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(203),
+            var n = i(205),
                 r = i(63);
             t.exports = function(t, e, i) {
                 for (var s = e.x, o = e.y, a = 0; a < t.length; a++) {
@@ -57177,7 +57638,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(204);
+            var n = i(206);
             t.exports = function(t, e) {
                 for (var i = 0; i < t.length; i++) n(e, t[i]);
                 return t;
@@ -57189,7 +57650,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(209);
+            var n = i(211);
             t.exports = function(t, e) {
                 for (var i = 0; i < t.length; i++) n(e, t[i]);
                 return t;
@@ -57201,7 +57662,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(210);
+            var n = i(212);
             t.exports = function(t, e) {
                 for (var i = 0; i < t.length; i++) n(e, t[i]);
                 return t;
@@ -57213,7 +57674,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(205);
+            var n = i(207);
             t.exports = function(t, e) {
                 for (var i = 0; i < t.length; i++) n(e, t[i]);
                 return t;
@@ -57225,7 +57686,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(213);
+            var n = i(215);
             t.exports = function(t, e) {
                 for (var i = 0; i < t.length; i++) n(e, t[i]);
                 return t;
@@ -57243,7 +57704,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(427);
+            var n = i(430);
             t.exports = function(t, e, i) {
                 var r = n({ x1: e.x1, y1: e.y1, x2: e.x2, y2: e.y2 }, i),
                     s = n({ x1: e.x2, y1: e.y2, x2: e.x3, y2: e.y3 }, i),
@@ -57269,9 +57730,9 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(430),
-                r = i(429),
-                s = i(428);
+            var n = i(433),
+                r = i(432),
+                s = i(431);
             t.exports = function(t, e, i) {
                 void 0 === i && (i = 0);
                 var o = n(e, !1, t.length);
@@ -57287,7 +57748,7 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(211);
+            var n = i(213);
             t.exports = function(t, e) {
                 for (var i = n(e, t.length), r = 0; r < t.length; r++) {
                     var s = t[r],
@@ -57409,8 +57870,8 @@
              */
             var n = i(18),
                 r = i(102),
-                s = i(207),
-                o = i(206),
+                s = i(209),
+                o = i(208),
                 a = {
                     _scaleX: 1,
                     _scaleY: 1,
@@ -57467,6 +57928,19 @@
                             (this.y = e),
                             (this.z = i),
                             (this.w = n),
+                            this
+                        );
+                    },
+                    setRandomPosition: function(t, e, i, n) {
+                        return (
+                            void 0 === t && (t = 0),
+                            void 0 === e && (e = 0),
+                            void 0 === i &&
+                                (i = this.scene.sys.game.config.width),
+                            void 0 === n &&
+                                (n = this.scene.sys.game.config.height),
+                            (this.x = t + Math.random() * i),
+                            (this.y = e + Math.random() * n),
                             this
                         );
                     },
@@ -57970,8 +58444,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(432),
-                r = i(431),
+            var n = i(435),
+                r = i(434),
                 s = {
                     mask: null,
                     setMask: function(t) {
@@ -58008,8 +58482,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(10),
-                r = i(433),
+            var n = i(12),
+                r = i(436),
                 s = i(4),
                 o = {
                     getCenter: function(t) {
@@ -58330,8 +58804,8 @@
              * @copyright    2018 Photon Storm Ltd.
              * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
              */
-            var n = i(451),
-                r = i(215),
+            var n = i(454),
+                r = i(217),
                 s = i(1),
                 o = i(3),
                 a = new (i(135))(
@@ -58488,7 +58962,7 @@
                         (t.cancelAnimationFrame = function(t) {
                             clearTimeout(t);
                         });
-            }.call(this, i(453)));
+            }.call(this, i(456)));
         },
         function(t, e) {
             !(function() {
@@ -58696,15 +59170,15 @@
                 });
         },
         function(t, e, i) {
-            i(1097),
+            i(1103),
+                i(1102),
+                i(1101),
+                i(1100),
+                i(1099),
+                i(1098),
+                i(1097),
                 i(1096),
-                i(1095),
-                i(1094),
-                i(1093),
-                i(1092),
-                i(1091),
-                i(1090),
-                i(1089);
+                i(1095);
         },
         ,
         ,
@@ -58759,7 +59233,7 @@
         ,
         ,
         function(t, e, i) {
-            i(216), (t.exports = i(467));
+            i(136), (t.exports = i(470));
         },
     ],
 ]);
