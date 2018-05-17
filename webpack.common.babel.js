@@ -6,6 +6,7 @@ import HtmlWebpackTemplate from 'html-webpack-template';
 import os from 'os';
 import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import webpack from 'webpack';
+import WebpackAutoInject from 'webpack-auto-inject-version';
 import babelLoader from './webpack.babel-loader';
 
 module.exports = {
@@ -102,6 +103,18 @@ module.exports = {
         new webpack.DefinePlugin({
             'typeof CANVAS_RENDERER': JSON.stringify(true),
             'typeof WEBGL_RENDERER': JSON.stringify(true),
+        }),
+        new WebpackAutoInject({
+            components: {
+                AutoIncreaseVersion: false,
+                InjectAsComment: false,
+                InjectByTag: true,
+            },
+            componentsOptions: {
+                InjectByTag: {
+                    dateFormat: 'yyyymmddHHMMss',
+                },
+            },
         }),
     ],
 };

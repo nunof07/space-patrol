@@ -40,7 +40,15 @@
         "no-duplicate-imports": false,
         "trailing-comma": [
             true,
-            { "multiline": "always", "singleline": "never" }
+            {
+                "multiline": {
+                    "objects": "always",
+                    "arrays": "always",
+                    "functions": "never",
+                    "typeLiterals": "ignore"
+                },
+                "singleline": "never"
+            }
         ],
         "variable-name": [
             true,
