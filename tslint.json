@@ -35,7 +35,7 @@
         "cyclomatic-complexity": [true, 5],
         "max-file-line-count": [true, 250],
         "no-parameter-reassignment": true,
-        "no-submodule-imports": [true, "@src"],
+        "no-submodule-imports": [true, "@src", "@test"],
         "no-implicit-dependencies": false, // disable because custom local path mappings are erroneously flagged
         "no-duplicate-imports": false,
         "trailing-comma": [
