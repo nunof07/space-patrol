@@ -1,3 +1,4 @@
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import path from 'path';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
@@ -116,5 +117,6 @@ module.exports = {
                 },
             },
         }),
+        new CopyWebpackPlugin(['src/assets'], { cache: true }),
     ],
 };
