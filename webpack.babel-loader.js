@@ -8,8 +8,8 @@ module.exports = {
                 {
                     targets: {
                         browsers: ['>0.25%'],
-                        uglify: true,
                     },
+                    forceAllTransforms: true
                 },
             ],
         ],
