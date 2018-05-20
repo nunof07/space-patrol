@@ -9,7 +9,7 @@ module.exports = {
                     targets: {
                         browsers: ['>0.25%'],
                     },
-                    forceAllTransforms: true
+                    forceAllTransforms: true,
                 },
             ],
         ],
