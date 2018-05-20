@@ -10,7 +10,9 @@ function getResizeSpy(): [sinon.SinonSpy, Window] {
     const mockWindow = {
         addEventListener: (key: string, callback: Function) => {
             // tslint:disable-next-line:no-unnecessary-callback-wrapper
-            emitter.on(key, () => callback());
+            emitter.on(key, () => {
+                callback();
+            });
         },
         innerWidth: 100,
         innerHeight: 200,
