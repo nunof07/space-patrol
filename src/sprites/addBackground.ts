@@ -13,9 +13,5 @@ export function addBackground(
     );
     tile.setOrigin(0);
 
-    scene.events.on('resize', (width: number, height: number) => {
-        tile.setSize(width, height);
-    });
-
     return tile;
 }

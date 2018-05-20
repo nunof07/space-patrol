@@ -9,7 +9,11 @@ export class Boot extends Phaser.Scene {
     }
 
     public create(): void {
-        addBackground(this, 'stars-black');
+        const bg = addBackground(this, 'stars-black');
         followPointer(this.input, addPlayer(this, 'ship-red'));
+        this.events.on('resize', (width: number, height: number) => {
+            bg.setSize(width, height);
+            this.cameras.resize(width, height);
+        });
     }
 }
