@@ -89,7 +89,7 @@
         "ts-loader": "4.3.0",
         "tsconfig-paths-webpack-plugin": "3.1.2",
         "tslint": "5.10.0",
-        "tslint-config-prettier": "1.12.0",
+        "tslint-config-prettier": "1.13.0",
         "tslint-eslint-rules": "5.3.1",
         "tslint-immutable": "4.5.4",
         "tslint-microsoft-contrib": "5.0.3",
