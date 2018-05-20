@@ -1,0 +1,13 @@
+coverage:
+  range: 30...50
+  status:
+    project:
+      default:
+        threshold: 5%
+    patch:
+      default:
+        threshold: 5%
+
+comment:
+  layout: "reach, diff"
+  require_changes: true

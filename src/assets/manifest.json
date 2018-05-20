@@ -1,0 +1,21 @@
+{
+    "general": {
+        "path": "images",
+        "defaultType": "image",
+        "files": [
+            {
+                "key": "stars-black"
+            },
+            {
+                "key": "ship-red"
+            }
+        ]
+    },
+    "meta": {
+        "generated": "1526835788373",
+        "app": "Space Patrol",
+        "url": "https://github.com/nunof07/space-patrol",
+        "version": "1.0",
+        "copyright": "Nuno Freitas 2018"
+    }
+}

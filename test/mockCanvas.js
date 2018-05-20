@@ -13,6 +13,7 @@ function mock(window) {
             return originalCreateElement.call(document, param);
         }
     };
+    window.CanvasRenderingContext2D = true;
 }
 
 function isCanvasPresent(window) {
