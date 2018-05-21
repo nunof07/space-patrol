@@ -7,16 +7,16 @@ import * as Phaser from 'phaser';
 describe('game', () => {
     describe('#start', () => {
         it('should not throw', () => {
-            expect(() => start(headlessConfig(), EmptyScene)).to.not.throw();
+            expect(() => start(headlessConfig(), [EmptyScene])).to.not.throw();
         });
         it('should not return null', () => {
-            expect(start(headlessConfig(), EmptyScene)).to.not.equal(
+            expect(start(headlessConfig(), [EmptyScene])).to.not.equal(
                 null,
                 'Expected non-null value'
             );
         });
         it('should return Game object', () => {
-            expect(start(headlessConfig(), EmptyScene)).to.be.instanceof(
+            expect(start(headlessConfig(), [EmptyScene])).to.be.instanceof(
                 Phaser.Game
             );
         });
