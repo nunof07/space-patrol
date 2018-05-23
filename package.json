@@ -72,7 +72,7 @@
         "imagemin-mozjpeg": "7.0.0",
         "imagemin-webpack-plugin": "2.1.5",
         "istanbul-instrumenter-loader": "3.0.1",
-        "jsdom": "11.10.0",
+        "jsdom": "11.11.0",
         "license-banner-webpack-plugin": "2.0.0",
         "mocha": "5.2.0",
         "mocha-webpack": "2.0.0-beta.0",
