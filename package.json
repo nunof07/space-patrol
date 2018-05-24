@@ -7,12 +7,10 @@
         "info": "npm-scripts-info",
         "build": "webpack --config webpack.prod.babel.js",
         "start": "webpack-dev-server --open --config webpack.dev.babel.js",
-        "lint":
-            "tslint --config tslint.json --project tsconfig.json --format stylish src/**/*.ts --exclude src/**/*.d.ts",
+        "lint": "tslint --config tslint.json --project tsconfig.json --format stylish src/**/*.ts --exclude src/**/*.d.ts",
         "test": "mocha-webpack",
         "test:watch": "mocha-webpack --watch",
-        "test:coverage":
-            "rm -rf .nyc_output && rm -rf coverage && cross-env NODE_ENV=coverage nyc mocha-webpack \"src/**/!(index|*.d).ts\" \"test/**/*.ts\"",
+        "test:coverage": "rm -rf .nyc_output && rm -rf coverage && cross-env NODE_ENV=coverage nyc mocha-webpack \"src/**/!(index|*.d).ts\" \"test/**/*.ts\"",
         "release": "semantic-release",
         "ci:build": "cross-env NODE_ENV=travis npm run build",
         "postinstall": "rm -rf .cache-loader",
@@ -28,8 +26,7 @@
         "test:coverage": "Run the tests and report coverage",
         "release": "Publish release",
         "ci:build": "Build all deliverables (Travis)",
-        "postinstall":
-            "Run after npm install (cleanup Webpack's cache-loader folder)",
+        "postinstall": "Run after npm install (cleanup Webpack's cache-loader folder)",
         "precommit": "Run before commit (format code)"
     },
     "repository": {
@@ -43,7 +40,7 @@
     },
     "homepage": "https://github.com/nunof07/space-patrol#readme",
     "devDependencies": {
-        "@babel/core": "7.0.0-beta.47",
+        "@babel/core": "7.0.0-beta.48",
         "@babel/plugin-transform-runtime": "7.0.0-beta.48",
         "@babel/preset-env": "7.0.0-beta.48",
         "@semantic-release/changelog": "2.0.2",
