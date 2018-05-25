@@ -1,3 +1,11 @@
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/nunof07/space-patrol/compare/v1.0.3...v1.0.4) (2018-05-25)
+
+
+### Bug Fixes
+
+* **package:** update phaser to version 3.9.0 ([195fc98](https://github.com/nunof07/space-patrol/commit/195fc98))
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/nunof07/space-patrol/compare/v1.0.2...v1.0.3) (2018-05-24)
 
