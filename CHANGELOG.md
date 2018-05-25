@@ -1,3 +1,11 @@
+<a name="1.0.5"></a>
+## [1.0.5](https://github.com/nunof07/space-patrol/compare/v1.0.4...v1.0.5) (2018-05-25)
+
+
+### Bug Fixes
+
+* **package:** update [@babel](https://github.com/babel)/runtime to version 7.0.0-beta.49 ([97ff949](https://github.com/nunof07/space-patrol/commit/97ff949))
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/nunof07/space-patrol/compare/v1.0.3...v1.0.4) (2018-05-25)
 
