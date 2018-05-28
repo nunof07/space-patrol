@@ -1,3 +1,4 @@
+import { mainCameraCenter } from '@src/scene/mainCameraCenter';
 import * as Phaser from 'phaser';
 
 type SpriteConfig = {
@@ -5,38 +6,6 @@ type SpriteConfig = {
     offset: { x: number; y: number };
     depth: number;
 };
-
-function addCockpit(
-    scene: Phaser.Scene,
-    center: { x: number; y: number }
-): Phaser.GameObjects.Sprite {
-    return addPlayerSprite(
-        scene,
-        center,
-        {
-            key: 'player-cockpit',
-            offset: { x: 0, y: 0 },
-            depth: 1000,
-        },
-        false
-    );
-}
-
-function addEngine(
-    scene: Phaser.Scene,
-    center: { x: number; y: number }
-): Phaser.GameObjects.Sprite {
-    return addPlayerSprite(
-        scene,
-        center,
-        {
-            key: 'player-engine',
-            offset: { x: 0, y: 37 },
-            depth: 990,
-        },
-        false
-    );
-}
 
 function addPlayerSprite(
     scene: Phaser.Scene,
@@ -52,6 +21,22 @@ function addPlayerSprite(
         flipX: isLeft,
         flipY: true,
     });
+}
+
+function engine(): SpriteConfig {
+    return {
+        key: 'player-engine',
+        offset: { x: 0, y: 37 },
+        depth: 990,
+    };
+}
+
+function cockpit(): SpriteConfig {
+    return {
+        key: 'player-cockpit',
+        offset: { x: 0, y: 0 },
+        depth: 1000,
+    };
 }
 
 function wing(): SpriteConfig {
@@ -71,24 +56,15 @@ function beam(): SpriteConfig {
 }
 
 export function addPlayer(scene: Phaser.Scene): Phaser.GameObjects.Group {
-    const center = {
-        x: scene.cameras.main.width * 0.5,
-        y: scene.cameras.main.height * 0.5,
-    };
-    const cockpit = addCockpit(scene, center);
-    const engine = addEngine(scene, center);
-    const beamLeft = addPlayerSprite(scene, center, beam(), true);
-    const beamRight = addPlayerSprite(scene, center, beam(), false);
-    const wingLeft = addPlayerSprite(scene, center, wing(), true);
-    const wingRight = addPlayerSprite(scene, center, wing(), false);
+    const center = mainCameraCenter(scene);
     const group = scene.add.group({});
     group.addMultiple([
-        cockpit,
-        engine,
-        beamLeft,
-        beamRight,
-        wingLeft,
-        wingRight,
+        addPlayerSprite(scene, center, cockpit(), false),
+        addPlayerSprite(scene, center, engine(), false),
+        addPlayerSprite(scene, center, beam(), true),
+        addPlayerSprite(scene, center, beam(), false),
+        addPlayerSprite(scene, center, wing(), true),
+        addPlayerSprite(scene, center, wing(), false),
     ]);
 
     return group;
