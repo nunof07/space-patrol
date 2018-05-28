@@ -26,5 +26,8 @@ describe('sprites', () => {
             expect(group[2].x).to.equal(150);
             expect(group[2].y).to.equal(150);
         });
+        it('should throw RangeError when index out of range', () => {
+            expect(() => groupSetXY(group, 50, 50, 10)).to.throw(RangeError);
+        });
     });
 });
