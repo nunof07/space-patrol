@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/nunof07/space-patrol/compare/v1.0.5...v1.1.0) (2018-05-28)
+
+
+### Features
+
+* **player:** ship as a group of sprites ([18a9f1f](https://github.com/nunof07/space-patrol/commit/18a9f1f))
+
 <a name="1.0.5"></a>
 ## [1.0.5](https://github.com/nunof07/space-patrol/compare/v1.0.4...v1.0.5) (2018-05-25)
 
