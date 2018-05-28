@@ -7,8 +7,8 @@ describe.skip('sprites', () => {
     describe('#addPlayer', () => {
         it('should create Sprite object', () => {
             mockStart(scene => {
-                scene.load.image('ship', 'images/ship-red.png');
-                expect(addPlayer(scene, 'ship')).to.be.instanceof(
+                scene.load.pack('manifest', 'manifest.json', 'general');
+                expect(addPlayer(scene)).to.be.instanceof(
                     Phaser.GameObjects.Sprite
                 );
             });

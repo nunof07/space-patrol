@@ -7,7 +7,25 @@
                 "key": "stars-black"
             },
             {
-                "key": "ship-red"
+                "key": "player-beam"
+            },
+            {
+                "key": "player-cockpit"
+            },
+            {
+                "key": "player-engine-particle"
+            },
+            {
+                "key": "player-engine"
+            },
+            {
+                "key": "player-weapon-burst"
+            },
+            {
+                "key": "player-weapon-charge"
+            },
+            {
+                "key": "player-wing"
             }
         ]
     },

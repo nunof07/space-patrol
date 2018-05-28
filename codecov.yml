@@ -1,12 +1,12 @@
 coverage:
-  range: 30...50
+  range: 10...30
   status:
     project:
       default:
-        threshold: 5%
+        threshold: 10%
     patch:
       default:
-        threshold: 5%
+        threshold: 10%
 
 comment:
   layout: "reach, diff"

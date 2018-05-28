@@ -9,10 +9,7 @@ describe('input', () => {
             const mockSprite = { x: 100, y: 100 };
             const mockInput = new EventEmitter();
             const expectedPosition = { x: 200, y: 200 };
-            followPointer(
-                <Phaser.Input.InputPlugin>mockInput,
-                <Phaser.GameObjects.Sprite>mockSprite
-            );
+            followPointer(<Phaser.Input.InputPlugin>mockInput, mockSprite);
             mockInput.emit('pointermove', expectedPosition);
 
             expect(

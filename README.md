@@ -16,9 +16,21 @@
 
 Shoot 'em up space game made with [Phaser 3](http://phaser.io/).
 
+## Credits
+
+Everything not mentioned below was made by [Nuno Freitas](https://github.com/nunof07/) (programming and game design).
+
+### Artwork
+
+-   Player ship and stars background: [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/).
+
+### Libraries
+
+See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.json) for external dependencies.
+
 ## Development
 
-*   Clone repository.
-*   Run `npm install` in project folder.
-*   Run `npm run info` to see all available scripts.
-*   Run `npm start` to serve game and watch for changes.
+-   Clone repository.
+-   Run `npm install` in project folder.
+-   Run `npm run info` to see all available scripts.
+-   Run `npm start` to serve game and watch for changes.
