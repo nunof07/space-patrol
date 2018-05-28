@@ -2,6 +2,34 @@ import { groupSetXY } from '@src/sprites/groupSetXY';
 import { mockChildren } from '@test/sprites/mockChildren';
 import { expect } from 'chai';
 
+function expectCenterToNewCoordinates(
+    group: ReadonlyArray<{ x: number; y: number }>
+): void {
+    groupSetXY(group, 50, 50, 1);
+    expect(group[1].x === 50 && group[1].y === 50).to.equal(
+        true,
+        'Expected center to be set to new coordinates'
+    );
+}
+
+function expectSpritesSetInRelationToCenter(
+    group: ReadonlyArray<{ x: number; y: number }>
+): void {
+    groupSetXY(group, 50, 50, 1);
+    expect(group[0].x === -50 && group[0].y === -50).to.equal(
+        true,
+        'First sprite position is not in relation to center'
+    );
+    expect(group[1].x === 50 && group[1].y === 50).to.equal(
+        true,
+        'Second sprite position is not in relation to center'
+    );
+    expect(group[2].x === 150 && group[2].y === 150).to.equal(
+        true,
+        'Third sprite position is not in relation to center'
+    );
+}
+
 describe('sprites', () => {
     describe('#groupSetXY', () => {
         let group: ReadonlyArray<{ x: number; y: number }>;
@@ -10,24 +38,15 @@ describe('sprites', () => {
             group = mockChildren();
         });
         it('center should be set to the new coordinates', () => {
-            const index = 1;
-            const newX = 50;
-            const newY = 50;
-            groupSetXY(group, newX, newY, index);
-            expect(group[index].x).to.equal(newX);
-            expect(group[index].y).to.equal(newY);
+            expectCenterToNewCoordinates(group);
         });
         it('all sprites should be set in relation to center', () => {
-            groupSetXY(group, 50, 50, 1);
-            expect(group[0].x).to.equal(-50);
-            expect(group[0].y).to.equal(-50);
-            expect(group[1].x).to.equal(50);
-            expect(group[1].y).to.equal(50);
-            expect(group[2].x).to.equal(150);
-            expect(group[2].y).to.equal(150);
+            expectSpritesSetInRelationToCenter(group);
         });
         it('should throw RangeError when index out of range', () => {
-            expect(() => groupSetXY(group, 50, 50, 10)).to.throw(RangeError);
+            expect(() => {
+                groupSetXY(group, 50, 50, 10);
+            }).to.throw(RangeError);
         });
     });
 });
