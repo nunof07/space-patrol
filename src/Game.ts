@@ -17,7 +17,7 @@ export class Game extends Phaser.Scene {
     }
 
     public create(): void {
-        this.background = addBackground(this, 'stars-black');
+        this.background = addBackground(this, 'stars-black.png');
         groupFollowPointer(this.input, spriteChildren(addPlayer(this)));
         this.events.on('resize', (width: number, height: number) => {
             this.background.setSize(width, height);

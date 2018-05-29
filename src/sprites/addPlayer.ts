@@ -17,7 +17,8 @@ function addPlayerSprite(
         x: center.x + (isLeft ? -1 : 1) * config.offset.x,
         y: center.y + config.offset.y,
         depth: config.depth,
-        key: config.key,
+        key: 'sprites',
+        frame: `${config.key}.png`,
         flipX: isLeft,
         flipY: true,
     });

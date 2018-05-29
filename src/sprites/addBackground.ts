@@ -9,6 +9,7 @@ export function addBackground(
         0,
         scene.cameras.main.width,
         scene.cameras.main.height,
+        'sprites',
         key
     );
     tile.setOrigin(0);
