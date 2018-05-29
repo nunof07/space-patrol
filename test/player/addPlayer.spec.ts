@@ -1,4 +1,4 @@
-import { addPlayer } from '@src/sprites/addPlayer';
+import { addPlayer } from '@src/player/addPlayer';
 import { mockStart } from '@test/game/mockStart';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';

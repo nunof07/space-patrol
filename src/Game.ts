@@ -1,7 +1,7 @@
 import { groupFollowPointer } from '@src/input/groupFollowPointer';
+import { addPlayer } from '@src/player/addPlayer';
+import { addBackground } from '@src/scenario/addBackground';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
-import { addBackground } from '@src/sprites/addBackground';
-import { addPlayer } from '@src/sprites/addPlayer';
 import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
 
@@ -17,7 +17,7 @@ export class Game extends Phaser.Scene {
     }
 
     public create(): void {
-        this.background = addBackground(this, 'stars-black');
+        this.background = addBackground(this, 'scenario/stars-black.png');
         groupFollowPointer(this.input, spriteChildren(addPlayer(this)));
         this.events.on('resize', (width: number, height: number) => {
             this.background.setSize(width, height);

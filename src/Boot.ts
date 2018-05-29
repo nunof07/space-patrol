@@ -13,6 +13,6 @@ export class Boot extends Phaser.Scene {
         this.load.on('complete', () => {
             this.scene.start('game');
         });
-        this.load.pack('manifest', 'manifest.json', 'general');
+        this.load.pack('manifest', 'manifest.json');
     }
 }
