@@ -18,7 +18,7 @@ function addPlayerSprite(
         y: center.y + config.offset.y,
         depth: config.depth,
         key: 'sprites',
-        frame: `${config.key}.png`,
+        frame: `player/${config.key}.png`,
         flipX: isLeft,
         flipY: true,
     });
@@ -26,7 +26,7 @@ function addPlayerSprite(
 
 function engine(): SpriteConfig {
     return {
-        key: 'player-engine',
+        key: 'engine',
         offset: { x: 0, y: 37 },
         depth: 990,
     };
@@ -34,7 +34,7 @@ function engine(): SpriteConfig {
 
 function cockpit(): SpriteConfig {
     return {
-        key: 'player-cockpit',
+        key: 'cockpit',
         offset: { x: 0, y: 0 },
         depth: 1000,
     };
@@ -42,7 +42,7 @@ function cockpit(): SpriteConfig {
 
 function wing(): SpriteConfig {
     return {
-        key: 'player-wing',
+        key: 'wing',
         offset: { x: 51, y: -7 },
         depth: 1000,
     };
@@ -50,7 +50,7 @@ function wing(): SpriteConfig {
 
 function beam(): SpriteConfig {
     return {
-        key: 'player-beam',
+        key: 'beam',
         offset: { x: 27, y: 9 },
         depth: 990,
     };
