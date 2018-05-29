@@ -117,6 +117,12 @@ module.exports = {
                 },
             },
         }),
-        new CopyWebpackPlugin(['src/assets'], { cache: true }),
+        new CopyWebpackPlugin(
+            [
+                'src/assets/manifest.json',
+                { from: 'src/assets/sprites', to: 'sprites' },
+            ],
+            { cache: true }
+        ),
     ],
 };
