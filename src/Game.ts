@@ -6,6 +6,8 @@ import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
 
 export class Game extends Phaser.Scene {
+    private background: Phaser.GameObjects.TileSprite;
+
     constructor() {
         super({ key: 'game' });
     }
@@ -15,10 +17,14 @@ export class Game extends Phaser.Scene {
     }
 
     public create(): void {
-        const bg = addBackground(this, 'stars-black');
+        this.background = addBackground(this, 'stars-black');
         groupFollowPointer(this.input, spriteChildren(addPlayer(this)));
         this.events.on('resize', (width: number, height: number) => {
-            bg.setSize(width, height);
+            this.background.setSize(width, height);
         });
+    }
+
+    public update(): void {
+        this.background.tilePositionY -= 1;
     }
 }
