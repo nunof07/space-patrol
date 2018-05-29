@@ -56,17 +56,51 @@ function beam(): SpriteConfig {
     };
 }
 
+function createEngineParticleEmitter(
+    particles: Phaser.GameObjects.Particles.ParticleEmitterManager,
+    engineObj: Phaser.GameObjects.Sprite,
+    isLeft: boolean
+): void {
+    const emitter = particles.createEmitter({
+        scale: { start: 0.5, end: 0 },
+        alpha: { start: 1, end: 0 },
+        speed: 0,
+        life: 500,
+        gravityX: (isLeft ? -1 : 1) * 70,
+        gravityY: 50,
+        blendMode: 'NORMAL',
+    });
+    emitter.startFollow(
+        // tslint:disable-next-line:no-any
+        <Phaser.GameObjects.Particles.Particle>(<any>engineObj)
+    );
+}
+
+function addEngineParticles(
+    scene: Phaser.Scene,
+    engineObj: Phaser.GameObjects.Sprite
+): void {
+    const particles = scene.add.particles(
+        'sprites',
+        'player/engine-particle.png'
+    );
+    createEngineParticleEmitter(particles, engineObj, true);
+    createEngineParticleEmitter(particles, engineObj, false);
+}
+
 export function addPlayer(scene: Phaser.Scene): Phaser.GameObjects.Group {
     const center = mainCameraCenter(scene);
     const group = scene.add.group({});
+    const engineObj = addPlayerSprite(scene, center, engine(), false);
     group.addMultiple([
         addPlayerSprite(scene, center, cockpit(), false),
-        addPlayerSprite(scene, center, engine(), false),
+        engineObj,
         addPlayerSprite(scene, center, beam(), true),
         addPlayerSprite(scene, center, beam(), false),
         addPlayerSprite(scene, center, wing(), true),
         addPlayerSprite(scene, center, wing(), false),
     ]);
+    addEngineParticles(scene, engineObj);
 
     return group;
 }
