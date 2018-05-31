@@ -1,5 +1,5 @@
+import { asType } from '@src/core/asType';
 import { addResizeListener } from '@src/game/addResizeListener';
-import { asType } from '@test/asType';
 import { expect } from 'chai';
 import { EventEmitter } from 'eventemitter3';
 import * as Phaser from 'phaser';
