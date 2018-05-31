@@ -7,10 +7,9 @@ describe.skip('scenario', () => {
     describe('#addBackground', () => {
         it('should create TileSprite object', () => {
             mockStart(scene => {
-                scene.load.image('stars', 'images/stars-black.png');
-                expect(addBackground(scene, 'stars')).to.be.instanceof(
-                    Phaser.GameObjects.TileSprite
-                );
+                expect(
+                    addBackground(scene, 'scenario/stars-black.png')
+                ).to.be.instanceof(Phaser.GameObjects.TileSprite);
             });
         });
     });
