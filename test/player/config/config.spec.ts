@@ -11,5 +11,5 @@ describe('player/config', () => {
         { name: 'cockpit', config: cockpit },
         { name: 'engine', config: engine },
         { name: 'wing', config: wing },
-    ].map(describeConfig);
+    ].forEach(describeConfig);
 });

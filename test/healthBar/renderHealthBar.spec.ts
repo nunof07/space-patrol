@@ -18,7 +18,9 @@ describe.skip('healthBar', () => {
                         height: 50,
                     })
                 );
-                expect(() => renderHealthBar(graphics, bar)).to.not.throw();
+                expect(() => {
+                    renderHealthBar(graphics, bar);
+                }).to.not.throw();
             });
         });
     });
