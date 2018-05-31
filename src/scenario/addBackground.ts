@@ -12,6 +12,7 @@ export function addBackground(
         'sprites',
         key
     );
+    tile.depth = 0;
     tile.setOrigin(0);
 
     return tile;
