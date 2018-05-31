@@ -1,5 +1,6 @@
 --require test/bootstrap.js
 --webpack-config webpack.test.babel.js
 --recursive
+--reporter progress
 --exit
 test/**/*.ts
