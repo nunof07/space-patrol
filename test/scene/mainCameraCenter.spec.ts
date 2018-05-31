@@ -1,5 +1,5 @@
+import { asType } from '@src/core/asType';
 import { mainCameraCenter } from '@src/scene/mainCameraCenter';
-import { asType } from '@test/asType';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 

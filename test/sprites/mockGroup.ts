@@ -1,4 +1,4 @@
-import { asType } from '@test/asType';
+import { asType } from '@src/core/asType';
 import * as Phaser from 'phaser';
 
 export function mockGroup(
