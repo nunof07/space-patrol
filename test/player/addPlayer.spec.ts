@@ -3,7 +3,7 @@ import { mockStart } from '@test/game/mockStart';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 
-describe.skip('sprites', () => {
+describe.skip('player', () => {
     describe('#addPlayer', () => {
         it('should create Sprite object', () => {
             mockStart(scene => {

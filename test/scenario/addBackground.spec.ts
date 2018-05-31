@@ -3,7 +3,7 @@ import { mockStart } from '@test/game/mockStart';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 
-describe.skip('sprites', () => {
+describe.skip('scenario', () => {
     describe('#addBackground', () => {
         it('should create TileSprite object', () => {
             mockStart(scene => {
