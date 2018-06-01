@@ -1,3 +1,18 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/nunof07/space-patrol/compare/v1.1.0...v1.2.0) (2018-06-01)
+
+
+### Bug Fixes
+
+* **player:** sprite keys ([076ea90](https://github.com/nunof07/space-patrol/commit/076ea90))
+
+
+### Features
+
+* **background:** scroll ([acdc531](https://github.com/nunof07/space-patrol/commit/acdc531))
+* **health-bar:** render for player ([ca68edb](https://github.com/nunof07/space-patrol/commit/ca68edb))
+* **player:** engine particles ([0c4c17f](https://github.com/nunof07/space-patrol/commit/0c4c17f))
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/nunof07/space-patrol/compare/v1.0.5...v1.1.0) (2018-05-28)
 
