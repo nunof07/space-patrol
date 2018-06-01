@@ -76,7 +76,7 @@
         "npm-scripts-info": "0.3.7",
         "null-loader": "0.1.1",
         "nyc": "11.8.0",
-        "prettier": "1.13.2",
+        "prettier": "1.13.3",
         "pretty-quick": "1.6.0",
         "request": "2.87.0",
         "semantic-release": "15.5.0",
