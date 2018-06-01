@@ -9,7 +9,7 @@ export class Game extends Phaser.Scene {
 
     constructor() {
         super({ key: 'game' });
-        this.systems = new Composite([new Player(this), new Background(this)]);
+        this.systems = new Composite([new Background(this), new Player(this)]);
     }
 
     public preload(): void {
