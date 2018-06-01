@@ -6,9 +6,10 @@ import * as Phaser from 'phaser';
 
 export function renderHealthBar(
     graphics: Phaser.GameObjects.Graphics,
-    bar: HealthBar
+    bar: HealthBar,
+    offset: number = 1.6
 ): void {
-    const position = healthBarPosition(bar.parent);
+    const position = healthBarPosition(bar.parent, offset);
     centerRectangle(bar.background.rectangle, position);
     centerRectangle(bar.filled.rectangle, position);
     bar.filled.rectangle.x = bar.background.rectangle.x;
