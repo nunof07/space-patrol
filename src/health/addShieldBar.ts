@@ -1,5 +1,5 @@
-import { addHealthBar } from '@src/healthBar/addHealthBar';
-import { HealthBar } from '@src/healthBar/HealthBar';
+import { addHealthBar } from '@src/health/addHealthBar';
+import { HealthBar } from '@src/health/HealthBar';
 import * as Phaser from 'phaser';
 
 export function addShieldBar(

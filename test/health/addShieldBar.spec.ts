@@ -1,6 +1,6 @@
 import { asType } from '@src/core/asType';
-import { addHealthBar } from '@src/healthBar/addHealthBar';
-import { HealthBar } from '@src/healthBar/HealthBar';
+import { addShieldBar } from '@src/health/addShieldBar';
+import { HealthBar } from '@src/health/HealthBar';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 
@@ -13,15 +13,15 @@ function getSprite(): Phaser.GameObjects.Sprite {
     });
 }
 
-describe('healthBar', () => {
+describe('health', () => {
     let sprite: Phaser.GameObjects.Sprite;
     let bar: HealthBar;
 
     beforeEach(() => {
         sprite = getSprite();
-        bar = addHealthBar(sprite);
+        bar = addShieldBar(sprite);
     });
-    describe('#addHealthBar', () => {
+    describe('#addShieldBar', () => {
         it('should return parent sprite', () => {
             expect(bar.parent).to.equal(sprite);
         });

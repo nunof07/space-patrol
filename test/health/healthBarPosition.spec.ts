@@ -1,9 +1,9 @@
 import { asType } from '@src/core/asType';
-import { healthBarPosition } from '@src/healthBar/healthBarPosition';
+import { healthBarPosition } from '@src/health/healthBarPosition';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 
-describe('healthBar', () => {
+describe('health', () => {
     describe('#healthBarPosition', () => {
         it('should return position', () => {
             const sprite = asType<Phaser.GameObjects.Sprite>({

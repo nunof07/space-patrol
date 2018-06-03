@@ -1,7 +1,7 @@
 import { centerRectangle } from '@src/graphics/centerRectangle';
 import { RectangleWithStyle } from '@src/graphics/RectangleWithStyle';
-import { HealthBar } from '@src/healthBar/HealthBar';
-import { healthBarPosition } from '@src/healthBar/healthBarPosition';
+import { HealthBar } from '@src/health/HealthBar';
+import { healthBarPosition } from '@src/health/healthBarPosition';
 import * as Phaser from 'phaser';
 
 function rectangleWithStyle(
