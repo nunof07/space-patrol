@@ -19,9 +19,9 @@ export function addPlayer(scene: Phaser.Scene): Phaser.GameObjects.Group {
         addPlayerSprite('beamRight', scene, center, beamConfig(false)),
         addPlayerSprite('wingLeft', scene, center, wingConfig(true)),
         addPlayerSprite('wingRIght', scene, center, wingConfig(false)),
-        addPlayerSprite('shield1', scene, center, shieldConfig(1)),
-        addPlayerSprite('shield2', scene, center, shieldConfig(2)),
-        addPlayerSprite('shield3', scene, center, shieldConfig(3)),
+        addPlayerSprite('shield1', scene, center, shieldConfig(1, false, -21)),
+        addPlayerSprite('shield2', scene, center, shieldConfig(2, false, -21)),
+        addPlayerSprite('shield3', scene, center, shieldConfig(3, true, -10)),
     ]);
     addEngineParticles(scene, engine);
 

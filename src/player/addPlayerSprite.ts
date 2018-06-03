@@ -7,7 +7,7 @@ export function addPlayerSprite(
     center: { x: number; y: number },
     config: PlayerSpriteConfig
 ): Phaser.GameObjects.Sprite {
-    return scene.make.sprite({
+    const sprite = scene.make.sprite({
         x: center.x + (config.flip.x ? -1 : 1) * config.offset.x,
         y: center.y + config.offset.y,
         depth: config.depth,
@@ -18,6 +18,8 @@ export function addPlayerSprite(
         scale: config.scale,
         active: config.active,
         visible: config.visible,
-        name,
     });
+    sprite.name = name;
+
+    return sprite;
 }

@@ -2,6 +2,7 @@ import { System } from '@src/core/System';
 import { HealthSystem } from '@src/health/HealthSystem';
 import { groupFollowPointer } from '@src/input/groupFollowPointer';
 import { addPlayer } from '@src/player/addPlayer';
+import { switchShield } from '@src/player/switchShield';
 import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
 
@@ -22,6 +23,10 @@ export class Player implements System {
         this.player = addPlayer(this.scene);
         groupFollowPointer(this.scene.input, spriteChildren(this.player));
         this.health.create();
+        this.scene.input.on('pointerup', () => {
+            this.health.hit(25);
+            switchShield(this.health, this.player);
+        });
     }
 
     public update(): void {

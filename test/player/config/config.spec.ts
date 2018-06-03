@@ -8,12 +8,14 @@ import { describeConfig } from '@test/player/config/describeConfig';
 describe('player/config', () => {
     // tslint:disable-next-line:mocha-no-side-effect-code
     [
-        { name: 'beam', config: beam },
+        { name: 'beamLeft', config: () => beam(true) },
+        { name: 'beamRight', config: () => beam(false) },
         { name: 'cockpit', config: cockpit },
         { name: 'engine', config: engine },
-        { name: 'shield1', config: () => shield(1) },
-        { name: 'shield2', config: () => shield(2) },
-        { name: 'shield3', config: () => shield(3) },
-        { name: 'wing', config: wing },
+        { name: 'shield1', config: () => shield(1, true) },
+        { name: 'shield2', config: () => shield(2, true) },
+        { name: 'shield3', config: () => shield(3, true) },
+        { name: 'wingLeft', config: () => wing(true) },
+        { name: 'wingRight', config: () => wing(false) },
     ].forEach(describeConfig);
 });

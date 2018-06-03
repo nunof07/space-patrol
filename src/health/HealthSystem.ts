@@ -6,7 +6,9 @@ import { addShieldBar } from '@src/health/addShieldBar';
 import { Health } from '@src/health/Health';
 import { HealthBar } from '@src/health/HealthBar';
 import { healthBarPercentage } from '@src/health/healthBarPercentage';
+import { healthHit } from '@src/health/healthHit';
 import { renderHealthBar } from '@src/health/renderHealthBar';
+import { updateHealthBarPercentage } from '@src/health/updateHealthBarPercentage';
 import * as Phaser from 'phaser';
 
 export class HealthSystem implements Health, System {
@@ -44,5 +46,11 @@ export class HealthSystem implements Health, System {
 
     public get shield(): number {
         return healthBarPercentage(this.shieldBar);
+    }
+
+    public hit(amount: number): void {
+        const newHealth = healthHit(this, amount);
+        updateHealthBarPercentage(this.healthBar, newHealth.health);
+        updateHealthBarPercentage(this.shieldBar, newHealth.shield);
     }
 }
