@@ -22,7 +22,7 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 
 ### Artwork
 
--   Player ship and stars background: [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/).
+-   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, and stars background.
 
 ### Libraries
 
