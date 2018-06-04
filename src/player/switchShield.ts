@@ -1,16 +1,13 @@
 import { Health } from '@src/health/Health';
 import { spriteByName } from '@src/sprites/spriteByName';
-import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
 
 export function switchShield(
     health: Health,
-    player: Phaser.GameObjects.Group
+    sprites: ReadonlyArray<Phaser.GameObjects.Sprite>
 ): void {
     // hide all shields
-    const shields = spriteChildren(player).filter(sprite =>
-        sprite.name.startsWith('shield')
-    );
+    const shields = sprites.filter(sprite => sprite.name.startsWith('shield'));
     shields.forEach(shield => {
         shield.visible = false;
         shield.active = false;

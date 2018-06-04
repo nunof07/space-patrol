@@ -25,7 +25,7 @@ export class Player implements System {
         this.health.create();
         this.scene.input.on('pointerup', () => {
             this.health.hit(25);
-            switchShield(this.health, this.player);
+            switchShield(this.health, spriteChildren(this.player));
         });
     }
 
