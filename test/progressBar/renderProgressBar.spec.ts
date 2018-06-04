@@ -5,7 +5,7 @@ import { expect } from 'chai';
 
 describe.skip('progressBar', () => {
     describe('#renderProgressBar', () => {
-        it('should not throw', () => {
+        it('should not throw', done => {
             mockStart(scene => {
                 const graphics = scene.add.graphics();
                 const position = { x: 50, y: 50 };
@@ -14,6 +14,7 @@ describe.skip('progressBar', () => {
                 expect(() => {
                     renderProgressBar(graphics, bar);
                 }).to.not.throw();
+                done();
             });
         });
     });

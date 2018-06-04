@@ -5,7 +5,7 @@ import * as Phaser from 'phaser';
 
 describe.skip('graphics', () => {
     describe('#fillRectangleWithStyle', () => {
-        it('should not throw', () => {
+        it('should not throw', done => {
             mockStart(scene => {
                 const graphics = scene.add.graphics();
                 const rectangle = new Phaser.Geom.Rectangle(0, 0, 100, 100);
@@ -17,6 +17,7 @@ describe.skip('graphics', () => {
                 expect(() =>
                     fillRectangleWithStyle(graphics, withStyle)
                 ).to.not.throw();
+                done();
             });
         });
     });

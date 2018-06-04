@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 describe.skip('player', () => {
     describe('#addEngineParticles', () => {
-        it('should not throw', () => {
+        it('should not throw', done => {
             mockStart(scene => {
                 expect(() => {
                     addEngineParticles(
@@ -12,6 +12,7 @@ describe.skip('player', () => {
                         scene.add.sprite(0, 0, 'scenario/stars-black.png')
                     );
                 }).to.not.throw();
+                done();
             });
         });
     });
