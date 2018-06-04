@@ -1,3 +1,18 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/nunof07/space-patrol/compare/v1.2.0...v1.3.0) (2018-06-04)
+
+
+### Bug Fixes
+
+* **player:** add shield sprites ([6ee77ac](https://github.com/nunof07/space-patrol/commit/6ee77ac))
+* **player:** engine particle ([2fa4191](https://github.com/nunof07/space-patrol/commit/2fa4191))
+
+
+### Features
+
+* **player:** render shield bar ([f4384c9](https://github.com/nunof07/space-patrol/commit/f4384c9))
+* **player:** switch shield on hit ([e325119](https://github.com/nunof07/space-patrol/commit/e325119))
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/nunof07/space-patrol/compare/v1.1.0...v1.2.0) (2018-06-01)
 
