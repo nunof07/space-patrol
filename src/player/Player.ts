@@ -1,12 +1,30 @@
 import { System } from '@src/core/System';
+import { flashDamage } from '@src/effects/flashDamage';
 import { Health } from '@src/health/Health';
 import { HealthSystem } from '@src/health/HealthSystem';
 import { Hitpoints } from '@src/health/Hitpoints';
 import { groupFollowPointer } from '@src/input/groupFollowPointer';
 import { addPlayer } from '@src/player/addPlayer';
 import { switchShield } from '@src/player/switchShield';
+import { spriteByName } from '@src/sprites/spriteByName';
 import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
+
+function damagedPart(
+    player: Phaser.GameObjects.Group,
+    health: Health
+): Phaser.GameObjects.Sprite {
+    const part =
+        health.shield.percentage > 0.666
+            ? 'shield3'
+            : health.shield.percentage > 0.333
+                ? 'shield2'
+                : health.shield.percentage > 0
+                    ? 'shield1'
+                    : 'cockpit';
+
+    return spriteByName(spriteChildren(player), part)[0];
+}
 
 export class Player implements System {
     private readonly scene: Phaser.Scene;
@@ -27,8 +45,11 @@ export class Player implements System {
         groupFollowPointer(this.scene.input, spriteChildren(this.player));
         this.health.create();
         this.scene.input.on('pointerup', () => {
+            const part = damagedPart(this.player, this.health.health());
             this.health.hit(25);
-            switchShield(this.health.health(), spriteChildren(this.player));
+            flashDamage(this.scene, part, () => {
+                switchShield(this.health.health(), spriteChildren(this.player));
+            });
         });
     }
 
