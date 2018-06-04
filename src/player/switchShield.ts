@@ -13,12 +13,12 @@ export function switchShield(
         shield.active = false;
     });
 
-    if (health.shield > 0) {
+    if (health.shield.percentage > 0) {
         let shieldSprite;
 
-        if (health.shield < 0.33333) {
+        if (health.shield.percentage < 0.33333) {
             shieldSprite = 'shield1';
-        } else if (health.shield < 0.66666) {
+        } else if (health.shield.percentage < 0.66666) {
             shieldSprite = 'shield2';
         } else {
             shieldSprite = 'shield3';

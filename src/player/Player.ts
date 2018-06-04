@@ -1,5 +1,7 @@
 import { System } from '@src/core/System';
+import { Health } from '@src/health/Health';
 import { HealthSystem } from '@src/health/HealthSystem';
+import { Hitpoints } from '@src/health/Hitpoints';
 import { groupFollowPointer } from '@src/input/groupFollowPointer';
 import { addPlayer } from '@src/player/addPlayer';
 import { switchShield } from '@src/player/switchShield';
@@ -15,7 +17,8 @@ export class Player implements System {
         this.scene = scene;
         this.health = new HealthSystem(
             scene,
-            () => spriteChildren(this.player)[0]
+            () => spriteChildren(this.player)[0],
+            new Health(new Hitpoints(100, 100), new Hitpoints(100, 100))
         );
     }
 
@@ -25,7 +28,7 @@ export class Player implements System {
         this.health.create();
         this.scene.input.on('pointerup', () => {
             this.health.hit(25);
-            switchShield(this.health, spriteChildren(this.player));
+            switchShield(this.health.health(), spriteChildren(this.player));
         });
     }
 
