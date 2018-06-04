@@ -4,7 +4,7 @@ export function config(
     key: string,
     offset: { x: number; y: number },
     depth: number = 1000,
-    flip: { x: boolean; y: boolean } = { x: false, y: false }
+    flip: { x: boolean; y: boolean } = { x: false, y: true }
 ): PlayerSpriteConfig {
     return {
         key,
