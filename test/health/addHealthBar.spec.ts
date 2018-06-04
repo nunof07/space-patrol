@@ -1,6 +1,6 @@
 import { asType } from '@src/core/asType';
-import { addHealthBar } from '@src/healthBar/addHealthBar';
-import { HealthBar } from '@src/healthBar/HealthBar';
+import { addHealthBar } from '@src/health/addHealthBar';
+import { HealthBar } from '@src/health/HealthBar';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 
@@ -13,7 +13,7 @@ function getSprite(): Phaser.GameObjects.Sprite {
     });
 }
 
-describe('healthBar', () => {
+describe('health', () => {
     let sprite: Phaser.GameObjects.Sprite;
     let bar: HealthBar;
 

@@ -1,7 +1,7 @@
 import { centerRectangle } from '@src/graphics/centerRectangle';
 import { RectangleWithStyle } from '@src/graphics/RectangleWithStyle';
-import { HealthBar } from '@src/healthBar/HealthBar';
-import { healthBarPosition } from '@src/healthBar/healthBarPosition';
+import { HealthBar } from '@src/health/HealthBar';
+import { healthBarPosition } from '@src/health/healthBarPosition';
 import * as Phaser from 'phaser';
 
 function rectangleWithStyle(
@@ -26,7 +26,8 @@ function rectangleWithStyle(
 export function addHealthBar(
     parent: Phaser.GameObjects.Sprite,
     widthPercentage: number = 1,
-    height: number = 6
+    height: number = 6,
+    color: number = 0x22cc22
 ): HealthBar {
     const position = healthBarPosition(parent);
     const size = {
@@ -39,7 +40,7 @@ export function addHealthBar(
 
     return {
         parent,
-        background: rectangleWithStyle(background, 0xffffff, 1, 0.25),
-        filled: rectangleWithStyle(filled, 0x22cc22, 0),
+        background: rectangleWithStyle(background, 0xffffff, 0, 0.25),
+        filled: rectangleWithStyle(filled, color, 0),
     };
 }

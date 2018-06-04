@@ -1,11 +1,11 @@
 import { asType } from '@src/core/asType';
-import { addHealthBar } from '@src/healthBar/addHealthBar';
-import { renderHealthBar } from '@src/healthBar/renderHealthBar';
+import { addHealthBar } from '@src/health/addHealthBar';
+import { renderHealthBar } from '@src/health/renderHealthBar';
 import { mockStart } from '@test/game/mockStart';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 
-describe.skip('healthBar', () => {
+describe.skip('health', () => {
     describe('#renderHealthBar', () => {
         it('should not throw', () => {
             mockStart(scene => {
@@ -19,7 +19,7 @@ describe.skip('healthBar', () => {
                     })
                 );
                 expect(() => {
-                    renderHealthBar(graphics, bar);
+                    renderHealthBar(graphics, bar, 1);
                 }).to.not.throw();
             });
         });

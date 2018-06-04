@@ -4,8 +4,8 @@
             "image": "sprites.png",
             "format": "RGBA8888",
             "size": {
-                "w": 258,
-                "h": 356
+                "w": 393,
+                "h": 397
             },
             "scale": 1,
             "frames": [
@@ -35,10 +35,85 @@
                     }
                 },
                 {
-                    "filename": "player/wing.png",
+                    "filename": "player/shield3.png",
                     "frame": {
                         "x": 1,
                         "y": 259,
+                        "w": 144,
+                        "h": 137
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 144,
+                        "h": 137
+                    },
+                    "sourceSize": {
+                        "w": 144,
+                        "h": 137
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/shield2.png",
+                    "frame": {
+                        "x": 147,
+                        "y": 259,
+                        "w": 143,
+                        "h": 119
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 143,
+                        "h": 119
+                    },
+                    "sourceSize": {
+                        "w": 143,
+                        "h": 119
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/shield1.png",
+                    "frame": {
+                        "x": 259,
+                        "y": 1,
+                        "w": 133,
+                        "h": 108
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 133,
+                        "h": 108
+                    },
+                    "sourceSize": {
+                        "w": 133,
+                        "h": 108
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/wing.png",
+                    "frame": {
+                        "x": 259,
+                        "y": 111,
                         "w": 42,
                         "h": 80
                     },
@@ -62,8 +137,8 @@
                 {
                     "filename": "player/cockpit.png",
                     "frame": {
-                        "x": 83,
-                        "y": 259,
+                        "x": 259,
+                        "y": 155,
                         "w": 51,
                         "h": 75
                     },
@@ -87,12 +162,12 @@
                 {
                     "filename": "player/weapon-burst.png",
                     "frame": {
-                        "x": 1,
-                        "y": 303,
+                        "x": 259,
+                        "y": 208,
                         "w": 20,
                         "h": 52
                     },
-                    "rotated": false,
+                    "rotated": true,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
@@ -112,47 +187,22 @@
                 {
                     "filename": "player/weapon-charge.png",
                     "frame": {
-                        "x": 23,
-                        "y": 303,
+                        "x": 259,
+                        "y": 230,
                         "w": 10,
                         "h": 47
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 10,
-                        "h": 47
-                    },
-                    "sourceSize": {
-                        "w": 10,
-                        "h": 47
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/beam.png",
-                    "frame": {
-                        "x": 35,
-                        "y": 303,
-                        "w": 38,
-                        "h": 31
                     },
                     "rotated": true,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 38,
-                        "h": 31
+                        "w": 10,
+                        "h": 47
                     },
                     "sourceSize": {
-                        "w": 38,
-                        "h": 31
+                        "w": 10,
+                        "h": 47
                     },
                     "pivot": {
                         "x": 0.5,
@@ -162,8 +212,8 @@
                 {
                     "filename": "player/engine-particle.png",
                     "frame": {
-                        "x": 160,
-                        "y": 259,
+                        "x": 259,
+                        "y": 242,
                         "w": 14,
                         "h": 31
                     },
@@ -177,6 +227,31 @@
                     },
                     "sourceSize": {
                         "w": 14,
+                        "h": 31
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/beam.png",
+                    "frame": {
+                        "x": 292,
+                        "y": 242,
+                        "w": 38,
+                        "h": 31
+                    },
+                    "rotated": true,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 38,
+                        "h": 31
+                    },
+                    "sourceSize": {
+                        "w": 38,
                         "h": 31
                     },
                     "pivot": {
@@ -187,8 +262,8 @@
                 {
                     "filename": "player/engine.png",
                     "frame": {
-                        "x": 193,
-                        "y": 259,
+                        "x": 313,
+                        "y": 208,
                         "w": 27,
                         "h": 22
                     },

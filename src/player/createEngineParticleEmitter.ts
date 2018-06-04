@@ -9,11 +9,9 @@ export function createEngineParticleEmitter(
     const emitter = particles.createEmitter({
         scale: { start: 0.5, end: 0 },
         alpha: { start: 1, end: 0 },
-        speed: 0,
-        life: 500,
+        speed: { min: 0, max: 5 },
         gravityX: (isLeft ? -1 : 1) * 70,
         gravityY: 50,
-        blendMode: 'NORMAL',
     });
     emitter.startFollow(asType<Phaser.GameObjects.Particles.Particle>(engine));
 }
