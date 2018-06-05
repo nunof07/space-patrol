@@ -9,6 +9,16 @@
             }
         ]
     },
+    "fonts": {
+        "files": [
+            {
+                "type": "bitmapFont",
+                "key": "nescyrillic",
+                "textureURL": "fonts/nescyrillic.png",
+                "fontDataURL": "fonts/nescyrillic.fnt"
+            }
+        ]
+    },
     "meta": {
         "generated": "1526835788373",
         "app": "Space Patrol",

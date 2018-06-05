@@ -7,11 +7,13 @@ export function flyOffText(
     position: Position,
     down: boolean
 ): void {
-    const textObj = scene.add.text(position.x, position.y, text, {
-        color: '#ffffff',
-        fontSize: 16,
-        fontFamily: 'Arial',
-    });
+    const textObj = scene.add.bitmapText(
+        position.x,
+        position.y,
+        'nescyrillic',
+        text,
+        16
+    );
     textObj.depth = 5000;
     textObj.setOrigin(0.5, 0.5);
     scene.tweens.add({

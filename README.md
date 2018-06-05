@@ -23,6 +23,7 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 ### Artwork
 
 -   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, and stars background.
+-   Font: [NES Cyrillic](http://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=234) by [xbost](https://twitter.com/xbost). Public Domain.
 
 ### Libraries
 

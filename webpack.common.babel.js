@@ -120,6 +120,7 @@ module.exports = {
         new CopyWebpackPlugin(
             [
                 'src/assets/manifest.json',
+                { from: 'src/assets/fonts', to: 'fonts' },
                 { from: 'src/assets/sprites', to: 'sprites' },
             ],
             { cache: true }
