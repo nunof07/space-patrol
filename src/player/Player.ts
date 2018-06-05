@@ -1,5 +1,6 @@
 import { System } from '@src/core/System';
 import { flashDamage } from '@src/effects/flashDamage';
+import { flyOffText } from '@src/effects/flyOffText';
 import { Health } from '@src/health/Health';
 import { HealthSystem } from '@src/health/HealthSystem';
 import { Hitpoints } from '@src/health/Hitpoints';
@@ -47,6 +48,7 @@ export class Player implements System {
         this.scene.input.on('pointerup', () => {
             const part = damagedPart(this.player, this.health.health());
             this.health.hit(25);
+            flyOffText(this.scene, '-25', part, true);
             flashDamage(this.scene, part, () => {
                 switchShield(this.health.health(), spriteChildren(this.player));
             });
