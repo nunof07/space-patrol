@@ -1,3 +1,18 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/nunof07/space-patrol/compare/v1.3.0...v1.4.0) (2018-06-05)
+
+
+### Bug Fixes
+
+* **health:** allow health not constrained to percentage ([4cfc07d](https://github.com/nunof07/space-patrol/commit/4cfc07d))
+* **player:** flash damaged part ([8b021e8](https://github.com/nunof07/space-patrol/commit/8b021e8))
+
+
+### Features
+
+* **effects:** fly off text ([e0f4794](https://github.com/nunof07/space-patrol/commit/e0f4794))
+* **font:** NES Cyrillic ([82d57ee](https://github.com/nunof07/space-patrol/commit/82d57ee))
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/nunof07/space-patrol/compare/v1.2.0...v1.3.0) (2018-06-04)
 
