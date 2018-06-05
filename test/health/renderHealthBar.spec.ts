@@ -7,7 +7,7 @@ import * as Phaser from 'phaser';
 
 describe.skip('health', () => {
     describe('#renderHealthBar', () => {
-        it('should not throw', () => {
+        it('should not throw', done => {
             mockStart(scene => {
                 const graphics = scene.add.graphics();
                 const bar = addHealthBar(
@@ -21,6 +21,7 @@ describe.skip('health', () => {
                 expect(() => {
                     renderHealthBar(graphics, bar, 1);
                 }).to.not.throw();
+                done();
             });
         });
     });

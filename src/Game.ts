@@ -1,5 +1,5 @@
 import { Composite } from '@src/core/Composite';
-import { Player } from '@src/player/Player';
+import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
 import * as Phaser from 'phaser';
@@ -9,7 +9,10 @@ export class Game extends Phaser.Scene {
 
     constructor() {
         super({ key: 'game' });
-        this.systems = new Composite([new Background(this), new Player(this)]);
+        this.systems = new Composite([
+            new Background(this),
+            new PlayerSystem(this),
+        ]);
     }
 
     public preload(): void {
