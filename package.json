@@ -80,7 +80,7 @@
         "pretty-quick": "1.6.0",
         "request": "2.87.0",
         "semantic-release": "15.5.0",
-        "sinon": "5.0.8",
+        "sinon": "5.1.0",
         "style-loader": "0.21.0",
         "thread-loader": "1.1.5",
         "ts-loader": "4.3.0",
