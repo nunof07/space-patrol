@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/nunof07/space-patrol/compare/v1.4.0...v1.5.0) (2018-06-07)
+
+
+### Features
+
+* player ([898c259](https://github.com/nunof07/space-patrol/commit/898c259))
+* **player:** explosion effect ([5b94392](https://github.com/nunof07/space-patrol/commit/5b94392))
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/nunof07/space-patrol/compare/v1.3.0...v1.4.0) (2018-06-05)
 
