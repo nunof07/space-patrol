@@ -8,7 +8,12 @@ import { wing as wingConfig } from '@src/player/config/wing';
 import { mainCameraCenter } from '@src/scene/mainCameraCenter';
 import * as Phaser from 'phaser';
 
-export function addPlayer(scene: Phaser.Scene): Phaser.GameObjects.Group {
+export function addPlayer(
+    scene: Phaser.Scene
+): [
+    Phaser.GameObjects.Group,
+    ReadonlyArray<Phaser.GameObjects.Particles.ParticleEmitter>
+] {
     const center = mainCameraCenter(scene);
     const group = scene.add.group({});
     const engine = addPlayerSprite('engine', scene, center, engineConfig());
@@ -21,9 +26,8 @@ export function addPlayer(scene: Phaser.Scene): Phaser.GameObjects.Group {
         addPlayerSprite('wingRIght', scene, center, wingConfig(false)),
         addPlayerSprite('shield1', scene, center, shieldConfig(1, false, -21)),
         addPlayerSprite('shield2', scene, center, shieldConfig(2, false, -21)),
-        addPlayerSprite('shield3', scene, center, shieldConfig(3, true, -10)),
+        addPlayerSprite('shield3', scene, center, shieldConfig(3, false, -10)),
     ]);
-    addEngineParticles(scene, engine);
 
-    return group;
+    return [group, addEngineParticles(scene, engine)];
 }

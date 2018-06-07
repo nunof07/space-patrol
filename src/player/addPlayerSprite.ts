@@ -1,3 +1,4 @@
+import { body } from '@src/physics/arcade/body';
 import { PlayerSpriteConfig } from '@src/player/PlayerSpriteConfig';
 import * as Phaser from 'phaser';
 
@@ -20,6 +21,8 @@ export function addPlayerSprite(
         visible: config.visible,
     });
     sprite.name = name;
+    scene.physics.world.enable(sprite);
+    body(sprite).enable = config.active;
 
     return sprite;
 }

@@ -5,7 +5,7 @@ export function createEngineParticleEmitter(
     particles: Phaser.GameObjects.Particles.ParticleEmitterManager,
     engine: Phaser.GameObjects.Sprite,
     isLeft: boolean
-): void {
+): Phaser.GameObjects.Particles.ParticleEmitter {
     const emitter = particles.createEmitter({
         scale: { start: 0.5, end: 0 },
         alpha: { start: 1, end: 0 },
@@ -14,4 +14,6 @@ export function createEngineParticleEmitter(
         gravityY: 50,
     });
     emitter.startFollow(asType<Phaser.GameObjects.Particles.Particle>(engine));
+
+    return emitter;
 }

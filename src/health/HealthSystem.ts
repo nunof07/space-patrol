@@ -13,6 +13,7 @@ import * as Phaser from 'phaser';
 export class HealthSystem implements System {
     private readonly scene: Phaser.Scene;
     private readonly parent: Scalar<Phaser.GameObjects.Sprite>;
+    private readonly emitter: Phaser.Events.EventEmitter;
     private healthObj: Health;
     private graphics: Phaser.GameObjects.Graphics;
     private healthBar: HealthBar;
@@ -26,6 +27,7 @@ export class HealthSystem implements System {
         this.scene = scene;
         this.parent = parent;
         this.healthObj = health;
+        this.emitter = new Phaser.Events.EventEmitter();
     }
 
     public create(): void {
@@ -34,16 +36,44 @@ export class HealthSystem implements System {
         const parent = getScalar(this.parent);
         this.healthBar = addHealthBar(parent, 2.5);
         this.shieldBar = addShieldBar(parent, 2.5);
+        this.updateFilled();
     }
 
     public update(): void {
         this.graphics.clear();
-        renderHealthBar(this.graphics, this.healthBar, 1.6);
-        renderHealthBar(this.graphics, this.shieldBar, 1.72);
+
+        if (this.healthObj.isAlive()) {
+            renderHealthBar(this.graphics, this.healthBar, 1.6);
+            renderHealthBar(this.graphics, this.shieldBar, 1.72);
+        }
     }
 
-    public hit(amount: number): void {
-        this.healthObj = healthHit(this.healthObj, amount);
+    public hit(amount: number): boolean {
+        if (this.healthObj.isAlive()) {
+            this.healthObj = healthHit(this.healthObj, amount);
+            this.updateFilled();
+
+            if (!this.healthObj.isAlive()) {
+                this.emitter.emit('death');
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public health(): Health {
+        return this.healthObj;
+    }
+
+    public onDeath(callback: () => void): this {
+        this.emitter.on('death', callback);
+
+        return this;
+    }
+
+    private updateFilled(): void {
         updateHealthBarPercentage(
             this.healthBar,
             this.healthObj.health.percentage
@@ -52,9 +82,5 @@ export class HealthSystem implements System {
             this.shieldBar,
             this.healthObj.shield.percentage
         );
-    }
-
-    public health(): Health {
-        return this.healthObj;
     }
 }

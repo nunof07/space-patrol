@@ -13,7 +13,7 @@ import babelLoader from './webpack.babel-loader';
 module.exports = {
     entry: {
         main: './src/index.ts',
-        vendor: ['phaser', 'ramda'],
+        vendor: ['phaser', 'ramda', 'random-js'],
     },
     output: {
         filename: '[name].js',

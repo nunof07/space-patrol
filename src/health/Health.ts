@@ -16,4 +16,8 @@ export class Health {
     public get shield(): Hitpoints {
         return this.shieldHp;
     }
+
+    public isAlive(): boolean {
+        return this.healthHp.current > 0;
+    }
 }

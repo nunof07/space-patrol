@@ -1,4 +1,5 @@
 import { Health } from '@src/health/Health';
+import { body } from '@src/physics/arcade/body';
 import { spriteByName } from '@src/sprites/spriteByName';
 import * as Phaser from 'phaser';
 
@@ -11,6 +12,7 @@ export function switchShield(
     shields.forEach(shield => {
         shield.visible = false;
         shield.active = false;
+        body(shield).enable = false;
     });
 
     if (health.shield.percentage > 0) {
@@ -26,6 +28,7 @@ export function switchShield(
         spriteByName(shields, shieldSprite).forEach(shield => {
             shield.visible = true;
             shield.active = true;
+            body(shield).enable = true;
         });
     }
 }
