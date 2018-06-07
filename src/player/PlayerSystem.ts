@@ -55,7 +55,7 @@ export class PlayerSystem implements System {
         this.scene.input.on('pointerup', () => {
             const part = damagedPart(this.group, this.health.health());
             hitPlayer(this.scene, this.player(), {
-                damage: 100,
+                damage: 25,
                 part,
                 position: part,
             });

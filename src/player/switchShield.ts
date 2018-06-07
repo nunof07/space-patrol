@@ -1,5 +1,5 @@
 import { Health } from '@src/health/Health';
-import { body } from '@src/physics/arcade/body';
+import { toggleShield } from '@src/player/toggleShield';
 import { spriteByName } from '@src/sprites/spriteByName';
 import * as Phaser from 'phaser';
 
@@ -10,9 +10,7 @@ export function switchShield(
     // hide all shields
     const shields = sprites.filter(sprite => sprite.name.startsWith('shield'));
     shields.forEach(shield => {
-        shield.visible = false;
-        shield.active = false;
-        body(shield).enable = false;
+        toggleShield(shield, false);
     });
 
     if (health.shield.percentage > 0) {
@@ -26,9 +24,7 @@ export function switchShield(
             shieldSprite = 'shield3';
         }
         spriteByName(shields, shieldSprite).forEach(shield => {
-            shield.visible = true;
-            shield.active = true;
-            body(shield).enable = true;
+            toggleShield(shield, true);
         });
     }
 }
