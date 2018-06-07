@@ -1,4 +1,5 @@
 import { addEngineParticles } from '@src/player/addEngineParticles';
+import { addExplosionAnimation } from '@src/player/addExplosionAnimation';
 import { addPlayerSprite } from '@src/player/addPlayerSprite';
 import { beam as beamConfig } from '@src/player/config/beam';
 import { cockpit as cockpitConfig } from '@src/player/config/cockpit';
@@ -28,6 +29,7 @@ export function addPlayer(
         addPlayerSprite('shield2', scene, center, shieldConfig(2, false, -21)),
         addPlayerSprite('shield3', scene, center, shieldConfig(3, false, -10)),
     ]);
+    addExplosionAnimation(scene);
 
     return [group, addEngineParticles(scene, engine)];
 }

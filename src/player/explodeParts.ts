@@ -7,7 +7,7 @@ function randomVelocity(eng: Random.Engine): number {
     return (Random.bool()(eng) ? 1 : -1) * Random.integer(50, 300)(eng);
 }
 
-export function explodePlayer(player: Phaser.GameObjects.Group): void {
+export function explodeParts(player: Phaser.GameObjects.Group): void {
     const eng = engine();
     bodyChildren(player).forEach(body => {
         body.angularVelocity = randomVelocity(eng);

@@ -9,7 +9,7 @@ export function config(windowObj: Window = window): GameConfig {
         physics: {
             default: 'arcade',
             arcade: {
-                debug: true,
+                debug: false,
             },
         },
     };

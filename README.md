@@ -23,7 +23,8 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 ### Artwork
 
 -   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, and stars background.
--   Font: [NES Cyrillic](http://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=234) by [xbost](https://twitter.com/xbost). Public Domain.
+-   [Skorpio](https://opengameart.org/users/skorpio), [Sci-fi effects](https://opengameart.org/content/sci-fi-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Player explosion.
+-   [xbost](https://twitter.com/xbost), [NES Cyrillic](http://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=234) - Public Domain: Font.
 
 ### Libraries
 
@@ -35,3 +36,4 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 -   Run `npm install` in project folder.
 -   Run `npm run info` to see all available scripts.
 -   Run `npm start` to serve game and watch for changes.
+-   Run `npm run test:watch` to start tests and watch for changes.

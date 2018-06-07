@@ -3,6 +3,7 @@ import { Health } from '@src/health/Health';
 import { HealthSystem } from '@src/health/HealthSystem';
 import { Hitpoints } from '@src/health/Hitpoints';
 import { addPlayer } from '@src/player/addPlayer';
+import { cockpit } from '@src/player/cockpit';
 import { death } from '@src/player/death';
 import { followPointer } from '@src/player/followPointer';
 import { hitPlayer } from '@src/player/hitPlayer';
@@ -39,7 +40,7 @@ export class PlayerSystem implements System {
         this.scene = scene;
         this.health = new HealthSystem(
             scene,
-            () => spriteChildren(this.group)[0],
+            () => cockpit(this.group),
             new Health(new Hitpoints(100, 100), new Hitpoints(100, 0))
         );
     }
@@ -49,7 +50,7 @@ export class PlayerSystem implements System {
         followPointer(this.scene, this.player());
         this.health.create();
         this.health.onDeath(() => {
-            death(this.player());
+            death(this.scene, this.player());
         });
         this.scene.input.on('pointerup', () => {
             const part = damagedPart(this.group, this.health.health());
