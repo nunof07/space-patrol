@@ -11,9 +11,24 @@ function newHealth(health: number, shield: number): Health {
 
 function mockSprites(): ReadonlyArray<Phaser.GameObjects.Sprite> {
     return [
-        { name: 'shield1', visible: false, active: false },
-        { name: 'shield2', visible: false, active: false },
-        { name: 'shield3', visible: false, active: false },
+        {
+            name: 'shield1',
+            visible: false,
+            active: false,
+            body: { enable: false },
+        },
+        {
+            name: 'shield2',
+            visible: false,
+            active: false,
+            body: { enable: false },
+        },
+        {
+            name: 'shield3',
+            visible: false,
+            active: false,
+            body: { enable: false },
+        },
         // tslint:disable-next-line:no-unnecessary-callback-wrapper
     ].map(sprite => asType<Phaser.GameObjects.Sprite>(sprite));
 }
