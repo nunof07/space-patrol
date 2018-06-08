@@ -37,3 +37,20 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 -   Run `npm run info` to see all available scripts.
 -   Run `npm start` to serve game and watch for changes.
 -   Run `npm run test:watch` to start tests and watch for changes.
+
+## Gameplay
+
+### Player stats
+
+| Player | Start | Max |
+| ------ | ----- | --- |
+| Health | 100   | 100 |
+| Shield | 0     | 100 |
+
+### Weapon stats
+
+| Weapon  | Level 1 | Level 2  | Level 3  | Level 4  | Level 5    |
+| ------- | ------- | -------- | -------- | -------- | ---------- |
+| Primary | 1 \* 10 | 2 \* 10  | 4 \* 10  | 6 \* 10  | 14 \* 10   |
+| Charge  | [10-80] | [20-160] | [40-360] | [60-720] | [120-1440] |
+| Burst   | 2 \* 15 | 4 \* 15  | 6 \* 15  | 8 \* 15  | 14 \* 15   |
