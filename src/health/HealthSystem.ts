@@ -39,7 +39,7 @@ export class HealthSystem implements System {
         this.updateFilled();
     }
 
-    public update(): void {
+    public update(_time: number, _delta: number): void {
         this.graphics.clear();
 
         if (this.healthObj.isAlive()) {

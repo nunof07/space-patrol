@@ -49,8 +49,7 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 
 ### Weapon stats
 
-| Weapon  | Level 1 | Level 2  | Level 3  | Level 4  | Level 5    |
-| ------- | ------- | -------- | -------- | -------- | ---------- |
-| Primary | 1 \* 10 | 2 \* 10  | 4 \* 10  | 6 \* 10  | 14 \* 10   |
-| Charge  | [10-80] | [20-160] | [40-360] | [60-720] | [120-1440] |
-| Burst   | 2 \* 15 | 4 \* 15  | 6 \* 15  | 8 \* 15  | 14 \* 15   |
+| Weapon  | Step | Level 1 | Level 2 | Level 3 | Level 4 | Level 5  |
+| ------- | ---- | ------- | ------- | ------- | ------- | -------- |
+| Primary | 150  | 1 \* 10 | 2 \* 10 | 4 \* 10 | 6 \* 10 | 14 \* 10 |
+| Burst   | 500  | 2 \* 15 | 4 \* 15 | 6 \* 15 | 8 \* 15 | 14 \* 15 |

@@ -6,27 +6,9 @@ import { addPlayer } from '@src/player/addPlayer';
 import { cockpit } from '@src/player/cockpit';
 import { death } from '@src/player/death';
 import { followPointer } from '@src/player/followPointer';
-import { hitPlayer } from '@src/player/hitPlayer';
 import { Player } from '@src/player/Player';
-import { spriteByName } from '@src/sprites/spriteByName';
-import { spriteChildren } from '@src/sprites/spriteChildren';
+import { PrimarySystem } from '@src/weapons/PrimarySystem';
 import * as Phaser from 'phaser';
-
-function damagedPart(
-    player: Phaser.GameObjects.Group,
-    health: Health
-): Phaser.GameObjects.Sprite {
-    const part =
-        health.shield.percentage > 0.666
-            ? 'shield3'
-            : health.shield.percentage > 0.333
-                ? 'shield2'
-                : health.shield.percentage > 0
-                    ? 'shield1'
-                    : 'cockpit';
-
-    return spriteByName(spriteChildren(player), part)[0];
-}
 
 export class PlayerSystem implements System {
     private readonly scene: Phaser.Scene;
@@ -35,6 +17,7 @@ export class PlayerSystem implements System {
     private particles: ReadonlyArray<
         Phaser.GameObjects.Particles.ParticleEmitter
     >;
+    private primary: PrimarySystem;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
@@ -52,18 +35,13 @@ export class PlayerSystem implements System {
         this.health.onDeath(() => {
             death(this.scene, this.player());
         });
-        this.scene.input.on('pointerup', () => {
-            const part = damagedPart(this.group, this.health.health());
-            hitPlayer(this.scene, this.player(), {
-                damage: 25,
-                part,
-                position: part,
-            });
-        });
+        this.primary = new PrimarySystem(this.scene, this.player());
+        this.primary.create();
     }
 
-    public update(): void {
-        this.health.update();
+    public update(time: number, delta: number): void {
+        this.health.update(time, delta);
+        this.primary.update(time, delta);
     }
 
     public player(): Player {

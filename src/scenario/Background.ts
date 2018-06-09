@@ -16,7 +16,7 @@ export class Background implements System {
         });
     }
 
-    public update(): void {
+    public update(_time: number, _delta: number): void {
         this.background.tilePositionY -= 1;
     }
 }

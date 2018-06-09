@@ -1,4 +1,4 @@
 export interface System {
     create(): void;
-    update(): void;
+    update(time: number, delta: number): void;
 }

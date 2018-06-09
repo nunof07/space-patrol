@@ -23,7 +23,7 @@ export class Game extends Phaser.Scene {
         this.systems.create();
     }
 
-    public update(): void {
-        this.systems.update();
+    public update(time: number, delta: number): void {
+        this.systems.update(time, delta);
     }
 }

@@ -13,9 +13,9 @@ export class Composite implements System {
         });
     }
 
-    public update(): void {
+    public update(time: number, delta: number): void {
         this.systems.forEach(system => {
-            system.update();
+            system.update(time, delta);
         });
     }
 }

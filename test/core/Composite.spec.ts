@@ -35,7 +35,7 @@ describe('core/Composite', () => {
     });
     describe('#update', () => {
         it('should run each systems update once', () => {
-            composite.update();
+            composite.update(100, 8);
             expect(
                 systems.filter(system => system.update.calledOnce).length
             ).to.equal(systems.length);
