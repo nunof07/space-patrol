@@ -360,35 +360,10 @@
                     }
                 },
                 {
-                    "filename": "player/bullet-charge.png",
+                    "filename": "player/weapon-burst.png",
                     "frame": {
                         "x": 199,
                         "y": 673,
-                        "w": 18,
-                        "h": 70
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 26,
-                        "y": 0,
-                        "w": 18,
-                        "h": 70
-                    },
-                    "sourceSize": {
-                        "w": 70,
-                        "h": 70
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/weapon-burst.png",
-                    "frame": {
-                        "x": 243,
-                        "y": 591,
                         "w": 20,
                         "h": 52
                     },
@@ -412,12 +387,12 @@
                 {
                     "filename": "player/bullet-primary.png",
                     "frame": {
-                        "x": 199,
-                        "y": 745,
+                        "x": 243,
+                        "y": 591,
                         "w": 13,
                         "h": 54
                     },
-                    "rotated": true,
+                    "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
@@ -438,46 +413,21 @@
                     "filename": "player/weapon-charge.png",
                     "frame": {
                         "x": 199,
-                        "y": 760,
+                        "y": 727,
                         "w": 10,
                         "h": 47
-                    },
-                    "rotated": true,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 10,
-                        "h": 47
-                    },
-                    "sourceSize": {
-                        "w": 10,
-                        "h": 47
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/engine-particle.png",
-                    "frame": {
-                        "x": 219,
-                        "y": 673,
-                        "w": 14,
-                        "h": 31
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 14,
-                        "h": 31
+                        "w": 10,
+                        "h": 47
                     },
                     "sourceSize": {
-                        "w": 14,
-                        "h": 31
+                        "w": 10,
+                        "h": 47
                     },
                     "pivot": {
                         "x": 0.5,
@@ -687,7 +637,7 @@
                 {
                     "filename": "player/explosion_0001.png",
                     "frame": {
-                        "x": 235,
+                        "x": 221,
                         "y": 673,
                         "w": 55,
                         "h": 49
@@ -712,8 +662,8 @@
                 {
                     "filename": "player/beam.png",
                     "frame": {
-                        "x": 905,
-                        "y": 229,
+                        "x": 211,
+                        "y": 727,
                         "w": 38,
                         "h": 31
                     },
@@ -728,6 +678,31 @@
                     "sourceSize": {
                         "w": 38,
                         "h": 31
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/engine-particle.png",
+                    "frame": {
+                        "x": 905,
+                        "y": 229,
+                        "w": 10,
+                        "h": 10
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 31,
+                        "y": 29,
+                        "w": 10,
+                        "h": 10
+                    },
+                    "sourceSize": {
+                        "w": 70,
+                        "h": 70
                     },
                     "pivot": {
                         "x": 0.5,
