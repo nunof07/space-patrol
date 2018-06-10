@@ -2,6 +2,7 @@ import { CompositeSystem } from '@src/core/CompositeSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
+import { PrimarySystem } from '@src/weapons/PrimarySystem';
 import * as Phaser from 'phaser';
 
 export class Game extends Phaser.Scene {
@@ -9,9 +10,11 @@ export class Game extends Phaser.Scene {
 
     constructor() {
         super({ key: 'game' });
+        const player = new PlayerSystem(this);
         this.systems = new CompositeSystem([
             new Background(this),
-            new PlayerSystem(this),
+            player,
+            new PrimarySystem(this, player),
         ]);
     }
 
