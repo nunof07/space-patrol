@@ -1,7 +1,7 @@
 import { System } from '@src/core/System';
-import { Health } from '@src/health/Health';
 import { HealthSystem } from '@src/health/HealthSystem';
 import { Hitpoints } from '@src/health/Hitpoints';
+import { Vitality } from '@src/health/Vitality';
 import { addPlayer } from '@src/player/addPlayer';
 import { cockpit } from '@src/player/cockpit';
 import { death } from '@src/player/death';
@@ -24,7 +24,7 @@ export class PlayerSystem implements System {
         this.health = new HealthSystem(
             scene,
             () => cockpit(this.group),
-            new Health(new Hitpoints(100, 100), new Hitpoints(100, 0))
+            new Vitality(new Hitpoints(100, 100), new Hitpoints(100, 0))
         );
     }
 
@@ -32,7 +32,7 @@ export class PlayerSystem implements System {
         [this.group, this.particles] = addPlayer(this.scene);
         followPointer(this.scene, this.player());
         this.health.create();
-        this.health.onDeath(() => {
+        this.health.health().onDeath(() => {
             death(this.scene, this.player());
         });
         this.primary = new PrimarySystem(this.scene, this.player());

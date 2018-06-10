@@ -5,6 +5,9 @@ import * as Phaser from 'phaser';
 
 export function followPointer(scene: Phaser.Scene, player: Player): void {
     groupFollowPointer(scene.input, spriteChildren(player.group), 0, () =>
-        player.health.health().isAlive()
+        player.health
+            .health()
+            .health()
+            .vitality.isAlive()
     );
 }

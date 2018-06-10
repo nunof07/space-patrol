@@ -1,14 +1,14 @@
-import { Health } from '@src/health/Health';
 import { healthHit } from '@src/health/healthHit';
 import { Hitpoints } from '@src/health/Hitpoints';
+import { Vitality } from '@src/health/Vitality';
 import { expect } from 'chai';
 
-function newHealth(health: number, shield: number): Health {
-    return new Health(new Hitpoints(100, health), new Hitpoints(100, shield));
+function newHealth(health: number, shield: number): Vitality {
+    return new Vitality(new Hitpoints(100, health), new Hitpoints(100, shield));
 }
 
 function expectHealthShield(
-    health: Health,
+    health: Vitality,
     healthVal: number,
     shieldVal: number
 ): void {

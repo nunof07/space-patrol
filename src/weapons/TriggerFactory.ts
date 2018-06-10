@@ -1,9 +1,9 @@
 import { Factory } from '@src/core/Factory';
-import { Trigger } from '@src/weapons/Trigger';
+import { TriggerComponent } from '@src/weapons/TriggerComponent';
 import { WeaponComponent } from '@src/weapons/WeaponComponent';
 import * as Phaser from 'phaser';
 
-export class TriggerFactory implements Factory<Trigger> {
+export class TriggerFactory implements Factory<TriggerComponent> {
     private readonly scene: Phaser.Scene;
     private readonly weapon: WeaponComponent;
     private readonly step: number;
@@ -14,8 +14,8 @@ export class TriggerFactory implements Factory<Trigger> {
         this.step = step;
     }
 
-    public create(): Trigger {
-        const trigger = new Trigger(this.scene, this.step);
+    public create(): TriggerComponent {
+        const trigger = new TriggerComponent(this.scene, this.step);
         trigger.onFire(() => {
             this.weapon.fire();
         });

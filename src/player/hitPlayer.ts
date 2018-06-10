@@ -7,10 +7,13 @@ import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
 
 export function hitPlayer(scene: Phaser.Scene, player: Player, hit: Hit): void {
-    if (player.health.hit(hit.damage)) {
+    if (player.health.health().hit(hit.damage)) {
         flyOffText(scene, `-${hit.damage}`, hit.position, true);
         flashDamage(scene, hit.part, () => {
-            switchShield(player.health.health(), spriteChildren(player.group));
+            switchShield(
+                player.health.health().health().vitality,
+                spriteChildren(player.group)
+            );
         });
     }
 }

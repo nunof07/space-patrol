@@ -2,7 +2,7 @@ import { Component } from '@src/core/Component';
 import { canFire } from '@src/weapons/canFire';
 import * as Phaser from 'phaser';
 
-export class Trigger implements Component {
+export class TriggerComponent implements Component {
     private readonly scene: Phaser.Scene;
     private readonly step: number;
     private readonly emitter: Phaser.Events.EventEmitter;
