@@ -1,10 +1,26 @@
-import { HealthSystem } from '@src/health/HealthSystem';
 import * as Phaser from 'phaser';
 
-export interface Player {
-    readonly health: HealthSystem;
-    readonly group: Phaser.GameObjects.Group;
-    readonly particles: ReadonlyArray<
+export class Player {
+    private readonly groupImpl: Phaser.GameObjects.Group;
+    private readonly particlesImpl: ReadonlyArray<
         Phaser.GameObjects.Particles.ParticleEmitter
     >;
+
+    constructor(
+        group: Phaser.GameObjects.Group,
+        particles: ReadonlyArray<Phaser.GameObjects.Particles.ParticleEmitter>
+    ) {
+        this.groupImpl = group;
+        this.particlesImpl = particles;
+    }
+
+    public get group(): Phaser.GameObjects.Group {
+        return this.groupImpl;
+    }
+
+    public get particles(): ReadonlyArray<
+        Phaser.GameObjects.Particles.ParticleEmitter
+    > {
+        return this.particlesImpl;
+    }
 }
