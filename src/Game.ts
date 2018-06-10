@@ -1,15 +1,15 @@
-import { Composite } from '@src/core/Composite';
+import { CompositeSystem } from '@src/core/CompositeSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
 import * as Phaser from 'phaser';
 
 export class Game extends Phaser.Scene {
-    private readonly systems: Composite;
+    private readonly systems: CompositeSystem;
 
     constructor() {
         super({ key: 'game' });
-        this.systems = new Composite([
+        this.systems = new CompositeSystem([
             new Background(this),
             new PlayerSystem(this),
         ]);

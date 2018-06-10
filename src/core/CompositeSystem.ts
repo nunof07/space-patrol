@@ -1,6 +1,6 @@
 import { System } from '@src/core/System';
 
-export class Composite implements System {
+export class CompositeSystem implements System {
     private readonly systems: ReadonlyArray<System>;
 
     constructor(systems: ReadonlyArray<System>) {
