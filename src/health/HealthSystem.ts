@@ -44,7 +44,10 @@ export class HealthSystem implements System {
 
         if (this.healthObj.isAlive()) {
             renderHealthBar(this.graphics, this.healthBar, 1.6);
-            renderHealthBar(this.graphics, this.shieldBar, 1.72);
+
+            if (this.healthObj.shield.max > 0) {
+                renderHealthBar(this.graphics, this.shieldBar, 1.72);
+            }
         }
     }
 
