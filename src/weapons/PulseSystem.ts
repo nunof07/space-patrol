@@ -1,11 +1,11 @@
 import { CompositeComponent } from '@src/core/CompositeComponent';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
-import { PrimaryFactory } from '@src/weapons/PrimaryFactory';
+import { PulseFactory } from '@src/weapons/PulseFactory';
 import { TriggerFactory } from '@src/weapons/TriggerFactory';
 import * as Phaser from 'phaser';
 
-export class PrimarySystem implements System {
+export class PulseSystem implements System {
     private readonly scene: Phaser.Scene;
     private readonly player: PlayerSystem;
     private components: CompositeComponent;
@@ -16,7 +16,7 @@ export class PrimarySystem implements System {
     }
 
     public create(): void {
-        const primary = new PrimaryFactory(
+        const primary = new PulseFactory(
             this.scene,
             this.player.player()
         ).create();

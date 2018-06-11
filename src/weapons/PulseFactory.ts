@@ -1,11 +1,12 @@
 import { Factory } from '@src/core/Factory';
 import { Player } from '@src/player/Player';
 import { addBulletGroup } from '@src/weapons/addBulletGroup';
-import { PrimaryComponent } from '@src/weapons/PrimaryComponent';
+import { PulseComponent } from '@src/weapons/PulseComponent';
+import { PulseLevel1 } from '@src/weapons/PulseLevel1';
 import { Weapon } from '@src/weapons/Weapon';
 import * as Phaser from 'phaser';
 
-export class PrimaryFactory implements Factory<PrimaryComponent> {
+export class PulseFactory implements Factory<PulseComponent> {
     private readonly scene: Phaser.Scene;
     private readonly player: Player;
 
@@ -14,14 +15,15 @@ export class PrimaryFactory implements Factory<PrimaryComponent> {
         this.player = player;
     }
 
-    public create(): PrimaryComponent {
-        return new PrimaryComponent(
+    public create(): PulseComponent {
+        return new PulseComponent(
             this.scene,
             new Weapon(
                 this.player,
                 [],
                 addBulletGroup(this.scene, 'player/bullet-primary.png', 30)
-            )
+            ),
+            new PulseLevel1()
         );
     }
 }

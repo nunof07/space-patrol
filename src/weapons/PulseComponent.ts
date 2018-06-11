@@ -1,17 +1,21 @@
-import { asType } from '@src/core/asType';
+import { groupGet } from '@src/sprites/groupGet';
 import { Bullet } from '@src/weapons/Bullet';
+import { createPulses } from '@src/weapons/createPulses';
+import { PulseLevel } from '@src/weapons/PulseLevel';
 import { updateBullets } from '@src/weapons/updateBullets';
 import { Weapon } from '@src/weapons/Weapon';
 import { WeaponComponent } from '@src/weapons/WeaponComponent';
 import * as Phaser from 'phaser';
 
-export class PrimaryComponent implements WeaponComponent {
+export class PulseComponent implements WeaponComponent {
     private readonly scene: Phaser.Scene;
     private weapon: Weapon;
+    private level: PulseLevel;
 
-    constructor(scene: Phaser.Scene, weapon: Weapon) {
+    constructor(scene: Phaser.Scene, weapon: Weapon, level: PulseLevel) {
         this.scene = scene;
         this.weapon = weapon;
+        this.level = level;
     }
 
     public update(time: number, delta: number): void {
@@ -21,14 +25,16 @@ export class PrimaryComponent implements WeaponComponent {
     }
 
     public fire(): void {
-        const sprite = asType<Phaser.GameObjects.Sprite>(
-            this.weapon.group.get()
-        );
+        const sprites = groupGet(this.weapon.group, this.level.count, true);
 
-        if (sprite !== null) {
-            const bullet = new Bullet(this.scene, sprite, this.weapon.player);
-            bullet.create();
-            this.weapon = this.newWeapon(this.weapon.bullets.concat(bullet));
+        if (sprites.length > 0) {
+            const bullets = createPulses(
+                this.scene,
+                sprites,
+                this.level,
+                this.weapon
+            );
+            this.weapon = this.newWeapon(this.weapon.bullets.concat(bullets));
         }
     }
 
