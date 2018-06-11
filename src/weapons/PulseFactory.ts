@@ -2,7 +2,7 @@ import { Factory } from '@src/core/Factory';
 import { Player } from '@src/player/Player';
 import { addBulletGroup } from '@src/weapons/addBulletGroup';
 import { PulseComponent } from '@src/weapons/PulseComponent';
-import { PulseLevel3 } from '@src/weapons/PulseLevel3';
+import { PulseLevel4 } from '@src/weapons/PulseLevel4';
 import { Weapon } from '@src/weapons/Weapon';
 import * as Phaser from 'phaser';
 
@@ -21,9 +21,9 @@ export class PulseFactory implements Factory<PulseComponent> {
             new Weapon(
                 this.player,
                 [],
-                addBulletGroup(this.scene, 'player/bullet-primary.png', 30)
+                addBulletGroup(this.scene, 'player/bullet-primary.png', 100)
             ),
-            new PulseLevel3()
+            new PulseLevel4()
         );
     }
 }

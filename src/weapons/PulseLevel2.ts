@@ -12,7 +12,7 @@ export class PulseLevel2 implements PulseLevel {
         const center = cockpit(weapon.player.group);
 
         return {
-            x: center.x + (index === 0 ? -1 : 1) * 16,
+            x: center.x + (index === 0 ? -1 : 1) * 12,
             y: center.y,
         };
     }

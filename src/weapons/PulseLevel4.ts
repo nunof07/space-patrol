@@ -3,25 +3,33 @@ import { cockpit } from '@src/player/cockpit';
 import { PulseLevel } from '@src/weapons/PulseLevel';
 import { Weapon } from '@src/weapons/Weapon';
 
-export class PulseLevel3 implements PulseLevel {
+export class PulseLevel4 implements PulseLevel {
     public get count(): number {
-        return 4;
+        return 6;
     }
 
     public position(index: number, weapon: Weapon): Position {
         const center = cockpit(weapon.player.group);
+        const radius = 32;
+        const separation = Math.PI / this.count;
+        const halfIndex = index * (1 / this.count);
+        const angle = (index + halfIndex) * separation;
 
         return {
-            x: center.x + (index % 2 === 0 ? -1 : 1) * 12,
-            y: center.y,
+            x: center.x - Math.cos(angle) * radius,
+            y: center.y - Math.sin(angle) * radius,
         };
     }
 
     public angle(index: number, _weapon: Weapon): number {
         if (index < 2) {
-            return 0;
+            return -45;
         }
 
-        return index % 2 === 0 ? -45 : 45;
+        if (index > 3) {
+            return 45;
+        }
+
+        return 0;
     }
 }
