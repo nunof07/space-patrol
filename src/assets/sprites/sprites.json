@@ -4,16 +4,41 @@
             "image": "sprites.png",
             "format": "RGBA8888",
             "size": {
-                "w": 1132,
-                "h": 1459
+                "w": 1745,
+                "h": 2035
             },
             "scale": 1,
             "frames": [
                 {
-                    "filename": "player/explosion_0010.png",
+                    "filename": "scenario/stars-02.png",
                     "frame": {
                         "x": 1,
                         "y": 1,
+                        "w": 1023,
+                        "h": 1011
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 4,
+                        "w": 1023,
+                        "h": 1011
+                    },
+                    "sourceSize": {
+                        "w": 1024,
+                        "h": 1024
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/explosion_0010.png",
+                    "frame": {
+                        "x": 1,
+                        "y": 1014,
                         "w": 294,
                         "h": 295
                     },
@@ -37,8 +62,8 @@
                 {
                     "filename": "player/explosion_0011.png",
                     "frame": {
-                        "x": 1,
-                        "y": 298,
+                        "x": 1026,
+                        "y": 1,
                         "w": 294,
                         "h": 291
                     },
@@ -62,8 +87,8 @@
                 {
                     "filename": "player/explosion_0009.png",
                     "frame": {
-                        "x": 297,
-                        "y": 1,
+                        "x": 1,
+                        "y": 1311,
                         "w": 267,
                         "h": 267
                     },
@@ -87,8 +112,8 @@
                 {
                     "filename": "player/explosion_0014.png",
                     "frame": {
-                        "x": 1,
-                        "y": 591,
+                        "x": 297,
+                        "y": 1014,
                         "w": 196,
                         "h": 260
                     },
@@ -110,10 +135,10 @@
                     }
                 },
                 {
-                    "filename": "scenario/stars-black.png",
+                    "filename": "scenario/stars-01.png",
                     "frame": {
-                        "x": 297,
-                        "y": 270,
+                        "x": 1026,
+                        "y": 294,
                         "w": 256,
                         "h": 256
                     },
@@ -137,7 +162,7 @@
                 {
                     "filename": "player/explosion_0008.png",
                     "frame": {
-                        "x": 566,
+                        "x": 1322,
                         "y": 1,
                         "w": 232,
                         "h": 237
@@ -163,7 +188,7 @@
                     "filename": "player/explosion_0013.png",
                     "frame": {
                         "x": 1,
-                        "y": 853,
+                        "y": 1580,
                         "w": 204,
                         "h": 254
                     },
@@ -187,8 +212,8 @@
                 {
                     "filename": "player/explosion_0012.png",
                     "frame": {
-                        "x": 297,
-                        "y": 528,
+                        "x": 270,
+                        "y": 1311,
                         "w": 198,
                         "h": 246
                     },
@@ -210,35 +235,10 @@
                     }
                 },
                 {
-                    "filename": "player/explosion_0007.png",
-                    "frame": {
-                        "x": 555,
-                        "y": 270,
-                        "w": 202,
-                        "h": 206
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 41,
-                        "y": 49,
-                        "w": 202,
-                        "h": 206
-                    },
-                    "sourceSize": {
-                        "w": 300,
-                        "h": 300
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
                     "filename": "player/explosion_0015.png",
                     "frame": {
-                        "x": 800,
-                        "y": 1,
+                        "x": 495,
+                        "y": 1014,
                         "w": 186,
                         "h": 226
                     },
@@ -260,10 +260,35 @@
                     }
                 },
                 {
+                    "filename": "player/explosion_0007.png",
+                    "frame": {
+                        "x": 1026,
+                        "y": 552,
+                        "w": 202,
+                        "h": 206
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 41,
+                        "y": 49,
+                        "w": 202,
+                        "h": 206
+                    },
+                    "sourceSize": {
+                        "w": 300,
+                        "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
                     "filename": "player/explosion_0006.png",
                     "frame": {
-                        "x": 1,
-                        "y": 1109,
+                        "x": 1284,
+                        "y": 294,
                         "w": 170,
                         "h": 184
                     },
@@ -285,10 +310,35 @@
                     }
                 },
                 {
+                    "filename": "player/shield3.png",
+                    "frame": {
+                        "x": 1556,
+                        "y": 1,
+                        "w": 144,
+                        "h": 137
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 144,
+                        "h": 137
+                    },
+                    "sourceSize": {
+                        "w": 144,
+                        "h": 137
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
                     "filename": "player/explosion_0005.png",
                     "frame": {
-                        "x": 497,
-                        "y": 528,
+                        "x": 1,
+                        "y": 1836,
                         "w": 143,
                         "h": 174
                     },
@@ -310,210 +360,10 @@
                     }
                 },
                 {
-                    "filename": "player/wing.png",
-                    "frame": {
-                        "x": 199,
-                        "y": 591,
-                        "w": 42,
-                        "h": 80
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 42,
-                        "h": 80
-                    },
-                    "sourceSize": {
-                        "w": 42,
-                        "h": 80
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/cockpit.png",
-                    "frame": {
-                        "x": 199,
-                        "y": 776,
-                        "w": 51,
-                        "h": 75
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 51,
-                        "h": 75
-                    },
-                    "sourceSize": {
-                        "w": 51,
-                        "h": 75
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/weapon-burst.png",
-                    "frame": {
-                        "x": 199,
-                        "y": 673,
-                        "w": 20,
-                        "h": 52
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 20,
-                        "h": 52
-                    },
-                    "sourceSize": {
-                        "w": 20,
-                        "h": 52
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/bullet-primary.png",
-                    "frame": {
-                        "x": 243,
-                        "y": 591,
-                        "w": 13,
-                        "h": 54
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 13,
-                        "h": 54
-                    },
-                    "sourceSize": {
-                        "w": 13,
-                        "h": 54
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/weapon-charge.png",
-                    "frame": {
-                        "x": 199,
-                        "y": 727,
-                        "w": 10,
-                        "h": 47
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 10,
-                        "h": 47
-                    },
-                    "sourceSize": {
-                        "w": 10,
-                        "h": 47
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/engine.png",
-                    "frame": {
-                        "x": 566,
-                        "y": 240,
-                        "w": 27,
-                        "h": 22
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 27,
-                        "h": 22
-                    },
-                    "sourceSize": {
-                        "w": 27,
-                        "h": 22
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/shield3.png",
-                    "frame": {
-                        "x": 759,
-                        "y": 240,
-                        "w": 144,
-                        "h": 137
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 144,
-                        "h": 137
-                    },
-                    "sourceSize": {
-                        "w": 144,
-                        "h": 137
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/shield2.png",
-                    "frame": {
-                        "x": 988,
-                        "y": 1,
-                        "w": 143,
-                        "h": 119
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 143,
-                        "h": 119
-                    },
-                    "sourceSize": {
-                        "w": 143,
-                        "h": 119
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
                     "filename": "player/explosion_0004.png",
                     "frame": {
-                        "x": 1,
-                        "y": 1295,
+                        "x": 207,
+                        "y": 1580,
                         "w": 123,
                         "h": 163
                     },
@@ -535,10 +385,135 @@
                     }
                 },
                 {
+                    "filename": "player/bullet-primary.png",
+                    "frame": {
+                        "x": 270,
+                        "y": 1559,
+                        "w": 13,
+                        "h": 54
+                    },
+                    "rotated": true,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 13,
+                        "h": 54
+                    },
+                    "sourceSize": {
+                        "w": 13,
+                        "h": 54
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/bullet-burst.png",
+                    "frame": {
+                        "x": 1322,
+                        "y": 240,
+                        "w": 32,
+                        "h": 44
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 32,
+                        "h": 44
+                    },
+                    "sourceSize": {
+                        "w": 32,
+                        "h": 44
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/weapon-charge.png",
+                    "frame": {
+                        "x": 326,
+                        "y": 1559,
+                        "w": 10,
+                        "h": 47
+                    },
+                    "rotated": true,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 10,
+                        "h": 47
+                    },
+                    "sourceSize": {
+                        "w": 10,
+                        "h": 47
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/weapon-burst.png",
+                    "frame": {
+                        "x": 1356,
+                        "y": 240,
+                        "w": 20,
+                        "h": 52
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 20,
+                        "h": 52
+                    },
+                    "sourceSize": {
+                        "w": 20,
+                        "h": 52
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/beam.png",
+                    "frame": {
+                        "x": 297,
+                        "y": 1276,
+                        "w": 38,
+                        "h": 31
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 38,
+                        "h": 31
+                    },
+                    "sourceSize": {
+                        "w": 38,
+                        "h": 31
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
                     "filename": "player/explosion_0003.png",
                     "frame": {
-                        "x": 173,
-                        "y": 1109,
+                        "x": 470,
+                        "y": 1276,
                         "w": 103,
                         "h": 152
                     },
@@ -562,8 +537,8 @@
                 {
                     "filename": "player/explosion_0002.png",
                     "frame": {
-                        "x": 497,
-                        "y": 704,
+                        "x": 683,
+                        "y": 1014,
                         "w": 95,
                         "h": 136
                     },
@@ -585,24 +560,24 @@
                     }
                 },
                 {
-                    "filename": "player/bullet-burst.png",
+                    "filename": "player/shield2.png",
                     "frame": {
-                        "x": 555,
-                        "y": 478,
-                        "w": 32,
-                        "h": 44
+                        "x": 1026,
+                        "y": 760,
+                        "w": 143,
+                        "h": 119
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 32,
-                        "h": 44
+                        "w": 143,
+                        "h": 119
                     },
                     "sourceSize": {
-                        "w": 32,
-                        "h": 44
+                        "w": 143,
+                        "h": 119
                     },
                     "pivot": {
                         "x": 0.5,
@@ -612,8 +587,8 @@
                 {
                     "filename": "player/shield1.png",
                     "frame": {
-                        "x": 642,
-                        "y": 478,
+                        "x": 1230,
+                        "y": 552,
                         "w": 133,
                         "h": 108
                     },
@@ -637,8 +612,8 @@
                 {
                     "filename": "player/explosion_0001.png",
                     "frame": {
-                        "x": 221,
-                        "y": 673,
+                        "x": 1456,
+                        "y": 240,
                         "w": 55,
                         "h": 49
                     },
@@ -660,24 +635,74 @@
                     }
                 },
                 {
-                    "filename": "player/beam.png",
+                    "filename": "player/cockpit.png",
                     "frame": {
-                        "x": 211,
-                        "y": 727,
-                        "w": 38,
-                        "h": 31
+                        "x": 1556,
+                        "y": 140,
+                        "w": 51,
+                        "h": 75
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 38,
-                        "h": 31
+                        "w": 51,
+                        "h": 75
                     },
                     "sourceSize": {
-                        "w": 38,
-                        "h": 31
+                        "w": 51,
+                        "h": 75
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/wing.png",
+                    "frame": {
+                        "x": 1702,
+                        "y": 1,
+                        "w": 42,
+                        "h": 80
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 42,
+                        "h": 80
+                    },
+                    "sourceSize": {
+                        "w": 42,
+                        "h": 80
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/engine.png",
+                    "frame": {
+                        "x": 1,
+                        "y": 2012,
+                        "w": 27,
+                        "h": 22
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 27,
+                        "h": 22
+                    },
+                    "sourceSize": {
+                        "w": 27,
+                        "h": 22
                     },
                     "pivot": {
                         "x": 0.5,
@@ -687,8 +712,8 @@
                 {
                     "filename": "player/engine-particle.png",
                     "frame": {
-                        "x": 905,
-                        "y": 229,
+                        "x": 146,
+                        "y": 1836,
                         "w": 10,
                         "h": 10
                     },
