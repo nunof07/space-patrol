@@ -4,8 +4,14 @@ import { PulseLevel } from '@src/weapons/PulseLevel';
 import { Weapon } from '@src/weapons/Weapon';
 
 export class PulseLevel4 implements PulseLevel {
+    private readonly angles: ReadonlyArray<number>;
+
+    constructor(angles: ReadonlyArray<number> = [-45, -45, 0, 0, 45, 45]) {
+        this.angles = angles;
+    }
+
     public get count(): number {
-        return 6;
+        return this.angles.length;
     }
 
     public position(index: number, weapon: Weapon): Position {
@@ -22,14 +28,6 @@ export class PulseLevel4 implements PulseLevel {
     }
 
     public angle(index: number, _weapon: Weapon): number {
-        if (index < 2) {
-            return -45;
-        }
-
-        if (index > 3) {
-            return 45;
-        }
-
-        return 0;
+        return this.angles[index];
     }
 }
