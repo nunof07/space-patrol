@@ -1,3 +1,16 @@
+# [1.6.0](https://github.com/nunof07/space-patrol/compare/v1.5.0...v1.6.0) (2018-06-11)
+
+
+### Features
+
+* **player:** replace engine particle image ([9657a98](https://github.com/nunof07/space-patrol/commit/9657a98))
+* **pulse:** level 2 ([cab4c5f](https://github.com/nunof07/space-patrol/commit/cab4c5f))
+* **pulse:** level 3 ([ef2644f](https://github.com/nunof07/space-patrol/commit/ef2644f))
+* **pulse:** level 4 ([f7e3f9d](https://github.com/nunof07/space-patrol/commit/f7e3f9d))
+* **pulse:** level 5 and 6 ([0118983](https://github.com/nunof07/space-patrol/commit/0118983))
+* **scenario:** additional stars background ([9bead7e](https://github.com/nunof07/space-patrol/commit/9bead7e))
+* **weapons:** primary fire ([738e57f](https://github.com/nunof07/space-patrol/commit/738e57f))
+
 # [1.5.0](https://github.com/nunof07/space-patrol/compare/v1.4.0...v1.5.0) (2018-06-07)
 
 
