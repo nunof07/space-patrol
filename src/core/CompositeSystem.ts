@@ -1,3 +1,4 @@
+import { compositeUpdate } from '@src/core/compositeUpdate';
 import { System } from '@src/core/System';
 
 export class CompositeSystem implements System {
@@ -14,8 +15,6 @@ export class CompositeSystem implements System {
     }
 
     public update(time: number, delta: number): void {
-        this.systems.forEach(system => {
-            system.update(time, delta);
-        });
+        compositeUpdate(this.systems, time, delta);
     }
 }

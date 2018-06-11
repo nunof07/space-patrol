@@ -1,4 +1,5 @@
 import { Component } from '@src/core/Component';
+import { compositeUpdate } from '@src/core/compositeUpdate';
 
 export class CompositeComponent implements Component {
     private readonly components: ReadonlyArray<Component>;
@@ -8,8 +9,6 @@ export class CompositeComponent implements Component {
     }
 
     public update(time: number, delta: number): void {
-        this.components.forEach(components => {
-            components.update(time, delta);
-        });
+        compositeUpdate(this.components, time, delta);
     }
 }
