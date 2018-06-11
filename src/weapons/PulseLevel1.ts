@@ -11,4 +11,8 @@ export class PulseLevel1 implements PulseLevel {
     public position(_index: number, weapon: Weapon): Position {
         return cockpit(weapon.player.group);
     }
+
+    public angle(_index: number, _weapon: Weapon): number {
+        return 0;
+    }
 }
