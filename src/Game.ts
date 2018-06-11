@@ -1,17 +1,20 @@
-import { Composite } from '@src/core/Composite';
+import { CompositeSystem } from '@src/core/CompositeSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
+import { PulseSystem } from '@src/weapons/PulseSystem';
 import * as Phaser from 'phaser';
 
 export class Game extends Phaser.Scene {
-    private readonly systems: Composite;
+    private readonly systems: CompositeSystem;
 
     constructor() {
         super({ key: 'game' });
-        this.systems = new Composite([
+        const player = new PlayerSystem(this);
+        this.systems = new CompositeSystem([
             new Background(this),
-            new PlayerSystem(this),
+            player,
+            new PulseSystem(this, player),
         ]);
     }
 
@@ -23,7 +26,7 @@ export class Game extends Phaser.Scene {
         this.systems.create();
     }
 
-    public update(): void {
-        this.systems.update();
+    public update(time: number, delta: number): void {
+        this.systems.update(time, delta);
     }
 }

@@ -1,23 +1,38 @@
-import { Hitpoints } from '@src/health/Hitpoints';
+import { HealthBar } from '@src/health/HealthBar';
+import { Vitality } from '@src/health/Vitality';
+import * as Phaser from 'phaser';
 
 export class Health {
-    private readonly healthHp: Hitpoints;
-    private readonly shieldHp: Hitpoints;
+    private readonly vitalityImpl: Vitality;
+    private readonly graphicsImpl: Phaser.GameObjects.Graphics;
+    private readonly healthBarImpl: HealthBar;
+    private readonly shieldBarImpl: HealthBar;
 
-    constructor(health: Hitpoints, shield: Hitpoints) {
-        this.healthHp = health;
-        this.shieldHp = shield;
+    constructor(
+        vitality: Vitality,
+        graphics: Phaser.GameObjects.Graphics,
+        healthBar: HealthBar,
+        shieldBar: HealthBar
+    ) {
+        this.vitalityImpl = vitality;
+        this.graphicsImpl = graphics;
+        this.healthBarImpl = healthBar;
+        this.shieldBarImpl = shieldBar;
     }
 
-    public get health(): Hitpoints {
-        return this.healthHp;
+    public get vitality(): Vitality {
+        return this.vitalityImpl;
     }
 
-    public get shield(): Hitpoints {
-        return this.shieldHp;
+    public get graphics(): Phaser.GameObjects.Graphics {
+        return this.graphicsImpl;
     }
 
-    public isAlive(): boolean {
-        return this.healthHp.current > 0;
+    public get healthBar(): HealthBar {
+        return this.healthBarImpl;
+    }
+
+    public get shieldBar(): HealthBar {
+        return this.shieldBarImpl;
     }
 }

@@ -1,4 +1,4 @@
-import { Composite } from '@src/core/Composite';
+import { CompositeSystem } from '@src/core/CompositeSystem';
 import { expect } from 'chai';
 import { times } from 'ramda';
 import * as sinon from 'sinon';
@@ -18,12 +18,12 @@ function createSystems(length: number): ReadonlyArray<SystemSpy> {
 }
 
 describe('core/Composite', () => {
-    let composite: Composite;
+    let composite: CompositeSystem;
     let systems: ReadonlyArray<SystemSpy>;
 
     beforeEach(() => {
         systems = createSystems(5);
-        composite = new Composite(systems);
+        composite = new CompositeSystem(systems);
     });
     describe('#create', () => {
         it('should run each systems create once', () => {
@@ -35,7 +35,7 @@ describe('core/Composite', () => {
     });
     describe('#update', () => {
         it('should run each systems update once', () => {
-            composite.update();
+            composite.update(100, 8);
             expect(
                 systems.filter(system => system.update.calledOnce).length
             ).to.equal(systems.length);

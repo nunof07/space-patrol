@@ -23,7 +23,7 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 ### Artwork
 
 -   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, and stars background.
--   [Skorpio](https://opengameart.org/users/skorpio), [Sci-fi effects](https://opengameart.org/content/sci-fi-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Player explosion.
+-   [Skorpio](https://opengameart.org/users/skorpio), [Sci-fi effects](https://opengameart.org/content/sci-fi-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Player explosion and stars background.
 -   [xbost](https://twitter.com/xbost), [NES Cyrillic](http://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=234) - Public Domain: Font.
 
 ### Libraries
@@ -37,3 +37,19 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 -   Run `npm run info` to see all available scripts.
 -   Run `npm start` to serve game and watch for changes.
 -   Run `npm run test:watch` to start tests and watch for changes.
+
+## Gameplay
+
+### Player stats
+
+| Player | Start | Max |
+| ------ | ----- | --- |
+| Health | 100   | 100 |
+| Shield | 0     | 100 |
+
+### Weapon stats
+
+| Weapon | Step | Level 1 | Level 2 | Level 3 | Level 4 | Level 5  | Level 6  |
+| ------ | ---- | ------- | ------- | ------- | ------- | -------- | -------- |
+| Pulse  | 150  | 1 \* 10 | 2 \* 10 | 4 \* 10 | 6 \* 10 | 10 \* 10 | 14 \* 10 |
+| Burst  | 500  | 2 \* 15 | 4 \* 15 | 6 \* 15 | 8 \* 15 | 10 \* 15 | 14 \* 15 |

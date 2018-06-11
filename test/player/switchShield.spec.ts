@@ -1,12 +1,12 @@
 import { asType } from '@src/core/asType';
-import { Health } from '@src/health/Health';
 import { Hitpoints } from '@src/health/Hitpoints';
+import { Vitality } from '@src/health/Vitality';
 import { switchShield } from '@src/player/switchShield';
 import { expect } from 'chai';
 import * as Phaser from 'phaser';
 
-function newHealth(health: number, shield: number): Health {
-    return new Health(new Hitpoints(100, health), new Hitpoints(100, shield));
+function newHealth(health: number, shield: number): Vitality {
+    return new Vitality(new Hitpoints(100, health), new Hitpoints(100, shield));
 }
 
 function mockSprites(): ReadonlyArray<Phaser.GameObjects.Sprite> {

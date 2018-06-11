@@ -1,10 +1,10 @@
-import { Health } from '@src/health/Health';
+import { Vitality } from '@src/health/Vitality';
 import { toggleShield } from '@src/player/toggleShield';
 import { spriteByName } from '@src/sprites/spriteByName';
 import * as Phaser from 'phaser';
 
 export function switchShield(
-    health: Health,
+    health: Vitality,
     sprites: ReadonlyArray<Phaser.GameObjects.Sprite>
 ): void {
     // hide all shields

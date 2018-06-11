@@ -1,6 +1,7 @@
+import { compositeUpdate } from '@src/core/compositeUpdate';
 import { System } from '@src/core/System';
 
-export class Composite implements System {
+export class CompositeSystem implements System {
     private readonly systems: ReadonlyArray<System>;
 
     constructor(systems: ReadonlyArray<System>) {
@@ -13,9 +14,7 @@ export class Composite implements System {
         });
     }
 
-    public update(): void {
-        this.systems.forEach(system => {
-            system.update();
-        });
+    public update(time: number, delta: number): void {
+        compositeUpdate(this.systems, time, delta);
     }
 }

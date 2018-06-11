@@ -7,7 +7,7 @@ export function createEngineParticleEmitter(
     isLeft: boolean
 ): Phaser.GameObjects.Particles.ParticleEmitter {
     const emitter = particles.createEmitter({
-        scale: { start: 0.5, end: 0 },
+        scale: { start: 1, end: 0 },
         alpha: { start: 1, end: 0 },
         speed: { min: 0, max: 5 },
         gravityX: (isLeft ? -1 : 1) * 70,
