@@ -1,21 +1,25 @@
 import { Position } from '@src/core/Position';
-import { PulseLevel } from '@src/weapons/PulseLevel';
-import { PulseLevel4 } from '@src/weapons/PulseLevel4';
+import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
+import { PulseLevel4 } from '@src/weapons/pulse/PulseLevel4';
 import { Weapon } from '@src/weapons/Weapon';
 
-export class PulseLevel5 implements PulseLevel {
+export class PulseLevel6 implements PulseLevel {
     private readonly level: PulseLevel;
 
     constructor() {
         this.level = new PulseLevel4([
             -60,
             -60,
+            -45,
+            -45,
             -30,
             -30,
             0,
             0,
             30,
             30,
+            45,
+            45,
             60,
             60,
         ]);

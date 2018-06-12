@@ -1,6 +1,6 @@
 import { Bullet } from '@src/weapons/Bullet';
-import { createPulses } from '@src/weapons/createPulses';
-import { PulseLevel } from '@src/weapons/PulseLevel';
+import { createPulses } from '@src/weapons/pulse/createPulses';
+import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { updateBullets } from '@src/weapons/updateBullets';
 import { Weapon } from '@src/weapons/Weapon';
 import { WeaponComponent } from '@src/weapons/WeaponComponent';

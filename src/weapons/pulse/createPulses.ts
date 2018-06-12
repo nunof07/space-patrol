@@ -1,6 +1,6 @@
 import { asType } from '@src/core/asType';
 import { Bullet } from '@src/weapons/Bullet';
-import { PulseLevel } from '@src/weapons/PulseLevel';
+import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { Weapon } from '@src/weapons/Weapon';
 import * as Phaser from 'phaser';
 

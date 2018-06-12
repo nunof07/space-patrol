@@ -1,7 +1,7 @@
 import { CompositeComponent } from '@src/core/CompositeComponent';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
-import { PulseFactory } from '@src/weapons/PulseFactory';
+import { PulseFactory } from '@src/weapons/pulse/PulseFactory';
 import { TriggerFactory } from '@src/weapons/TriggerFactory';
 import * as Phaser from 'phaser';
 
