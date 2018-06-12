@@ -1,6 +1,6 @@
 {
     "name": "space-patrol",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": "Shoot 'em up space game",
     "main": "index.js",
     "scripts": {
@@ -40,8 +40,8 @@
     },
     "homepage": "https://github.com/nunof07/space-patrol#readme",
     "devDependencies": {
-        "@babel/core": "7.0.0-beta.49",
-        "@babel/plugin-transform-runtime": "7.0.0-beta.49",
+        "@babel/core": "7.0.0-beta.50",
+        "@babel/plugin-transform-runtime": "7.0.0-beta.50",
         "@babel/preset-env": "7.0.0-beta.50",
         "@semantic-release/changelog": "2.0.2",
         "@semantic-release/git": "5.0.0",
@@ -104,7 +104,7 @@
         "webpack-node-externals": "1.7.2"
     },
     "dependencies": {
-        "@babel/runtime": "7.0.0-beta.49",
+        "@babel/runtime": "7.0.0-beta.50",
         "phaser": "3.9.0",
         "ramda": "0.25.0",
         "random-js": "1.0.8"
