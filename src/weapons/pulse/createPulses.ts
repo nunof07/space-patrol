@@ -1,5 +1,6 @@
 import { asType } from '@src/core/asType';
 import { Bullet } from '@src/weapons/Bullet';
+import { Pulse } from '@src/weapons/pulse/Pulse';
 import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { Weapon } from '@src/weapons/Weapon';
 import * as Phaser from 'phaser';
@@ -17,7 +18,7 @@ export function createPulses(
         if (sprite !== null) {
             const position = level.position(i, weapon);
             const angle = level.angle(i, weapon);
-            const bullet = new Bullet(scene, sprite, position, angle);
+            const bullet = new Pulse(scene, sprite, position, angle);
             bullet.create();
             result = result.concat(bullet);
         }
