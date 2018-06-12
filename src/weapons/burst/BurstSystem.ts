@@ -1,6 +1,7 @@
 import { CompositeComponent } from '@src/core/CompositeComponent';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
+import { addBurstExplosion } from '@src/weapons/burst/addBurstExplosion';
 import { BurstFactory } from '@src/weapons/burst/BurstFactory';
 import { BurstLevel1 } from '@src/weapons/burst/BurstLevel1';
 import { TriggerFactory } from '@src/weapons/TriggerFactory';
@@ -18,6 +19,7 @@ export class BurstSystem implements System {
     }
 
     public create(): void {
+        addBurstExplosion(this.scene);
         const primary = new WeaponFactory(
             this.scene,
             this.player.player(),

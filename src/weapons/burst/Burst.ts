@@ -2,6 +2,7 @@ import { Position } from '@src/core/Position';
 import { body } from '@src/physics/arcade/body';
 import { activateBullet } from '@src/weapons/activateBullet';
 import { Bullet } from '@src/weapons/Bullet';
+import { playBurstExplosion } from '@src/weapons/burst/playBurstExplosion';
 import { isBulletAlive } from '@src/weapons/isBulletAlive';
 import { updateBullet } from '@src/weapons/updateBullet';
 import * as Phaser from 'phaser';
@@ -34,6 +35,10 @@ export class Burst implements Bullet {
 
     public update(_time: number, delta: number): void {
         this.lifespanImpl = updateBullet(this, delta);
+
+        if (!this.isAlive()) {
+            playBurstExplosion(this.scene, this.spriteImpl);
+        }
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {
