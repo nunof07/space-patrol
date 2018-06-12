@@ -40,7 +40,7 @@
     },
     "homepage": "https://github.com/nunof07/space-patrol#readme",
     "devDependencies": {
-        "@babel/core": "7.0.0-beta.49",
+        "@babel/core": "7.0.0-beta.50",
         "@babel/plugin-transform-runtime": "7.0.0-beta.50",
         "@babel/preset-env": "7.0.0-beta.49",
         "@semantic-release/changelog": "2.0.2",
