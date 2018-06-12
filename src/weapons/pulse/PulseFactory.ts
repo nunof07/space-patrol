@@ -1,29 +1,20 @@
-import { Factory } from '@src/core/Factory';
-import { Player } from '@src/player/Player';
-import { addBulletGroup } from '@src/weapons/addBulletGroup';
-import { PulseComponent } from '@src/weapons/pulse/PulseComponent';
-import { PulseLevel6 } from '@src/weapons/pulse/PulseLevel6';
+import { Bullet } from '@src/weapons/Bullet';
+import { BulletFactory } from '@src/weapons/BulletFactory';
+import { createPulses } from '@src/weapons/pulse/createPulses';
+import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { Weapon } from '@src/weapons/Weapon';
 import * as Phaser from 'phaser';
 
-export class PulseFactory implements Factory<PulseComponent> {
+export class PulseFactory implements BulletFactory {
     private readonly scene: Phaser.Scene;
-    private readonly player: Player;
+    private readonly level: PulseLevel;
 
-    constructor(scene: Phaser.Scene, player: Player) {
+    constructor(scene: Phaser.Scene, level: PulseLevel) {
         this.scene = scene;
-        this.player = player;
+        this.level = level;
     }
 
-    public create(): PulseComponent {
-        return new PulseComponent(
-            this.scene,
-            new Weapon(
-                this.player,
-                [],
-                addBulletGroup(this.scene, 'player/bullet-primary.png', 100)
-            ),
-            new PulseLevel6()
-        );
+    public create(weapon: Weapon): ReadonlyArray<Bullet> {
+        return createPulses(this.scene, this.level, weapon);
     }
 }
