@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/nunof07/space-patrol/compare/v1.6.1...v1.6.2) (2018-06-12)
+
+
+### Bug Fixes
+
+* **package:** update [@babel](https://github.com/babel)/runtime to version 7.0.0-beta.51 ([06d36f9](https://github.com/nunof07/space-patrol/commit/06d36f9))
+
 ## [1.6.1](https://github.com/nunof07/space-patrol/compare/v1.6.0...v1.6.1) (2018-06-12)
 
 
