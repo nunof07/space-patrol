@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/nunof07/space-patrol/compare/v1.6.3...v1.6.4) (2018-06-13)
+
+
+### Bug Fixes
+
+* **package:** update phaser to version 3.10.1 ([cb1984f](https://github.com/nunof07/space-patrol/commit/cb1984f))
+
 ## [1.6.3](https://github.com/nunof07/space-patrol/compare/v1.6.2...v1.6.3) (2018-06-13)
 
 
