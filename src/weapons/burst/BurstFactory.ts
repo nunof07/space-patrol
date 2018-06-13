@@ -18,8 +18,9 @@ export class BurstFactory implements BulletFactory {
     public create(weapon: Weapon): ReadonlyArray<Bullet> {
         return createBullets(weapon, this.level.count, (index, sprite) => {
             const position = this.level.position(index, weapon);
+            const destination = this.level.destination(index, weapon);
 
-            return new Burst(this.scene, sprite, position);
+            return new Burst(this.scene, sprite, position, destination);
         });
     }
 }
