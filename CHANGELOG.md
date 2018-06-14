@@ -1,3 +1,19 @@
+# [1.7.0](https://github.com/nunof07/space-patrol/compare/v1.6.4...v1.7.0) (2018-06-14)
+
+
+### Bug Fixes
+
+* **anim:** addAnimation ([814a4b8](https://github.com/nunof07/space-patrol/commit/814a4b8))
+* **burst:** scale down explosion ([aba9bb9](https://github.com/nunof07/space-patrol/commit/aba9bb9))
+* **player:** show burst weapon ([b459a40](https://github.com/nunof07/space-patrol/commit/b459a40))
+
+
+### Features
+
+* **burst:** dynamic level ([e15a45c](https://github.com/nunof07/space-patrol/commit/e15a45c))
+* **burst:** explosion ([3b949ff](https://github.com/nunof07/space-patrol/commit/3b949ff))
+* **burst:** level 1 ([e70cacc](https://github.com/nunof07/space-patrol/commit/e70cacc))
+
 ## [1.6.4](https://github.com/nunof07/space-patrol/compare/v1.6.3...v1.6.4) (2018-06-13)
 
 
