@@ -1,3 +1,4 @@
+import { circlePosition } from '@src/core/circlePosition';
 import { Position } from '@src/core/Position';
 import { cockpit } from '@src/player/cockpit';
 import { BurstLevel } from '@src/weapons/burst/BurstLevel';
@@ -40,10 +41,7 @@ export class BurstDynamicLevel implements BurstLevel {
             const startIndex = this.count / 2 + 1 / 2;
             const angle = (index + startIndex) * separation;
 
-            return {
-                x: center.x - Math.cos(angle) * radius,
-                y: center.y - Math.sin(angle) * radius,
-            };
+            return circlePosition(center, angle, radius);
         }
     }
 
