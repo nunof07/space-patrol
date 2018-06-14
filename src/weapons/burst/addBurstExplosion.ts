@@ -1,4 +1,4 @@
-import { addAnimation } from '@src/animation';
+import { addAnimation } from '@src/animation/addAnimation';
 import * as Phaser from 'phaser';
 
 export function addBurstExplosion(scene: Phaser.Scene): void {

@@ -6,7 +6,7 @@ export function addAnimation(
     prefix: string,
     end: number
 ): Phaser.Animations.Animation {
-    scene.anims.create({
+    return scene.anims.create({
         key,
         frames: scene.anims.generateFrameNames('sprites', {
             prefix: prefix,
