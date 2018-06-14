@@ -4,8 +4,8 @@
             "image": "sprites.png",
             "format": "RGBA8888",
             "size": {
-                "w": 1759,
-                "h": 2035
+                "w": 2045,
+                "h": 2043
             },
             "scale": 1,
             "frames": [
@@ -260,10 +260,85 @@
                     }
                 },
                 {
-                    "filename": "player/explosion_0007.png",
+                    "filename": "crates/smoke_plume_0005.png",
                     "frame": {
                         "x": 1026,
                         "y": 552,
+                        "w": 219,
+                        "h": 216
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 24,
+                        "y": 10,
+                        "w": 219,
+                        "h": 216
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/smoke_plume_0006.png",
+                    "frame": {
+                        "x": 1284,
+                        "y": 294,
+                        "w": 219,
+                        "h": 220
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 22,
+                        "y": 11,
+                        "w": 219,
+                        "h": 220
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/smoke_plume_0010.png",
+                    "frame": {
+                        "x": 1556,
+                        "y": 1,
+                        "w": 219,
+                        "h": 211
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 26,
+                        "y": 26,
+                        "w": 219,
+                        "h": 211
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/explosion_0007.png",
+                    "frame": {
+                        "x": 1,
+                        "y": 1836,
                         "w": 202,
                         "h": 206
                     },
@@ -285,99 +360,24 @@
                     }
                 },
                 {
-                    "filename": "player/explosion_0006.png",
-                    "frame": {
-                        "x": 1284,
-                        "y": 294,
-                        "w": 170,
-                        "h": 184
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 57,
-                        "y": 59,
-                        "w": 170,
-                        "h": 184
-                    },
-                    "sourceSize": {
-                        "w": 300,
-                        "h": 300
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/shield3.png",
-                    "frame": {
-                        "x": 1556,
-                        "y": 1,
-                        "w": 144,
-                        "h": 137
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 144,
-                        "h": 137
-                    },
-                    "sourceSize": {
-                        "w": 144,
-                        "h": 137
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/explosion_0005.png",
-                    "frame": {
-                        "x": 1,
-                        "y": 1836,
-                        "w": 143,
-                        "h": 174
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 72,
-                        "y": 64,
-                        "w": 143,
-                        "h": 174
-                    },
-                    "sourceSize": {
-                        "w": 300,
-                        "h": 300
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/explosion_0004.png",
+                    "filename": "crates/smoke_plume_0007.png",
                     "frame": {
                         "x": 207,
                         "y": 1580,
-                        "w": 123,
-                        "h": 163
+                        "w": 215,
+                        "h": 221
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 87,
-                        "y": 69,
-                        "w": 123,
-                        "h": 163
+                        "x": 29,
+                        "y": 14,
+                        "w": 215,
+                        "h": 221
                     },
                     "sourceSize": {
-                        "w": 300,
-                        "h": 300
+                        "w": 256,
+                        "h": 256
                     },
                     "pivot": {
                         "x": 0.5,
@@ -485,20 +485,120 @@
                     }
                 },
                 {
-                    "filename": "player/explosion_0003.png",
+                    "filename": "crates/smoke_plume_0004.png",
                     "frame": {
                         "x": 470,
                         "y": 1276,
-                        "w": 103,
-                        "h": 152
+                        "w": 215,
+                        "h": 216
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 101,
-                        "y": 74,
-                        "w": 103,
-                        "h": 152
+                        "x": 24,
+                        "y": 14,
+                        "w": 215,
+                        "h": 216
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/smoke_plume_0009.png",
+                    "frame": {
+                        "x": 1026,
+                        "y": 770,
+                        "w": 218,
+                        "h": 212
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 27,
+                        "y": 25,
+                        "w": 218,
+                        "h": 212
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/smoke_plume_0008.png",
+                    "frame": {
+                        "x": 1247,
+                        "y": 552,
+                        "w": 217,
+                        "h": 215
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 28,
+                        "y": 20,
+                        "w": 217,
+                        "h": 215
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/smoke_plume_0003.png",
+                    "frame": {
+                        "x": 1505,
+                        "y": 240,
+                        "w": 193,
+                        "h": 189
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 33,
+                        "y": 25,
+                        "w": 193,
+                        "h": 189
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/explosion_0006.png",
+                    "frame": {
+                        "x": 1777,
+                        "y": 1,
+                        "w": 170,
+                        "h": 184
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 57,
+                        "y": 59,
+                        "w": 170,
+                        "h": 184
                     },
                     "sourceSize": {
                         "w": 300,
@@ -510,24 +610,149 @@
                     }
                 },
                 {
-                    "filename": "player/explosion_0002.png",
+                    "filename": "player/explosion_0005.png",
                     "frame": {
-                        "x": 683,
-                        "y": 1014,
-                        "w": 95,
-                        "h": 136
+                        "x": 205,
+                        "y": 1836,
+                        "w": 143,
+                        "h": 174
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 105,
-                        "y": 78,
-                        "w": 95,
-                        "h": 136
+                        "x": 72,
+                        "y": 64,
+                        "w": 143,
+                        "h": 174
                     },
                     "sourceSize": {
                         "w": 300,
                         "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/explosion_0004.png",
+                    "frame": {
+                        "x": 424,
+                        "y": 1559,
+                        "w": 123,
+                        "h": 163
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 87,
+                        "y": 69,
+                        "w": 123,
+                        "h": 163
+                    },
+                    "sourceSize": {
+                        "w": 300,
+                        "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/engine.png",
+                    "frame": {
+                        "x": 495,
+                        "y": 1242,
+                        "w": 27,
+                        "h": 22
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 27,
+                        "h": 22
+                    },
+                    "sourceSize": {
+                        "w": 27,
+                        "h": 22
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/smoke_plume_0002.png",
+                    "frame": {
+                        "x": 683,
+                        "y": 1014,
+                        "w": 158,
+                        "h": 152
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 53,
+                        "y": 41,
+                        "w": 158,
+                        "h": 152
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/engine-particle.png",
+                    "frame": {
+                        "x": 337,
+                        "y": 1276,
+                        "w": 10,
+                        "h": 10
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 31,
+                        "y": 29,
+                        "w": 10,
+                        "h": 10
+                    },
+                    "sourceSize": {
+                        "w": 70,
+                        "h": 70
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/shield3.png",
+                    "frame": {
+                        "x": 1026,
+                        "y": 984,
+                        "w": 144,
+                        "h": 137
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 144,
+                        "h": 137
+                    },
+                    "sourceSize": {
+                        "w": 144,
+                        "h": 137
                     },
                     "pivot": {
                         "x": 0.5,
@@ -537,8 +762,8 @@
                 {
                     "filename": "player/shield2.png",
                     "frame": {
-                        "x": 1026,
-                        "y": 760,
+                        "x": 1246,
+                        "y": 770,
                         "w": 143,
                         "h": 119
                     },
@@ -562,8 +787,8 @@
                 {
                     "filename": "player/shield1.png",
                     "frame": {
-                        "x": 1230,
-                        "y": 552,
+                        "x": 1466,
+                        "y": 516,
                         "w": 133,
                         "h": 108
                     },
@@ -585,20 +810,345 @@
                     }
                 },
                 {
-                    "filename": "player/burst_explosion_0005.png",
+                    "filename": "crates/crate_burst.png",
                     "frame": {
-                        "x": 1456,
+                        "x": 1700,
+                        "y": 214,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/cockpit.png",
+                    "frame": {
+                        "x": 1378,
                         "y": 240,
-                        "w": 56,
-                        "h": 58
+                        "w": 51,
+                        "h": 75
+                    },
+                    "rotated": true,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 51,
+                        "h": 75
+                    },
+                    "sourceSize": {
+                        "w": 51,
+                        "h": 75
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/explosion_0002.png",
+                    "frame": {
+                        "x": 1949,
+                        "y": 1,
+                        "w": 95,
+                        "h": 136
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 3,
-                        "y": 4,
-                        "w": 56,
-                        "h": 58
+                        "x": 105,
+                        "y": 78,
+                        "w": 95,
+                        "h": 136
+                    },
+                    "sourceSize": {
+                        "w": 300,
+                        "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/explosion_0003.png",
+                    "frame": {
+                        "x": 350,
+                        "y": 1803,
+                        "w": 103,
+                        "h": 152
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 101,
+                        "y": 74,
+                        "w": 103,
+                        "h": 152
+                    },
+                    "sourceSize": {
+                        "w": 300,
+                        "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/wing.png",
+                    "frame": {
+                        "x": 1505,
+                        "y": 431,
+                        "w": 42,
+                        "h": 80
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 42,
+                        "h": 80
+                    },
+                    "sourceSize": {
+                        "w": 42,
+                        "h": 80
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/burst_explosion_0004.png",
+                    "frame": {
+                        "x": 470,
+                        "y": 1494,
+                        "w": 55,
+                        "h": 62
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 4,
+                        "y": 0,
+                        "w": 55,
+                        "h": 62
+                    },
+                    "sourceSize": {
+                        "w": 64,
+                        "h": 64
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/crate_burst_damaged.png",
+                    "frame": {
+                        "x": 549,
+                        "y": 1494,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/burst_explosion_0003.png",
+                    "frame": {
+                        "x": 683,
+                        "y": 1168,
+                        "w": 53,
+                        "h": 61
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 6,
+                        "y": 0,
+                        "w": 53,
+                        "h": 61
+                    },
+                    "sourceSize": {
+                        "w": 64,
+                        "h": 64
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/crate_health.png",
+                    "frame": {
+                        "x": 1172,
+                        "y": 984,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/crate_health_damaged.png",
+                    "frame": {
+                        "x": 843,
+                        "y": 1123,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/crate_pulse.png",
+                    "frame": {
+                        "x": 1391,
+                        "y": 769,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/crate_pulse_damaged.png",
+                    "frame": {
+                        "x": 1601,
+                        "y": 431,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/crate_shield.png",
+                    "frame": {
+                        "x": 1830,
+                        "y": 187,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/burst_explosion_0001.png",
+                    "frame": {
+                        "x": 1455,
+                        "y": 240,
+                        "w": 46,
+                        "h": 52
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 11,
+                        "y": 1,
+                        "w": 46,
+                        "h": 52
                     },
                     "sourceSize": {
                         "w": 64,
@@ -612,8 +1162,8 @@
                 {
                     "filename": "player/burst_explosion_0006.png",
                     "frame": {
-                        "x": 1556,
-                        "y": 140,
+                        "x": 350,
+                        "y": 1957,
                         "w": 56,
                         "h": 60
                     },
@@ -637,8 +1187,8 @@
                 {
                     "filename": "player/burst_explosion_0007.png",
                     "frame": {
-                        "x": 1702,
-                        "y": 1,
+                        "x": 424,
+                        "y": 1724,
                         "w": 56,
                         "h": 60
                     },
@@ -660,24 +1210,24 @@
                     }
                 },
                 {
-                    "filename": "player/engine.png",
+                    "filename": "crates/crate_shield_damaged.png",
                     "frame": {
-                        "x": 1,
-                        "y": 2012,
-                        "w": 27,
-                        "h": 22
+                        "x": 549,
+                        "y": 1624,
+                        "w": 128,
+                        "h": 128
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 27,
-                        "h": 22
+                        "w": 128,
+                        "h": 128
                     },
                     "sourceSize": {
-                        "w": 27,
-                        "h": 22
+                        "w": 128,
+                        "h": 128
                     },
                     "pivot": {
                         "x": 0.5,
@@ -685,124 +1235,49 @@
                     }
                 },
                 {
-                    "filename": "player/wing.png",
+                    "filename": "crates/smoke_plume_0001.png",
                     "frame": {
-                        "x": 146,
-                        "y": 1836,
-                        "w": 42,
-                        "h": 80
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 42,
-                        "h": 80
-                    },
-                    "sourceSize": {
-                        "w": 42,
-                        "h": 80
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/cockpit.png",
-                    "frame": {
-                        "x": 207,
-                        "y": 1745,
-                        "w": 51,
-                        "h": 75
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 51,
-                        "h": 75
-                    },
-                    "sourceSize": {
-                        "w": 51,
-                        "h": 75
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/burst_explosion_0004.png",
-                    "frame": {
-                        "x": 332,
-                        "y": 1559,
-                        "w": 55,
-                        "h": 62
+                        "x": 679,
+                        "y": 1494,
+                        "w": 116,
+                        "h": 111
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 4,
-                        "y": 0,
-                        "w": 55,
-                        "h": 62
+                        "x": 73,
+                        "y": 64,
+                        "w": 116,
+                        "h": 111
+                    },
+                    "sourceSize": {
+                        "w": 256,
+                        "h": 256
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/burst_explosion_0005.png",
+                    "frame": {
+                        "x": 1172,
+                        "y": 1114,
+                        "w": 56,
+                        "h": 58
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 3,
+                        "y": 4,
+                        "w": 56,
+                        "h": 58
                     },
                     "sourceSize": {
                         "w": 64,
                         "h": 64
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/burst_explosion_0003.png",
-                    "frame": {
-                        "x": 470,
-                        "y": 1430,
-                        "w": 53,
-                        "h": 61
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 6,
-                        "y": 0,
-                        "w": 53,
-                        "h": 61
-                    },
-                    "sourceSize": {
-                        "w": 64,
-                        "h": 64
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/engine-particle.png",
-                    "frame": {
-                        "x": 495,
-                        "y": 1242,
-                        "w": 10,
-                        "h": 10
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 31,
-                        "y": 29,
-                        "w": 10,
-                        "h": 10
-                    },
-                    "sourceSize": {
-                        "w": 70,
-                        "h": 70
                     },
                     "pivot": {
                         "x": 0.5,
@@ -812,8 +1287,8 @@
                 {
                     "filename": "player/burst_explosion_0002.png",
                     "frame": {
-                        "x": 575,
-                        "y": 1242,
+                        "x": 843,
+                        "y": 1014,
                         "w": 50,
                         "h": 59
                     },
@@ -835,10 +1310,35 @@
                     }
                 },
                 {
+                    "filename": "player/explosion_0001.png",
+                    "frame": {
+                        "x": 1246,
+                        "y": 891,
+                        "w": 55,
+                        "h": 49
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 134,
+                        "y": 120,
+                        "w": 55,
+                        "h": 49
+                    },
+                    "sourceSize": {
+                        "w": 300,
+                        "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
                     "filename": "player/burst_explosion_0008.png",
                     "frame": {
-                        "x": 683,
-                        "y": 1152,
+                        "x": 1466,
+                        "y": 626,
                         "w": 56,
                         "h": 58
                     },
@@ -862,8 +1362,8 @@
                 {
                     "filename": "player/burst_explosion_0009.png",
                     "frame": {
-                        "x": 780,
-                        "y": 1014,
+                        "x": 1601,
+                        "y": 561,
                         "w": 55,
                         "h": 57
                     },
@@ -874,56 +1374,6 @@
                         "y": 3,
                         "w": 55,
                         "h": 57
-                    },
-                    "sourceSize": {
-                        "w": 64,
-                        "h": 64
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/explosion_0001.png",
-                    "frame": {
-                        "x": 1026,
-                        "y": 881,
-                        "w": 55,
-                        "h": 49
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 134,
-                        "y": 120,
-                        "w": 55,
-                        "h": 49
-                    },
-                    "sourceSize": {
-                        "w": 300,
-                        "h": 300
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/burst_explosion_0001.png",
-                    "frame": {
-                        "x": 1171,
-                        "y": 760,
-                        "w": 46,
-                        "h": 52
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 11,
-                        "y": 1,
-                        "w": 46,
-                        "h": 52
                     },
                     "sourceSize": {
                         "w": 64,
