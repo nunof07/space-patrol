@@ -47,7 +47,7 @@
         "@semantic-release/git": "5.0.0",
         "@types/chai": "4.1.4",
         "@types/mocha": "5.2.2",
-        "@types/ramda": "0.25.31",
+        "@types/ramda": "0.25.33",
         "@types/random-js": "1.0.30",
         "@types/sinon": "5.0.1",
         "babel-core": "6.26.3",
