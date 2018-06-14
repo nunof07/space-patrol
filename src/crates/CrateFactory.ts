@@ -1,5 +1,8 @@
 import { Factory } from '@src/core/Factory';
 import { Crate } from '@src/crates/Crate';
+import { HealthFactory } from '@src/health/HealthFactory';
+import { Hitpoints } from '@src/health/Hitpoints';
+import { Vitality } from '@src/health/Vitality';
 import { body } from '@src/physics/arcade/body';
 import { engine } from '@src/random/engine';
 import { startPosition } from '@src/sprites/startPosition';
@@ -18,8 +21,20 @@ export class CrateFactory implements Factory<Crate> {
     public create(): Crate {
         const full = this.addSprite(this.randomX(), 'health');
         const damaged = this.addSprite(this.randomX(), 'health_damaged', false);
+        const health = new HealthFactory(
+            this.scene,
+            full,
+            new Vitality(new Hitpoints(30, 30), new Hitpoints(0, 0)),
+            {
+                width: 1,
+                offset: {
+                    health: -0.6,
+                    shield: -0.72,
+                },
+            }
+        ).create();
 
-        return new Crate(this.scene, full, damaged);
+        return new Crate(this.scene, full, damaged, health);
     }
 
     private addSprite(

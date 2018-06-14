@@ -8,11 +8,22 @@ import * as Phaser from 'phaser';
 
 export class HealthComponent implements Component {
     private readonly emitter: Phaser.Events.EventEmitter;
+    private readonly offset: {
+        health: number;
+        shield: number;
+    };
     private healthImpl: Health;
 
-    constructor(health: Health) {
+    constructor(
+        health: Health,
+        offset: {
+            health: number;
+            shield: number;
+        }
+    ) {
         this.healthImpl = health;
         this.emitter = new Phaser.Events.EventEmitter();
+        this.offset = offset;
     }
 
     public update(_time: number, _delta: number): void {
@@ -22,14 +33,14 @@ export class HealthComponent implements Component {
             renderHealthBar(
                 this.healthImpl.graphics,
                 this.healthImpl.healthBar,
-                1.6
+                this.offset.health
             );
 
             if (this.healthImpl.vitality.shield.max > 0) {
                 renderHealthBar(
                     this.healthImpl.graphics,
                     this.healthImpl.shieldBar,
-                    1.72
+                    this.offset.shield
                 );
             }
         }
@@ -60,6 +71,10 @@ export class HealthComponent implements Component {
 
     public health(): Health {
         return this.healthImpl;
+    }
+
+    public destroy() {
+        this.healthImpl.graphics.destroy();
     }
 
     private newHealth(vitality: Vitality): Health {

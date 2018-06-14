@@ -31,7 +31,7 @@ export function addHealthBar(
 ): HealthBar {
     const position = healthBarPosition(parent);
     const size = {
-        width: parent.width * widthPercentage,
+        width: parent.displayWidth * widthPercentage,
         height,
     };
     const filled = new Phaser.Geom.Rectangle(0, 0, size.width, size.height);
