@@ -1,6 +1,6 @@
 import { Position } from '@src/core/Position';
 import { cockpit } from '@src/player/cockpit';
-import { PulseLevel } from '@src/weapons/PulseLevel';
+import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { Weapon } from '@src/weapons/Weapon';
 
 export class PulseLevel2 implements PulseLevel {

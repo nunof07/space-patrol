@@ -5,6 +5,7 @@ import { beam as beamConfig } from '@src/player/config/beam';
 import { cockpit as cockpitConfig } from '@src/player/config/cockpit';
 import { engine as engineConfig } from '@src/player/config/engine';
 import { shield as shieldConfig } from '@src/player/config/shield';
+import { weaponBurst } from '@src/player/config/weaponBurst';
 import { wing as wingConfig } from '@src/player/config/wing';
 import { mainCameraCenter } from '@src/scene/mainCameraCenter';
 import * as Phaser from 'phaser';
@@ -28,6 +29,8 @@ export function addPlayer(
         addPlayerSprite('shield1', scene, center, shieldConfig(1, false, -21)),
         addPlayerSprite('shield2', scene, center, shieldConfig(2, false, -21)),
         addPlayerSprite('shield3', scene, center, shieldConfig(3, false, -10)),
+        addPlayerSprite('weaponBurstLeft', scene, center, weaponBurst(true)),
+        addPlayerSprite('weaponBurstRIght', scene, center, weaponBurst(false)),
     ]);
     addExplosionAnimation(scene);
 

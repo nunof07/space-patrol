@@ -2,7 +2,7 @@ import { Position } from '@src/core/Position';
 import { playAnimation } from '@src/sprites/playAnimation';
 import * as Phaser from 'phaser';
 
-export function playExplosionAnimation(
+export function playBurstExplosion(
     scene: Phaser.Scene,
     position: Position
 ): void {
@@ -11,9 +11,12 @@ export function playExplosionAnimation(
         {
             position,
             key: 'sprites',
-            frame: 'player/explosion_0001.png',
-            depth: 2000,
+            frame: 'player/burst_explosion_0001.png',
+            depth: 1000,
         },
-        'playerExplosion'
+        'burstExplosion',
+        sprite => {
+            sprite.alpha = 0.65;
+        }
     );
 }

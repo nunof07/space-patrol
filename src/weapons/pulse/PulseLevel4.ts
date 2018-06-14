@@ -1,6 +1,7 @@
+import { circlePosition } from '@src/core/circlePosition';
 import { Position } from '@src/core/Position';
 import { cockpit } from '@src/player/cockpit';
-import { PulseLevel } from '@src/weapons/PulseLevel';
+import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { Weapon } from '@src/weapons/Weapon';
 
 export class PulseLevel4 implements PulseLevel {
@@ -21,10 +22,7 @@ export class PulseLevel4 implements PulseLevel {
         const halfIndex = index * (1 / this.count);
         const angle = (index + halfIndex) * separation;
 
-        return {
-            x: center.x - Math.cos(angle) * radius,
-            y: center.y - Math.sin(angle) * radius,
-        };
+        return circlePosition(center, angle, radius);
     }
 
     public angle(index: number, _weapon: Weapon): number {

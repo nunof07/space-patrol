@@ -1,8 +1,10 @@
 import { CompositeComponent } from '@src/core/CompositeComponent';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
-import { PulseFactory } from '@src/weapons/PulseFactory';
+import { PulseFactory } from '@src/weapons/pulse/PulseFactory';
+import { PulseLevel6 } from '@src/weapons/pulse/PulseLevel6';
 import { TriggerFactory } from '@src/weapons/TriggerFactory';
+import { WeaponFactory } from '@src/weapons/WeaponFactory';
 import * as Phaser from 'phaser';
 
 export class PulseSystem implements System {
@@ -16,9 +18,11 @@ export class PulseSystem implements System {
     }
 
     public create(): void {
-        const primary = new PulseFactory(
+        const primary = new WeaponFactory(
             this.scene,
-            this.player.player()
+            this.player.player(),
+            new PulseFactory(this.scene, new PulseLevel6()),
+            { frame: 'player/bullet-primary.png', maxSize: 100 }
         ).create();
         const trigger = new TriggerFactory(this.scene, primary, 150).create();
         this.components = new CompositeComponent([primary, trigger]);
