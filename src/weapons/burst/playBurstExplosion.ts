@@ -16,8 +16,6 @@ export function playBurstExplosion(
         },
         'burstExplosion',
         sprite => {
-            sprite.scaleX = 2;
-            sprite.scaleY = 2;
             sprite.alpha = 0.65;
         }
     );
