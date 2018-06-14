@@ -22,7 +22,7 @@ export class PulseSystem implements System {
             this.scene,
             this.player.player(),
             new PulseFactory(this.scene, new PulseLevel6()),
-            { frame: 'player/bullet-primary.png', maxSize: 100 }
+            { frame: 'player/bullet-primary.png', maxSize: 200 }
         ).create();
         const trigger = new TriggerFactory(this.scene, primary, 150).create();
         this.components = new CompositeComponent([primary, trigger]);

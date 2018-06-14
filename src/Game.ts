@@ -1,4 +1,5 @@
 import { CompositeSystem } from '@src/core/CompositeSystem';
+import { CratesSystem } from '@src/crates/CratesSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
@@ -17,6 +18,7 @@ export class Game extends Phaser.Scene {
             player,
             new PulseSystem(this, player),
             new BurstSystem(this, player),
+            new CratesSystem(this),
         ]);
     }
 
