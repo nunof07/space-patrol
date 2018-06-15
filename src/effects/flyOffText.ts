@@ -1,4 +1,5 @@
 import { Position } from '@src/core/Position';
+import { addText } from '@src/text/addText';
 import * as Phaser from 'phaser';
 
 export function flyOffText(
@@ -7,15 +8,7 @@ export function flyOffText(
     position: Position,
     down: boolean
 ): void {
-    const textObj = scene.add.bitmapText(
-        position.x,
-        position.y,
-        'nescyrillic',
-        text,
-        16
-    );
-    textObj.depth = 5000;
-    textObj.setOrigin(0.5, 0.5);
+    const textObj = addText(scene, position, text, 16);
     scene.tweens.add({
         targets: textObj,
         y: position.y + (down ? 1 : -1) * 100,

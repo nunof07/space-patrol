@@ -1,5 +1,6 @@
 import { CompositeSystem } from '@src/core/CompositeSystem';
 import { CratesSystem } from '@src/crates/CratesSystem';
+import { PauseSystem } from '@src/PauseSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
@@ -18,6 +19,7 @@ export class Game extends Phaser.Scene {
             player,
             weapons,
             new CratesSystem(this, weapons),
+            new PauseSystem(this),
         ]);
     }
 
