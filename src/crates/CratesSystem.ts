@@ -5,6 +5,7 @@ import { CrateFactory } from '@src/crates/CrateFactory';
 import { updateCrates } from '@src/crates/updateCrates';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
 import * as Phaser from 'phaser';
+import { addAnimation } from '@src/animation/addAnimation';
 
 export class CratesSystem implements System {
     private readonly scene: Phaser.Scene;
@@ -22,6 +23,7 @@ export class CratesSystem implements System {
     }
 
     public create(): void {
+        addAnimation(this.scene, 'crateExplosion', 'crates/smoke_plume_', 10);
         this.scene.time.addEvent({
             delay: 2000,
             loop: true,

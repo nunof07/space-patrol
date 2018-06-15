@@ -1,4 +1,5 @@
 import { Component } from '@src/core/Component';
+import { playCrateExplosion } from '@src/crates/playCrateExplosion';
 import { flashDamage } from '@src/effects/flashDamage';
 import { flyOffText } from '@src/effects/flyOffText';
 import { HealthComponent } from '@src/health/HealthComponent';
@@ -52,6 +53,7 @@ export class Crate implements Component {
             flyOffText(this.scene, `-${damage}`, this.spriteImpl, true);
             flashDamage(this.scene, this.spriteImpl, 510, () => {
                 if (!this.isAlive()) {
+                    playCrateExplosion(this.scene, this.spriteImpl);
                     this.destroy();
                 }
             });
