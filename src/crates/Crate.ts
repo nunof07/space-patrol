@@ -11,22 +11,28 @@ export class Crate implements Component {
     private readonly health: HealthComponent;
     private readonly emitter: Phaser.Events.EventEmitter;
     private readonly speed: number;
+    private readonly damagedFrame: string;
+    private isDamaged: boolean;
 
     constructor(
         scene: Phaser.Scene,
         sprite: Phaser.GameObjects.Sprite,
-        health: HealthComponent
+        health: HealthComponent,
+        damagedFrame: string
     ) {
         this.scene = scene;
         this.spriteImpl = sprite;
         this.speed = 2;
         this.health = health;
         this.emitter = new Phaser.Events.EventEmitter();
+        this.isDamaged = false;
+        this.damagedFrame = damagedFrame;
     }
 
     public update(time: number, delta: number): void {
         this.health.update(time, delta);
         this.spriteImpl.y += this.speed;
+        this.setDamaged();
 
         if (isOffCameraDown(this.scene, this.spriteImpl)) {
             this.destroy();
@@ -60,5 +66,15 @@ export class Crate implements Component {
         this.spriteImpl.destroy();
         this.health.destroy();
         this.emitter.emit('destroy');
+    }
+
+    private setDamaged(): void {
+        if (
+            !this.isDamaged &&
+            this.health.health().vitality.health.percentage <= 0.6
+        ) {
+            this.isDamaged = true;
+            this.spriteImpl.setTexture('sprites', this.damagedFrame);
+        }
     }
 }

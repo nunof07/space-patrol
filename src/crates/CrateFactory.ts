@@ -33,7 +33,12 @@ export class CrateFactory implements Factory<Crate> {
             }
         ).create();
 
-        return new Crate(this.scene, full, health);
+        return new Crate(
+            this.scene,
+            full,
+            health,
+            'crates/crate_health_damaged.png'
+        );
     }
 
     private addSprite(
