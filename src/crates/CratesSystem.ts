@@ -32,6 +32,10 @@ export class CratesSystem implements System {
                     crate,
                     this.weapons.pulse.weaponComponent.weapon
                 );
+                this.collider.setup(
+                    crate,
+                    this.weapons.burst.weaponComponent.weapon
+                );
             },
         });
     }

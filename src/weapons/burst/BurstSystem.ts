@@ -32,7 +32,7 @@ export class BurstSystem implements System {
         this.system.update(time, delta);
     }
 
-    public weaponComponent(): WeaponComponent {
+    public get weaponComponent(): WeaponComponent {
         return this.system.weaponComponent;
     }
 }

@@ -60,7 +60,7 @@ export class Burst implements Bullet {
     }
 
     public get damage(): number {
-        return 30;
+        return 50;
     }
 
     public isAlive(): boolean {
