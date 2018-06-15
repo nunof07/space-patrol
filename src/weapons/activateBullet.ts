@@ -8,6 +8,7 @@ export function activateBullet(
     bullet: Bullet,
     position: Position
 ): void {
+    bullet.sprite.setData('bullet', bullet);
     scene.physics.world.enable(bullet.sprite);
     bullet.sprite.active = true;
     bullet.sprite.visible = true;

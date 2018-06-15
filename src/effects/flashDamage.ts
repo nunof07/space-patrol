@@ -4,7 +4,8 @@ import * as Phaser from 'phaser';
 export function flashDamage(
     scene: Phaser.Scene,
     sprite: Phaser.GameObjects.Sprite,
-    done: () => void
+    depth: number,
+    done: () => void = Phaser.Utils.NOOP
 ): void {
-    flashSprite(scene, sprite, 2000, done);
+    flashSprite(scene, sprite, depth, done);
 }

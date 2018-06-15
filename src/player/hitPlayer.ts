@@ -13,7 +13,7 @@ export function hitPlayer(
 ): void {
     if (player.health().hit(hit.damage)) {
         flyOffText(scene, `-${hit.damage}`, hit.position, true);
-        flashDamage(scene, hit.part, () => {
+        flashDamage(scene, hit.part, 2000, () => {
             switchShield(
                 player.health().health().vitality,
                 spriteChildren(player.player().group)

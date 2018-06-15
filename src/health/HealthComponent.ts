@@ -73,7 +73,7 @@ export class HealthComponent implements Component {
         return this.healthImpl;
     }
 
-    public destroy() {
+    public destroy(): void {
         this.healthImpl.graphics.destroy();
     }
 

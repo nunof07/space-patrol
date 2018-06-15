@@ -20,11 +20,10 @@ export class CrateFactory implements Factory<Crate> {
 
     public create(): Crate {
         const full = this.addSprite(this.randomX(), 'health');
-        const damaged = this.addSprite(this.randomX(), 'health_damaged', false);
         const health = new HealthFactory(
             this.scene,
             full,
-            new Vitality(new Hitpoints(30, 30), new Hitpoints(0, 0)),
+            new Vitality(new Hitpoints(150, 150), new Hitpoints(0, 0)),
             {
                 width: 1,
                 offset: {
@@ -34,7 +33,7 @@ export class CrateFactory implements Factory<Crate> {
             }
         ).create();
 
-        return new Crate(this.scene, full, damaged, health);
+        return new Crate(this.scene, full, health);
     }
 
     private addSprite(
