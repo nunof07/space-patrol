@@ -16,8 +16,8 @@ export function playCrateExplosion(
         },
         'crateExplosion',
         sprite => {
-            sprite.scaleX = 0.6;
-            sprite.scaleY = 0.6;
+            sprite.scaleX = 0.5;
+            sprite.scaleY = 0.5;
         }
     );
 }

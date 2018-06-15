@@ -9,6 +9,7 @@ import { log_banner } from '@src/game/log_banner';
 import { start } from '@src/game/start';
 import { title } from '@src/game/title';
 import { version } from '@src/game/version';
+import { Paused } from '@src/Paused';
 
 log_banner(title(), version());
-addResizeListener(start(config(), [Boot, Game]));
+addResizeListener(start(config(), [Boot, Game, Paused]));

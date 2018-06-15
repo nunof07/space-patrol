@@ -329,13 +329,17 @@ declare type GameConfig = {
      */
     parent?: any;
     /**
-     * [description]
+     * Provide your own Canvas element for Phaser to use instead of creating one.
      */
     canvas?: HTMLCanvasElement;
     /**
      * [description]
      */
     canvasStyle?: string;
+    /**
+     * Provide your own Canvas Context for Phaser to use, instead of creating one.
+     */
+    context?: CanvasRenderingContext2D;
     /**
      * [description]
      */
@@ -356,6 +360,10 @@ declare type GameConfig = {
      * [description]
      */
     version?: string;
+    /**
+     * Automatically call window.focus() when the game boots.
+     */
+    autoFocus?: boolean;
     /**
      * [description]
      */
@@ -380,6 +388,10 @@ declare type GameConfig = {
      * [description]
      */
     'input.touch'?: boolean;
+    /**
+     * [description]
+     */
+    'input.activePointers'?: integer;
     /**
      * [description]
      */
@@ -493,8 +505,6 @@ declare type GameConfig = {
      */
     physics?: object;
 };
-
-declare type GameStepCallback = () => void;
 
 declare type TimeStepCallback = (
     time: number,
@@ -1075,35 +1085,35 @@ declare type ContentLoadedCallback = () => void;
 
 declare type DisplayCallbackConfig = {
     /**
-     * [description]
+     * The tint of the character being rendered.
      */
     tint: Object;
     /**
-     * [description]
+     * The index of the character being rendered.
      */
     index: number;
     /**
-     * [description]
+     * The character code of the character being rendered.
      */
     charCode: number;
     /**
-     * [description]
+     * The x position of the character being rendered.
      */
     x: number;
     /**
-     * [description]
+     * The y position of the character being rendered.
      */
     y: number;
     /**
-     * [description]
+     * The scale of the character being rendered.
      */
     scale: number;
     /**
-     * [description]
+     * The rotation of the character being rendered.
      */
     rotation: number;
     /**
-     * [description]
+     * Custom data stored with the character being rendered.
      */
     data: any;
 };
@@ -1112,77 +1122,159 @@ declare type DisplayCallback = (display: DisplayCallbackConfig) => void;
 
 declare type BitmapTextConfig = GameObjectConfig & {
     /**
-     * [description]
+     * The key of the font to use from the BitmapFont cache.
      */
     font?: string;
     /**
-     * [description]
+     * The string, or array of strings, to be set as the content of this Bitmap Text.
      */
     text?: string;
     /**
-     * [description]
+     * The font size to set.
      */
     size?: number | false;
-    /**
-     * [description]
-     */
-    align?: string;
 };
 
-declare type TextBounds = {
+declare type BitmapTextSize = {
     /**
-     * [description]
+     * The position and size of the BitmapText, taking into account the position and scale of the Game Object.
      */
-    local: object;
+    global: GlobalBitmapTextSize;
     /**
-     * [description]
+     * The position and size of the BitmapText, taking just the font size into account.
      */
-    'local.x': number;
+    local: LocalBitmapTextSize;
+};
+
+/**
+ * The position and size of the Bitmap Text in global space, taking into account the Game Object's scale and world position.
+ */
+declare type GlobalBitmapTextSize = {
     /**
-     * [description]
+     * The x position of the BitmapText, taking into account the x position and scale of the Game Object.
      */
-    'local.y': number;
+    x: number;
     /**
-     * [description]
+     * The y position of the BitmapText, taking into account the y position and scale of the Game Object.
      */
-    'local.width': number;
+    y: number;
     /**
-     * [description]
+     * The width of the BitmapText, taking into account the x scale of the Game Object.
      */
-    'local.height': number;
+    width: number;
     /**
-     * [description]
+     * The height of the BitmapText, taking into account the y scale of the Game Object.
      */
-    global: object;
+    height: number;
+};
+
+/**
+ * The position and size of the Bitmap Text in local space, taking just the font size into account.
+ */
+declare type LocalBitmapTextSize = {
     /**
-     * [description]
+     * The x position of the BitmapText.
      */
-    'global.x': number;
+    x: number;
     /**
-     * [description]
+     * The y position of the BitmapText.
      */
-    'global.y': number;
+    y: number;
     /**
-     * [description]
+     * The width of the BitmapText.
      */
-    'global.width': number;
+    width: number;
     /**
-     * [description]
+     * The height of the BitmapText.
      */
-    'global.height': number;
+    height: number;
+};
+
+/**
+ * The font data for an individual character of a Bitmap Font.
+ *
+ * Describes the character's position, size, offset and kerning.
+ */
+declare type BitmapFontCharacterData = {
+    /**
+     * The x position of the character.
+     */
+    x: number;
+    /**
+     * The y position of the character.
+     */
+    y: number;
+    /**
+     * The width of the character.
+     */
+    width: number;
+    /**
+     * The height of the character.
+     */
+    height: number;
+    /**
+     * The center x position of the character.
+     */
+    centerX: number;
+    /**
+     * The center y position of the character.
+     */
+    centerY: number;
+    /**
+     * The x offset of the character.
+     */
+    xOffset: number;
+    /**
+     * The y offset of the character.
+     */
+    yOffset: number;
+    /**
+     * Extra data for the character.
+     */
+    data: object;
+    /**
+     * Kerning values, keyed by character code.
+     */
+    kerning: { [key: string]: number };
+};
+
+/**
+ * Bitmap Font data that can be used by a BitmapText Game Object.
+ */
+declare type BitmapFontData = {
+    /**
+     * The name of the font.
+     */
+    font: string;
+    /**
+     * The size of the font.
+     */
+    size: number;
+    /**
+     * The line height of the font.
+     */
+    lineHeight: number;
+    /**
+     * Whether this font is a retro font (monospace).
+     */
+    retroFont: boolean;
+    /**
+     * The character data of the font, keyed by character code. Each character datum includes a position, size, offset and more.
+     */
+    chars: { [key: number]: BitmapFontCharacterData };
 };
 
 declare type JSONBitmapText = JSONGameObject & {
     /**
-     * [description]
+     * The name of the font.
      */
     font: string;
     /**
-     * [description]
+     * The text that this Bitmap Text displays.
      */
     text: string;
     /**
-     * [description]
+     * The size of the font.
      */
     fontSize: number;
     /**
@@ -1192,8 +1284,8 @@ declare type JSONBitmapText = JSONGameObject & {
 };
 
 declare namespace Phaser.GameObjects.Blitter {
-    type BlitterFromCallback = (
-        blitter: Phaser.GameObjects.Blitter,
+    type CreateCallback = (
+        bob: Phaser.GameObjects.Blitter.Bob,
         index: integer
     ) => void;
 
@@ -1230,106 +1322,129 @@ declare namespace Phaser.GameObjects.Blitter {
         );
 
         /**
-         * [description]
+         * The Blitter object that this Bob belongs to.
          */
         parent: Phaser.GameObjects.Blitter;
 
         /**
-         * [description]
+         * The x position of this Bob, relative to the x position of the Blitter.
          */
         x: number;
 
         /**
-         * [description]
+         * The y position of this Bob, relative to the y position of the Blitter.
          */
         y: number;
 
         /**
-         * [description]
+         * The frame that the Bob uses to render with.
+         * To change the frame use the `Bob.setFrame` method.
          */
-        frame: string | integer;
+        protected frame: Phaser.Textures.Frame;
 
         /**
-         * [description]
+         * A blank object which can be used to store data related to this Bob in.
          */
         data: object;
 
         /**
-         * [description]
+         * The horizontally flipped state of the Bob.
+         * A Bob that is flipped horizontally will render inversed on the horizontal axis.
+         * Flipping always takes place from the middle of the texture.
          */
         flipX: boolean;
 
         /**
-         * [description]
+         * The vertically flipped state of the Bob.
+         * A Bob that is flipped vertically will render inversed on the vertical axis (i.e. upside down)
+         * Flipping always takes place from the middle of the texture.
          */
         flipY: boolean;
 
         /**
-         * [description]
-         * @param frame [description]
+         * Changes the Texture Frame being used by this Bob.
+         * The frame must be part of the Texture the parent Blitter is using.
+         * If no value is given it will use the default frame of the Blitter parent.
+         * @param frame The frame to be used during rendering.
          */
-        setFrame(frame?: Phaser.Textures.Frame): Phaser.GameObjects.Blitter.Bob;
+        setFrame(
+            frame?: string | integer | Phaser.Textures.Frame
+        ): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
+         * Resets the horizontal and vertical flipped state of this Bob back to their default un-flipped state.
          */
         resetFlip(): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
-         * @param x [description]
-         * @param y [description]
-         * @param frame [description]
+         * Resets this Bob.
+         *
+         * Changes the position to the values given, and optionally changes the frame.
+         *
+         * Also resets the flipX and flipY values, sets alpha back to 1 and visible to true.
+         * @param x The x position of the Bob. Bob coordinate are relative to the position of the Blitter object.
+         * @param y The y position of the Bob. Bob coordinate are relative to the position of the Blitter object.
+         * @param frame The Frame the Bob will use. It _must_ be part of the Texture the parent Blitter object is using.
          */
         reset(
             x: number,
             y: number,
-            frame: Phaser.Textures.Frame
+            frame?: string | integer | Phaser.Textures.Frame
         ): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
-         * @param value [description]
+         * Sets the horizontal flipped state of this Bob.
+         * @param value The flipped state. `false` for no flip, or `true` to be flipped.
          */
-        setFlipX(value: number): Phaser.GameObjects.Blitter.Bob;
+        setFlipX(value: boolean): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
-         * @param value [description]
+         * Sets the vertical flipped state of this Bob.
+         * @param value The flipped state. `false` for no flip, or `true` to be flipped.
          */
-        setFlipY(value: number): Phaser.GameObjects.Blitter.Bob;
+        setFlipY(value: boolean): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
-         * @param x [description]
-         * @param y [description]
+         * Sets the horizontal and vertical flipped state of this Bob.
+         * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
+         * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
          */
-        setFlip(x: number, y: number): Phaser.GameObjects.Blitter.Bob;
+        setFlip(x: boolean, y: boolean): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
-         * @param value [description]
+         * Sets the visibility of this Bob.
+         *
+         * An invisible Bob will skip rendering.
+         * @param value The visible state of the Game Object.
          */
         setVisible(value: boolean): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
-         * @param value [description]
+         * Set the Alpha level of this Bob. The alpha controls the opacity of the Game Object as it renders.
+         * Alpha values are provided as a float between 0, fully transparent, and 1, fully opaque.
+         *
+         * A Bob with alpha 0 will skip rendering.
+         * @param value The alpha value used for this Bob. Between 0 and 1.
          */
         setAlpha(value: number): Phaser.GameObjects.Blitter.Bob;
 
         /**
-         * [description]
+         * Destroys this Bob instance.
+         * Removes itself from the Blitter and clears the parent, frame and data properties.
          */
         destroy(): void;
 
         /**
-         * [description]
+         * The visible state of the Bob.
+         *
+         * An invisible Bob will skip rendering.
          */
         visible: boolean;
 
         /**
-         * [description]
+         * The alpha value of the Bob, between 0 and 1.
+         *
+         * A Bob with alpha 0 will skip rendering.
          */
         alpha: number;
     }
@@ -1337,63 +1452,63 @@ declare namespace Phaser.GameObjects.Blitter {
 
 declare type GameObjectConfig = {
     /**
-     * [description]
+     * The x position of the Game Object.
      */
     x?: number;
     /**
-     * [description]
+     * The y position of the Game Object.
      */
     y?: number;
     /**
-     * [description]
+     * The depth of the GameObject.
      */
     depth?: number;
     /**
-     * [description]
+     * The horizontally flipped state of the Game Object.
      */
     flipX?: boolean;
     /**
-     * [description]
+     * The vertically flipped state of the Game Object.
      */
     flipY?: boolean;
     /**
-     * [description]
+     * The scale of the GameObject.
      */
     scale?: number | object;
     /**
-     * [description]
+     * The scroll factor of the GameObject.
      */
     scrollFactor?: number | object;
     /**
-     * [description]
+     * The rotation angle of the Game Object, in radians.
      */
     rotation?: number;
     /**
-     * [description]
+     * The rotation angle of the Game Object, in degrees.
      */
     angle?: number;
     /**
-     * [description]
+     * The alpha (opacity) of the Game Object.
      */
     alpha?: number;
     /**
-     * [description]
+     * The origin of the Game Object.
      */
     origin?: number | object;
     /**
-     * [description]
+     * The scale mode of the GameObject.
      */
     scaleMode?: number;
     /**
-     * [description]
+     * The blend mode of the GameObject.
      */
     blendMode?: number;
     /**
-     * [description]
+     * The visible state of the Game Object.
      */
     visible?: boolean;
     /**
-     * [description]
+     * Add the GameObject to the scene.
      */
     add?: boolean;
 };
@@ -1486,6 +1601,66 @@ declare type EachContainerCallback<I> = (item: any, ...args: any[]) => void;
 declare namespace Phaser.GameObjects.Graphics {
     namespace Commands {  }
 }
+
+/**
+ * Graphics line style (or stroke style) settings.
+ */
+declare type GraphicsLineStyle = {
+    /**
+     * The stroke width.
+     */
+    width: number;
+    /**
+     * The stroke color.
+     */
+    color: number;
+    /**
+     * The stroke alpha.
+     */
+    alpha?: number;
+};
+
+/**
+ * Graphics fill style settings.
+ */
+declare type GraphicsFillStyle = {
+    /**
+     * The fill color.
+     */
+    color: number;
+    /**
+     * The fill alpha.
+     */
+    alpha?: number;
+};
+
+/**
+ * Graphics style settings.
+ */
+declare type GraphicsStyles = {
+    /**
+     * The style applied to shape outlines.
+     */
+    lineStyle: GraphicsLineStyle;
+    /**
+     * The style applied to shape areas.
+     */
+    fillStyle: GraphicsFillStyle;
+};
+
+/**
+ * Options for the Graphics game Object.
+ */
+declare type GraphicsOptions = GraphicsStyles & {
+    /**
+     * The x coordinate of the Graphics.
+     */
+    x?: number;
+    /**
+     * The y coordinate of the Graphics.
+     */
+    y?: number;
+};
 
 declare type GroupCallback = (item: Phaser.GameObjects.GameObject) => void;
 
@@ -2189,19 +2364,19 @@ declare type PathConfig = {
 
 declare type RenderTextureConfig = {
     /**
-     * [description]
+     * The x coordinate of the RenderTexture's position.
      */
     x?: number;
     /**
-     * [description]
+     * The y coordinate of the RenderTexture's position.
      */
     y?: number;
     /**
-     * [description]
+     * The width of the RenderTexture.
      */
     width?: number;
     /**
-     * [description]
+     * The height of the RenderTexture.
      */
     height?: number;
 };
@@ -2546,27 +2721,27 @@ declare namespace Phaser.GameObjects.Text {
 
 declare type TileSprite = GameObjectConfig & {
     /**
-     * [description]
+     * The x coordinate of the Tile Sprite.
      */
     x?: number;
     /**
-     * [description]
+     * The y coordinate of the Tile Sprite.
      */
     y?: number;
     /**
-     * [description]
+     * The width of the Tile Sprite.
      */
     width?: number;
     /**
-     * [description]
+     * The height of the Tile Sprite.
      */
     height?: number;
     /**
-     * [description]
+     * The key of the Texture this Tile Sprite will use to render with, as stored in the Texture Manager.
      */
     key?: string;
     /**
-     * [description]
+     * An optional frame from the Texture this Tile Sprite is rendering with.
      */
     frame?: string;
 };
@@ -2582,70 +2757,116 @@ declare type HitAreaCallback = (
 
 declare type Pad = {
     /**
-     * [description]
+     * The ID of the Gamepad.
      */
     id: string;
     /**
-     * [description]
+     * The index of the Gamepad.
      */
     index: integer;
 };
 
-declare type GamepadHandler = () => void;
+declare type InputPluginContainer = {
+    /**
+     * The unique name of this plugin in the input plugin cache.
+     */
+    key: string;
+    /**
+     * The plugin to be stored. Should be the source object, not instantiated.
+     */
+    plugin: Function;
+    /**
+     * If this plugin is to be injected into the Input Plugin, this is the property key map used.
+     */
+    mapping?: string;
+};
+
+declare namespace Phaser.Input.InputPluginCache {
+    /**
+     * Static method called directly by the Core internal Plugins.
+     * Key is a reference used to get the plugin from the plugins object (i.e. InputPlugin)
+     * Plugin is the object to instantiate to create the plugin
+     * Mapping is what the plugin is injected into the Scene.Systems as (i.e. input)
+     * @param key A reference used to get this plugin from the plugin cache.
+     * @param plugin The plugin to be stored. Should be the core object, not instantiated.
+     * @param mapping If this plugin is to be injected into the Input Plugin, this is the property key used.
+     * @param settingsKey The key in the Scene Settings to check to see if this plugin should install or not.
+     * @param configKey The key in the Game Config to check to see if this plugin should install or not.
+     */
+    function register(
+        key: string,
+        plugin: Function,
+        mapping: string,
+        settingsKey: string,
+        configKey: string
+    ): void;
+
+    /**
+     * Returns the input plugin object from the cache based on the given key.
+     * @param key The key of the input plugin to get.
+     */
+    function getCore(key: string): InputPluginContainer;
+
+    /**
+     * Installs all of the registered Input Plugins into the given target.
+     * @param target The target InputPlugin to install the plugins into.
+     */
+    function install(target: Phaser.Input.InputPlugin): void;
+
+    /**
+     * Removes an input plugin based on the given key.
+     * @param key The key of the input plugin to remove.
+     */
+    function remove(key: string): void;
+}
 
 declare type KeyboardKeydownCallback = (event: KeyboardEvent) => void;
 
 declare type KeyComboConfig = {
     /**
-     * [description]
+     * If they press the wrong key do we reset the combo?
      */
     resetOnWrongKey?: boolean;
     /**
-     * [description]
+     * The max delay in ms between each key press. Above this the combo is reset. 0 means disabled.
      */
     maxKeyDelay?: number;
     /**
-     * [description]
+     * If previously matched and they press the first key of the combo again, will it reset?
      */
     resetOnMatch?: boolean;
     /**
-     * [description]
+     * If the combo matches, will it delete itself?
      */
     deleteOnMatch?: boolean;
 };
 
-declare type KeyboardHandler = () => void;
-
 declare type CursorKeys = {
     /**
-     * [description]
+     * A Key object mapping to the UP arrow key.
      */
     up?: Phaser.Input.Keyboard.Key;
     /**
-     * [description]
+     * A Key object mapping to the DOWN arrow key.
      */
     down?: Phaser.Input.Keyboard.Key;
     /**
-     * [description]
+     * A Key object mapping to the LEFT arrow key.
      */
     left?: Phaser.Input.Keyboard.Key;
     /**
-     * [description]
+     * A Key object mapping to the RIGHT arrow key.
      */
     right?: Phaser.Input.Keyboard.Key;
     /**
-     * [description]
+     * A Key object mapping to the SPACE BAR key.
      */
     space?: Phaser.Input.Keyboard.Key;
     /**
-     * [description]
+     * A Key object mapping to the SHIFT key.
      */
     shift?: Phaser.Input.Keyboard.Key;
 };
-
-declare type MouseHandler = () => void;
-
-declare type TouchHandler = (event: TouchEvent) => void;
 
 declare type FileConfig = {
     /**
@@ -2752,26 +2973,26 @@ declare type XHRSettingsObject = {
 
 declare type SinCosTable = {
     /**
-     * [description]
+     * The sine value.
      */
     sin: number;
     /**
-     * [description]
+     * The cosine value.
      */
     cos: number;
     /**
-     * [description]
+     * The length.
      */
     length: number;
 };
 
 declare type Vector2Like = {
     /**
-     * [description]
+     * The x component.
      */
     x: number;
     /**
-     * [description]
+     * The y component.
      */
     y: number;
 };
@@ -3779,8 +4000,8 @@ declare namespace Phaser {
             getFrameByProgress(value: number): Phaser.Animations.AnimationFrame;
 
             /**
-             * [description]
-             * @param component [description]
+             * Advance the animation frame.
+             * @param component The Animation Component to advance.
              */
             nextFrame(component: Phaser.GameObjects.Components.Animation): void;
 
@@ -4021,7 +4242,7 @@ declare namespace Phaser {
              */
             generateFrameNames(
                 key: string,
-                config: GenerateFrameNamesConfig
+                config?: GenerateFrameNamesConfig
             ): AnimationFrameConfig[];
 
             /**
@@ -4136,14 +4357,20 @@ declare namespace Phaser {
             | Phaser.Renderer.WebGL.WebGLRenderer;
 
         /**
-         * A reference to the HTML Canvas Element on which the renderer is drawing.
+         * A reference to the HTML Canvas Element that Phaser uses to render the game.
+         * This is created automatically by Phaser unless you provide a `canvas` property
+         * in your Game Config.
          */
         canvas: HTMLCanvasElement;
 
         /**
-         * A reference to the Canvas Rendering Context belonging to the Canvas Element this game is rendering to.
+         * A reference to the Rendering Context belonging to the Canvas Element this game is rendering to.
+         * If the game is running under Canvas it will be a 2d Canvas Rendering Context.
+         * If the game is running under WebGL it will be a WebGL Rendering Context.
+         * This context is created automatically by Phaser unless you provide a `context` property
+         * in your Game Config.
          */
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D | WebGLRenderingContext;
 
         /**
          * A flag indicating when this Game instance has finished its boot process.
@@ -4229,7 +4456,19 @@ declare namespace Phaser {
          * The Plugin Manager is a global system that allows plugins to register themselves with it, and can then install
          * those plugins into Scenes as required.
          */
-        plugins: Phaser.Boot.PluginManager;
+        plugins: Phaser.Plugins.PluginManager;
+
+        /**
+         * Does the window the game is running in currently have focus or not?
+         * This is modified by the VisibilityHandler.
+         */
+        readonly hasFocus: boolean;
+
+        /**
+         * Is the mouse pointer currently over the game canvas or not?
+         * This is modified by the VisibilityHandler.
+         */
+        readonly isOver: boolean;
 
         /**
          * This method is called automatically when the DOM is ready. It is responsible for creating the renderer,
@@ -4353,9 +4592,14 @@ declare namespace Phaser {
             readonly parent: any;
 
             /**
-             * [description]
+             * Force Phaser to use your own Canvas element instead of creating one.
              */
             readonly canvas: HTMLCanvasElement;
+
+            /**
+             * Force Phaser to use your own Canvas context instead of creating one.
+             */
+            readonly context: CanvasRenderingContext2D | WebGLRenderingContext;
 
             /**
              * [description]
@@ -4386,6 +4630,11 @@ declare namespace Phaser {
              * [description]
              */
             readonly gameVersion: string;
+
+            /**
+             * [description]
+             */
+            readonly autoFocus: boolean;
 
             /**
              * [description]
@@ -4430,7 +4679,17 @@ declare namespace Phaser {
             /**
              * [description]
              */
+            readonly inputActivePointers: integer;
+
+            /**
+             * [description]
+             */
             readonly inputGamepad: boolean;
+
+            /**
+             * [description]
+             */
+            readonly inputGamepadEventTarget: any;
 
             /**
              * [description]
@@ -4590,6 +4849,16 @@ declare namespace Phaser {
             /**
              * [description]
              */
+            readonly installGlobalPlugins: any;
+
+            /**
+             * [description]
+             */
+            readonly installScenePlugins: any;
+
+            /**
+             * The plugins installed into every Scene (in addition to CoreScene and Global).
+             */
             readonly defaultPlugins: any;
 
             /**
@@ -4618,68 +4887,6 @@ declare namespace Phaser {
          * @param game The Phaser.Game instance which will output this debug header.
          */
         function DebugHeader(game: Phaser.Game): void;
-
-        /**
-         * The PluginManager is global and belongs to the Game instance, not a Scene.
-         * It handles the installation and removal of all global and Scene based plugins.
-         * Plugins automatically register themselves with the PluginManager in their respective classes.
-         */
-        class PluginManager {
-            /**
-             *
-             * @param game [description]
-             */
-            constructor(game: Phaser.Game);
-
-            /**
-             * [description]
-             */
-            game: Phaser.Game;
-
-            /**
-             * [description]
-             */
-            boot(): void;
-
-            /**
-             * [description]
-             * @param sys [description]
-             * @param globalPlugins [description]
-             */
-            installGlobal(
-                sys: Phaser.Scenes.Systems,
-                globalPlugins: any[]
-            ): void;
-
-            /**
-             * [description]
-             * @param sys [description]
-             * @param scenePlugins [description]
-             */
-            installLocal(sys: Phaser.Scenes.Systems, scenePlugins: any[]): void;
-
-            /**
-             * [description]
-             * @param key [description]
-             */
-            remove(key: string): void;
-
-            /**
-             * [description]
-             */
-            destroy(): void;
-
-            /**
-             * Static method called directly by the Plugins
-             * Key is a reference used to get the plugin from the plugins object (i.e. InputPlugin)
-             * Plugin is the object to instantiate to create the plugin
-             * Mapping is what the plugin is injected into the Scene.Systems as (i.e. input)
-             * @param key [description]
-             * @param plugin [description]
-             * @param mapping [description]
-             */
-            static register(key: string, plugin: object, mapping: string): void;
-        }
 
         /**
          * [description]
@@ -4792,7 +4999,7 @@ declare namespace Phaser {
             /**
              * [description]
              */
-            deltaHistory: any[];
+            deltaHistory: integer[];
 
             /**
              * [description]
@@ -4849,7 +5056,7 @@ declare namespace Phaser {
              * You generally should never call this method directly.
              * @param time The current time. Either a High Resolution Timer value if it comes from Request Animation Frame, or Date.now if using SetTimeout.
              */
-            step(time: integer): void;
+            step(time: number): void;
 
             /**
              * Manually calls TimeStep.step, passing in the performance.now value to it.
@@ -4884,11 +5091,9 @@ declare namespace Phaser {
          * The Visibility Handler is responsible for listening out for document level visibility change events.
          * This includes `visibilitychange` if the browser supports it, and blur and focus events. It then uses
          * the provided Event Emitter and fires the related events.
-         * @param eventEmitter The EventEmitter that will emit the visibility events.
+         * @param game The Game instance this Visibility Handler is working on.
          */
-        function VisibilityHandler(
-            eventEmitter: Phaser.Events.EventEmitter
-        ): void;
+        function VisibilityHandler(game: Phaser.Game): void;
     }
 
     namespace Cache {
@@ -5123,6 +5328,14 @@ declare namespace Phaser {
                 roundPixels: boolean;
 
                 /**
+                 * Is this Camera visible or not?
+                 *
+                 * A visible camera will render and perform input tests.
+                 * An invisible camera will not render anything and will skip input tests.
+                 */
+                visible: boolean;
+
+                /**
                  * Is this Camera using a bounds to restrict scrolling movement?
                  * Set this property along with the bounds via `Camera.setBounds`.
                  */
@@ -5199,6 +5412,27 @@ declare namespace Phaser {
                  * A temporary array of culled objects.
                  */
                 culledObjects: Phaser.GameObjects.GameObject[];
+
+                /**
+                 * The linear interpolation value to use when following a target.
+                 *
+                 * Can also be set via `setLerp` or as part of the `startFollow` call.
+                 *
+                 * The default values of 1 means the camera will instantly snap to the target coordinates.
+                 * A lower value, such as 0.1 means the camera will more slowly track the target, giving
+                 * a smooth transition. You can set the horizontal and vertical values independently, and also
+                 * adjust this value in real-time during your game.
+                 *
+                 * Be sure to keep the value between 0 and 1. A value of zero will disable tracking on that axis.
+                 */
+                lerp: Phaser.Math.Vector2;
+
+                /**
+                 * The values stored in this property are subtracted from the Camera targets position, allowing you to
+                 * offset the camera from the actual target x/y coordinates by this amount.
+                 * Can also be set via `setFollowOffset` or as part of the `startFollow` call.
+                 */
+                followOffset: Phaser.Math.Vector2;
 
                 /**
                  * Scrolls the Camera so that it is looking at the center of the Camera Bounds (if previously enabled)
@@ -5386,6 +5620,28 @@ declare namespace Phaser {
                 setAngle(value?: number): Phaser.Cameras.Scene2D.Camera;
 
                 /**
+                 * Sets the linear interpolation value to use when following a target.
+                 *
+                 * The default values of 1 means the camera will instantly snap to the target coordinates.
+                 * A lower value, such as 0.1 means the camera will more slowly track the target, giving
+                 * a smooth transition. You can set the horizontal and vertical values independently, and also
+                 * adjust this value in real-time during your game.
+                 *
+                 * Be sure to keep the value between 0 and 1. A value of zero will disable tracking on that axis.
+                 * @param x The amount added to the horizontal linear interpolation of the follow target. Default 1.
+                 * @param y The amount added to the vertical linear interpolation of the follow target. Default 1.
+                 */
+                setLerp(x?: number, y?: number): this;
+
+                /**
+                 * Sets the horizontal and vertical offset of the camera from its follow target.
+                 * The values are subtracted from the targets position during the Cameras update step.
+                 * @param x The horizontal offset from the camera follow target.x position. Default 0.
+                 * @param y The vertical offset from the camera follow target.y position. Default 0.
+                 */
+                setFollowOffset(x?: number, y?: number): this;
+
+                /**
                  * Sets the background color for this Camera.
                  *
                  * By default a Camera has a transparent background but it can be given a solid color, with any level
@@ -5516,17 +5772,41 @@ declare namespace Phaser {
                 setZoom(value?: number): Phaser.Cameras.Scene2D.Camera;
 
                 /**
+                 * Sets the visibility of this Camera.
+                 *
+                 * An invisible Camera will skip rendering and input tests of everything it can see.
+                 * @param value The visible state of the Camera.
+                 */
+                setVisible(value: boolean): this;
+
+                /**
                  * Sets the Camera to follow a Game Object.
                  *
                  * When enabled the Camera will automatically adjust its scroll position to keep the target Game Object
                  * in its center.
+                 *
+                 * You can set the linear interpolation value used in the follow code.
+                 * Use low lerp values (such as 0.1) to automatically smooth the camera motion.
+                 *
+                 * If you find you're getting a slight "jitter" effect when following an object it's probably to do with sub-pixel
+                 * rendering of the targets position. This can be rounded by setting the `roundPixels` argument to `true` to
+                 * force full pixel rounding rendering. Note that this can still be broken if you have specified a non-integer zoom
+                 * value on the camera. So be sure to keep the camera zoom to integers.
                  * @param target The target for the Camera to follow.
-                 * @param roundPx Round the movement pixels to whole integers? Default false.
+                 * @param roundPixels Round the camera position to whole integers to avoid sub-pixel rendering? Default false.
+                 * @param lerpX A value between 0 and 1. This value specifies the amount of linear interpolation to use when horizontally tracking the target. The closer the value to 1, the faster the camera will track. Default 1.
+                 * @param lerpY A value between 0 and 1. This value specifies the amount of linear interpolation to use when vertically tracking the target. The closer the value to 1, the faster the camera will track. Default 1.
+                 * @param offsetX The horizontal offset from the camera follow target.x position. Default 0.
+                 * @param offsetY The vertical offset from the camera follow target.y position. Default 0.
                  */
                 startFollow(
                     target: Phaser.GameObjects.GameObject | object,
-                    roundPx?: boolean
-                ): Phaser.Cameras.Scene2D.Camera;
+                    roundPixels?: boolean,
+                    lerpX?: number,
+                    lerpY?: number,
+                    offsetX?: number,
+                    offsetY?: number
+                ): this;
 
                 /**
                  * Stops a Camera from following a Game Object, if previously set via `Camera.startFollow`.
@@ -5558,6 +5838,16 @@ declare namespace Phaser {
                  * cameras are stored in a pool, ready for recycling later, and calling this directly will prevent that.
                  */
                 destroy(): void;
+
+                /**
+                 * The x position of the center of the Camera's viewport, relative to the top-left of the game canvas.
+                 */
+                readonly centerX: number;
+
+                /**
+                 * The y position of the center of the Camera's viewport, relative to the top-left of the game canvas.
+                 */
+                readonly centerY: number;
             }
 
             /**
@@ -5646,12 +5936,14 @@ declare namespace Phaser {
                 getCamera(name: string): Phaser.Cameras.Scene2D.Camera;
 
                 /**
-                 * [description]
-                 * @param pointer [description]
+                 * Returns an array of all cameras below the given Pointer.
+                 *
+                 * The first camera in the array is the top-most camera in the camera list.
+                 * @param pointer The Pointer to check against.
                  */
-                getCameraBelowPointer(
+                getCamerasBelowPointer(
                     pointer: Phaser.Input.Pointer
-                ): Phaser.Cameras.Scene2D.Camera;
+                ): Phaser.Cameras.Scene2D.Camera[];
 
                 /**
                  * [description]
@@ -6096,18 +6388,6 @@ declare namespace Phaser {
                  */
                 destroy(): void;
             }
-
-            /**
-             * This alias will be removed in a future version.
-             * Use `FixedKeyControl` instead.
-             */
-            var Fixed: any;
-
-            /**
-             * This alias will be removed in a future version.
-             * Use `SmoothedKeyControl` instead.
-             */
-            var Smoothed: any;
 
             /**
              * [description]
@@ -6922,7 +7202,7 @@ declare namespace Phaser {
         /**
          * [description]
          */
-        class CubicBezierCurve extends Phaser.Curves.Curve {
+        class CubicBezier extends Phaser.Curves.Curve {
             /**
              *
              * @param p0 Start point, or an array of point pairs.
@@ -6995,7 +7275,7 @@ declare namespace Phaser {
              * [description]
              * @param data The JSON object containing this curve data.
              */
-            static fromJSON(data: JSONCurve): Phaser.Curves.CubicBezierCurve;
+            static fromJSON(data: JSONCurve): Phaser.Curves.CubicBezier;
         }
 
         /**
@@ -7163,7 +7443,7 @@ declare namespace Phaser {
         /**
          * [description]
          */
-        class EllipseCurve extends Phaser.Curves.Curve {
+        class Ellipse extends Phaser.Curves.Curve {
             /**
              *
              * @param x [description] Default 0.
@@ -7214,49 +7494,49 @@ declare namespace Phaser {
              * Sets the horizontal radius of this curve.
              * @param value The horizontal radius of this curve.
              */
-            setXRadius(value: number): Phaser.Curves.EllipseCurve;
+            setXRadius(value: number): Phaser.Curves.Ellipse;
 
             /**
              * Sets the vertical radius of this curve.
              * @param value The vertical radius of this curve.
              */
-            setYRadius(value: number): Phaser.Curves.EllipseCurve;
+            setYRadius(value: number): Phaser.Curves.Ellipse;
 
             /**
              * Sets the width of this curve.
              * @param value The width of this curve.
              */
-            setWidth(value: number): Phaser.Curves.EllipseCurve;
+            setWidth(value: number): Phaser.Curves.Ellipse;
 
             /**
              * Sets the height of this curve.
              * @param value The height of this curve.
              */
-            setHeight(value: number): Phaser.Curves.EllipseCurve;
+            setHeight(value: number): Phaser.Curves.Ellipse;
 
             /**
              * Sets the start angle of this curve.
              * @param value The start angle of this curve, in radians.
              */
-            setStartAngle(value: number): Phaser.Curves.EllipseCurve;
+            setStartAngle(value: number): Phaser.Curves.Ellipse;
 
             /**
              * Sets the end angle of this curve.
              * @param value The end angle of this curve, in radians.
              */
-            setEndAngle(value: number): Phaser.Curves.EllipseCurve;
+            setEndAngle(value: number): Phaser.Curves.Ellipse;
 
             /**
              * Sets if this curve extends clockwise or anti-clockwise.
              * @param value The clockwise state of this curve.
              */
-            setClockwise(value: boolean): Phaser.Curves.EllipseCurve;
+            setClockwise(value: boolean): Phaser.Curves.Ellipse;
 
             /**
              * Sets the rotation of this curve.
              * @param value The rotation of this curve, in radians.
              */
-            setRotation(value: number): Phaser.Curves.EllipseCurve;
+            setRotation(value: number): Phaser.Curves.Ellipse;
 
             /**
              * [description]
@@ -7307,13 +7587,13 @@ declare namespace Phaser {
              * [description]
              * @param data The JSON object containing this curve data.
              */
-            static fromJSON(data: JSONEllipseCurve): Phaser.Curves.EllipseCurve;
+            static fromJSON(data: JSONEllipseCurve): Phaser.Curves.Ellipse;
         }
 
         /**
          * [description]
          */
-        class LineCurve extends Phaser.Curves.Curve {
+        class Line extends Phaser.Curves.Curve {
             /**
              *
              * @param p0 [description]
@@ -7389,7 +7669,7 @@ declare namespace Phaser {
              * [description]
              * @param data The JSON object containing this curve data.
              */
-            static fromJSON(data: JSONCurve): Phaser.Curves.LineCurve;
+            static fromJSON(data: JSONCurve): Phaser.Curves.Line;
         }
 
         /**
@@ -7503,21 +7783,21 @@ declare namespace Phaser {
             closePath(): Phaser.Curves.Path;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param control1X [description]
-             * @param control1Y [description]
-             * @param control2X [description]
-             * @param control2Y [description]
+             * Creates a cubic bezier curve starting at the previous end point and ending at p3, using p1 and p2 as control points.
+             * @param x The x coordinate of the end point. Or, if a Vec2, the p1 value.
+             * @param y The y coordinate of the end point. Or, if a Vec2, the p2 value.
+             * @param control1X The x coordinate of the first control point. Or, if a Vec2, the p3 value.
+             * @param control1Y The y coordinate of the first control point. Not used if vec2s are provided as the first 3 arguments.
+             * @param control2X The x coordinate of the second control point. Not used if vec2s are provided as the first 3 arguments.
+             * @param control2Y The y coordinate of the second control point. Not used if vec2s are provided as the first 3 arguments.
              */
             cubicBezierTo(
-                x: number,
-                y: number,
-                control1X: Phaser.Math.Vector2,
-                control1Y: Phaser.Math.Vector2,
-                control2X: Phaser.Math.Vector2,
-                control2Y: Phaser.Math.Vector2
+                x: number | Phaser.Math.Vector2,
+                y: number | Phaser.Math.Vector2,
+                control1X: number | Phaser.Math.Vector2,
+                control1Y?: number,
+                control2X?: number,
+                control2Y?: number
             ): Phaser.Curves.Path;
 
             /**
@@ -7739,7 +8019,7 @@ declare namespace Phaser {
         /**
          * [description]
          */
-        class SplineCurve extends Phaser.Curves.Curve {
+        class Spline extends Phaser.Curves.Curve {
             /**
              *
              * @param points [description]
@@ -7757,7 +8037,7 @@ declare namespace Phaser {
              */
             addPoints(
                 points: Phaser.Math.Vector2[] | number[] | number[][]
-            ): Phaser.Curves.SplineCurve;
+            ): Phaser.Curves.Spline;
 
             /**
              * [description]
@@ -7794,7 +8074,7 @@ declare namespace Phaser {
              * [description]
              * @param data The JSON object containing this curve data.
              */
-            static fromJSON(data: JSONCurve): Phaser.Curves.SplineCurve;
+            static fromJSON(data: JSONCurve): Phaser.Curves.Spline;
         }
     }
 
@@ -7831,87 +8111,163 @@ declare namespace Phaser {
             list: { [key: string]: any };
 
             /**
-             * Whether setting data is blocked for this DataManager.
+             * The public values list. You can use this to access anything you have stored
+             * in this Data Manager. For example, if you set a value called `gold` you can
+             * access it via:
              *
-             * Used temporarily to allow 'changedata' event listeners to prevent
-             * specific data from being set.
+             * ```javascript
+             * this.data.values.gold;
+             * ```
+             *
+             * You can also modify it directly:
+             *
+             * ```javascript
+             * this.data.values.gold += 1000;
+             * ```
+             *
+             * Doing so will emit a `setdata` event from the parent of this Data Manager.
              */
-            blockSet: boolean;
+            values: { [key: string]: any };
 
             /**
              * Retrieves the value for the given key, or undefined if it doesn't exist.
-             * @param key The key of the value to retrieve.
+             *
+             * You can also access values via the `values` object. For example, if you had a key called `gold` you can do either:
+             *
+             * ```javascript
+             * this.data.get('gold');
+             * ```
+             *
+             * Or access the value directly:
+             *
+             * ```javascript
+             * this.data.values.gold;
+             * ```
+             *
+             * You can also pass in an array of keys, in which case an array of values will be returned:
+             *
+             * ```javascript
+             * this.data.get([ 'gold', 'armor', 'health' ]);
+             * ```
+             *
+             * This approach is useful for destructuring arrays in ES6.
+             * @param key The key of the value to retrieve, or an array of keys.
              */
-            get(key: string): any;
+            get(key: string | string[]): any;
 
             /**
-             * Retrieves all data values.
+             * Retrieves all data values in a new object.
              */
             getAll(): { [key: string]: any };
 
             /**
-             * Queries the DataManager for the values of keys matching the given search string.
-             * @param search The search string.
+             * Queries the DataManager for the values of keys matching the given regular expression.
+             * @param search A regular expression object. If a non-RegExp object obj is passed, it is implicitly converted to a RegExp by using new RegExp(obj).
              */
-            query(search: string): { [key: string]: any };
+            query(search: RegExp): { [key: string]: any };
 
             /**
-             * Sets the value for the given key.
+             * Sets a value for the given key. If the key doesn't already exist in the Data Manager then it is created.
              *
-             * Emits the 'changedata' and 'setdata' events.
-             * @param key The key to set the value for.
-             * @param data The value to set.
+             * ```javascript
+             * data.set('name', 'Red Gem Stone');
+             * ```
+             *
+             * You can also pass in an object of key value pairs as the first argument:
+             *
+             * ```javascript
+             * data.set({ name: 'Red Gem Stone', level: 2, owner: 'Link', gold: 50 });
+             * ```
+             *
+             * To get a value back again you can call `get`:
+             *
+             * ```javascript
+             * data.get('gold');
+             * ```
+             *
+             * Or you can access the value directly via the `values` property, where it works like any other variable:
+             *
+             * ```javascript
+             * data.values.gold += 50;
+             * ```
+             *
+             * When the value is first set, a `setdata` event is emitted.
+             *
+             * If the key already exists, a `changedata` event is emitted instead, along an event named after the key.
+             * For example, if you updated an existing key called `PlayerLives` then it would emit the event `changedata_PlayerLives`.
+             * These events will be emitted regardless if you use this method to set the value, or the direct `values` setter.
+             *
+             * Please note that the data keys are case-sensitive and must be valid JavaScript Object property strings.
+             * This means the keys `gold` and `Gold` are treated as two unique values within the Data Manager.
+             * @param key The key to set the value for. Or an object or key value pairs. If an object the `data` argument is ignored.
+             * @param data The value to set for the given key. If an object is provided as the key this argument is ignored.
              */
-            set(key: string, data: any): Phaser.Data.DataManager;
+            set(key: string | object, data: any): Phaser.Data.DataManager;
 
             /**
-             * Passes all data entries to the given callback. Stores the result of the callback.
+             * Passes all data entries to the given callback.
              * @param callback The function to call.
-             * @param scope Value to use as `this` when executing callback.
+             * @param context Value to use as `this` when executing callback.
              * @param args Additional arguments that will be passed to the callback, after the game object, key, and data.
              */
             each(
                 callback: DataEachCallback,
-                scope?: any,
+                context?: any,
                 ...args: any[]
             ): Phaser.Data.DataManager;
 
             /**
-             * Merge the given data object into this DataManager's data object.
+             * Merge the given object of key value pairs into this DataManager.
+             *
+             * Any newly created values will emit a `setdata` event. Any updated values (see the `overwrite` argument)
+             * will emit a `changedata` event.
              * @param data The data to merge.
-             * @param overwrite Whether to overwrite existing data. Defaults to true.
+             * @param overwrite Whether to overwrite existing data. Defaults to true. Default true.
              */
             merge(
                 data: { [key: string]: any },
-                overwrite: boolean
+                overwrite?: boolean
             ): Phaser.Data.DataManager;
 
             /**
              * Remove the value for the given key.
-             * @param key The key to remove
+             *
+             * If the key is found in this Data Manager it is removed from the internal lists and a
+             * `removedata` event is emitted.
+             *
+             * You can also pass in an array of keys, in which case all keys in the array will be removed:
+             *
+             * ```javascript
+             * this.data.remove([ 'gold', 'armor', 'health' ]);
+             * ```
+             * @param key The key to remove, or an array of keys to remove.
              */
-            remove(key: string): Phaser.Data.DataManager;
+            remove(key: string | string[]): Phaser.Data.DataManager;
 
             /**
-             * Retrieves the data associated with the given 'key', deletes it from this Data store, then returns it.
+             * Retrieves the data associated with the given 'key', deletes it from this Data Manager, then returns it.
              * @param key The key of the value to retrieve and delete.
              */
             pop(key: string): any;
 
             /**
-             * Determines whether the given key is set in this Data store.
+             * Determines whether the given key is set in this Data Manager.
+             *
+             * Please note that the keys are case-sensitive and must be valid JavaScript Object property strings.
+             * This means the keys `gold` and `Gold` are treated as two unique values within the Data Manager.
              * @param key The key to check.
              */
             has(key: string): boolean;
 
             /**
-             * Freeze or unfreeze this Data store, to allow or prevent setting its values.
-             * @param value Whether to freeze the Data store.
+             * Freeze or unfreeze this Data Manager. A frozen Data Manager will block all attempts
+             * to create new values or update existing ones.
+             * @param value Whether to freeze or unfreeze the Data Manager.
              */
             setFreeze(value: boolean): Phaser.Data.DataManager;
 
             /**
-             * Delete all data in this Data store and unfreeze it.
+             * Delete all data in this Data Manager and unfreeze it.
              */
             reset(): Phaser.Data.DataManager;
 
@@ -7921,12 +8277,13 @@ declare namespace Phaser {
             destroy(): void;
 
             /**
-             * Freeze this Data component, so no values can be set.
+             * Gets or sets the frozen state of this Data Manager.
+             * A frozen Data Manager will block all attempts to create new values or update existing ones.
              */
             freeze: boolean;
 
             /**
-             * Return the total number of entries in this Data component.
+             * Return the total number of entries in this Data Manager.
              */
             count: integer;
         }
@@ -7939,17 +8296,17 @@ declare namespace Phaser {
         class DataManagerPlugin extends Phaser.Data.DataManager {
             /**
              *
-             * @param scene [description]
+             * @param scene A reference to the Scene that this DataManager belongs to.
              */
             constructor(scene: Phaser.Scene);
 
             /**
-             * [description]
+             * A reference to the Scene that this DataManager belongs to.
              */
             scene: Phaser.Scene;
 
             /**
-             * [description]
+             * A reference to the Scene's Systems.
              */
             systems: Phaser.Scenes.Systems;
 
@@ -9239,7 +9596,7 @@ declare namespace Phaser {
              * @param s The saturation, in the range 0 - 1. Default 1.
              * @param v The value, in the range 0 - 1. Default 1.
              */
-            static HSVColorWheel(s?: number, v?: number): any[];
+            static HSVColorWheel(s?: number, v?: number): ColorObject[];
 
             /**
              * Converts an HSV (hue, saturation and value) color value to RGB.
@@ -9771,9 +10128,9 @@ declare namespace Phaser {
              * @param scene The Scene to which this Game Object belongs. It can only belong to one Scene at any given time.
              * @param x The x coordinate of this Game Object in world space.
              * @param y The y coordinate of this Game Object in world space.
-             * @param font [description]
-             * @param text [description]
-             * @param size [description]
+             * @param font The key of the font to use from the Bitmap Font cache.
+             * @param text The string, or array of strings, to be set as the content of this Bitmap Text.
+             * @param size The font size of this Bitmap Text.
              */
             constructor(
                 scene: Phaser.Scene,
@@ -9785,22 +10142,22 @@ declare namespace Phaser {
             );
 
             /**
-             * [description]
+             * The key of the Bitmap Font used by this Bitmap Text.
              */
             font: string;
 
             /**
-             * [description]
+             * The data of the Bitmap Font used by this Bitmap Text.
              */
-            fontData: object;
+            fontData: BitmapFontData;
 
             /**
-             * [description]
+             * The text that this Bitmap Text object displays.
              */
             text: string;
 
             /**
-             * [description]
+             * The font size of this Bitmap Text.
              */
             fontSize: number;
 
@@ -9811,34 +10168,34 @@ declare namespace Phaser {
             letterSpacing: number;
 
             /**
-             * [description]
+             * The horizontal scroll position of the Bitmap Text.
              */
             scrollX: number;
 
             /**
-             * [description]
+             * The vertical scroll position of the Bitmap Text.
              */
             scrollY: number;
 
             /**
-             * [description]
+             * The crop width of the Bitmap Text.
              */
             cropWidth: number;
 
             /**
-             * [description]
+             * The crop height of the Bitmap Text.
              */
             cropHeight: number;
 
             /**
-             * [description]
+             * A callback that alters how each character of the Bitmap Text is rendered.
              */
             'displayCallback;': DisplayCallback;
 
             /**
-             * [description]
-             * @param width [description]
-             * @param height [description]
+             * Set the crop size of this Bitmap Text.
+             * @param width The width of the crop.
+             * @param height The height of the crop.
              */
             setSize(
                 width: number,
@@ -9846,21 +10203,29 @@ declare namespace Phaser {
             ): Phaser.GameObjects.DynamicBitmapText;
 
             /**
-             * [description]
-             * @param callback [description]
+             * Set a callback that alters how each character of the Bitmap Text is rendered.
+             *
+             * The callback receives a {@link DisplayCallbackConfig} object that contains information about the character that's
+             * about to be rendered.
+             *
+             * It should return an object with `x`, `y`, `scale` and `rotation` properties that will be used instead of the
+             * usual values when rendering.
+             * @param callback The display callback to set.
              */
             setDisplayCallback(
                 callback: DisplayCallback
             ): Phaser.GameObjects.DynamicBitmapText;
 
             /**
-             * [description]
-             * @param size [description]
+             * Set the font size of this Bitmap Text.
+             * @param size The font size to set.
              */
             setFontSize(size: number): Phaser.GameObjects.DynamicBitmapText;
 
             /**
-             * [description]
+             * Set the content of this BitmapText.
+             *
+             * An array of strings will be converted multi-line text.
              * @param value The string, or array of strings, to be set as the content of this BitmapText.
              */
             setText(
@@ -9868,43 +10233,51 @@ declare namespace Phaser {
             ): Phaser.GameObjects.DynamicBitmapText;
 
             /**
-             * [description]
-             * @param value [description]
+             * Set the horizontal scroll position of this Bitmap Text.
+             * @param value The horizontal scroll position to set.
              */
             setScrollX(value: number): Phaser.GameObjects.DynamicBitmapText;
 
             /**
-             * [description]
-             * @param value [description]
+             * Set the vertical scroll position of this Bitmap Text.
+             * @param value The vertical scroll position to set.
              */
             setScrollY(value: number): Phaser.GameObjects.DynamicBitmapText;
 
             /**
-             * [description]
-             * @param round [description]
+             * Calculate the bounds of this Bitmap Text.
+             *
+             * An object is returned that contains the position, width and height of the Bitmap Text in local and global
+             * contexts.
+             *
+             * Local size is based on just the font size and a [0, 0] position.
+             *
+             * Global size takes into account the Game Object's scale and world position.
+             * @param round Whether to round the results to the nearest integer.
              */
-            getTextBounds(round: boolean): TextBounds;
+            getTextBounds(round?: boolean): BitmapTextSize;
 
             /**
-             * [description]
+             * The width of this Bitmap Text.
              */
-            width: number;
+            readonly width: number;
 
             /**
-             * [description]
+             * The height of this Bitmap Text.
              */
-            height: number;
+            readonly height: number;
 
             /**
-             * [description]
+             * Build a JSON representation of this Bitmap Text.
              */
             toJSON(): JSONBitmapText;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -9922,7 +10295,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -9998,9 +10371,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -10027,7 +10398,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The Mask this Game Object is using during render.
@@ -10051,13 +10422,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -10129,12 +10500,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -10142,24 +10513,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -10228,10 +10596,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -10250,10 +10615,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -10272,13 +10634,13 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -10292,7 +10654,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -10377,55 +10739,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -10456,7 +10833,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         namespace RetroFont {
@@ -10524,11 +10901,11 @@ declare namespace Phaser {
             function Parse(
                 scene: Phaser.Scene,
                 config: Phaser.GameObjects.RetroFont.Config
-            ): void;
+            ): object;
 
             type Config = {
                 /**
-                 * [description]
+                 * The key of the image containing the font.
                  */
                 image: string;
                 /**
@@ -10588,9 +10965,9 @@ declare namespace Phaser {
              * @param scene The Scene to which this Game Object belongs. It can only belong to one Scene at any given time.
              * @param x The x coordinate of this Game Object in world space.
              * @param y The y coordinate of this Game Object in world space.
-             * @param font [description]
-             * @param text [description]
-             * @param size [description]
+             * @param font The key of the font to use from the Bitmap Font cache.
+             * @param text The string, or array of strings, to be set as the content of this Bitmap Text.
+             * @param size The font size of this Bitmap Text.
              */
             constructor(
                 scene: Phaser.Scene,
@@ -10602,34 +10979,35 @@ declare namespace Phaser {
             );
 
             /**
-             * [description]
+             * The key of the Bitmap Font used by this Bitmap Text.
              */
             font: string;
 
             /**
-             * [description]
+             * The data of the Bitmap Font used by this Bitmap Text.
              */
-            fontData: object;
+            fontData: BitmapFontData;
 
             /**
-             * [description]
+             * The text that this Bitmap Text object displays.
              */
             text: string;
 
             /**
-             * [description]
+             * The font size of this Bitmap Text.
              */
             fontSize: number;
 
             /**
-             * Adds/Removes spacing between characters
-             * Can be a negative or positive number
+             * Adds/Removes spacing between characters.
+             *
+             * Can be a negative or positive number.
              */
             letterSpacing: number;
 
             /**
-             * [description]
-             * @param size [description]
+             * Set the font size of this Bitmap Text.
+             * @param size The font size to set.
              */
             setFontSize(size: number): Phaser.GameObjects.BitmapText;
 
@@ -10642,37 +11020,47 @@ declare namespace Phaser {
             setLetterSpacing(spacing?: number): Phaser.GameObjects.BitmapText;
 
             /**
-             * [description]
+             * Set the content of this BitmapText.
+             *
+             * An array of strings will be converted multi-line text.
              * @param value The string, or array of strings, to be set as the content of this BitmapText.
              */
             setText(value: string | string[]): Phaser.GameObjects.BitmapText;
 
             /**
-             * [description]
-             * @param round [description]
+             * Calculate the bounds of this Bitmap Text.
+             *
+             * An object is returned that contains the position, width and height of the Bitmap Text in local and global
+             * contexts.
+             *
+             * Local size is based on just the font size and a [0, 0] position.
+             *
+             * Global size takes into account the Game Object's scale and world position.
+             * @param round Whether to round the results to the nearest integer.
              */
-            getTextBounds(round: boolean): TextBounds;
+            getTextBounds(round?: boolean): BitmapTextSize;
 
             /**
-             * [description]
+             * The width of this Bitmap Text.
              */
-            width: number;
+            readonly width: number;
 
             /**
-             * [description]
+             * The height of this bitmap text.
              */
-            height: number;
+            readonly height: number;
 
             /**
-             * [description]
+             * Build a JSON representation of this Bitmap Text.
              */
             toJSON(): JSONBitmapText;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -10690,7 +11078,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -10766,9 +11154,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -10795,7 +11181,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The Mask this Game Object is using during render.
@@ -10819,13 +11205,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -10897,12 +11283,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -10910,24 +11296,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -10965,9 +11348,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -11011,10 +11392,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -11033,10 +11411,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -11055,13 +11430,13 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -11075,7 +11450,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -11160,55 +11535,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -11239,7 +11629,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
@@ -11287,17 +11677,22 @@ declare namespace Phaser {
             );
 
             /**
-             * [description]
+             * The children of this Blitter.
+             * This List contains all of the Bob objects created by the Blitter.
              */
             children: Phaser.Structs.List<Phaser.GameObjects.Blitter.Bob>;
 
             /**
-             * [description]
+             * Is the Blitter considered dirty?
+             * A 'dirty' Blitter has had its child count changed since the last frame.
              */
-            renderList: Phaser.GameObjects.Blitter.Bob[];
+            dirty: boolean;
 
             /**
-             * [description]
+             * Creates a new Bob in this Blitter.
+             *
+             * The Bob is created at the given coordinates, relative to the Blitter and uses the given frame.
+             * A Bob can use any frame belonging to the texture bound to the Blitter.
              * @param x The x position of the Bob. Bob coordinate are relative to the position of the Blitter object.
              * @param y The y position of the Bob. Bob coordinate are relative to the position of the Blitter object.
              * @param frame The Frame the Bob will use. It _must_ be part of the Texture the parent Blitter object is using.
@@ -11313,14 +11708,14 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Blitter.Bob;
 
             /**
-             * [description]
+             * Creates multiple Bob objects within this Blitter and then passes each of them to the specified callback.
              * @param callback The callback to invoke after creating a bob. It will be sent two arguments: The Bob and the index of the Bob.
              * @param quantity The quantity of Bob objects to create.
              * @param frame The Frame the Bobs will use. It must be part of the Blitter Texture.
-             * @param visible [description] Default true.
+             * @param visible Should the created Bob render or not? Default true.
              */
             createFromCallback(
-                callback: Phaser.GameObjects.Blitter.BlitterFromCallback,
+                callback: Phaser.GameObjects.Blitter.CreateCallback,
                 quantity: integer,
                 frame?:
                     | string
@@ -11333,10 +11728,15 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Blitter.Bob[];
 
             /**
-             * [description]
+             * Creates multiple Bobs in one call.
+             *
+             * The amount created is controlled by a combination of the `quantity` argument and the number of frames provided.
+             *
+             * If the quantity is set to 10 and you provide 2 frames, then 20 Bobs will be created. 10 with the first
+             * frame and 10 with the second.
              * @param quantity The quantity of Bob objects to create.
              * @param frame The Frame the Bobs will use. It must be part of the Blitter Texture.
-             * @param visible [description] Default true.
+             * @param visible Should the created Bob render or not? Default true.
              */
             createMultiple(
                 quantity: integer,
@@ -11351,26 +11751,33 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Blitter.Bob[];
 
             /**
-             * [description]
-             * @param child [description]
+             * Checks if the given child can render or not, by checking its `visible` and `alpha` values.
+             * @param child The Bob to check for rendering.
              */
             childCanRender(child: Phaser.GameObjects.Blitter.Bob): boolean;
 
             /**
-             * [description]
+             * Returns an array of Bobs to be rendered.
+             * If the Blitter is dirty then a new list is generated and stored in `renderList`.
              */
             getRenderList(): Phaser.GameObjects.Blitter.Bob[];
 
             /**
-             * [description]
+             * Removes all Bobs from the children List and clears the dirty flag.
              */
             clear(): void;
 
             /**
-             * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             * Internal destroy handler, called as part of the destroy process.
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            protected preDestroy(): void;
+
+            /**
+             * Clears all alpha values associated with this Game Object.
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
+             */
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -11388,7 +11795,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -11464,9 +11871,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -11493,7 +11898,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The Mask this Game Object is using during render.
@@ -11517,13 +11922,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -11559,12 +11964,12 @@ declare namespace Phaser {
             ): Phaser.Display.Masks.GeometryMask;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -11602,9 +12007,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -11648,10 +12051,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -11679,19 +12079,14 @@ declare namespace Phaser {
              * Sets the size of this Game Object to be that of the given Frame.
              * @param frame The frame to base the size of this Game Object on.
              */
-            setSizeToFrame(
-                frame: Phaser.Textures.Frame
-            ): Phaser.GameObjects.GameObject;
+            setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
             /**
              * Sets the size of this Game Object.
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -11699,10 +12094,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -11721,10 +12113,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -11743,7 +12132,7 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The x position of this Game Object.
@@ -11799,55 +12188,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -11878,14 +12282,14 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
          * Builds a Game Object using the provided configuration object.
-         * @param scene [description]
-         * @param gameObject [description]
-         * @param config [description]
+         * @param scene A reference to the Scene.
+         * @param gameObject The initial GameObject.
+         * @param config The config to build the GameObject with.
          */
         function BuildGameObject(
             scene: Phaser.Scene,
@@ -11895,8 +12299,8 @@ declare namespace Phaser {
 
         /**
          * Adds an Animation component to a Sprite and populates it based on the given config.
-         * @param sprite [description]
-         * @param config [description]
+         * @param sprite The sprite to add an Animation component to.
+         * @param config The animation config.
          */
         function BuildGameObjectAnimation(
             sprite: Phaser.GameObjects.Sprite,
@@ -11911,9 +12315,10 @@ declare namespace Phaser {
             interface Alpha {
                 /**
                  * Clears all alpha values associated with this Game Object.
-                 * Immediately sets the alpha levels back to 1 (fully opaque)
+                 *
+                 * Immediately sets the alpha levels back to 1 (fully opaque).
                  */
-                clearAlpha(): Phaser.GameObjects.GameObject;
+                clearAlpha(): this;
                 /**
                  * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
                  * Alpha values are provided as a float between 0, fully transparent, and 1, fully opaque.
@@ -11930,7 +12335,7 @@ declare namespace Phaser {
                     topRight?: number,
                     bottomLeft?: number,
                     bottomRight?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
                 /**
                  * The alpha value of the Game Object.
                  *
@@ -12045,8 +12450,8 @@ declare namespace Phaser {
                 getCurrentKey(): string;
                 /**
                  * Internal method used to load an animation into this component.
-                 * @param key [description]
-                 * @param startFrame [description] Default 0.
+                 * @param key The key of the animation to load.
+                 * @param startFrame The start frame of the animation to load. Default 0.
                  */
                 load(
                     key: string,
@@ -12092,14 +12497,18 @@ declare namespace Phaser {
                 /**
                  * Takes a value between 0 and 1 and uses it to set how far this animation is through playback.
                  * Does not factor in repeats or yoyos, but does handle playing forwards or backwards.
-                 * @param value [description] Default 0.
+                 * @param value The progress value, between 0 and 1. Default 0.
                  */
                 setProgress(value?: number): Phaser.GameObjects.GameObject;
                 /**
-                 * [description]
-                 * @param event [description]
+                 * Handle the removal of an animation from the Animation Manager.
+                 * @param key The key of the removed Animation.
+                 * @param animation The removed Animation.
                  */
-                remove(event?: Phaser.Animations.Animation): void;
+                remove(
+                    key?: string,
+                    animation?: Phaser.Animations.Animation
+                ): void;
                 /**
                  * Gets the number of times that the animation will repeat
                  * after its first iteration. For example, if returns 1, the animation will
@@ -12112,7 +12521,7 @@ declare namespace Phaser {
                  * after its first iteration. For example, if repeat is 1, the animation will
                  * play a total of twice (the initial play plus 1 repeat).
                  * To repeat indefinitely, use -1. repeat should always be an integer.
-                 * @param value [description]
+                 * @param value The number of times that the animation should repeat.
                  */
                 setRepeat(value: integer): Phaser.GameObjects.GameObject;
                 /**
@@ -12129,7 +12538,7 @@ declare namespace Phaser {
                 setRepeatDelay(value: number): Phaser.GameObjects.GameObject;
                 /**
                  * Restarts the current animation from its beginning, optionally including its delay value.
-                 * @param includeDelay [description] Default false.
+                 * @param includeDelay Whether to include the delay value of the animation when restarting. Default false.
                  */
                 restart(includeDelay?: boolean): Phaser.GameObjects.GameObject;
                 /**
@@ -12169,10 +12578,10 @@ declare namespace Phaser {
                 getTotalFrames(): integer;
                 /**
                  * The internal update loop for the Animation Component.
-                 * @param timestamp [description]
+                 * @param time The current timestamp.
                  * @param delta The delta time, in ms, elapsed since the last frame.
                  */
-                update(timestamp: number, delta: number): void;
+                update(time: number, delta: number): void;
                 /**
                  * Sets the given Animation Frame as being the current frame
                  * and applies it to the parent Game Object, adjusting its size and origin as needed.
@@ -12193,7 +12602,9 @@ declare namespace Phaser {
                  */
                 getYoyo(): boolean;
                 /**
-                 * [description]
+                 * Destroy this Animation component.
+                 *
+                 * Unregisters event listeners and cleans up its references.
                  */
                 destroy(): void;
             }
@@ -12245,9 +12656,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
             }
 
             /**
@@ -12278,20 +12687,14 @@ declare namespace Phaser {
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
                 /**
                  * Sets the display size of this Game Object.
                  * Calling this will adjust the scale.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
             }
 
             /**
@@ -12323,7 +12726,7 @@ declare namespace Phaser {
                  * Setting the depth will queue a depth sort event within the Scene.
                  * @param value The depth of this Game Object.
                  */
-                setDepth(value: integer): Phaser.GameObjects.GameObject;
+                setDepth(value: integer): this;
             }
 
             /**
@@ -12346,31 +12749,31 @@ declare namespace Phaser {
                 /**
                  * Toggles the horizontal flipped state of this Game Object.
                  */
-                toggleFlipX(): Phaser.GameObjects.GameObject;
+                toggleFlipX(): this;
                 /**
                  * Toggles the vertical flipped state of this Game Object.
                  */
-                toggleFlipY(): Phaser.GameObjects.GameObject;
+                toggleFlipY(): this;
                 /**
                  * Sets the horizontal flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipX(value: boolean): this;
                 /**
                  * Sets the vertical flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipY(value: boolean): this;
                 /**
                  * Sets the horizontal and vertical flipped state of this Game Object.
                  * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+                setFlip(x: boolean, y: boolean): this;
                 /**
                  * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
                  */
-                resetFlip(): Phaser.GameObjects.GameObject;
+                resetFlip(): this;
             }
 
             /**
@@ -12457,12 +12860,12 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
                  * including this one.
@@ -12504,19 +12907,19 @@ declare namespace Phaser {
                 /**
                  * [description]
                  */
-                initMatrixStack(): Phaser.GameObjects.GameObject;
+                initMatrixStack(): this;
                 /**
                  * [description]
                  */
-                save(): Phaser.GameObjects.GameObject;
+                save(): this;
                 /**
                  * [description]
                  */
-                restore(): Phaser.GameObjects.GameObject;
+                restore(): this;
                 /**
                  * [description]
                  */
-                loadIdentity(): Phaser.GameObjects.GameObject;
+                loadIdentity(): this;
                 /**
                  * [description]
                  * @param a [description]
@@ -12533,7 +12936,7 @@ declare namespace Phaser {
                     d: number,
                     tx: number,
                     ty: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
                 /**
                  * [description]
                  * @param a [description]
@@ -12550,24 +12953,24 @@ declare namespace Phaser {
                     d: number,
                     tx: number,
                     ty: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description]
                  */
-                translate(x: number, y: number): Phaser.GameObjects.GameObject;
+                translate(x: number, y: number): this;
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description]
                  */
-                scale(x: number, y: number): Phaser.GameObjects.GameObject;
+                scale(x: number, y: number): this;
                 /**
                  * [description]
                  * @param t The angle of rotation, in radians.
                  */
-                rotate(t: number): Phaser.GameObjects.GameObject;
+                rotate(t: number): this;
             }
 
             /**
@@ -12610,29 +13013,23 @@ declare namespace Phaser {
                  * @param x The horizontal origin value. Default 0.5.
                  * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setOrigin(x?: number, y?: number): this;
                 /**
                  * Sets the origin of this Game Object based on the Pivot values in its Frame.
                  */
-                setOriginFromFrame(): Phaser.GameObjects.GameObject;
+                setOriginFromFrame(): this;
                 /**
                  * Sets the display origin of this Game Object.
                  * The difference between this and setting the origin is that you can use pixel values for setting the display origin.
                  * @param x The horizontal display origin value. Default 0.
                  * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setDisplayOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplayOrigin(x?: number, y?: number): this;
                 /**
                  * Updates the Display Origin cached values internally stored on this Game Object.
                  * You don't usually call this directly, but it is exposed for edge-cases where you may.
                  */
-                updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+                updateDisplayOrigin(): this;
             }
 
             /**
@@ -12640,11 +13037,11 @@ declare namespace Phaser {
              */
             interface Pipeline {
                 /**
-                 * [description]
+                 * The initial WebGL pipeline of this Game Object.
                  */
                 defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
                 /**
-                 * [description]
+                 * The current WebGL pipeline of this Game Object.
                  */
                 pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
                 /**
@@ -12682,9 +13079,7 @@ declare namespace Phaser {
                  * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
                  * @param value The Scale Mode to be used by this Game Object.
                  */
-                setScaleMode(
-                    value: Phaser.ScaleModes
-                ): Phaser.GameObjects.GameObject;
+                setScaleMode(value: Phaser.ScaleModes): this;
             }
 
             /**
@@ -12731,10 +13126,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
             }
 
             /**
@@ -12763,28 +13155,20 @@ declare namespace Phaser {
                  * Sets the size of this Game Object to be that of the given Frame.
                  * @param frame The frame to base the size of this Game Object on.
                  */
-                setSizeToFrame(
-                    frame: Phaser.Textures.Frame
-                ): Phaser.GameObjects.GameObject;
+                setSizeToFrame(frame: Phaser.Textures.Frame): this;
                 /**
                  * Sets the size of this Game Object.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
                 /**
                  * Sets the display size of this Game Object.
                  * Calling this will adjust the scale.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
             }
 
             /**
@@ -12808,10 +13192,7 @@ declare namespace Phaser {
                  * @param key The key of the texture to be used, as stored in the Texture Manager.
                  * @param frame The name or index of the frame within the Texture.
                  */
-                setTexture(
-                    key: string,
-                    frame?: string | integer
-                ): Phaser.GameObjects.GameObject;
+                setTexture(key: string, frame?: string | integer): this;
                 /**
                  * Sets the frame this Game Object will use to render with.
                  *
@@ -12829,7 +13210,7 @@ declare namespace Phaser {
                     frame: string | integer,
                     updateSize?: boolean,
                     updateOrigin?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
             }
 
             /**
@@ -12841,7 +13222,7 @@ declare namespace Phaser {
                  * Clears all tint values associated with this Game Object.
                  * Immediately sets the alpha levels back to 0xffffff (no tint)
                  */
-                clearTint(): Phaser.GameObjects.GameObject;
+                clearTint(): this;
                 /**
                  * Sets the tint values for this Game Object.
                  * @param topLeft The tint being applied to the top-left of the Game Object. If not other values are given this value is applied evenly, tinting the whole Game Object. Default 0xffffff.
@@ -12854,7 +13235,7 @@ declare namespace Phaser {
                     topRight?: integer,
                     bottomLeft?: integer,
                     bottomRight?: integer
-                ): Phaser.GameObjects.GameObject;
+                ): this;
                 /**
                  * The tint value being applied to the top-left of the Game Object.
                  * This value is interpolated from the corner to the center of the Game Object.
@@ -12882,8 +13263,10 @@ declare namespace Phaser {
             }
 
             /**
-             * [description]
-             * @param gameObject [description]
+             * Build a JSON representation of the given Game Object.
+             *
+             * This is typically extended further by Game Object specific implementations.
+             * @param gameObject The Game Object to export as JSON.
              */
             function ToJSON(
                 gameObject: Phaser.GameObjects.GameObject
@@ -12944,43 +13327,62 @@ declare namespace Phaser {
                     y?: number,
                     z?: number,
                     w?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
+                /**
+                 * Sets the position of this Game Object to be a random position within the confines of
+                 * the given area.
+                 *
+                 * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+                 *
+                 * The position does not factor in the size of this Game Object, meaning that only the origin is
+                 * guaranteed to be within the area.
+                 * @param x The x position of the top-left of the random area. Default 0.
+                 * @param y The y position of the top-left of the random area. Default 0.
+                 * @param width The width of the random area.
+                 * @param height The height of the random area.
+                 */
+                setRandomPosition(
+                    x?: number,
+                    y?: number,
+                    width?: number,
+                    height?: number
+                ): this;
                 /**
                  * Sets the rotation of this Game Object.
                  * @param radians The rotation of this Game Object, in radians. Default 0.
                  */
-                setRotation(radians?: number): Phaser.GameObjects.GameObject;
+                setRotation(radians?: number): this;
                 /**
                  * Sets the angle of this Game Object.
                  * @param degrees The rotation of this Game Object, in degrees. Default 0.
                  */
-                setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+                setAngle(degrees?: number): this;
                 /**
                  * Sets the scale of this Game Object.
                  * @param x The horizontal scale of this Game Object.
                  * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setScale(x: number, y?: number): this;
                 /**
                  * Sets the x position of this Game Object.
                  * @param value The x position of this Game Object. Default 0.
                  */
-                setX(value?: number): Phaser.GameObjects.GameObject;
+                setX(value?: number): this;
                 /**
                  * Sets the y position of this Game Object.
                  * @param value The y position of this Game Object. Default 0.
                  */
-                setY(value?: number): Phaser.GameObjects.GameObject;
+                setY(value?: number): this;
                 /**
                  * Sets the z position of this Game Object.
                  * @param value The z position of this Game Object. Default 0.
                  */
-                setZ(value?: number): Phaser.GameObjects.GameObject;
+                setZ(value?: number): this;
                 /**
                  * Sets the w position of this Game Object.
                  * @param value The w position of this Game Object. Default 0.
                  */
-                setW(value?: number): Phaser.GameObjects.GameObject;
+                setW(value?: number): this;
                 /**
                  * Gets the local transform matrix for this Game Object.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
@@ -13077,35 +13479,27 @@ declare namespace Phaser {
                 /**
                  * [description]
                  */
-                loadIdentity(): Phaser.GameObjects.Components.TransformMatrix;
+                loadIdentity(): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description]
                  */
-                translate(
-                    x: number,
-                    y: number
-                ): Phaser.GameObjects.Components.TransformMatrix;
+                translate(x: number, y: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description]
                  */
-                scale(
-                    x: number,
-                    y: number
-                ): Phaser.GameObjects.Components.TransformMatrix;
+                scale(x: number, y: number): this;
 
                 /**
                  * [description]
                  * @param radian [description]
                  */
-                rotate(
-                    radian: number
-                ): Phaser.GameObjects.Components.TransformMatrix;
+                rotate(radian: number): this;
 
                 /**
                  * [description]
@@ -13113,7 +13507,7 @@ declare namespace Phaser {
                  */
                 multiply(
                     rhs: Phaser.GameObjects.Components.TransformMatrix
-                ): Phaser.GameObjects.Components.TransformMatrix;
+                ): this;
 
                 /**
                  * [description]
@@ -13131,7 +13525,7 @@ declare namespace Phaser {
                     d: number,
                     tx: number,
                     ty: number
-                ): Phaser.GameObjects.Components.TransformMatrix;
+                ): this;
 
                 /**
                  * [description]
@@ -13148,7 +13542,7 @@ declare namespace Phaser {
                 /**
                  * [description]
                  */
-                invert(): Phaser.GameObjects.Components.TransformMatrix;
+                invert(): this;
 
                 /**
                  * [description]
@@ -13166,7 +13560,7 @@ declare namespace Phaser {
                     d: number,
                     tx: number,
                     ty: number
-                ): Phaser.GameObjects.Components.TransformMatrix;
+                ): this;
 
                 /**
                  * [description]
@@ -13187,7 +13581,7 @@ declare namespace Phaser {
                     rotation: number,
                     scaleX: number,
                     scaleY: number
-                ): Phaser.GameObjects.Components.TransformMatrix;
+                ): this;
 
                 /**
                  * Destroys this Transform Matrix.
@@ -13212,7 +13606,7 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
             }
         }
 
@@ -13257,6 +13651,7 @@ declare namespace Phaser {
                 Phaser.GameObjects.Components.BlendMode,
                 Phaser.GameObjects.Components.ComputedSize,
                 Phaser.GameObjects.Components.Depth,
+                Phaser.GameObjects.Components.Mask,
                 Phaser.GameObjects.Components.ScrollFactor,
                 Phaser.GameObjects.Components.Transform,
                 Phaser.GameObjects.Components.Visible {
@@ -13310,11 +13705,6 @@ declare namespace Phaser {
              * Internal Transform Matrix used for local space conversion.
              */
             localTransform: Phaser.GameObjects.Components.TransformMatrix;
-
-            /**
-             * The property key to sort by.
-             */
-            _sortKey: string;
 
             /**
              * Internal value to allow Containers to be used for input and physics.
@@ -13385,7 +13775,7 @@ declare namespace Phaser {
 
             /**
              * Returns the world transform matrix as used for Bounds checks.
-             * The returned matrix is a temporal and shouldn't be stored.
+             * The returned matrix is temporal and shouldn't be stored.
              */
             getBoundsTransformMatrix(): Phaser.GameObjects.Components.TransformMatrix;
 
@@ -13507,8 +13897,8 @@ declare namespace Phaser {
              * For example: `count('visible', true)` would count all the elements that have their visible property set.
              *
              * You can optionally limit the operation to the `startIndex` - `endIndex` range.
-             * @param property [description]
-             * @param value [description]
+             * @param property The property to check.
+             * @param value The value to check.
              * @param startIndex An optional start index to search from. Default 0.
              * @param endIndex An optional end index to search up to (but not included) Default Container.length.
              */
@@ -13745,24 +14135,16 @@ declare namespace Phaser {
             readonly previous: Phaser.GameObjects.GameObject;
 
             /**
-             * Destroys this Container, removing it from the Display List.
-             *
-             * If `Container.exclusive` is `true` then it will also destroy all children.
-             *
-             * Use this to remove a Container from your game if you don't ever plan to use it again.
-             * As long as no reference to it exists within your own code it should become free for
-             * garbage collection.
-             *
-             * If you just want to temporarily disable an object then look at using the
-             * Game Object Pool instead of destroying it, as destroyed objects cannot be resurrected.
+             * Internal destroy handler, called as part of the destroy process.
              */
-            destroy(): void;
+            protected preDestroy(): void;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -13780,7 +14162,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -13856,9 +14238,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -13887,10 +14267,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -13898,10 +14275,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -13928,7 +14302,70 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
+
+            /**
+             * The Mask this Game Object is using during render.
+             */
+            mask:
+                | Phaser.Display.Masks.BitmapMask
+                | Phaser.Display.Masks.GeometryMask;
+
+            /**
+             * Sets the mask that this Game Object will use to render with.
+             *
+             * The mask must have been previously created and can be either a
+             * GeometryMask or a BitmapMask.
+             *
+             * Note: Bitmap Masks only work on WebGL. Geometry Masks work on both WebGL and Canvas.
+             *
+             * If a mask is already set on this Game Object it will be immediately replaced.
+             * @param mask The mask this Game Object will use when rendering.
+             */
+            setMask(
+                mask:
+                    | Phaser.Display.Masks.BitmapMask
+                    | Phaser.Display.Masks.GeometryMask
+            ): this;
+
+            /**
+             * Clears the mask that this Game Object was using.
+             * @param destroyMask Destroy the mask before clearing it? Default false.
+             */
+            clearMask(destroyMask?: boolean): this;
+
+            /**
+             * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
+             * including this one.
+             *
+             * To create the mask you need to pass in a reference to a renderable Game Object.
+             * A renderable Game Object is one that uses a texture to render with, such as an
+             * Image, Sprite, Render Texture or BitmapText.
+             *
+             * If you do not provide a renderable object, and this Game Object has a texture,
+             * it will use itself as the object. This means you can call this method to create
+             * a Bitmap Mask from any renderable Game Object.
+             * @param renderable A renderable Game Object that uses a texture, such as a Sprite.
+             */
+            createBitmapMask(
+                renderable?: Phaser.GameObjects.GameObject
+            ): Phaser.Display.Masks.BitmapMask;
+
+            /**
+             * Creates and returns a Geometry Mask. This mask can be used by any Game Object,
+             * including this one.
+             *
+             * To create the mask you need to pass in a reference to a Graphics Game Object.
+             *
+             * If you do not provide a graphics object, and this Game Object is an instance
+             * of a Graphics object, then it will use itself to create the mask.
+             *
+             * This means you can call this method to create a Geometry Mask from any Graphics Game Object.
+             * @param graphics A Graphics Game Object. The geometry within it will be used as the mask.
+             */
+            createGeometryMask(
+                graphics?: Phaser.GameObjects.Graphics
+            ): Phaser.Display.Masks.GeometryMask;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -13972,10 +14409,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The x position of this Game Object.
@@ -14031,55 +14465,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -14110,33 +14559,37 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
-         * [description]
+         * The Display List plugin.
+         *
+         * Display Lists belong to a Scene and maintain the list of Game Objects to render every frame.
+         *
+         * Some of these Game Objects may also be part of the Scene's [Update List]{@link Phaser.GameObjects.UpdateList}, for updating.
          */
         class DisplayList extends Phaser.Structs.List<
             Phaser.GameObjects.GameObject
         > {
             /**
              *
-             * @param scene [description]
+             * @param scene The Scene that this Display List belongs to.
              */
             constructor(scene: Phaser.Scene);
 
             /**
-             * [description]
+             * The flag the determines whether Game Objects should be sorted when `depthSort()` is called.
              */
             sortChildrenFlag: boolean;
 
             /**
-             * [description]
+             * The Scene that this Display List belongs to.
              */
             scene: Phaser.Scene;
 
             /**
-             * [description]
+             * The Scene's Systems.
              */
             systems: Phaser.Scenes.Systems;
 
@@ -14151,9 +14604,9 @@ declare namespace Phaser {
             depthSort(): void;
 
             /**
-             * [description]
-             * @param childA [description]
-             * @param childB [description]
+             * Compare the depth of two Game Objects.
+             * @param childA The first Game Object.
+             * @param childB The second Game Object.
              */
             sortByDepth(
                 childA: Phaser.GameObjects.GameObject,
@@ -14161,17 +14614,19 @@ declare namespace Phaser {
             ): integer;
 
             /**
-             * Given an array of Game Objects, sort the array and return it,
-             * so that the objects are in index order with the lowest at the bottom.
-             * @param gameObjects [description]
+             * Given an array of Game Objects, sort the array and return it, so that
+             * the objects are in index order with the lowest at the bottom.
+             * @param gameObjects The array of Game Objects to sort.
              */
             sortGameObjects(
                 gameObjects: Phaser.GameObjects.GameObject[]
             ): any[];
 
             /**
+             * Get the top-most Game Object in the given array of Game Objects, after sorting it.
+             *
              * Note that the given array is sorted in place, even though it isn't returned directly it will still be updated.
-             * @param gameObjects [description]
+             * @param gameObjects The array of Game Objects.
              */
             getTopGameObject(
                 gameObjects: Phaser.GameObjects.GameObject[]
@@ -14256,7 +14711,10 @@ declare namespace Phaser {
             /**
              * If this Game Object is enabled for physics then this property will contain a reference to a Physics Body.
              */
-            body: object;
+            body:
+                | object
+                | Phaser.Physics.Arcade.Body
+                | Phaser.Physics.Impact.Body;
 
             /**
              * This Game Object will ignore all calls made to its destroy method if this flag is set to `true`.
@@ -14281,32 +14739,97 @@ declare namespace Phaser {
             setName(value: string): Phaser.GameObjects.GameObject;
 
             /**
-             * Adds a DataManager to this object.
+             * Adds a Data Manager component to this Game Object.
              */
             setDataEnabled(): Phaser.GameObjects.GameObject;
 
             /**
-             * This is a quick chainable alias to the `DataProxy.set` method.
-             * It allows you to set a key and value in this Game Objects data store.
-             * @param key The key of the property to be stored.
-             * @param value The value to store with the key. Can be a string, number, array or object.
+             * Allows you to store a key value pair within this Game Objects Data Manager.
+             *
+             * If the Game Object has not been enabled for data (via `setDataEnabled`) then it will be enabled
+             * before setting the value.
+             *
+             * If the key doesn't already exist in the Data Manager then it is created.
+             *
+             * ```javascript
+             * sprite.setData('name', 'Red Gem Stone');
+             * ```
+             *
+             * You can also pass in an object of key value pairs as the first argument:
+             *
+             * ```javascript
+             * sprite.setData({ name: 'Red Gem Stone', level: 2, owner: 'Link', gold: 50 });
+             * ```
+             *
+             * To get a value back again you can call `getData`:
+             *
+             * ```javascript
+             * sprite.getData('gold');
+             * ```
+             *
+             * Or you can access the value directly via the `values` property, where it works like any other variable:
+             *
+             * ```javascript
+             * sprite.data.values.gold += 50;
+             * ```
+             *
+             * When the value is first set, a `setdata` event is emitted from this Game Object.
+             *
+             * If the key already exists, a `changedata` event is emitted instead, along an event named after the key.
+             * For example, if you updated an existing key called `PlayerLives` then it would emit the event `changedata_PlayerLives`.
+             * These events will be emitted regardless if you use this method to set the value, or the direct `values` setter.
+             *
+             * Please note that the data keys are case-sensitive and must be valid JavaScript Object property strings.
+             * This means the keys `gold` and `Gold` are treated as two unique values within the Data Manager.
+             * @param key The key to set the value for. Or an object or key value pairs. If an object the `data` argument is ignored.
+             * @param data The value to set for the given key. If an object is provided as the key this argument is ignored.
              */
-            setData(key: string, value: any): Phaser.GameObjects.GameObject;
+            setData(key: string | object, data: any): this;
 
             /**
-             * This is a quick alias to the `DataProxy.get` method to remain consistent with `setData`.
-             * @param key The key of the property to be retrieved.
+             * Retrieves the value for the given key in this Game Objects Data Manager, or undefined if it doesn't exist.
+             *
+             * You can also access values via the `values` object. For example, if you had a key called `gold` you can do either:
+             *
+             * ```javascript
+             * sprite.getData('gold');
+             * ```
+             *
+             * Or access the value directly:
+             *
+             * ```javascript
+             * sprite.data.values.gold;
+             * ```
+             *
+             * You can also pass in an array of keys, in which case an array of values will be returned:
+             *
+             * ```javascript
+             * sprite.getData([ 'gold', 'armor', 'health' ]);
+             * ```
+             *
+             * This approach is useful for destructuring arrays in ES6.
+             * @param key The key of the value to retrieve, or an array of keys.
              */
-            getData(key: string): any;
+            getData(key: string | string[]): any;
 
             /**
              * Pass this Game Object to the Input Manager to enable it for Input.
-             * @param shape A geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
+             *
+             * Input works by using hit areas, these are nearly always geometric shapes, such as rectangles or circles, that act as the hit area
+             * for the Game Object. However, you can provide your own hit area shape and callback, should you wish to handle some more advanced
+             * input detection.
+             *
+             * If no arguments are provided it will try and create a rectangle hit area based on the texture frame the Game Object is using. If
+             * this isn't a texture-bound object, such as a Graphics or BitmapText object, this will fail, and you'll need to provide a specific
+             * shape for it to use.
+             *
+             * You can also provide an Input Configuration Object as the only argument to this method.
+             * @param shape Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
              * @param callback A callback to be invoked when the Game Object is interacted with. If you provide a shape you must also provide a callback.
              * @param dropZone Should this Game Object be treated as a drop zone target? Default false.
              */
             setInteractive(
-                shape?: any,
+                shape?: Phaser.Input.InputConfiguration | any,
                 callback?: HitAreaCallback,
                 dropZone?: boolean
             ): Phaser.GameObjects.GameObject;
@@ -14638,9 +15161,9 @@ declare namespace Phaser {
              * Note: This method will only be available if the Dynamic Bitmap Text Game Object has been built into Phaser.
              * @param x The x position of the Game Object.
              * @param y The y position of the Game Object.
-             * @param font [description]
-             * @param text [description]
-             * @param size [description]
+             * @param font The key of the font to use from the BitmapFont cache.
+             * @param text The string, or array of strings, to be set as the content of this Bitmap Text.
+             * @param size The font size to set.
              */
             dynamicBitmapText(
                 x: number,
@@ -14656,9 +15179,9 @@ declare namespace Phaser {
              * Note: This method will only be available if the Bitmap Text Game Object has been built into Phaser.
              * @param x The x position of the Game Object.
              * @param y The y position of the Game Object.
-             * @param font [description]
-             * @param text [description]
-             * @param size [description]
+             * @param font The key of the font to use from the BitmapFont cache.
+             * @param text The string, or array of strings, to be set as the content of this Bitmap Text.
+             * @param size The font size to set.
              */
             bitmapText(
                 x: number,
@@ -14735,19 +15258,19 @@ declare namespace Phaser {
              * Creates a new Graphics Game Object and adds it to the Scene.
              *
              * Note: This method will only be available if the Graphics Game Object has been built into Phaser.
-             * @param config [description]
+             * @param config The Graphics configuration.
              */
-            graphics(config?: object): Phaser.GameObjects.Graphics;
+            graphics(config?: GraphicsOptions): Phaser.GameObjects.Graphics;
 
             /**
              * Creates a new Group Game Object and adds it to the Scene.
              *
              * Note: This method will only be available if the Group Game Object has been built into Phaser.
-             * @param children [description]
-             * @param config [description]
+             * @param children Game Objects to add to this Group; or the `config` argument.
+             * @param config A Group Configuration object.
              */
             group(
-                children: Phaser.GameObjects.GameObject[] | GroupConfig,
+                children?: Phaser.GameObjects.GameObject[] | GroupConfig,
                 config?: GroupConfig
             ): Phaser.GameObjects.Group;
 
@@ -14984,7 +15507,44 @@ declare namespace Phaser {
         }
 
         /**
-         * [description]
+         * A Graphics object is a way to draw primitive shapes to you game. Primitives include forms of geometry, such as
+         * Rectangles, Circles, and Polygons. They also include lines, arcs and curves. When you initially create a Graphics
+         * object it will be empty.
+         *
+         * To draw to it you must first specify a line style or fill style (or both), draw shapes using paths, and finally
+         * fill or stroke them. For example:
+         *
+         * ```javascript
+         * graphics.lineStyle(5, 0xFF00FF, 1.0);
+         * graphics.beginPath();
+         * graphics.moveTo(100, 100);
+         * graphics.lineTo(200, 200);
+         * graphics.closePath();
+         * graphics.strokePath();
+         * ```
+         *
+         * There are also many helpful methods that draw and fill/stroke common shapes for you.
+         *
+         * ```javascript
+         * graphics.lineStyle(5, 0xFF00FF, 1.0);
+         * graphics.fillStyle(0xFFFFFF, 1.0);
+         * graphics.fillRect(50, 50, 400, 200);
+         * graphics.strokeRect(50, 50, 400, 200);
+         * ```
+         *
+         * When a Graphics object is rendered it will render differently based on if the game is running under Canvas or WebGL.
+         * Under Canvas it will use the HTML Canvas context drawing operations to draw the path.
+         * Under WebGL the graphics data is decomposed into polygons. Both of these are expensive processes, especially with
+         * complex shapes.
+         *
+         * If your Graphics object doesn't change much (or at all) once you've drawn your shape to it, then you will help
+         * performance by calling {@link Phaser.GameObjects.Graphics#generateTexture}. This will 'bake' the Graphics object into
+         * a Texture, and return it. You can then use this Texture for Sprites or other display objects. If your Graphics object
+         * updates frequently then you should avoid doing this, as it will constantly generate new textures, which will consume
+         * memory.
+         *
+         * As you can tell, Graphics objects are a bit of a trade-off. While they are extremely useful, you need to be careful
+         * in their complexity and quantity of them in your game.
          */
         class Graphics extends Phaser.GameObjects.GameObject
             implements
@@ -14998,62 +15558,64 @@ declare namespace Phaser {
                 Phaser.GameObjects.Components.ScrollFactor {
             /**
              *
-             * @param scene [description]
-             * @param options [description]
+             * @param scene The Scene to which this Graphics object belongs.
+             * @param options Options that set the position and default style of this Graphics object.
              */
-            constructor(scene: Phaser.Scene, options: object);
+            constructor(scene: Phaser.Scene, options: GraphicsOptions);
 
             /**
-             * [description]
+             * The horizontal display origin of the Graphics.
              */
             displayOriginX: number;
 
             /**
-             * [description]
+             * The vertical display origin of the Graphics.
              */
             displayOriginY: number;
 
             /**
-             * [description]
+             * The array of commands used to render the Graphics.
              */
             commandBuffer: any[];
 
             /**
-             * [description]
+             * The default fill color for shapes rendered by this Graphics object.
              */
             defaultFillColor: number;
 
             /**
-             * [description]
+             * The default fill alpha for shapes rendered by this Graphics object.
              */
             defaultFillAlpha: number;
 
             /**
-             * [description]
+             * The default stroke width for shapes rendered by this Graphics object.
              */
             defaultStrokeWidth: number;
 
             /**
-             * [description]
+             * The default stroke color for shapes rendered by this Graphics object.
              */
             defaultStrokeColor: number;
 
             /**
-             * [description]
+             * The default stroke alpha for shapes rendered by this Graphics object.
              */
             defaultStrokeAlpha: number;
 
             /**
-             * [description]
-             * @param options [description]
+             * Set the default style settings for this Graphics object.
+             * @param options The styles to set as defaults.
              */
-            setDefaultStyles(options: object): Phaser.GameObjects.Graphics;
+            setDefaultStyles(
+                options: GraphicsStyles
+            ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param lineWidth [description]
-             * @param color [description]
-             * @param alpha [description] Default 1.
+             * Set the current line style.
+             * @param lineWidth The stroke width.
+             * @param color The stroke color.
+             * @param alpha The stroke alpha. Default 1.
              */
             lineStyle(
                 lineWidth: number,
@@ -15062,9 +15624,9 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param color [description]
-             * @param alpha [description] Default 1.
+             * Set the current fill style.
+             * @param color The fill color.
+             * @param alpha The fill alpha. Default 1.
              */
             fillStyle(
                 color: number,
@@ -15072,46 +15634,46 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
+             * Start a new shape path.
              */
             beginPath(): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
+             * Close the current path.
              */
             closePath(): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
+             * Fill the current path.
              */
             fillPath(): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
+             * Stroke the current path.
              */
             strokePath(): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param circle [description]
+             * Fill the given circle.
+             * @param circle The circle to fill.
              */
             fillCircleShape(
                 circle: Phaser.Geom.Circle
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param circle [description]
+             * Stroke the given circle.
+             * @param circle The circle to stroke.
              */
             strokeCircleShape(
                 circle: Phaser.Geom.Circle
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param radius [description]
+             * Fill a circle with the given position and radius.
+             * @param x The x coordinate of the center of the circle.
+             * @param y The y coordinate of the center of the circle.
+             * @param radius The radius of the circle.
              */
             fillCircle(
                 x: number,
@@ -15120,10 +15682,10 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param radius [description]
+             * Stroke a circle with the given position and radius.
+             * @param x The x coordinate of the center of the circle.
+             * @param y The y coordinate of the center of the circle.
+             * @param radius The radius of the circle.
              */
             strokeCircle(
                 x: number,
@@ -15132,27 +15694,27 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param rect [description]
+             * Fill the given rectangle.
+             * @param rect The rectangle to fill.
              */
             fillRectShape(
                 rect: Phaser.Geom.Rectangle
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param rect [description]
+             * Stroke the given rectangle.
+             * @param rect The rectangle to stroke.
              */
             strokeRectShape(
                 rect: Phaser.Geom.Rectangle
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param width [description]
-             * @param height [description]
+             * Fill a rectangle with the given position and size.
+             * @param x The x coordinate of the top-left of the rectangle.
+             * @param y The y coordinate of the top-left of the rectangle.
+             * @param width The width of the rectangle.
+             * @param height The height of the rectangle.
              */
             fillRect(
                 x: number,
@@ -15162,11 +15724,11 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param width [description]
-             * @param height [description]
+             * Stroke a rectangle with the given position and size.
+             * @param x The x coordinate of the top-left of the rectangle.
+             * @param y The y coordinate of the top-left of the rectangle.
+             * @param width The width of the rectangle.
+             * @param height The height of the rectangle.
              */
             strokeRect(
                 x: number,
@@ -15176,9 +15738,11 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param point [description]
-             * @param size [description] Default 1.
+             * Fill the given point.
+             *
+             * Draws a square at the given position, 1 pixel in size by default.
+             * @param point The point to fill.
+             * @param size The size of the square to draw. Default 1.
              */
             fillPointShape(
                 point: Phaser.Geom.Point | Phaser.Math.Vector2 | object,
@@ -15186,10 +15750,12 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param size [description] Default 1.
+             * Fill a point at the given position.
+             *
+             * Draws a square at the given position, 1 pixel in size by default.
+             * @param x The x coordinate of the point.
+             * @param y The y coordinate of the point.
+             * @param size The size of the square to draw. Default 1.
              */
             fillPoint(
                 x: number,
@@ -15198,29 +15764,29 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param triangle [description]
+             * Fill the given triangle.
+             * @param triangle The triangle to fill.
              */
             fillTriangleShape(
                 triangle: Phaser.Geom.Triangle
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param triangle [description]
+             * Stroke the given triangle.
+             * @param triangle The triangle to stroke.
              */
             strokeTriangleShape(
                 triangle: Phaser.Geom.Triangle
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x0 [description]
-             * @param y0 [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
+             * Fill a triangle with the given points.
+             * @param x0 The x coordinate of the first point.
+             * @param y0 The y coordinate of the first point.
+             * @param x1 The x coordinate of the second point.
+             * @param y1 The y coordinate of the second point.
+             * @param x2 The x coordinate of the third point.
+             * @param y2 The y coordinate of the third point.
              */
             fillTriangle(
                 x0: number,
@@ -15232,13 +15798,13 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x0 [description]
-             * @param y0 [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
+             * Stroke a triangle with the given points.
+             * @param x0 The x coordinate of the first point.
+             * @param y0 The y coordinate of the first point.
+             * @param x1 The x coordinate of the second point.
+             * @param y1 The y coordinate of the second point.
+             * @param x2 The x coordinate of the third point.
+             * @param y2 The y coordinate of the third point.
              */
             strokeTriangle(
                 x0: number,
@@ -15250,19 +15816,19 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param line [description]
+             * Draw the given line.
+             * @param line The line to stroke.
              */
             strokeLineShape(
                 line: Phaser.Geom.Line
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
+             * Draw a line between the given points.
+             * @param x1 The x coordinate of the start point of the line.
+             * @param y1 The y coordinate of the start point of the line.
+             * @param x2 The x coordinate of the end point of the line.
+             * @param y2 The y coordinate of the end point of the line.
              */
             lineBetween(
                 x1: number,
@@ -15272,16 +15838,18 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
+             * Draw a line from the current drawing position to the given position.
+             *
+             * Moves the current drawing position to the given position.
+             * @param x The x coordinate to draw the line to.
+             * @param y The y coordinate to draw the line to.
              */
             lineTo(x: number, y: number): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
+             * Move the current drawing position to the given position.
+             * @param x The x coordinate to move to.
+             * @param y The y coordinate to move to.
              */
             moveTo(x: number, y: number): Phaser.GameObjects.Graphics;
 
@@ -15314,10 +15882,12 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param points [description]
-             * @param autoClose [description] Default false.
-             * @param endIndex [description]
+             * Stroke the shape represented by the given array of points.
+             *
+             * Pass `true` to `autoClose` to close the shape automatically.
+             * @param points The points to stroke.
+             * @param autoClose When `true`, the shape is closed by joining the last point to the first point. Default false.
+             * @param endIndex The index of `points` to stop drawing at. Defaults to `points.length`.
              */
             strokePoints(
                 points: any[] | Phaser.Geom.Point[],
@@ -15326,10 +15896,12 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param points [description]
-             * @param autoClose [description] Default false.
-             * @param endIndex [description]
+             * Fill the shape represented by the given array of points.
+             *
+             * Pass `true` to `autoClose` to close the shape automatically.
+             * @param points The points to fill.
+             * @param autoClose Whether to automatically close the polygon. Default false.
+             * @param endIndex The index of `points` to stop at. Defaults to `points.length`.
              */
             fillPoints(
                 points: any[] | Phaser.Geom.Point[],
@@ -15338,9 +15910,9 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param ellipse [description]
-             * @param smoothness [description] Default 32.
+             * Stroke the given ellipse.
+             * @param ellipse The ellipse to stroke.
+             * @param smoothness The number of points to draw the ellipse with. Default 32.
              */
             strokeEllipseShape(
                 ellipse: Phaser.Geom.Ellipse,
@@ -15348,12 +15920,12 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param width [description]
-             * @param height [description]
-             * @param smoothness [description] Default 32.
+             * Stroke an ellipse with the given position and size.
+             * @param x The x coordinate of the center of the ellipse.
+             * @param y The y coordinate of the center of the ellipse.
+             * @param width The width of the ellipse.
+             * @param height The height of the ellipse.
+             * @param smoothness The number of points to draw the ellipse with. Default 32.
              */
             strokeEllipse(
                 x: number,
@@ -15364,9 +15936,9 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param ellipse [description]
-             * @param smoothness [description] Default 32.
+             * Fill the given ellipse.
+             * @param ellipse The ellipse to fill.
+             * @param smoothness The number of points to draw the ellipse with. Default 32.
              */
             fillEllipseShape(
                 ellipse: Phaser.Geom.Ellipse,
@@ -15374,12 +15946,12 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param width [description]
-             * @param height [description]
-             * @param smoothness [description] Default 32.
+             * Fill an ellipse with the given position and size.
+             * @param x The x coordinate of the center of the ellipse.
+             * @param y The y coordinate of the center of the ellipse.
+             * @param width The width of the ellipse.
+             * @param height The height of the ellipse.
+             * @param smoothness The number of points to draw the ellipse with. Default 32.
              */
             fillEllipse(
                 x: number,
@@ -15390,13 +15962,18 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param radius [description]
-             * @param startAngle [description]
-             * @param endAngle [description]
-             * @param anticlockwise [description]
+             * Draw an arc.
+             *
+             * This method can be used to create circles, or parts of circles.
+             *
+             * Call {@link Phaser.GameObjects.Graphics#fillPath} or {@link Phaser.GameObjects.Graphics#strokePath} after calling
+             * this method to draw the arc.
+             * @param x The x coordinate of the center of the circle.
+             * @param y The y coordinate of the center of the circle.
+             * @param radius The radius of the circle.
+             * @param startAngle The starting angle, in radians.
+             * @param endAngle The ending angle, in radians.
+             * @param anticlockwise Whether the drawing should be anticlockwise or clockwise. Default false.
              */
             arc(
                 x: number,
@@ -15404,7 +15981,7 @@ declare namespace Phaser {
                 radius: number,
                 startAngle: number,
                 endAngle: number,
-                anticlockwise: boolean
+                anticlockwise?: boolean
             ): Phaser.GameObjects.Graphics;
 
             /**
@@ -15443,39 +16020,41 @@ declare namespace Phaser {
             restore(): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
+             * Translate the graphics.
+             * @param x The horizontal translation to apply.
+             * @param y The vertical translation to apply.
              */
             translate(x: number, y: number): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
+             * Scale the graphics.
+             * @param x The horizontal scale to apply.
+             * @param y The vertical scale to apply.
              */
             scale(x: number, y: number): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
-             * @param radians [description]
+             * Rotate the graphics.
+             * @param radians The rotation angle, in radians.
              */
             rotate(radians: number): Phaser.GameObjects.Graphics;
 
             /**
-             * [description]
+             * Clear the command buffer and reset the fill style and line style to their defaults.
              */
             clear(): Phaser.GameObjects.Graphics;
 
             /**
-             * If key is a string it'll generate a new texture using it and add it into the
+             * Generate a texture from this Graphics object.
+             *
+             * If `key` is a string it'll generate a new texture using it and add it into the
              * Texture Manager (assuming no key conflict happens).
              *
-             * If key is a Canvas it will draw the texture to that canvas context. Note that it will NOT
+             * If `key` is a Canvas it will draw the texture to that canvas context. Note that it will NOT
              * automatically upload it to the GPU in WebGL mode.
-             * @param key [description]
-             * @param width [description]
-             * @param height [description]
+             * @param key The key to store the texture with in the Texture Manager, or a Canvas to draw to.
+             * @param width The width of the graphics to generate.
+             * @param height The height of the graphics to generate.
              */
             generateTexture(
                 key: string | HTMLCanvasElement,
@@ -15484,15 +16063,21 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Graphics;
 
             /**
+             * Internal destroy handler, called as part of the destroy process.
+             */
+            protected preDestroy(): void;
+
+            /**
              * A Camera used specifically by the Graphics system for rendering to textures.
              */
             static TargetCamera: Phaser.Cameras.Scene2D.Camera;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -15510,7 +16095,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -15586,9 +16171,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -15615,7 +16198,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The Mask this Game Object is using during render.
@@ -15639,13 +16222,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -15681,12 +16264,12 @@ declare namespace Phaser {
             ): Phaser.Display.Masks.GeometryMask;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -15767,55 +16350,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -15846,7 +16444,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -15890,10 +16488,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
         }
 
         /**
@@ -15998,7 +16593,7 @@ declare namespace Phaser {
                 frame?: string | integer,
                 visible?: boolean,
                 active?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * Creates several Game Objects and adds them to this group.
@@ -16010,15 +16605,13 @@ declare namespace Phaser {
              */
             createMultiple(
                 config: GroupCreateConfig | GroupCreateConfig[]
-            ): Phaser.GameObjects.GameObject[];
+            ): any[];
 
             /**
              * A helper for {@link Phaser.GameObjects.Group#createMultiple}.
              * @param options Creation settings.
              */
-            createFromConfig(
-                options: GroupCreateConfig
-            ): Phaser.GameObjects.GameObject[];
+            createFromConfig(options: GroupCreateConfig): any[];
 
             /**
              * Updates any group members, if {@link Phaser.GameObjects.Group#runChildUpdate} is enabled.
@@ -16115,7 +16708,7 @@ declare namespace Phaser {
                 key?: string,
                 frame?: string | integer,
                 visible?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * Scans the Group, from top to bottom, for the nth member that has an {@link Phaser.GameObjects.GameObject#active} state matching the argument,
@@ -16141,7 +16734,7 @@ declare namespace Phaser {
                 key?: string,
                 frame?: string | integer,
                 visible?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * Scans the Group for the last member that has an {@link Phaser.GameObjects.GameObject#active} state matching the argument,
@@ -16165,7 +16758,7 @@ declare namespace Phaser {
                 key?: string,
                 frame?: string | integer,
                 visible?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * Scans the Group for the last nth member that has an {@link Phaser.GameObjects.GameObject#active} state matching the argument,
@@ -16191,7 +16784,7 @@ declare namespace Phaser {
                 key?: string,
                 frame?: string | integer,
                 visible?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * Scans the group for the first member that has an {@link Phaser.GameObjects.GameObject#active} state set to `false`,
@@ -16212,7 +16805,7 @@ declare namespace Phaser {
                 key?: string,
                 frame?: string | integer,
                 visible?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * Scans the group for the first member that has an {@link Phaser.GameObjects.GameObject#active} state set to `true`,
@@ -16234,7 +16827,7 @@ declare namespace Phaser {
                 key?: string,
                 frame?: string | integer,
                 visible?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * Scans the group for the first member that has an {@link Phaser.GameObjects.GameObject#active} state set to `false`,
@@ -16257,7 +16850,7 @@ declare namespace Phaser {
                 key?: string,
                 frame?: string | integer,
                 visible?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): any;
 
             /**
              * {@link Phaser.GameObjects.Components.Animation#play Plays} an animation for all members of this group.
@@ -16317,7 +16910,7 @@ declare namespace Phaser {
             toggleVisible(): Phaser.GameObjects.Group;
 
             /**
-             * Empties this group and removes it from the scene.
+             * Empties this group and removes it from the Scene.
              *
              * Does not call {@link Phaser.GameObjects.Group#removeCallback}.
              * @param destroyChildren Also {@link Phaser.GameObjects.GameObject#destroy} each group member. Default false.
@@ -16368,9 +16961,10 @@ declare namespace Phaser {
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -16388,7 +16982,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -16464,9 +17058,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -16493,7 +17085,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -16512,36 +17104,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -16623,13 +17215,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -16701,12 +17293,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -16714,24 +17306,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -16769,9 +17358,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -16815,10 +17402,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -16846,19 +17430,14 @@ declare namespace Phaser {
              * Sets the size of this Game Object to be that of the given Frame.
              * @param frame The frame to base the size of this Game Object on.
              */
-            setSizeToFrame(
-                frame: Phaser.Textures.Frame
-            ): Phaser.GameObjects.GameObject;
+            setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
             /**
              * Sets the size of this Game Object.
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -16866,10 +17445,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -16888,10 +17464,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -16910,13 +17483,13 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -16930,7 +17503,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -17015,55 +17588,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -17094,11 +17682,13 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
-         * [description]
+         * A 2D point light.
+         *
+         * Add these to a scene using the ForwardDiffuseLightPipeline for lighting effects, or just to represent a point light.
          */
         class Light {
             /**
@@ -17106,9 +17696,9 @@ declare namespace Phaser {
              * @param x The horizontal position of the light.
              * @param y The vertical position of the light.
              * @param radius The radius of the light.
-             * @param r The red color. A value between 0 and 1.
-             * @param g The green color. A value between 0 and 1.
-             * @param b The blue color. A value between 0 and 1.
+             * @param r The red color of the light. A value between 0 and 1.
+             * @param g The green color of the light. A value between 0 and 1.
+             * @param b The blue color of the light. A value between 0 and 1.
              * @param intensity The intensity of the light.
              */
             constructor(
@@ -17122,52 +17712,55 @@ declare namespace Phaser {
             );
 
             /**
-             * [description]
+             * The horizontal position of the light.
              */
             x: number;
 
             /**
-             * [description]
+             * The vertical position of the light.
              */
             y: number;
 
             /**
-             * [description]
+             * The radius of the light.
              */
             radius: number;
 
             /**
-             * [description]
+             * The red color of the light. A value between 0 and 1.
              */
             r: number;
 
             /**
-             * [description]
+             * The green color of the light. A value between 0 and 1.
              */
             g: number;
 
             /**
-             * [description]
+             * The blue color of the light. A value between 0 and 1.
              */
             b: number;
 
             /**
-             * [description]
+             * The intensity of the light.
              */
             intensity: number;
 
             /**
-             * [description]
+             * The horizontal scroll factor of the light.
              */
             scrollFactorX: number;
 
             /**
-             * [description]
+             * The vertical scroll factor of the light.
              */
             scrollFactorY: number;
 
             /**
-             * [description]
+             * Set the properties of the light.
+             *
+             * Sets both horizontal and vertical scroll factor to 1. Use {@link Phaser.GameObjects.Light#setScrollFactor} to set
+             * the scroll factor.
              * @param x The horizontal position of the light.
              * @param y The vertical position of the light.
              * @param radius The radius of the light.
@@ -17187,34 +17780,34 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Light;
 
             /**
-             * [description]
+             * Set the scroll factor of the light.
              * @param x The horizontal scroll factor of the light.
              * @param y The vertical scroll factor of the light.
              */
             setScrollFactor(x: number, y: number): Phaser.GameObjects.Light;
 
             /**
-             * [description]
+             * Set the color of the light from a single integer RGB value.
              * @param rgb [description]
              */
             setColor(rgb: number): Phaser.GameObjects.Light;
 
             /**
-             * [description]
-             * @param intensity [description]
+             * Set the intensity of the light.
+             * @param intensity The intensity of the light.
              */
             setIntensity(intensity: number): Phaser.GameObjects.Light;
 
             /**
-             * [description]
+             * Set the position of the light.
              * @param x The horizontal position of the light.
              * @param y The vertical position of the light.
              */
             setPosition(x: number, y: number): Phaser.GameObjects.Light;
 
             /**
-             * [description]
-             * @param radius [description]
+             * Set the radius of the light.
+             * @param radius The radius of the light.
              */
             setRadius(radius: number): Phaser.GameObjects.Light;
         }
@@ -17400,30 +17993,31 @@ declare namespace Phaser {
             );
 
             /**
-             * [description]
+             * An array containing the vertices data for this Mesh.
              */
             vertices: Float32Array;
 
             /**
-             * [description]
+             * An array containing the uv data for this Mesh.
              */
             uv: Float32Array;
 
             /**
-             * [description]
+             * An array containing the color data for this Mesh.
              */
             colors: Uint32Array;
 
             /**
-             * [description]
+             * An array containing the alpha data for this Mesh.
              */
             alphas: Float32Array;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -17441,7 +18035,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -17517,9 +18111,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -17546,7 +18138,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -17565,36 +18157,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -17676,13 +18268,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -17754,12 +18346,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -17767,24 +18359,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -17822,9 +18411,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -17852,19 +18439,14 @@ declare namespace Phaser {
              * Sets the size of this Game Object to be that of the given Frame.
              * @param frame The frame to base the size of this Game Object on.
              */
-            setSizeToFrame(
-                frame: Phaser.Textures.Frame
-            ): Phaser.GameObjects.GameObject;
+            setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
             /**
              * Sets the size of this Game Object.
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -17872,10 +18454,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -17894,10 +18473,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -17916,7 +18492,7 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The x position of this Game Object.
@@ -17972,55 +18548,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -18051,7 +18642,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -18095,10 +18686,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
         }
 
         namespace Particles {
@@ -18461,12 +19049,12 @@ declare namespace Phaser {
                 /**
                  * The tint applied to this Particle.
                  */
-                tint: number;
+                tint: integer;
 
                 /**
                  * The full color of this Particle, computed from its alpha and tint.
                  */
-                color: number;
+                color: integer;
 
                 /**
                  * The lifespan of this Particle in ms.
@@ -19322,9 +19910,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
 
                 /**
                  * The Mask this Game Object is using during render.
@@ -19348,13 +19934,13 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
 
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -19431,10 +20017,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
 
                 /**
                  * Sets the visibility of this Game Object.
@@ -19442,7 +20025,7 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
             }
 
             /**
@@ -19483,7 +20066,7 @@ declare namespace Phaser {
                 /**
                  * Names of this Emitter Manager's texture frames.
                  */
-                frameNames: Phaser.Textures.Frame[];
+                frameNames: string[];
 
                 /**
                  * A list of Emitters being managed by this Emitter Manager.
@@ -19897,9 +20480,10 @@ declare namespace Phaser {
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -19917,7 +20501,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -19993,9 +20577,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -20022,7 +20604,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -20041,36 +20623,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -20152,13 +20734,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -20230,12 +20812,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -20243,24 +20825,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -20298,9 +20877,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -20344,10 +20921,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -20375,19 +20949,14 @@ declare namespace Phaser {
              * Sets the size of this Game Object to be that of the given Frame.
              * @param frame The frame to base the size of this Game Object on.
              */
-            setSizeToFrame(
-                frame: Phaser.Textures.Frame
-            ): Phaser.GameObjects.GameObject;
+            setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
             /**
              * Sets the size of this Game Object.
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -20395,10 +20964,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -20417,10 +20983,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -20439,13 +21002,13 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -20459,7 +21022,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -20544,55 +21107,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -20623,7 +21201,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
@@ -20638,7 +21216,7 @@ declare namespace Phaser {
         class Quad extends Phaser.GameObjects.Mesh {
             /**
              *
-             * @param scene [description]
+             * @param scene The Scene to which this Quad belongs.
              * @param x The horizontal position of this Game Object in the world.
              * @param y The vertical position of this Game Object in the world.
              * @param texture The key of the Texture this Game Object will use to render with, as stored in the Texture Manager.
@@ -20782,9 +21360,10 @@ declare namespace Phaser {
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -20802,7 +21381,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -20878,9 +21457,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -20907,7 +21484,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -20926,36 +21503,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -21037,13 +21614,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -21115,12 +21692,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -21128,24 +21705,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -21183,9 +21757,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -21213,19 +21785,14 @@ declare namespace Phaser {
              * Sets the size of this Game Object to be that of the given Frame.
              * @param frame The frame to base the size of this Game Object on.
              */
-            setSizeToFrame(
-                frame: Phaser.Textures.Frame
-            ): Phaser.GameObjects.GameObject;
+            setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
             /**
              * Sets the size of this Game Object.
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -21233,10 +21800,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -21255,10 +21819,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -21277,7 +21838,7 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The x position of this Game Object.
@@ -21333,55 +21894,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -21412,7 +21988,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -21456,10 +22032,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
         }
 
         /**
@@ -21506,37 +22079,69 @@ declare namespace Phaser {
                 | Phaser.Renderer.WebGL.WebGLRenderer;
 
             /**
-             * [description]
+             * The tint of the Render Texture when rendered.
              */
             globalTint: number;
 
             /**
-             * [description]
+             * The alpha of the Render Texture when rendered.
              */
             globalAlpha: number;
 
             /**
-             * [description]
+             * The HTML Canvas Element that the Render Texture is drawing to.
+             * This is only set if Phaser is running with the Canvas Renderer.
              */
-            destroy(): void;
+            canvas: HTMLCanvasElement;
 
             /**
-             * [description]
-             * @param tint [description]
+             * A reference to the Rendering Context belonging to the Canvas Element this Render Texture is drawing to.
+             * This is only set if Phaser is running with the Canvas Renderer.
              */
-            setGlobalTint(tint: integer): Phaser.GameObjects.RenderTexture;
+            context: CanvasRenderingContext2D;
 
             /**
-             * [description]
-             * @param alpha [description]
+             * A reference to the GL Frame Buffer this Render Texture is drawing to.
+             * This is only set if Phaser is running with the WebGL Renderer.
              */
-            setGlobalAlpha(alpha: number): Phaser.GameObjects.RenderTexture;
+            framebuffer: WebGLFramebuffer;
+
+            /**
+             * Resizes the Render Texture to the new dimensions given.
+             *
+             * In WebGL it will destroy and then re-create the frame buffer being used by the Render Texture.
+             * In Canvas it will resize the underlying canvas element.
+             * Both approaches will erase everything currently drawn to the Render Texture.
+             *
+             * If the dimensions given are the same as those already being used, calling this method will do nothing.
+             * @param width The new width of the Render Texture.
+             * @param height The new height of the Render Texture. If not specified, will be set the same as the `width`.
+             */
+            resize(width: number, height?: number): this;
+
+            /**
+             * Set the tint to use when rendering this Render Texture.
+             * @param tint The tint value.
+             */
+            setGlobalTint(tint: integer): this;
+
+            /**
+             * Set the alpha to use when rendering this Render Texture.
+             * @param alpha The alpha value.
+             */
+            setGlobalAlpha(alpha: number): this;
+
+            /**
+             * Internal destroy handler, called as part of the destroy process.
+             */
+            protected preDestroy(): void;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -21554,7 +22159,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -21630,9 +22235,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -21661,10 +22264,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -21672,10 +22272,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -21702,7 +22299,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -21721,36 +22318,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -21832,13 +22429,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -21876,22 +22473,22 @@ declare namespace Phaser {
             /**
              * [description]
              */
-            initMatrixStack(): Phaser.GameObjects.GameObject;
+            initMatrixStack(): this;
 
             /**
              * [description]
              */
-            save(): Phaser.GameObjects.GameObject;
+            save(): this;
 
             /**
              * [description]
              */
-            restore(): Phaser.GameObjects.GameObject;
+            restore(): this;
 
             /**
              * [description]
              */
-            loadIdentity(): Phaser.GameObjects.GameObject;
+            loadIdentity(): this;
 
             /**
              * [description]
@@ -21909,7 +22506,7 @@ declare namespace Phaser {
                 d: number,
                 tx: number,
                 ty: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * [description]
@@ -21927,27 +22524,27 @@ declare namespace Phaser {
                 d: number,
                 tx: number,
                 ty: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * [description]
              * @param x [description]
              * @param y [description]
              */
-            translate(x: number, y: number): Phaser.GameObjects.GameObject;
+            translate(x: number, y: number): this;
 
             /**
              * [description]
              * @param x [description]
              * @param y [description]
              */
-            scale(x: number, y: number): Phaser.GameObjects.GameObject;
+            scale(x: number, y: number): this;
 
             /**
              * [description]
              * @param t The angle of rotation, in radians.
              */
-            rotate(t: number): Phaser.GameObjects.GameObject;
+            rotate(t: number): this;
 
             /**
              * The horizontal origin of this Game Object.
@@ -21986,12 +22583,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -21999,24 +22596,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -22054,9 +22648,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -22100,16 +22692,13 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -22123,7 +22712,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -22208,55 +22797,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -22287,7 +22891,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
@@ -22335,22 +22939,22 @@ declare namespace Phaser {
             );
 
             /**
-             * [description]
+             * The Animation Controller of this Sprite.
              */
             anims: Phaser.GameObjects.Components.Animation;
 
             /**
-             * [description]
-             * @param time [description]
-             * @param delta [description]
+             * Update this Sprite's animations.
+             * @param time The current timestamp.
+             * @param delta The delta time, in ms, elapsed since the last frame.
              */
             protected preUpdate(time: number, delta: number): void;
 
             /**
-             * [description]
-             * @param key [description]
-             * @param ignoreIfPlaying [description] Default false.
-             * @param startFrame [description] Default 0.
+             * Start playing the given animation.
+             * @param key The string-based key of the animation to play.
+             * @param ignoreIfPlaying If an animation is already playing then ignore this call. Default false.
+             * @param startFrame Optionally start the animation playing from this frame index. Default 0.
              */
             play(
                 key: string,
@@ -22359,15 +22963,16 @@ declare namespace Phaser {
             ): Phaser.GameObjects.Sprite;
 
             /**
-             * [description]
+             * Build a JSON representation of this Sprite.
              */
             toJSON(): JSONGameObject;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -22385,7 +22990,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -22461,9 +23066,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -22490,7 +23093,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -22509,36 +23112,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -22620,13 +23223,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -22698,12 +23301,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -22711,24 +23314,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -22766,9 +23366,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -22812,10 +23410,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -22843,19 +23438,14 @@ declare namespace Phaser {
              * Sets the size of this Game Object to be that of the given Frame.
              * @param frame The frame to base the size of this Game Object on.
              */
-            setSizeToFrame(
-                frame: Phaser.Textures.Frame
-            ): Phaser.GameObjects.GameObject;
+            setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
             /**
              * Sets the size of this Game Object.
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -22863,10 +23453,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -22885,10 +23472,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -22907,13 +23491,13 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -22927,7 +23511,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -23012,55 +23596,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -23091,7 +23690,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
@@ -23540,15 +24139,16 @@ declare namespace Phaser {
             toJSON(): JSONGameObject;
 
             /**
-             * [description]
+             * Internal destroy handler, called as part of the destroy process.
              */
-            preDestroy(): void;
+            protected preDestroy(): void;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -23566,7 +24166,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -23642,9 +24242,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The displayed width of this Game Object.
@@ -23663,10 +24261,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -23674,10 +24269,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -23704,7 +24296,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -23723,36 +24315,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -23834,13 +24426,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -23912,12 +24504,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -23925,24 +24517,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -23980,9 +24569,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -24026,16 +24613,13 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -24049,7 +24633,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -24134,55 +24718,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -24213,7 +24812,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
@@ -24257,27 +24856,29 @@ declare namespace Phaser {
             );
 
             /**
-             * [description]
+             * The horizontal scroll position of the Tile Sprite.
              */
             tilePositionX: number;
 
             /**
-             * [description]
+             * The vertical scroll position of the Tile Sprite.
              */
             tilePositionY: number;
 
             /**
-             * [description]
+             * Whether the Tile Sprite has changed in some way, requiring an re-render of its tile texture.
+             *
+             * Such changes include the texture frame and scroll position of the Tile Sprite.
              */
             dirty: boolean;
 
             /**
-             * [description]
+             * The texture that the Tile Sprite is rendered to, which is then rendered to a Scene.
              */
             tileTexture: WebGLTexture;
 
             /**
-             * [description]
+             * The renderer in use by this Tile Sprite.
              */
             renderer:
                 | Phaser.Renderer.Canvas.CanvasRenderer
@@ -24319,20 +24920,21 @@ declare namespace Phaser {
             ): Phaser.GameObjects.TileSprite;
 
             /**
-             * [description]
+             * Render the tile texture if it is dirty, or if the frame has changed.
              */
             updateTileTexture(): void;
 
             /**
-             * [description]
+             * Internal destroy handler, called as part of the destroy process.
              */
-            destroy(): void;
+            protected preDestroy(): void;
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -24350,7 +24952,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -24426,9 +25028,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -24455,7 +25055,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -24474,36 +25074,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -24585,13 +25185,13 @@ declare namespace Phaser {
                 mask:
                     | Phaser.Display.Masks.BitmapMask
                     | Phaser.Display.Masks.GeometryMask
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears the mask that this Game Object was using.
              * @param destroyMask Destroy the mask before clearing it? Default false.
              */
-            clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+            clearMask(destroyMask?: boolean): this;
 
             /**
              * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -24663,12 +25263,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -24676,24 +25276,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -24731,9 +25328,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -24777,10 +25372,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -24808,19 +25400,14 @@ declare namespace Phaser {
              * Sets the size of this Game Object to be that of the given Frame.
              * @param frame The frame to base the size of this Game Object on.
              */
-            setSizeToFrame(
-                frame: Phaser.Textures.Frame
-            ): Phaser.GameObjects.GameObject;
+            setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
             /**
              * Sets the size of this Game Object.
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -24828,10 +25415,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The Texture this Game Object is using to render with.
@@ -24850,10 +25434,7 @@ declare namespace Phaser {
              * @param key The key of the texture to be used, as stored in the Texture Manager.
              * @param frame The name or index of the frame within the Texture.
              */
-            setTexture(
-                key: string,
-                frame?: string | integer
-            ): Phaser.GameObjects.GameObject;
+            setTexture(key: string, frame?: string | integer): this;
 
             /**
              * Sets the frame this Game Object will use to render with.
@@ -24872,13 +25453,13 @@ declare namespace Phaser {
                 frame: string | integer,
                 updateSize?: boolean,
                 updateOrigin?: boolean
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * Clears all tint values associated with this Game Object.
              * Immediately sets the alpha levels back to 0xffffff (no tint)
              */
-            clearTint(): Phaser.GameObjects.GameObject;
+            clearTint(): this;
 
             /**
              * Sets the tint values for this Game Object.
@@ -24892,7 +25473,7 @@ declare namespace Phaser {
                 topRight?: integer,
                 bottomLeft?: integer,
                 bottomRight?: integer
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The tint value being applied to the top-left of the Game Object.
@@ -24977,55 +25558,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -25056,61 +25652,67 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
-         * [description]
+         * The Update List plugin.
+         *
+         * Update Lists belong to a Scene and maintain the list Game Objects to be updated every frame.
+         *
+         * Some or all of these Game Objects may also be part of the Scene's [Display List]{@link Phaser.GameObjects.DisplayList}, for Rendering.
          */
         class UpdateList {
             /**
              *
-             * @param scene [description]
+             * @param scene The Scene that the Update List belongs to.
              */
             constructor(scene: Phaser.Scene);
 
             /**
-             * [description]
+             * The Scene that the Update List belongs to.
              */
             scene: Phaser.Scene;
 
             /**
-             * [description]
+             * The Scene's Systems.
              */
             systems: Phaser.Scenes.Systems;
 
             /**
-             * [description]
-             * @param child [description]
+             * Add a Game Object to the Update List.
+             * @param child The Game Object to add.
              */
             add(
                 child: Phaser.GameObjects.GameObject
             ): Phaser.GameObjects.GameObject;
 
             /**
-             * [description]
-             * @param time [description]
-             * @param delta [description]
+             * The pre-update step.
+             *
+             * Handles Game Objects that are pending insertion to and removal from the list.
              */
-            preUpdate(time: number, delta: number): void;
+            preUpdate(): void;
 
             /**
-             * [description]
-             * @param time [description]
-             * @param delta [description]
+             * The update step.
+             *
+             * Pre-updates every active Game Object in the list.
+             * @param time The current timestamp.
+             * @param delta The delta time elapsed since the last frame.
              */
             update(time: number, delta: number): void;
 
             /**
-             * [description]
-             * @param child [description]
+             * Remove a Game Object from the list.
+             * @param child The Game Object to remove from the list.
              */
             remove(
                 child: Phaser.GameObjects.GameObject
             ): Phaser.GameObjects.GameObject;
 
             /**
-             * [description]
+             * Remove all Game Objects from the list.
              */
             removeAll(): Phaser.GameObjects.UpdateList;
 
@@ -25125,6 +25727,11 @@ declare namespace Phaser {
              * We need to shutdown and then kill off all external references.
              */
             destroy(): void;
+
+            /**
+             * The length of the list.
+             */
+            readonly length: integer;
         }
 
         /**
@@ -25269,7 +25876,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -25366,12 +25973,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -25379,16 +25986,13 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
              * The Scale Mode being used by this Game Object.
@@ -25401,9 +26005,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The x position of this Game Object.
@@ -25459,55 +26061,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -25567,10 +26184,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The visible state of the Game Object.
@@ -25585,7 +26199,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
     }
 
@@ -27266,6 +27880,19 @@ declare namespace Phaser {
             ): O;
 
             /**
+             * Calculates a random point that lies within the `outer` Rectangle, but outside of the `inner` Rectangle.
+             * The inner Rectangle must be fully contained within the outer rectangle.
+             * @param outer The outer Rectangle to get the random point within.
+             * @param inner The inner Rectangle to exclude from the returned point.
+             * @param out A Point, or Point-like object to store the result in. If not specified, a new Point will be created.
+             */
+            static RandomOutside<O extends Phaser.Geom.Point>(
+                outer: Phaser.Geom.Rectangle,
+                inner: Phaser.Geom.Rectangle,
+                out?: O
+            ): O;
+
+            /**
              * [description]
              */
             x: number;
@@ -27853,74 +28480,117 @@ declare namespace Phaser {
     }
 
     namespace Input {
+        /**
+         * The mouse pointer is being held down.
+         */
+        var MOUSE_DOWN: integer;
+
+        /**
+         * The mouse pointer is being moved.
+         */
+        var MOUSE_MOVE: integer;
+
+        /**
+         * The mouse pointer is released.
+         */
+        var MOUSE_UP: integer;
+
+        /**
+         * A touch pointer has been started.
+         */
+        var TOUCH_START: integer;
+
+        /**
+         * A touch pointer has been started.
+         */
+        var TOUCH_MOVE: integer;
+
+        /**
+         * A touch pointer has been started.
+         */
+        var TOUCH_END: integer;
+
+        /**
+         * The pointer lock has changed.
+         */
+        var POINTER_LOCK_CHANGE: integer;
+
         type InteractiveObject = {
             /**
-             * [description]
+             * The Game Object to which this Interactive Object is bound.
              */
             gameObject: Phaser.GameObjects.GameObject;
             /**
-             * [description]
+             * Is this Interactive Object currently enabled for input events?
              */
             enabled: boolean;
             /**
-             * [description]
+             * Is this Interactive Object draggable? Enable with `InputPlugin.setDraggable`.
              */
             draggable: boolean;
             /**
-             * [description]
+             * Is this Interactive Object a drag-targets drop zone? Set when the object is created.
              */
             dropZone: boolean;
             /**
-             * [description]
+             * Should this Interactive Object change the cursor (via css) when over? (desktop only)
+             */
+            cursor: boolean | string;
+            /**
+             * An optional drop target for a draggable Interactive Object.
              */
             target: Phaser.GameObjects.GameObject;
             /**
-             * [description]
+             * The most recent Camera to be tested against this Interactive Object.
              */
             camera: Phaser.Cameras.Scene2D.Camera;
             /**
-             * [description]
+             * The hit area for this Interactive Object. Typically a geometry shape, like a Rectangle or Circle.
              */
             hitArea: any;
             /**
-             * [description]
+             * The 'contains' check callback that the hit area shape will use for all hit tests.
              */
             hitAreaCallback: HitAreaCallback;
             /**
-             * [description]
+             * The x coordinate that the Pointer interacted with this object on, relative to the Game Object's top-left position.
              */
             localX: number;
             /**
-             * [description]
+             * The y coordinate that the Pointer interacted with this object on, relative to the Game Object's top-left position.
              */
             localY: number;
             /**
-             * [description]
+             * The current drag state of this Interactive Object. 0 = Not being dragged, 1 = being checked for drag, or 2 = being actively dragged.
              */
             dragState: 0 | 1 | 2;
             /**
-             * [description]
+             * The x coordinate that the Pointer started dragging this Interactive Object from.
              */
             dragStartX: number;
             /**
-             * [description]
+             * The y coordinate that the Pointer started dragging this Interactive Object from.
              */
             dragStartY: number;
             /**
-             * [description]
+             * The x coordinate that this Interactive Object is currently being dragged to.
              */
             dragX: number;
             /**
-             * [description]
+             * The y coordinate that this Interactive Object is currently being dragged to.
              */
             dragY: number;
         };
 
         /**
-         * [description]
-         * @param gameObject [description]
-         * @param hitArea [description]
-         * @param hitAreaCallback [description]
+         * Creates a new Interactive Object.
+         *
+         * This is called automatically by the Input Manager when you enable a Game Object for input.
+         *
+         * The resulting Interactive Object is mapped to the Game Object's `input` property.
+         * @param gameObject The Game Object to which this Interactive Object is bound.
+         * @param hitArea The hit area for this Interactive Object. Typically a geometry shape, like a Rectangle or Circle.
+         * @param hitAreaCallback The 'contains' check callback that the hit area shape will use for all hit tests.
          */
         function CreateInteractiveObject(
             gameObject: Phaser.GameObjects.GameObject,
@@ -27928,30 +28598,43 @@ declare namespace Phaser {
             hitAreaCallback: HitAreaCallback
         ): Phaser.Input.InteractiveObject;
 
+        /**
+         * Creates a new Pixel Perfect Handler function.
+         *
+         * Access via `InputPlugin.makePixelPerfect` rather than calling it directly.
+         * @param textureManager A reference to the Texture Manager.
+         * @param alphaTolerance The alpha level that the pixel should be above to be included as a successful interaction.
+         */
+        function CreatePixelPerfectHandler(
+            textureManager: Phaser.Textures.TextureManager,
+            alphaTolerance: integer
+        ): Function;
+
         namespace Gamepad {
             /**
-             * [description]
+             * Contains information about a specific Gamepad Axis.
+             * Axis objects are created automatically by the Gamepad as they are needed.
              */
             class Axis {
                 /**
                  *
-                 * @param pad [description]
-                 * @param index [description]
+                 * @param pad A reference to the Gamepad that this Axis belongs to.
+                 * @param index The index of this Axis.
                  */
                 constructor(pad: Phaser.Input.Gamepad.Gamepad, index: integer);
 
                 /**
-                 * [description]
+                 * A reference to the Gamepad that this Axis belongs to.
                  */
                 pad: Phaser.Input.Gamepad.Gamepad;
 
                 /**
-                 * [description]
+                 * An event emitter to use to emit the axis events.
                  */
                 events: Phaser.Events.EventEmitter;
 
                 /**
-                 * [description]
+                 * The index of this Axis.
                  */
                 index: integer;
 
@@ -27967,40 +28650,40 @@ declare namespace Phaser {
                 threshold: number;
 
                 /**
-                 * [description]
-                 * @param value [description]
-                 */
-                update(value: number): void;
-
-                /**
-                 * Applies threshold to the value and returns it.
+                 * Applies the `threshold` value to the axis and returns it.
                  */
                 getValue(): number;
+
+                /**
+                 * Destroys this Axis instance and releases external references it holds.
+                 */
+                destroy(): void;
             }
 
             /**
-             * [description]
+             * Contains information about a specific button on a Gamepad.
+             * Button objects are created automatically by the Gamepad as they are needed.
              */
             class Button {
                 /**
                  *
-                 * @param pad [description]
-                 * @param index [description]
+                 * @param pad A reference to the Gamepad that this Button belongs to.
+                 * @param index The index of this Button.
                  */
                 constructor(pad: Phaser.Input.Gamepad.Gamepad, index: integer);
 
                 /**
-                 * [description]
+                 * A reference to the Gamepad that this Button belongs to.
                  */
                 pad: Phaser.Input.Gamepad.Gamepad;
 
                 /**
-                 * [description]
+                 * An event emitter to use to emit the button events.
                  */
                 events: Phaser.Events.EventEmitter;
 
                 /**
-                 * [description]
+                 * The index of this Button.
                  */
                 index: integer;
 
@@ -28010,7 +28693,8 @@ declare namespace Phaser {
                 value: number;
 
                 /**
-                 * Can be set for Analogue buttons to enable a 'pressure' threshold before considered as 'pressed'.
+                 * Can be set for analogue buttons to enable a 'pressure' threshold,
+                 * before a button is considered as being 'pressed'.
                  */
                 threshold: number;
 
@@ -28020,10 +28704,9 @@ declare namespace Phaser {
                 pressed: boolean;
 
                 /**
-                 * [description]
-                 * @param data [description]
+                 * Destroys this Button instance and releases external references it holds.
                  */
-                update(data: GamepadButton): void;
+                destroy(): void;
             }
 
             namespace Configs {
@@ -28046,238 +28729,485 @@ declare namespace Phaser {
             }
 
             /**
-             * [description]
+             * A single Gamepad.
+             *
+             * These are created, updated and managed by the Gamepad Plugin.
              */
-            class Gamepad {
+            class Gamepad extends Phaser.Events.EventEmitter {
                 /**
                  *
-                 * @param manager [description]
-                 * @param id [description]
-                 * @param index [description]
+                 * @param manager A reference to the Gamepad Plugin.
+                 * @param pad The Gamepad object, as extracted from GamepadEvent.
                  */
                 constructor(
-                    manager: Phaser.Input.Gamepad.GamepadManager,
-                    id: string,
-                    index: number
+                    manager: Phaser.Input.Gamepad.GamepadPlugin,
+                    pad: Pad
                 );
 
                 /**
-                 * [description]
+                 * A reference to the Gamepad Plugin.
                  */
-                manager: Phaser.Input.Gamepad.GamepadManager;
+                manager: Phaser.Input.Gamepad.GamepadPlugin;
 
                 /**
-                 * [description]
+                 * A reference to the native Gamepad object that is connected to the browser.
+                 */
+                pad: any;
+
+                /**
+                 * A string containing some information about the controller.
+                 *
+                 * This is not strictly specified, but in Firefox it will contain three pieces of information
+                 * separated by dashes (-): two 4-digit hexadecimal strings containing the USB vendor and
+                 * product id of the controller, and the name of the controller as provided by the driver.
+                 * In Chrome it will contain the name of the controller as provided by the driver,
+                 * followed by vendor and product 4-digit hexadecimal strings.
                  */
                 id: string;
 
                 /**
-                 * [description]
+                 * An integer that is unique for each Gamepad currently connected to the system.
+                 * This can be used to distinguish multiple controllers.
+                 * Note that disconnecting a device and then connecting a new device may reuse the previous index.
                  */
                 index: number;
 
                 /**
-                 * [description]
-                 */
-                connected: boolean;
-
-                /**
-                 * [description]
-                 */
-                timestamp: number;
-
-                /**
-                 * [description]
+                 * An array of Gamepad Button objects, corresponding to the different buttons available on the Gamepad.
                  */
                 buttons: Phaser.Input.Gamepad.Button[];
 
                 /**
-                 * [description]
+                 * An array of Gamepad Axis objects, corresponding to the different axes available on the Gamepad, if any.
                  */
                 axes: Phaser.Input.Gamepad.Axis[];
 
                 /**
-                 * [description]
-                 * @param data [description]
+                 * The Gamepad's Haptic Actuator (Vibration / Rumble support).
+                 * This is highly experimental and only set if both present on the device,
+                 * and exposed by both the hardware and browser.
                  */
-                update(data: Gamepad): void;
-            }
+                vibration: GamepadHapticActuator;
 
-            /**
-             * [description]
-             */
-            class GamepadManager extends Phaser.Events.EventEmitter {
                 /**
+                 * A Vector2 containing the most recent values from the Gamepad's left axis stick.
+                 * This is updated automatically as part of the Gamepad.update cycle.
+                 * The H Axis is mapped to the `Vector2.x` property, and the V Axis to the `Vector2.y` property.
+                 * The values are based on the Axis thresholds.
+                 * If the Gamepad does not have a left axis stick, the values will always be zero.
+                 */
+                leftStick: Phaser.Math.Vector2;
+
+                /**
+                 * A Vector2 containing the most recent values from the Gamepad's right axis stick.
+                 * This is updated automatically as part of the Gamepad.update cycle.
+                 * The H Axis is mapped to the `Vector2.x` property, and the V Axis to the `Vector2.y` property.
+                 * The values are based on the Axis thresholds.
+                 * If the Gamepad does not have a right axis stick, the values will always be zero.
+                 */
+                rightStick: Phaser.Math.Vector2;
+
+                /**
+                 * Gets the total number of axis this Gamepad claims to support.
+                 */
+                getAxisTotal(): integer;
+
+                /**
+                 * Gets the value of an axis based on the given index.
+                 * The index must be valid within the range of axes supported by this Gamepad.
+                 * The return value will be a float between 0 and 1.
+                 * @param index The index of the axes to get the value for.
+                 */
+                getAxisValue(index: integer): number;
+
+                /**
+                 * Sets the threshold value of all axis on this Gamepad.
+                 * The value is a float between 0 and 1 and is the amount below which the axis is considered as not having been moved.
+                 * @param value A value between 0 and 1.
+                 */
+                setAxisThreshold(value: number): void;
+
+                /**
+                 * Gets the total number of buttons this Gamepad claims to have.
+                 */
+                getButtonTotal(): integer;
+
+                /**
+                 * Gets the value of a button based on the given index.
+                 * The index must be valid within the range of buttons supported by this Gamepad.
                  *
-                 * @param inputManager [description]
+                 * The return value will be either 0 or 1 for an analogue button, or a float between 0 and 1
+                 * for a pressure-sensitive digital button, such as the shoulder buttons on a Dual Shock.
+                 * @param index The index of the button to get the value for.
                  */
-                constructor(inputManager: Phaser.Input.InputManager);
+                getButtonValue(index: integer): number;
 
                 /**
-                 * [description]
+                 * Returns if the button is pressed down or not.
+                 * The index must be valid within the range of buttons supported by this Gamepad.
+                 * @param index The index of the button to get the value for.
                  */
-                manager: Phaser.Input.InputManager;
+                isButtonDown(index: integer): boolean;
 
                 /**
-                 * [description]
-                 */
-                enabled: boolean;
-
-                /**
-                 * [description]
-                 */
-                target: object;
-
-                /**
-                 * [description]
-                 */
-                handler: GamepadHandler;
-
-                /**
-                 * [description]
-                 */
-                gamepads: Phaser.Input.Gamepad.Gamepad[];
-
-                /**
-                 * Standard FIFO queue.
-                 */
-                queue: GamepadEvent[];
-
-                /**
-                 * [description]
-                 */
-                boot(): void;
-
-                /**
-                 * [description]
-                 */
-                startListeners(): void;
-
-                /**
-                 * [description]
-                 */
-                stopListeners(): void;
-
-                /**
-                 * [description]
-                 */
-                disconnectAll(): void;
-
-                /**
-                 * [description]
-                 * @param pad [description]
-                 */
-                addPad(pad: Pad): Phaser.Input.Gamepad.Gamepad;
-
-                /**
-                 * [description]
-                 * @param index [description]
-                 * @param pad [description]
-                 */
-                removePad(index: number, pad: Pad): void;
-
-                /**
-                 * [description]
-                 * @param pads [description]
-                 */
-                refreshPads(pads: Pad[]): void;
-
-                /**
-                 * [description]
-                 */
-                getAll(): Phaser.Input.Gamepad.Gamepad[];
-
-                /**
-                 * [description]
-                 * @param index [description]
-                 */
-                getPad(index: number): Phaser.Input.Gamepad.Gamepad;
-
-                /**
-                 * [description]
-                 */
-                update(): void;
-
-                /**
-                 * [description]
+                 * Destroys this Gamepad instance, its buttons and axes, and releases external references it holds.
                  */
                 destroy(): void;
 
                 /**
+                 * Is this Gamepad currently connected or not?
+                 */
+                connected: boolean;
+
+                /**
+                 * A timestamp containing the most recent time this Gamepad was updated.
+                 */
+                timestamp: number;
+
+                /**
+                 * Is the Gamepad's Left button being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * This is the d-pad left button under standard Gamepad mapping.
+                 */
+                left: boolean;
+
+                /**
+                 * Is the Gamepad's Right button being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * This is the d-pad right button under standard Gamepad mapping.
+                 */
+                right: boolean;
+
+                /**
+                 * Is the Gamepad's Up button being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * This is the d-pad up button under standard Gamepad mapping.
+                 */
+                up: boolean;
+
+                /**
+                 * Is the Gamepad's Down button being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * This is the d-pad down button under standard Gamepad mapping.
+                 */
+                down: boolean;
+
+                /**
+                 * Is the Gamepad's bottom button in the right button cluster being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * On a Dual Shock controller it's the X button.
+                 * On an XBox controller it's the A button.
+                 */
+                A: boolean;
+
+                /**
+                 * Is the Gamepad's top button in the right button cluster being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * On a Dual Shock controller it's the Triangle button.
+                 * On an XBox controller it's the Y button.
+                 */
+                Y: boolean;
+
+                /**
+                 * Is the Gamepad's left button in the right button cluster being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * On a Dual Shock controller it's the Square button.
+                 * On an XBox controller it's the X button.
+                 */
+                X: boolean;
+
+                /**
+                 * Is the Gamepad's right button in the right button cluster being pressed?
+                 * If the Gamepad doesn't have this button it will always return false.
+                 * On a Dual Shock controller it's the Circle button.
+                 * On an XBox controller it's the B button.
+                 */
+                B: boolean;
+
+                /**
+                 * Returns the value of the Gamepad's top left shoulder button.
+                 * If the Gamepad doesn't have this button it will always return zero.
+                 * The value is a float between 0 and 1, corresponding to how depressed the button is.
+                 * On a Dual Shock controller it's the L1 button.
+                 * On an XBox controller it's the LB button.
+                 */
+                L1: number;
+
+                /**
+                 * Returns the value of the Gamepad's bottom left shoulder button.
+                 * If the Gamepad doesn't have this button it will always return zero.
+                 * The value is a float between 0 and 1, corresponding to how depressed the button is.
+                 * On a Dual Shock controller it's the L2 button.
+                 * On an XBox controller it's the LT button.
+                 */
+                L2: number;
+
+                /**
+                 * Returns the value of the Gamepad's top right shoulder button.
+                 * If the Gamepad doesn't have this button it will always return zero.
+                 * The value is a float between 0 and 1, corresponding to how depressed the button is.
+                 * On a Dual Shock controller it's the R1 button.
+                 * On an XBox controller it's the RB button.
+                 */
+                R1: number;
+
+                /**
+                 * Returns the value of the Gamepad's bottom right shoulder button.
+                 * If the Gamepad doesn't have this button it will always return zero.
+                 * The value is a float between 0 and 1, corresponding to how depressed the button is.
+                 * On a Dual Shock controller it's the R2 button.
+                 * On an XBox controller it's the RT button.
+                 */
+                R2: number;
+            }
+
+            /**
+             * The Gamepad Plugin is an input plugin that belongs to the Scene-owned Input system.
+             *
+             * Its role is to listen for native DOM Gamepad Events and then process them.
+             *
+             * You do not need to create this class directly, the Input system will create an instance of it automatically.
+             *
+             * You can access it from within a Scene using `this.input.gamepad`.
+             *
+             * To listen for a gamepad being connected:
+             *
+             * ```javascript
+             * this.input.gamepad.once('connected', function (pad) {
+             *     //   'pad' is a reference to the gamepad that was just connected
+             * });
+             * ```
+             *
+             * Note that the browser may require you to press a button on a gamepad before it will allow you to access it,
+             * this is for security reasons. However, it may also trust the page already, in which case you won't get the
+             * 'connected' event and instead should check `GamepadPlugin.total` to see if it thinks there are any gamepads
+             * already connected.
+             *
+             * Once you have received the connected event, or polled the gamepads and found them enabled, you can access
+             * them via the built-in properties `GamepadPlugin.pad1` to `pad4`, for up to 4 game pads. With a reference
+             * to the gamepads you can poll its buttons and axis sticks. See the properties and methods available on
+             * the `Gamepad` class for more details.
+             *
+             * For more information about Gamepad support in browsers see the following resources:
+             *
+             * https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API
+             * https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API
+             * https://www.smashingmagazine.com/2015/11/gamepad-api-in-web-games/
+             * http://html5gamepad.com/
+             */
+            class GamepadPlugin extends Phaser.Events.EventEmitter {
+                /**
+                 *
+                 * @param sceneInputPlugin A reference to the Scene Input Plugin that the KeyboardPlugin belongs to.
+                 */
+                constructor(sceneInputPlugin: Phaser.Input.InputPlugin);
+
+                /**
+                 * A reference to the Scene that this Input Plugin is responsible for.
+                 */
+                scene: Phaser.Scene;
+
+                /**
+                 * A reference to the Scene Systems Settings.
+                 */
+                settings: Phaser.Scenes.Settings.Object;
+
+                /**
+                 * A reference to the Scene Input Plugin that created this Keyboard Plugin.
+                 */
+                sceneInputPlugin: Phaser.Input.InputPlugin;
+
+                /**
+                 * A boolean that controls if the Gamepad Manager is enabled or not.
+                 * Can be toggled on the fly.
+                 */
+                enabled: boolean;
+
+                /**
+                 * The Gamepad Event target, as defined in the Game Config.
+                 * Typically the browser window, but can be any interactive DOM element.
+                 */
+                target: any;
+
+                /**
+                 * An array of the connected Gamepads.
+                 */
+                gamepads: Phaser.Input.Gamepad.Gamepad[];
+
+                /**
+                 * Checks to see if both this plugin and the Scene to which it belongs is active.
+                 */
+                isActive(): boolean;
+
+                /**
+                 * Disconnects all current Gamepads.
+                 */
+                disconnectAll(): void;
+
+                /**
+                 * Returns an array of all currently connected Gamepads.
+                 */
+                getAll(): Phaser.Input.Gamepad.Gamepad[];
+
+                /**
+                 * Looks-up a single Gamepad based on the given index value.
+                 * @param index The index of the Gamepad to get.
+                 */
+                getPad(index: number): Phaser.Input.Gamepad.Gamepad;
+
+                /**
                  * The total number of connected game pads.
                  */
-                total: number;
+                total: integer;
+
+                /**
+                 * A reference to the first connected Gamepad.
+                 *
+                 * This will be undefined if either no pads are connected, or the browser
+                 * has not yet issued a gamepadconnect, which can happen even if a Gamepad
+                 * is plugged in, but hasn't yet had any buttons pressed on it.
+                 */
+                pad1: Phaser.Input.Gamepad.Gamepad;
+
+                /**
+                 * A reference to the second connected Gamepad.
+                 *
+                 * This will be undefined if either no pads are connected, or the browser
+                 * has not yet issued a gamepadconnect, which can happen even if a Gamepad
+                 * is plugged in, but hasn't yet had any buttons pressed on it.
+                 */
+                pad2: Phaser.Input.Gamepad.Gamepad;
+
+                /**
+                 * A reference to the third connected Gamepad.
+                 *
+                 * This will be undefined if either no pads are connected, or the browser
+                 * has not yet issued a gamepadconnect, which can happen even if a Gamepad
+                 * is plugged in, but hasn't yet had any buttons pressed on it.
+                 */
+                pad3: Phaser.Input.Gamepad.Gamepad;
+
+                /**
+                 * A reference to the fourth connected Gamepad.
+                 *
+                 * This will be undefined if either no pads are connected, or the browser
+                 * has not yet issued a gamepadconnect, which can happen even if a Gamepad
+                 * is plugged in, but hasn't yet had any buttons pressed on it.
+                 */
+                pad4: Phaser.Input.Gamepad.Gamepad;
             }
         }
 
         /**
-         * [description]
+         * The Input Manager is responsible for handling the pointer related systems in a single Phaser Game instance.
+         *
+         * Based on the Game Config it will create handlers for mouse and touch support.
+         *
+         * Keyboard and Gamepad are plugins, handled directly by the InputPlugin class.
+         *
+         * It then manages the event queue, pointer creation and general hit test related operations.
+         *
+         * You rarely need to interact with the Input Manager directly, and as such, all of its properties and methods
+         * should be considered private. Instead, you should use the Input Plugin, which is a Scene level system, responsible
+         * for dealing with all input events for a Scene.
          */
         class InputManager {
             /**
              *
-             * @param game [description]
-             * @param config [description]
+             * @param game The Game instance that owns the Input Manager.
+             * @param config The Input Configuration object, as set in the Game Config.
              */
             constructor(game: Phaser.Game, config: object);
 
             /**
-             * [description]
+             * The Game instance that owns the Input Manager.
+             * A Game only maintains on instance of the Input Manager at any time.
              */
-            game: Phaser.Game;
+            readonly game: Phaser.Game;
 
             /**
-             * [description]
+             * The Canvas that is used for all DOM event input listeners.
              */
             canvas: HTMLCanvasElement;
 
             /**
-             * [description]
+             * The Input Configuration object, as set in the Game Config.
              */
             config: object;
 
             /**
-             * [description]
+             * If set, the Input Manager will run its update loop every frame.
              */
             enabled: boolean;
 
             /**
-             * [description]
+             * The Event Emitter instance that the Input Manager uses to emit events from.
              */
             events: Phaser.Events.EventEmitter;
 
             /**
-             * Standard FIFO queue.
+             * A standard FIFO queue for the native DOM events waiting to be handled by the Input Manager.
              */
             queue: any[];
 
             /**
-             * [description]
+             * The default CSS cursor to be used when interacting with your game.
+             *
+             * See the `setDefaultCursor` method for more details.
              */
-            keyboard: Phaser.Input.Keyboard.KeyboardManager;
+            defaultCursor: string;
 
             /**
-             * [description]
+             * A reference to the Mouse Manager class, if enabled via the `input.mouse` Game Config property.
              */
             mouse: Phaser.Input.Mouse.MouseManager;
 
             /**
-             * [description]
+             * A reference to the Touch Manager class, if enabled via the `input.touch` Game Config property.
              */
             touch: Phaser.Input.Touch.TouchManager;
 
             /**
-             * [description]
+             * An array of Pointers that have been added to the game.
+             * The first entry is reserved for the Mouse Pointer, the rest are Touch Pointers.
+             *
+             * By default there is 1 touch pointer enabled. If you need more use the `addPointer` method to start them,
+             * or set the `input.activePointers` property in the Game Config.
              */
-            gamepad: Phaser.Input.Gamepad.GamepadManager;
+            pointers: Phaser.Input.Pointer[];
 
             /**
-             * [description]
+             * The number of touch objects activated and being processed each update.
+             *
+             * You can change this by either calling `addPointer` at run-time, or by
+             * setting the `input.activePointers` property in the Game Config.
+             */
+            readonly pointersTotal: integer;
+
+            /**
+             * The mouse has its own unique Pointer object, which you can reference directly if making a _desktop specific game_.
+             * If you are supporting both desktop and touch devices then do not use this property, instead use `activePointer`
+             * which will always map to the most recently interacted pointer.
+             */
+            mousePointer: Phaser.Input.Pointer;
+
+            /**
+             * The most recently active Pointer object.
+             *
+             * If you've only 1 Pointer in your game then this will accurately be either the first finger touched, or the mouse.
+             *
+             * If your game doesn't need to support multi-touch then you can safely use this property in all of your game
+             * code and it will adapt to be either the mouse or the touch, based on device.
              */
             activePointer: Phaser.Input.Pointer;
 
             /**
-             * [description]
+             * Reset every frame. Set to `true` if any of the Pointers are dirty this frame.
+             */
+            dirty: boolean;
+
+            /**
+             * The Scale factor being applied to input coordinates.
              */
             scale: Object;
 
@@ -28290,12 +29220,13 @@ declare namespace Phaser {
             globalTopOnly: boolean;
 
             /**
-             * [description]
+             * An internal flag that controls if the Input Manager will ignore or process native DOM events this frame.
+             * Set via the InputPlugin.stopPropagation method.
              */
             ignoreEvents: boolean;
 
             /**
-             * [description]
+             * The bounds of the Input Manager, used for pointer hit test calculations.
              */
             bounds: Phaser.Geom.Rectangle;
 
@@ -28303,49 +29234,164 @@ declare namespace Phaser {
              * The Boot handler is called by Phaser.Game when it first starts up.
              * The renderer is available by now.
              */
-            boot(): void;
+            protected boot(): void;
 
             /**
-             * [description]
+             * Updates the Input Manager bounds rectangle to match the bounding client rectangle of the
+             * canvas element being used to track input events.
              */
             updateBounds(): void;
 
             /**
-             * [description]
+             * Resizes the Input Manager internal values, including the bounds and scale factor.
              */
             resize(): void;
 
             /**
-             * [description]
-             * @param time [description]
+             * Tells the Input system to set a custom cursor.
+             *
+             * This cursor will be the default cursor used when interacting with the game canvas.
+             *
+             * If an Interactive Object also sets a custom cursor, this is the cursor that is reset after its use.
+             *
+             * Any valid CSS cursor value is allowed, including paths to image files, i.e.:
+             *
+             * ```javascript
+             * this.input.setDefaultCursor('url(assets/cursors/sword.cur), pointer');
+             * ```
+             *
+             * Please read about the differences between browsers when it comes to the file formats and sizes they support:
+             *
+             * https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
+             * https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_User_Interface/Using_URL_values_for_the_cursor_property
+             *
+             * It's up to you to pick a suitable cursor format that works across the range of browsers you need to support.
+             * @param cursor The CSS to be used when setting the default cursor.
              */
-            update(time: number): void;
+            setDefaultCursor(cursor: string): void;
 
             /**
-             * Will always return an array.
-             * Array contains matching Interactive Objects.
-             * Array will be empty if no objects were matched.
-             * x/y = pointer x/y (un-translated)
-             * @param x [description]
-             * @param y [description]
-             * @param gameObjects [description]
-             * @param camera [description]
-             * @param output [description]
+             * Adds new Pointer objects to the Input Manager.
+             *
+             * By default Phaser creates 2 pointer objects: `mousePointer` and `pointer1`.
+             *
+             * You can create more either by calling this method, or by setting the `input.activePointers` property
+             * in the Game Config, up to a maximum of 10 pointers.
+             *
+             * The first 10 pointers are available via the `InputPlugin.pointerX` properties, once they have been added
+             * via this method.
+             * @param quantity The number of new Pointers to create. A maximum of 10 is allowed in total. Default 1.
+             */
+            addPointer(quantity?: integer): Phaser.Input.Pointer[];
+
+            /**
+             * Adds a callback to be invoked whenever the native DOM `mouseup` or `touchend` events are received.
+             * By setting the `isOnce` argument you can control if the callback is called once,
+             * or every time the DOM event occurs.
+             *
+             * Callbacks passed to this method are invoked _immediately_ when the DOM event happens,
+             * within the scope of the DOM event handler. Therefore, they are considered as 'native'
+             * from the perspective of the browser. This means they can be used for tasks such as
+             * opening new browser windows, or anything which explicitly requires user input to activate.
+             * However, as a result of this, they come with their own risks, and as such should not be used
+             * for general game input, but instead be reserved for special circumstances.
+             *
+             * If all you're trying to do is execute a callback when a pointer is released, then
+             * please use the internal Input event system instead.
+             *
+             * Please understand that these callbacks are invoked when the browser feels like doing so,
+             * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
+             * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
+             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
+             * solve.
+             * @param callback The callback to be invoked on this dom event.
+             * @param isOnce `true` if the callback will only be invoked once, `false` to call every time this event happens. Default true.
+             */
+            addUpCallback(callback: Function, isOnce?: boolean): this;
+
+            /**
+             * Adds a callback to be invoked whenever the native DOM `mousedown` or `touchstart` events are received.
+             * By setting the `isOnce` argument you can control if the callback is called once,
+             * or every time the DOM event occurs.
+             *
+             * Callbacks passed to this method are invoked _immediately_ when the DOM event happens,
+             * within the scope of the DOM event handler. Therefore, they are considered as 'native'
+             * from the perspective of the browser. This means they can be used for tasks such as
+             * opening new browser windows, or anything which explicitly requires user input to activate.
+             * However, as a result of this, they come with their own risks, and as such should not be used
+             * for general game input, but instead be reserved for special circumstances.
+             *
+             * If all you're trying to do is execute a callback when a pointer is down, then
+             * please use the internal Input event system instead.
+             *
+             * Please understand that these callbacks are invoked when the browser feels like doing so,
+             * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
+             * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
+             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
+             * solve.
+             * @param callback The callback to be invoked on this dom event.
+             * @param isOnce `true` if the callback will only be invoked once, `false` to call every time this event happens. Default true.
+             */
+            addDownCallback(callback: Function, isOnce?: boolean): this;
+
+            /**
+             * Adds a callback to be invoked whenever the native DOM `mousemove` or `touchmove` events are received.
+             * By setting the `isOnce` argument you can control if the callback is called once,
+             * or every time the DOM event occurs.
+             *
+             * Callbacks passed to this method are invoked _immediately_ when the DOM event happens,
+             * within the scope of the DOM event handler. Therefore, they are considered as 'native'
+             * from the perspective of the browser. This means they can be used for tasks such as
+             * opening new browser windows, or anything which explicitly requires user input to activate.
+             * However, as a result of this, they come with their own risks, and as such should not be used
+             * for general game input, but instead be reserved for special circumstances.
+             *
+             * If all you're trying to do is execute a callback when a pointer is moved, then
+             * please use the internal Input event system instead.
+             *
+             * Please understand that these callbacks are invoked when the browser feels like doing so,
+             * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
+             * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
+             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
+             * solve.
+             * @param callback The callback to be invoked on this dom event.
+             * @param isOnce `true` if the callback will only be invoked once, `false` to call every time this event happens. Default false.
+             */
+            addMoveCallback(callback: Function, isOnce?: boolean): this;
+
+            /**
+             * Performs a hit test using the given Pointer and camera, against an array of interactive Game Objects.
+             *
+             * The Game Objects are culled against the camera, and then the coordinates are translated into the local camera space
+             * and used to determine if they fall within the remaining Game Objects hit areas or not.
+             *
+             * If nothing is matched an empty array is returned.
+             *
+             * This method is called automatically by InputPlugin.hitTestPointer and doesn't usually need to be invoked directly.
+             * @param pointer The Pointer to test against.
+             * @param gameObjects An array of interactive Game Objects to check.
+             * @param camera The Camera which is being tested against.
+             * @param output An array to store the results in. If not given, a new empty array is created.
              */
             hitTest(
-                x: number,
-                y: number,
+                pointer: Phaser.Input.Pointer,
                 gameObjects: any[],
                 camera: Phaser.Cameras.Scene2D.Camera,
-                output: any[]
+                output?: any[]
             ): any[];
 
             /**
-             * x/y MUST be translated before being passed to this function,
-             * unless the gameObject is guaranteed to not be rotated or scaled in any way.
-             * @param gameObject [description]
-             * @param x [description]
-             * @param y [description]
+             * Checks if the given x and y coordinate are within the hit area of the Game Object.
+             *
+             * This method assumes that the coordinate values have already been translated into the space of the Game Object.
+             *
+             * If the coordinates are within the hit area they are set into the Game Objects Input `localX` and `localY` properties.
+             * @param gameObject The interactive Game Object to check against.
+             * @param x The translated x coordinate for the hit test.
+             * @param y The translated y coordinate for the hit test.
              */
             pointWithinHitArea(
                 gameObject: Phaser.GameObjects.GameObject,
@@ -28354,11 +29400,14 @@ declare namespace Phaser {
             ): boolean;
 
             /**
-             * x/y MUST be translated before being passed to this function,
-             * unless the gameObject is guaranteed to not be rotated or scaled in any way.
-             * @param object [description]
-             * @param x [description]
-             * @param y [description]
+             * Checks if the given x and y coordinate are within the hit area of the Interactive Object.
+             *
+             * This method assumes that the coordinate values have already been translated into the space of the Interactive Object.
+             *
+             * If the coordinates are within the hit area they are set into the Interactive Objects Input `localX` and `localY` properties.
+             * @param object The Interactive Object to check against.
+             * @param x The translated x coordinate for the hit test.
+             * @param y The translated y coordinate for the hit test.
              */
             pointWithinInteractiveObject(
                 object: Phaser.Input.InteractiveObject,
@@ -28367,216 +29416,236 @@ declare namespace Phaser {
             ): boolean;
 
             /**
-             * [description]
-             * @param pageX [description]
+             * Transforms the pageX and pageY values of a Pointer into the scaled coordinate space of the Input Manager.
+             * @param pointer The Pointer to transform the values for.
+             */
+            transformPointer(pointer: Phaser.Input.Pointer): number;
+
+            /**
+             * Transforms the pageX value into the scaled coordinate space of the Input Manager.
+             * @param pageX The DOM pageX value.
              */
             transformX(pageX: number): number;
 
             /**
-             * [description]
-             * @param pageY [description]
+             * Transforms the pageY value into the scaled coordinate space of the Input Manager.
+             * @param pageY The DOM pageY value.
              */
             transformY(pageY: number): number;
 
             /**
-             * [description]
+             * Returns the left offset of the Input bounds.
              */
             getOffsetX(): number;
 
             /**
-             * [description]
+             * Returns the top offset of the Input bounds.
              */
             getOffsetY(): number;
 
             /**
-             * [description]
+             * Returns the horizontal Input Scale value.
              */
             getScaleX(): number;
 
             /**
-             * [description]
+             * Returns the vertical Input Scale value.
              */
             getScaleY(): number;
 
             /**
-             * [description]
+             * Destroys the Input Manager and all of its systems.
+             *
+             * There is no way to recover from doing this.
              */
             destroy(): void;
         }
 
         /**
-         * [description]
+         * The Input Plugin belongs to a Scene and handles all input related events and operations for it.
+         *
+         * You can access it from within a Scene using `this.input`.
+         *
+         * It emits events directly. For example, you can do:
+         *
+         * ```javascript
+         * this.input.on('pointerdown', callback, context);
+         * ```
+         *
+         * To listen for a pointer down event anywhere on the game canvas.
+         *
+         * Game Objects can be enabled for input by calling their `setInteractive` method. After which they
+         * will directly emit input events:
+         *
+         * ```javascript
+         * var sprite = this.add.sprite(x, y, texture);
+         * sprite.setInteractive();
+         * sprite.on('pointerdown', callback, context);
+         * ```
+         *
+         * Please see the Input examples and tutorials for more information.
          */
         class InputPlugin extends Phaser.Events.EventEmitter {
             /**
              *
-             * @param scene The Scene that owns this plugin.
+             * @param scene A reference to the Scene that this Input Plugin is responsible for.
              */
             constructor(scene: Phaser.Scene);
 
             /**
-             * The Scene that owns this plugin.
+             * An instance of the Gamepad Plugin class, if enabled via the `input.gamepad` Scene or Game Config property.
+             * Use this to create access Gamepads connected to the browser and respond to gamepad buttons.
+             */
+            gamepad: Phaser.Input.Gamepad.GamepadPlugin;
+
+            /**
+             * A reference to the Scene that this Input Plugin is responsible for.
              */
             scene: Phaser.Scene;
 
             /**
-             * [description]
+             * A reference to the Scene Systems class.
              */
             systems: Phaser.Scenes.Systems;
 
             /**
-             * [description]
+             * A reference to the Scene Systems Settings.
              */
             settings: Phaser.Scenes.Settings.Object;
 
             /**
-             * [description]
+             * A reference to the Game Input Manager.
              */
             manager: Phaser.Input.InputManager;
 
             /**
-             * [description]
+             * If set, the Input Plugin will run its update loop every frame.
              */
             enabled: boolean;
 
             /**
-             * A reference to this.scene.sys.displayList (set in boot)
+             * A reference to the Scene Display List. This property is set during the `boot` method.
              */
             displayList: Phaser.GameObjects.DisplayList;
 
             /**
-             * A reference to the this.scene.sys.cameras (set in boot)
+             * A reference to the Scene Cameras Manager. This property is set during the `boot` method.
              */
-            cameras: null;
+            cameras: Phaser.Cameras.Scene2D.CameraManager;
 
             /**
-             * [description]
-             */
-            keyboard: Phaser.Input.Keyboard.KeyboardManager;
-
-            /**
-             * [description]
+             * A reference to the Mouse Manager.
+             *
+             * This property is only set if Mouse support has been enabled in your Game Configuration file.
+             *
+             * If you just wish to get access to the mouse pointer, use the `mousePointer` property instead.
              */
             mouse: Phaser.Input.Mouse.MouseManager;
 
             /**
-             * [description]
-             */
-            gamepad: Phaser.Input.Gamepad.GamepadManager;
-
-            /**
-             * Only fire callbacks and events on the top-most Game Object in the display list (emulating DOM behavior)
-             * and ignore any GOs below it, or call them all?
+             * When set to `true` (the default) the Input Plugin will emulate DOM behavior by only emitting events from
+             * the top-most Game Objects in the Display List.
+             *
+             * If set to `false` it will emit events from all Game Objects below a Pointer, not just the top one.
              */
             topOnly: boolean;
 
             /**
-             * How often should the pointer input be checked?
-             * Time given in ms
-             * Pointer will *always* be checked if it has been moved by the user.
-             * This controls how often it will be polled if it hasn't been moved.
+             * How often should the Pointers be checked?
+             *
+             * The value is a time, given in ms, and is the time that must have elapsed between game steps before
+             * the Pointers will be polled again. When a pointer is polled it runs a hit test to see which Game
+             * Objects are currently below it, or being interacted with it.
+             *
+             * Pointers will *always* be checked if they have been moved by the user, or press or released.
+             *
+             * This property only controls how often they will be polled if they have not been updated.
+             * You should set this if you want to have Game Objects constantly check against the pointers, even
+             * if the pointer didn't move itself.
+             *
              * Set to 0 to poll constantly. Set to -1 to only poll on user movement.
              */
             pollRate: integer;
 
             /**
-             * The distance, in pixels, the pointer has to move while being held down, before it thinks it is being dragged.
+             * The distance, in pixels, a pointer has to move while being held down, before it thinks it is being dragged.
              */
             dragDistanceThreshold: number;
 
             /**
-             * The amount of time, in ms, the pointer has to be held down before it thinks it is dragging.
+             * The amount of time, in ms, a pointer has to be held down before it thinks it is dragging.
              */
             dragTimeThreshold: number;
 
             /**
-             * [description]
+             * Checks to see if both this plugin and the Scene to which it belongs is active.
              */
-            preUpdate(): void;
+            isActive(): boolean;
 
             /**
-             * [description]
-             * @param gameObject [description]
+             * Clears a Game Object so it no longer has an Interactive Object associated with it.
+             * The Game Object is then queued for removal from the Input Plugin on the next update.
+             * @param gameObject The Game Object that will have its Interactive Object removed.
              */
             clear(
                 gameObject: Phaser.GameObjects.GameObject
             ): Phaser.GameObjects.GameObject;
 
             /**
-             * [description]
-             * @param gameObject [description]
+             * Disables Input on a single Game Object.
+             *
+             * An input disabled Game Object still retains its Interactive Object component and can be re-enabled
+             * at any time, by passing it to `InputPlugin.enable`.
+             * @param gameObject The Game Object to have its input system disabled.
              */
             disable(gameObject: Phaser.GameObjects.GameObject): void;
 
             /**
-             * [description]
-             * @param gameObject [description]
-             * @param shape [description]
-             * @param callback [description]
-             * @param dropZone [description] Default false.
+             * Enable a Game Object for interaction.
+             *
+             * If the Game Object already has an Interactive Object component, it is enabled and returned.
+             *
+             * Otherwise, a new Interactive Object component is created and assigned to the Game Object's `input` property.
+             *
+             * Input works by using hit areas, these are nearly always geometric shapes, such as rectangles or circles, that act as the hit area
+             * for the Game Object. However, you can provide your own hit area shape and callback, should you wish to handle some more advanced
+             * input detection.
+             *
+             * If no arguments are provided it will try and create a rectangle hit area based on the texture frame the Game Object is using. If
+             * this isn't a texture-bound object, such as a Graphics or BitmapText object, this will fail, and you'll need to provide a specific
+             * shape for it to use.
+             *
+             * You can also provide an Input Configuration Object as the only argument to this method.
+             * @param gameObject The Game Object to be enabled for input.
+             * @param shape Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
+             * @param callback The 'contains' function to invoke to check if the pointer is within the hit area.
+             * @param dropZone Is this Game Object a drop zone or not? Default false.
              */
             enable(
                 gameObject: Phaser.GameObjects.GameObject,
-                shape: object,
-                callback: HitAreaCallback,
+                shape?: Phaser.Input.InputConfiguration | any,
+                callback?: HitAreaCallback,
                 dropZone?: boolean
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
-             * @param pointer [description]
+             * Takes the given Pointer and performs a hit test against it, to see which interactive Game Objects
+             * it is currently above.
+             *
+             * The hit test is performed against which-ever Camera the Pointer is over. If it is over multiple
+             * cameras, it starts checking the camera at the top of the camera list, and if nothing is found, iterates down the list.
+             * @param pointer The Pointer to check against the Game Objects.
              */
-            hitTestPointer(pointer: Phaser.Input.Pointer): any[];
+            hitTestPointer(
+                pointer: Phaser.Input.Pointer
+            ): Phaser.GameObjects.GameObject[];
 
             /**
-             * [description]
-             * @param pointer The Pointer to check for events against.
-             */
-            processDownEvents(pointer: Phaser.Input.Pointer): integer;
-
-            /**
-             * [description]
-             * @param pointer [description]
-             * @param time [description]
-             */
-            processDragEvents(pointer: number, time: number): integer;
-
-            /**
-             * [description]
-             * @param pointer The pointer to check for events against.
-             */
-            processMoveEvents(pointer: Phaser.Input.Pointer): integer;
-
-            /**
-             * [description]
-             * @param pointer [description]
-             */
-            processOverOutEvents(pointer: Phaser.Input.Pointer): integer;
-
-            /**
-             * [description]
-             * @param pointer [description]
-             */
-            processUpEvents(pointer: Phaser.Input.Pointer): void;
-
-            /**
-             * Queues a Game Object for insertion into this Input Manager on the next update.
-             * @param child The Game Object to add.
-             */
-            queueForInsertion(
-                child: Phaser.GameObjects.GameObject
-            ): Phaser.Input.InputPlugin;
-
-            /**
-             * Queues a Game Object for removal from this Input Manager on the next update.
-             * @param child The Game Object to remove.
-             */
-            queueForRemoval(
-                child: Phaser.GameObjects.GameObject
-            ): Phaser.Input.InputPlugin;
-
-            /**
-             * [description]
+             * Sets the draggable state of the given array of Game Objects.
+             *
+             * They can either be set to be draggable, or can have their draggable state removed by passing `false`.
+             *
+             * A Game Object will not fire drag events unless it has been specifically enabled for drag.
              * @param gameObjects An array of Game Objects to change the draggable state on.
              * @param value Set to `true` if the Game Objects should be made draggable, `false` if they should be unset. Default true.
              */
@@ -28588,21 +29657,61 @@ declare namespace Phaser {
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Creates a function that can be passed to `setInteractive`, `enable` or `setHitArea` that will handle
+             * pixel-perfect input detection on an Image or Sprite based Game Object, or any custom class that extends them.
+             *
+             * The following will create a sprite that is clickable on any pixel that has an alpha value >= 1.
+             *
+             * ```javascript
+             * this.add.sprite(x, y, key).setInteractive(this.input.makePixelPerfect());
+             * ```
+             *
+             * The following will create a sprite that is clickable on any pixel that has an alpha value >= 150.
+             *
+             * ```javascript
+             * this.add.sprite(x, y, key).setInteractive(this.input.makePixelPerfect(150));
+             * ```
+             *
+             * Once you have made an Interactive Object pixel perfect it impacts all input related events for it: down, up,
+             * dragstart, drag, etc.
+             *
+             * As a pointer interacts with the Game Object it will constantly poll the texture, extracting a single pixel from
+             * the given coordinates and checking its color values. This is an expensive process, so should only be enabled on
+             * Game Objects that really need it.
+             *
+             * You cannot make non-texture based Game Objects pixel perfect. So this will not work on Graphics, BitmapText,
+             * Render Textures, Text, Tilemaps, Containers or Particles.
+             * @param alphaTolerance The alpha level that the pixel should be above to be included as a successful interaction. Default 1.
+             */
+            makePixelPerfect(alphaTolerance?: integer): Function;
+
+            /**
+             * Sets the hit area for the given array of Game Objects.
+             *
+             * A hit area is typically one of the geometric shapes Phaser provides, such as a `Phaser.Geom.Rectangle`
+             * or `Phaser.Geom.Circle`. However, it can be any object as long as it works with the provided callback.
+             *
+             * If no hit area is provided a Rectangle is created based on the size of the Game Object, if possible
+             * to calculate.
+             *
+             * The hit area callback is the function that takes an `x` and `y` coordinate and returns a boolean if
+             * those values fall within the area of the shape or not. All of the Phaser geometry objects provide this,
+             * such as `Phaser.Geom.Rectangle.Contains`.
              * @param gameObjects An array of Game Objects to set the hit area on.
-             * @param shape The shape or object to check if the pointer is within for hit area checks.
+             * @param shape Either an input configuration object, or a geometric shape that defines the hit area for the Game Object. If not specified a Rectangle will be used.
              * @param callback The 'contains' function to invoke to check if the pointer is within the hit area.
              */
             setHitArea(
                 gameObjects:
                     | Phaser.GameObjects.GameObject
                     | Phaser.GameObjects.GameObject[],
-                shape?: object,
+                shape?: Phaser.Input.InputConfiguration | any,
                 callback?: HitAreaCallback
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Sets the hit area for an array of Game Objects to be a `Phaser.Geom.Circle` shape, using
+             * the given coordinates and radius to control its position and size.
              * @param gameObjects An array of Game Objects to set as having a circle hit area.
              * @param x The center of the circle.
              * @param y The center of the circle.
@@ -28620,7 +29729,8 @@ declare namespace Phaser {
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Sets the hit area for an array of Game Objects to be a `Phaser.Geom.Ellipse` shape, using
+             * the given coordinates and dimensions to control its position and size.
              * @param gameObjects An array of Game Objects to set as having an ellipse hit area.
              * @param x The center of the ellipse.
              * @param y The center of the ellipse.
@@ -28640,7 +29750,8 @@ declare namespace Phaser {
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Sets the hit area for an array of Game Objects to be a `Phaser.Geom.Rectangle` shape, using
+             * the Game Objects texture frame to define the position and size of the hit area.
              * @param gameObjects An array of Game Objects to set as having an ellipse hit area.
              * @param callback The hit area callback. If undefined it uses Rectangle.Contains.
              */
@@ -28652,7 +29763,8 @@ declare namespace Phaser {
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Sets the hit area for an array of Game Objects to be a `Phaser.Geom.Rectangle` shape, using
+             * the given coordinates and dimensions to control its position and size.
              * @param gameObjects An array of Game Objects to set as having a rectangular hit area.
              * @param x The top-left of the rectangle.
              * @param y The top-left of the rectangle.
@@ -28672,7 +29784,8 @@ declare namespace Phaser {
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Sets the hit area for an array of Game Objects to be a `Phaser.Geom.Triangle` shape, using
+             * the given coordinates to control the position of its points.
              * @param gameObjects An array of Game Objects to set as having a  triangular hit area.
              * @param x1 The x coordinate of the first point of the triangle.
              * @param y1 The y coordinate of the first point of the triangle.
@@ -28696,69 +29809,178 @@ declare namespace Phaser {
             ): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Sets the Pointers to always poll.
+             *
+             * When a pointer is polled it runs a hit test to see which Game Objects are currently below it,
+             * or being interacted with it, regardless if the Pointer has actually moved or not.
+             *
+             * You should enable this if you want objects in your game to fire over / out events, and the objects
+             * are constantly moving, but the pointer may not have. Polling every frame has additional computation
+             * costs, especially if there are a large number of interactive objects in your game.
              */
             setPollAlways(): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
+             * Sets the Pointers to only poll when they are moved or updated.
+             *
+             * When a pointer is polled it runs a hit test to see which Game Objects are currently below it,
+             * or being interacted with it.
              */
             setPollOnMove(): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
-             * @param value [description]
+             * Sets the poll rate value. This is the amount of time that should have elapsed before a pointer
+             * will be polled again. See the `setPollAlways` and `setPollOnMove` methods.
+             * @param value The amount of time, in ms, that should elapsed before re-polling the pointers.
              */
             setPollRate(value: number): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
-             * @param value [description]
+             * When set to `true` the global Input Manager will emulate DOM behavior by only emitting events from
+             * the top-most Game Objects in the Display List.
+             *
+             * If set to `false` it will emit events from all Game Objects below a Pointer, not just the top one.
+             * @param value `true` to only include the top-most Game Object, or `false` to include all Game Objects in a hit test.
              */
             setGlobalTopOnly(value: boolean): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
-             * @param value [description]
+             * When set to `true` this Input Plugin will emulate DOM behavior by only emitting events from
+             * the top-most Game Objects in the Display List.
+             *
+             * If set to `false` it will emit events from all Game Objects below a Pointer, not just the top one.
+             * @param value `true` to only include the top-most Game Object, or `false` to include all Game Objects in a hit test.
              */
             setTopOnly(value: boolean): Phaser.Input.InputPlugin;
 
             /**
-             * Given an array of Game Objects, sort the array and return it,
-             * so that the objects are in index order with the lowest at the bottom.
-             * @param gameObjects [description]
+             * Given an array of Game Objects, sort the array and return it, so that the objects are in depth index order
+             * with the lowest at the bottom.
+             * @param gameObjects An array of Game Objects to be sorted.
              */
             sortGameObjects(
                 gameObjects: Phaser.GameObjects.GameObject[]
             ): Phaser.GameObjects.GameObject[];
 
             /**
-             * Return the child lowest down the display list (with the smallest index)
-             * Will iterate through all parent containers, if present.
-             * @param childA The first Game Object to compare.
-             * @param childB The second Game Object to compare.
-             */
-            sortHandlerGO(
-                childA: Phaser.GameObjects.GameObject,
-                childB: Phaser.GameObjects.GameObject
-            ): integer;
-
-            /**
-             * [description]
+             * Causes the Input Manager to stop emitting any events for the remainder of this game step.
              */
             stopPropagation(): Phaser.Input.InputPlugin;
 
             /**
-             * [description]
-             * @param time [description]
-             * @param delta [description]
+             * Adds a callback to be invoked whenever the native DOM `mouseup` or `touchend` events are received.
+             * By setting the `isOnce` argument you can control if the callback is called once,
+             * or every time the DOM event occurs.
+             *
+             * Callbacks passed to this method are invoked _immediately_ when the DOM event happens,
+             * within the scope of the DOM event handler. Therefore, they are considered as 'native'
+             * from the perspective of the browser. This means they can be used for tasks such as
+             * opening new browser windows, or anything which explicitly requires user input to activate.
+             * However, as a result of this, they come with their own risks, and as such should not be used
+             * for general game input, but instead be reserved for special circumstances.
+             *
+             * If all you're trying to do is execute a callback when a pointer is released, then
+             * please use the internal Input event system instead.
+             *
+             * Please understand that these callbacks are invoked when the browser feels like doing so,
+             * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
+             * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
+             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
+             * solve.
+             * @param callback The callback to be invoked on this DOM event.
+             * @param isOnce `true` if the callback will only be invoked once, `false` to call every time this event happens. Default true.
              */
-            update(time: number, delta: number): void;
+            addUpCallback(callback: Function, isOnce?: boolean): this;
 
             /**
-             * The current active input Pointer.
+             * Adds a callback to be invoked whenever the native DOM `mousedown` or `touchstart` events are received.
+             * By setting the `isOnce` argument you can control if the callback is called once,
+             * or every time the DOM event occurs.
+             *
+             * Callbacks passed to this method are invoked _immediately_ when the DOM event happens,
+             * within the scope of the DOM event handler. Therefore, they are considered as 'native'
+             * from the perspective of the browser. This means they can be used for tasks such as
+             * opening new browser windows, or anything which explicitly requires user input to activate.
+             * However, as a result of this, they come with their own risks, and as such should not be used
+             * for general game input, but instead be reserved for special circumstances.
+             *
+             * If all you're trying to do is execute a callback when a pointer is down, then
+             * please use the internal Input event system instead.
+             *
+             * Please understand that these callbacks are invoked when the browser feels like doing so,
+             * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
+             * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
+             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
+             * solve.
+             * @param callback The callback to be invoked on this dom event.
+             * @param isOnce `true` if the callback will only be invoked once, `false` to call every time this event happens. Default true.
              */
-            readonly activePointer: Phaser.Input.Pointer;
+            addDownCallback(callback: Function, isOnce?: boolean): this;
+
+            /**
+             * Adds a callback to be invoked whenever the native DOM `mousemove` or `touchmove` events are received.
+             * By setting the `isOnce` argument you can control if the callback is called once,
+             * or every time the DOM event occurs.
+             *
+             * Callbacks passed to this method are invoked _immediately_ when the DOM event happens,
+             * within the scope of the DOM event handler. Therefore, they are considered as 'native'
+             * from the perspective of the browser. This means they can be used for tasks such as
+             * opening new browser windows, or anything which explicitly requires user input to activate.
+             * However, as a result of this, they come with their own risks, and as such should not be used
+             * for general game input, but instead be reserved for special circumstances.
+             *
+             * If all you're trying to do is execute a callback when a pointer is moved, then
+             * please use the internal Input event system instead.
+             *
+             * Please understand that these callbacks are invoked when the browser feels like doing so,
+             * which may be entirely out of the normal flow of the Phaser Game Loop. Therefore, you should absolutely keep
+             * Phaser related operations to a minimum in these callbacks. For example, don't destroy Game Objects,
+             * change Scenes or manipulate internal systems, otherwise you run a very real risk of creating
+             * heisenbugs (https://en.wikipedia.org/wiki/Heisenbug) that prove a challenge to reproduce, never mind
+             * solve.
+             * @param callback The callback to be invoked on this dom event.
+             * @param isOnce `true` if the callback will only be invoked once, `false` to call every time this event happens. Default false.
+             */
+            addMoveCallback(callback: Function, isOnce?: boolean): this;
+
+            /**
+             * Adds new Pointer objects to the Input Manager.
+             *
+             * By default Phaser creates 2 pointer objects: `mousePointer` and `pointer1`.
+             *
+             * You can create more either by calling this method, or by setting the `input.activePointers` property
+             * in the Game Config, up to a maximum of 10 pointers.
+             *
+             * The first 10 pointers are available via the `InputPlugin.pointerX` properties, once they have been added
+             * via this method.
+             * @param quantity The number of new Pointers to create. A maximum of 10 is allowed in total. Default 1.
+             */
+            addPointer(quantity?: integer): Phaser.Input.Pointer[];
+
+            /**
+             * Tells the Input system to set a custom cursor.
+             *
+             * This cursor will be the default cursor used when interacting with the game canvas.
+             *
+             * If an Interactive Object also sets a custom cursor, this is the cursor that is reset after its use.
+             *
+             * Any valid CSS cursor value is allowed, including paths to image files, i.e.:
+             *
+             * ```javascript
+             * this.input.setDefaultCursor('url(assets/cursors/sword.cur), pointer');
+             * ```
+             *
+             * Please read about the differences between browsers when it comes to the file formats and sizes they support:
+             *
+             * https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
+             * https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_User_Interface/Using_URL_values_for_the_cursor_property
+             *
+             * It's up to you to pick a suitable cursor format that works across the range of browsers you need to support.
+             * @param cursor The CSS to be used when setting the default cursor.
+             */
+            setDefaultCursor(cursor: string): Phaser.Input.InputPlugin;
 
             /**
              * The x coordinates of the ActivePointer based on the first camera in the camera list.
@@ -28771,54 +29993,174 @@ declare namespace Phaser {
              * This is only safe to use if your game has just 1 non-transformed camera and doesn't use multi-touch.
              */
             readonly y: number;
+
+            /**
+             * The mouse has its own unique Pointer object, which you can reference directly if making a _desktop specific game_.
+             * If you are supporting both desktop and touch devices then do not use this property, instead use `activePointer`
+             * which will always map to the most recently interacted pointer.
+             */
+            readonly mousePointer: Phaser.Input.Pointer;
+
+            /**
+             * The current active input Pointer.
+             */
+            readonly activePointer: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer1: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer2: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer3: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer4: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer5: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer6: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer7: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer8: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer9: Phaser.Input.Pointer;
+
+            /**
+             * A touch-based Pointer object.
+             * This will be `undefined` by default unless you add a new Pointer using `addPointer`.
+             */
+            readonly pointer10: Phaser.Input.Pointer;
+
+            /**
+             * An instance of the Keyboard Plugin class, if enabled via the `input.keyboard` Scene or Game Config property.
+             * Use this to create Key objects and listen for keyboard specific events.
+             */
+            keyboard: Phaser.Input.Keyboard.KeyboardPlugin;
         }
+
+        type InputConfiguration = {
+            /**
+             * The object / shape to use as the Hit Area. If not given it will try to create a Rectangle based on the texture frame.
+             */
+            hitArea?: any;
+            /**
+             * The callback that determines if the pointer is within the Hit Area shape or not.
+             */
+            hitAreaCallback?: Function;
+            /**
+             * If `true` the Interactive Object will be set to be draggable and emit drag events.
+             */
+            draggable?: boolean;
+            /**
+             * If `true` the Interactive Object will be set to be a drop zone for draggable objects.
+             */
+            dropZone?: boolean;
+            /**
+             * If `true` the Interactive Object will set the `pointer` hand cursor when a pointer is over it. This is a short-cut for setting `cursor: 'pointer'`.
+             */
+            useHandCursor?: boolean;
+            /**
+             * The CSS string to be used when the cursor is over this Interactive Object.
+             */
+            cursor?: string;
+            /**
+             * If `true` the a pixel perfect function will be set for the hit area callback. Only works with texture based Game Objects.
+             */
+            pixelPerfect?: boolean;
+            /**
+             * If `pixelPerfect` is set, this is the alpha tolerance threshold value used in the callback.
+             */
+            alphaTolerance?: integer;
+        };
 
         namespace Keyboard {
             /**
-             * [description]
+             * A KeyCombo will listen for a specific string of keys from the Keyboard, and when it receives them
+             * it will emit a `keycombomatch` event from the Keyboard Manager.
              *
-             * `keys` argument can be:
+             * The keys to be listened for can be defined as:
              *
-             * A string (ATARI)
+             * A string (i.e. 'ATARI')
              * An array of either integers (key codes) or strings, or a mixture of both
              * An array of objects (such as Key objects) with a public 'keyCode' property
+             *
+             * For example, to listen for the Konami code (up, up, up, down, down, down, left, left, left, right, right, right)
+             * you could pass the following array of key codes:
+             *
+             * ```javascript
+             * this.input.keyboard.createCombo([ 38, 38, 38, 40, 40, 40, 37, 37, 37, 39, 39, 39 ], { resetOnMatch: true });
+             *
+             * this.input.keyboard.on('keycombomatch', function (event) {
+             *     console.log('Konami Code entered!');
+             * });
+             * ```
+             *
+             * Or, to listen for the user entering the word PHASER:
+             *
+             * ```javascript
+             * this.input.keyboard.createCombo('PHASER');
+             * ```
              */
             class KeyCombo {
                 /**
                  *
-                 * @param keyboardManager [description]
-                 * @param keys [description]
-                 * @param config [description]
+                 * @param keyboardPlugin A reference to the Keyboard Plugin.
+                 * @param keys The keys that comprise this combo.
+                 * @param config A Key Combo configuration object.
                  */
                 constructor(
-                    keyboardManager: Phaser.Input.Keyboard.KeyboardManager,
+                    keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin,
                     keys: string | integer[] | object[],
                     config?: KeyComboConfig
                 );
 
                 /**
-                 * Used internally by the KeyCombo class.
-                 * Return `true` if it reached the end of the combo, `false` if not.
-                 * @param event [description]
-                 * @param combo [description]
+                 * A reference to the Keyboard Manager
                  */
-                static AdvanceKeyCombo(
-                    event: KeyboardEvent,
-                    combo: Phaser.Input.Keyboard.KeyCombo
-                ): boolean;
+                manager: Phaser.Input.Keyboard.KeyboardPlugin;
 
                 /**
-                 * [description]
-                 */
-                manager: Phaser.Input.Keyboard.KeyboardManager;
-
-                /**
-                 * [description]
+                 * A flag that controls if this Key Combo is actively processing keys or not.
                  */
                 enabled: boolean;
 
                 /**
-                 * [description]
+                 * An array of the keycodes that comprise this combo.
                  */
                 keyCodes: any[];
 
@@ -28830,7 +30172,7 @@ declare namespace Phaser {
                 /**
                  * The current index of the key being waited for in the 'keys' string.
                  */
-                index: number;
+                index: integer;
 
                 /**
                  * The length of this combo (in keycodes)
@@ -28863,7 +30205,7 @@ declare namespace Phaser {
                 maxKeyDelay: integer;
 
                 /**
-                 * If previously matched and they press Key 1 again, will it reset?
+                 * If previously matched and they press the first key of the combo again, will it reset?
                  */
                 resetOnMatch: boolean;
 
@@ -28873,188 +30215,190 @@ declare namespace Phaser {
                 deleteOnMatch: boolean;
 
                 /**
-                 * [description]
-                 */
-                onKeyDown: KeyboardKeydownCallback;
-
-                /**
                  * How far complete is this combo? A value between 0 and 1.
                  */
                 readonly progress: number;
 
                 /**
-                 * [description]
+                 * Destroys this Key Combo and all of its references.
                  */
                 destroy(): void;
-
-                /**
-                 * Used internally by the KeyCombo class.
-                 * @param event [description]
-                 * @param combo [description]
-                 */
-                static ProcessKeyCombo(
-                    event: KeyboardEvent,
-                    combo: Phaser.Input.Keyboard.KeyCombo
-                ): boolean;
-
-                /**
-                 * Used internally by the KeyCombo class.
-                 * @param combo The KeyCombo to reset.
-                 */
-                static ResetKeyCombo(
-                    combo: Phaser.Input.Keyboard.KeyCombo
-                ): Phaser.Input.Keyboard.KeyCombo;
             }
 
             /**
-             * The Keyboard class monitors keyboard input and dispatches keyboard events.
+             * The Keyboard Plugin is an input plugin that belongs to the Scene-owned Input system.
              *
-             * _Note_: many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting.
+             * Its role is to listen for native DOM Keyboard Events and then process them.
+             *
+             * You do not need to create this class directly, the Input system will create an instance of it automatically.
+             *
+             * You can access it from within a Scene using `this.input.keyboard`. For example, you can do:
+             *
+             * ```javascript
+             * this.input.keyboard.on('keydown', callback, context);
+             * ```
+             *
+             * Or, to listen for a specific key:
+             *
+             * ```javascript
+             * this.input.keyboard.on('keydown_A', callback, context);
+             * ```
+             *
+             * You can also create Key objects, which you can then poll in your game loop:
+             *
+             * ```javascript
+             * var spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+             * ```
+             *
+             * _Note_: Many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting.
              * See http://www.html5gamedevs.com/topic/4876-impossible-to-use-more-than-2-keyboard-input-buttons-at-the-same-time/ for more details.
              *
              * Also please be aware that certain browser extensions can disable or override Phaser keyboard handling.
-             * For example the Chrome extension vimium is known to disable Phaser from using the D key. And there are others.
-             * So please check your extensions before opening Phaser issues.
+             * For example the Chrome extension vimium is known to disable Phaser from using the D key, while EverNote disables the backtick key.
+             * And there are others. So, please check your extensions before opening Phaser issues about keys that don't work.
              */
-            class KeyboardManager extends Phaser.Events.EventEmitter {
+            class KeyboardPlugin extends Phaser.Events.EventEmitter {
                 /**
                  *
-                 * @param inputManager [description]
+                 * @param sceneInputPlugin A reference to the Scene Input Plugin that the KeyboardPlugin belongs to.
                  */
-                constructor(inputManager: Phaser.Input.InputManager);
+                constructor(sceneInputPlugin: Phaser.Input.InputPlugin);
 
                 /**
-                 * [description]
+                 * A reference to the Scene that this Input Plugin is responsible for.
                  */
-                manager: Phaser.Input.InputManager;
+                scene: Phaser.Scene;
 
                 /**
-                 * [description]
+                 * A reference to the Scene Systems Settings.
+                 */
+                settings: Phaser.Scenes.Settings.Object;
+
+                /**
+                 * A reference to the Scene Input Plugin that created this Keyboard Plugin.
+                 */
+                sceneInputPlugin: Phaser.Input.InputPlugin;
+
+                /**
+                 * A boolean that controls if the Keyboard Plugin is enabled or not.
+                 * Can be toggled on the fly.
                  */
                 enabled: boolean;
 
                 /**
-                 * [description]
+                 * The Keyboard Event target, as defined in the Scene or Game Config.
+                 * Typically the browser window, but can be any interactive DOM element.
                  */
-                target: object;
+                target: any;
 
                 /**
-                 * [description]
+                 * An array of Key objects to process.
                  */
                 keys: Phaser.Input.Keyboard.Key[];
 
                 /**
-                 * [description]
+                 * An array of KeyCombo objects to process.
                  */
                 combos: Phaser.Input.Keyboard.KeyCombo[];
 
                 /**
-                 * [description]
+                 * Checks to see if both this plugin and the Scene to which it belongs is active.
                  */
-                captures: any[];
+                isActive(): boolean;
 
                 /**
-                 * [description]
-                 */
-                queue: KeyboardEvent[];
-
-                /**
-                 * [description]
-                 */
-                handler: KeyboardHandler;
-
-                /**
-                 * The Boot handler is called by Phaser.Game when it first starts up.
-                 */
-                boot(): void;
-
-                /**
-                 * [description]
-                 */
-                startListeners(): void;
-
-                /**
-                 * [description]
-                 */
-                stopListeners(): void;
-
-                /**
-                 * Creates and returns an object containing 4 hotkeys for Up, Down, Left and Right, and also space and shift.
+                 * Creates and returns an object containing 4 hotkeys for Up, Down, Left and Right, and also Space Bar and shift.
                  */
                 createCursorKeys(): CursorKeys;
 
                 /**
                  * A practical way to create an object containing user selected hotkeys.
                  *
-                 * For example,
+                 * For example:
                  *
-                 *     addKeys({ 'up': Phaser.Input.Keyboard.KeyCodes.W, 'down': Phaser.Input.Keyboard.KeyCodes.S });
+                 * ```javascript
+                 * this.input.keyboard.addKeys({ 'up': Phaser.Input.Keyboard.KeyCodes.W, 'down': Phaser.Input.Keyboard.KeyCodes.S });
+                 * ```
                  *
-                 * would return an object containing properties (`up` and `down`) referring to {@link Phaser.Input.Keyboard.Key} objects.
-                 * @param keys [description]
+                 * would return an object containing the properties (`up` and `down`) mapped to W and S {@link Phaser.Input.Keyboard.Key} objects.
+                 *
+                 * You can also pass in a comma-separated string:
+                 *
+                 * ```javascript
+                 * this.input.keyboard.addKeys('W,S,A,D');
+                 * ```
+                 *
+                 * Which will return an object with the properties W, S, A and D mapped to the relevant Key objects.
+                 *
+                 * To use non-alpha numeric keys, use a string, such as 'UP', 'SPACE' or 'LEFT'.
+                 * @param keys An object containing Key Codes, or a comma-separated string.
                  */
-                addKeys(keys: object): object;
+                addKeys(keys: object | string): object;
 
                 /**
-                 * If you need more fine-grained control over a Key you can create a new Phaser.Key object via this method.
-                 * The Key object can then be polled, have events attached to it, etc.
-                 * @param keyCode [description]
+                 * Adds a Key object to this Keyboard Plugin.
+                 *
+                 * The given argument can be either an existing Key object, a string, such as `A` or `SPACE`, or a key code value.
+                 *
+                 * If a Key object is given, and one already exists matching the same key code, the existing one is replaced with the new one.
+                 * @param key Either a Key object, a string, such as `A` or `SPACE`, or a key code value.
                  */
-                addKey(keyCode: string | integer): Phaser.Input.Keyboard.Key;
+                addKey(
+                    key: Phaser.Input.Keyboard.Key | string | integer
+                ): Phaser.Input.Keyboard.Key;
 
                 /**
-                 * Removes a Key object from the Keyboard manager.
-                 * @param keyCode [description]
+                 * Removes a Key object from this Keyboard Plugin.
+                 *
+                 * The given argument can be either a Key object, a string, such as `A` or `SPACE`, or a key code value.
+                 * @param key Either a Key object, a string, such as `A` or `SPACE`, or a key code value.
                  */
-                removeKey(keyCode: string | integer): void;
-
-                /**
-                 * [description]
-                 * @param keyCodes [description]
-                 */
-                addKeyCapture(
-                    keyCodes: string | integer | string[] | integer[]
+                removeKey(
+                    key: Phaser.Input.Keyboard.Key | string | integer
                 ): void;
 
                 /**
-                 * [description]
-                 * @param keyCodes [description]
-                 */
-                removeKeyCapture(
-                    keyCodes: string | integer | string[] | integer[]
-                ): void;
-
-                /**
-                 * [description]
-                 * @param keys [description]
-                 * @param config [description]
+                 * Creates a new KeyCombo.
+                 *
+                 * A KeyCombo will listen for a specific string of keys from the Keyboard, and when it receives them
+                 * it will emit a `keycombomatch` event from this Keyboard Plugin.
+                 *
+                 * The keys to be listened for can be defined as:
+                 *
+                 * A string (i.e. 'ATARI')
+                 * An array of either integers (key codes) or strings, or a mixture of both
+                 * An array of objects (such as Key objects) with a public 'keyCode' property
+                 *
+                 * For example, to listen for the Konami code (up, up, up, down, down, down, left, left, left, right, right, right)
+                 * you could pass the following array of key codes:
+                 *
+                 * ```javascript
+                 * this.input.keyboard.createCombo([ 38, 38, 38, 40, 40, 40, 37, 37, 37, 39, 39, 39 ], { resetOnMatch: true });
+                 *
+                 * this.input.keyboard.on('keycombomatch', function (event) {
+                 *     console.log('Konami Code entered!');
+                 * });
+                 * ```
+                 *
+                 * Or, to listen for the user entering the word PHASER:
+                 *
+                 * ```javascript
+                 * this.input.keyboard.createCombo('PHASER');
+                 * ```
+                 * @param keys The keys that comprise this combo.
+                 * @param config A Key Combo configuration object.
                  */
                 createCombo(
                     keys: string | integer[] | object[],
-                    config: KeyComboConfig
+                    config?: KeyComboConfig
                 ): Phaser.Input.Keyboard.KeyCombo;
-
-                /**
-                 * [description]
-                 */
-                update(): void;
-
-                /**
-                 * [description]
-                 */
-                shutdown(): void;
-
-                /**
-                 * [description]
-                 */
-                destroy(): void;
             }
 
             /**
              * Returns `true` if the Key was pressed down within the `duration` value given, or `false` if it either isn't down,
              * or was pressed down longer ago than then given duration.
-             * @param key [description]
-             * @param duration [description] Default 50.
+             * @param key The Key object to test.
+             * @param duration The duration, in ms, within which the key must have been pressed down. Default 50.
              */
             function DownDuration(
                 key: Phaser.Input.Keyboard.Key,
@@ -29063,19 +30407,23 @@ declare namespace Phaser {
 
             /**
              * The justDown value allows you to test if this Key has just been pressed down or not.
+             *
              * When you check this value it will return `true` if the Key is down, otherwise `false`.
+             *
              * You can only call justDown once per key press. It will only return `true` once, until the Key is released and pressed down again.
-             * This allows you to use it in situations where you want to check if this key is down without using a Signal, such as in a core game loop.
-             * @param key [description]
+             * This allows you to use it in situations where you want to check if this key is down without using an event, such as in a core game loop.
+             * @param key The Key to check to see if it's just down or not.
              */
             function JustDown(key: Phaser.Input.Keyboard.Key): boolean;
 
             /**
              * The justUp value allows you to test if this Key has just been released or not.
+             *
              * When you check this value it will return `true` if the Key is up, otherwise `false`.
-             * You can only call justUp once per key release. It will only return `true` once, until the Key is pressed down and released again.
-             * This allows you to use it in situations where you want to check if this key is up without using a Signal, such as in a core game loop.
-             * @param key [description]
+             *
+             * You can only call JustUp once per key release. It will only return `true` once, until the Key is pressed down and released again.
+             * This allows you to use it in situations where you want to check if this key is up without using an event, such as in a core game loop.
+             * @param key The Key to check to see if it's just up or not.
              */
             function JustUp(key: Phaser.Input.Keyboard.Key): boolean;
 
@@ -29203,6 +30551,16 @@ declare namespace Phaser {
                 SEVEN,
                 EIGHT,
                 NINE,
+                NUMPAD_ZERO,
+                NUMPAD_ONE,
+                NUMPAD_TWO,
+                NUMPAD_THREE,
+                NUMPAD_FOUR,
+                NUMPAD_FIVE,
+                NUMPAD_SIX,
+                NUMPAD_SEVEN,
+                NUMPAD_EIGHT,
+                NUMPAD_NINE,
                 A,
                 B,
                 C,
@@ -29255,30 +30613,10 @@ declare namespace Phaser {
             }
 
             /**
-             * Used internally by the KeyboardManager.
-             * @param key [description]
-             * @param event [description]
-             */
-            function ProcessKeyDown(
-                key: Phaser.Input.Keyboard.Key,
-                event: KeyboardEvent
-            ): Phaser.Input.Keyboard.Key;
-
-            /**
-             * Used internally by the KeyboardManager.
-             * @param key [description]
-             * @param event [description]
-             */
-            function ProcessKeyUp(
-                key: Phaser.Input.Keyboard.Key,
-                event: KeyboardEvent
-            ): Phaser.Input.Keyboard.Key;
-
-            /**
              * Returns `true` if the Key was released within the `duration` value given, or `false` if it either isn't up,
              * or was released longer ago than then given duration.
-             * @param key [description]
-             * @param duration [description] Default 50.
+             * @param key The Key object to test.
+             * @param duration The duration, in ms, within which the key must have been released. Default 50.
              */
             function UpDuration(
                 key: Phaser.Input.Keyboard.Key,
@@ -29288,17 +30626,21 @@ declare namespace Phaser {
 
         namespace Mouse {
             /**
-             * [description]
+             * The Mouse Manager is a helper class that belongs to the Input Manager.
+             *
+             * Its role is to listen for native DOM Mouse Events and then pass them onto the Input Manager for further processing.
+             *
+             * You do not need to create this class directly, the Input Manager will create an instance of it automatically.
              */
             class MouseManager {
                 /**
                  *
-                 * @param inputManager [description]
+                 * @param inputManager A reference to the Input Manager.
                  */
                 constructor(inputManager: Phaser.Input.InputManager);
 
                 /**
-                 * [description]
+                 * A reference to the Input Manager.
                  */
                 manager: Phaser.Input.InputManager;
 
@@ -29308,19 +30650,16 @@ declare namespace Phaser {
                 capture: boolean;
 
                 /**
-                 * [description]
+                 * A boolean that controls if the Mouse Manager is enabled or not.
+                 * Can be toggled on the fly.
                  */
                 enabled: boolean;
 
                 /**
-                 * [description]
+                 * The Touch Event target, as defined in the Game Config.
+                 * Typically the canvas to which the game is rendering, but can be any interactive DOM element.
                  */
-                target: null;
-
-                /**
-                 * [description]
-                 */
-                handler: MouseHandler;
+                target: any;
 
                 /**
                  * If the mouse has been pointer locked successfully this will be set to true.
@@ -29328,12 +30667,12 @@ declare namespace Phaser {
                 locked: boolean;
 
                 /**
-                 * [description]
-                 */
-                boot(): void;
-
-                /**
-                 * [description]
+                 * Attempts to disable the context menu from appearing if you right-click on the browser.
+                 *
+                 * Works by listening for the `contextmenu` event and prevent defaulting it.
+                 *
+                 * Use this if you need to enable right-button mouse support in your game, and the browser
+                 * menu keeps getting in the way.
                  */
                 disableContextMenu(): Phaser.Input.Mouse.MouseManager;
 
@@ -29355,7 +30694,7 @@ declare namespace Phaser {
                  * Internal pointerLockChange handler.
                  * @param event The native event from the browser.
                  */
-                pointerLockChange(event: MouseHandler): void;
+                pointerLockChange(event: MouseEvent): void;
 
                 /**
                  * If the browser supports pointer lock, this will request that the pointer lock is released. If
@@ -29365,50 +30704,82 @@ declare namespace Phaser {
                 releasePointerLock(): void;
 
                 /**
-                 * [description]
+                 * The Mouse Move Event Handler.
+                 * @param event The native DOM Mouse Move Event.
+                 */
+                onMouseMove(event: MouseEvent): void;
+
+                /**
+                 * The Mouse Down Event Handler.
+                 * @param event The native DOM Mouse Down Event.
+                 */
+                onMouseDown(event: MouseEvent): void;
+
+                /**
+                 * The Mouse Up Event Handler.
+                 * @param event The native DOM Mouse Up Event.
+                 */
+                onMouseUp(event: MouseEvent): void;
+
+                /**
+                 * Starts the Mouse Event listeners running.
+                 * This is called automatically and does not need to be manually invoked.
                  */
                 startListeners(): void;
 
                 /**
-                 * [description]
+                 * Stops the Mouse Event listeners.
+                 * This is called automatically and does not need to be manually invoked.
                  */
                 stopListeners(): void;
 
                 /**
-                 * [description]
+                 * Destroys this Mouse Manager instance.
                  */
                 destroy(): void;
             }
         }
 
         /**
-         * [description]
+         * A Pointer object encapsulates both mouse and touch input within Phaser.
+         *
+         * By default, Phaser will create 2 pointers for your game to use. If you require more, i.e. for a multi-touch
+         * game, then use the `InputPlugin.addPointer` method to do so, rather than instantiating this class directly,
+         * otherwise it won't be managed by the input system.
+         *
+         * You can reference the current active pointer via `InputPlugin.activePointer`. You can also use the properties
+         * `InputPlugin.pointer1` through to `pointer10`, for each pointer you have enabled in your game.
+         *
+         * The properties of this object are set by the Input Plugin during processing. This object is then sent in all
+         * input related events that the Input Plugin emits, so you can reference properties from it directly in your
+         * callbacks.
          */
         class Pointer {
             /**
              *
-             * @param manager [description]
-             * @param id [description]
+             * @param manager A reference to the Input Manager.
+             * @param id The internal ID of this Pointer.
              */
             constructor(manager: Phaser.Input.InputManager, id: integer);
 
             /**
-             * [description]
+             * A reference to the Input Manager.
              */
             manager: Phaser.Input.InputManager;
 
             /**
-             * [description]
+             * The internal ID of this Pointer.
              */
-            id: integer;
+            readonly id: integer;
 
             /**
-             * [description]
+             * The most recent native DOM Event this Pointer has processed.
              */
-            event: null;
+            event: TouchEvent | MouseEvent;
 
             /**
              * The camera the Pointer interacted with during its last update.
+             *
              * A Pointer can only ever interact with one camera at once, which will be the top-most camera
              * in the list should multiple cameras be positioned on-top of each other.
              */
@@ -29421,13 +30792,26 @@ declare namespace Phaser {
              * 4: Wheel button or middle button
              * 8: 4th button (typically the "Browser Back" button)
              * 16: 5th button (typically the "Browser Forward" button)
+             *
+             * For a mouse configured for left-handed use, the button actions are reversed.
+             * In this case, the values are read from right to left.
              */
-            buttons: number;
+            buttons: integer;
 
             /**
-             * [description]
+             * The position of the Pointer in screen space.
              */
             position: Phaser.Math.Vector2;
+
+            /**
+             * The x position of this Pointer, translated into the coordinate space of the most recent Camera it interacted with.
+             */
+            worldX: number;
+
+            /**
+             * The y position of this Pointer, translated into the coordinate space of the most recent Camera it interacted with.
+             */
+            worldY: number;
 
             /**
              * X coordinate of the Pointer when Button 1 (left button), or Touch, was pressed, used for dragging objects.
@@ -29479,22 +30863,22 @@ declare namespace Phaser {
             isDown: boolean;
 
             /**
-             * [description]
+             * A dirty flag for this Pointer, used internally by the Input Plugin.
              */
             dirty: boolean;
 
             /**
-             * [description]
+             * Is this Pointer considered as being "just down" or not?
              */
             justDown: boolean;
 
             /**
-             * [description]
+             * Is this Pointer considered as being "just up" or not?
              */
             justUp: boolean;
 
             /**
-             * [description]
+             * Is this Pointer considered as being "just moved" or not?
              */
             justMoved: boolean;
 
@@ -29514,9 +30898,27 @@ declare namespace Phaser {
             movementY: number;
 
             /**
-             * [description]
-             * @param camera [description]
-             * @param output [description]
+             * The identifier property of the Pointer as set by the DOM event when this Pointer is started.
+             */
+            identifier: number;
+
+            /**
+             * The pointerId property of the Pointer as set by the DOM event when this Pointer is started.
+             * The browser can and will recycle this value.
+             */
+            pointerId: number;
+
+            /**
+             * An active Pointer is one that is currently pressed down on the display.
+             * A Mouse is always considered as active.
+             */
+            active: boolean;
+
+            /**
+             * Takes a Camera and returns a Vector2 containing the translated position of this Pointer
+             * within that Camera. This can be used to convert this Pointers position into camera space.
+             * @param camera The Camera to use for the translation.
+             * @param output A Vector2-like object in which to store the translated position.
              */
             positionToCamera(
                 camera: Phaser.Cameras.Scene2D.Camera,
@@ -29524,111 +30926,72 @@ declare namespace Phaser {
             ): Phaser.Math.Vector2 | object;
 
             /**
-             * [description]
-             */
-            x: number;
-
-            /**
-             * [description]
-             */
-            y: number;
-
-            /**
-             * [description]
-             */
-            reset(): void;
-
-            /**
-             * [description]
-             * @param event [description]
-             * @param time The current timestamp as generated by the Request Animation Frame or SetTimeout.
-             */
-            touchmove(event: TouchEvent, time: integer): void;
-
-            /**
-             * [description]
-             * @param event [description]
-             * @param time The current timestamp as generated by the Request Animation Frame or SetTimeout.
-             */
-            move(event: MouseEvent, time: integer): void;
-
-            /**
-             * [description]
-             * @param event [description]
-             * @param time The current timestamp as generated by the Request Animation Frame or SetTimeout.
-             */
-            down(event: MouseEvent, time: integer): void;
-
-            /**
-             * [description]
-             * @param event [description]
-             * @param time The current timestamp as generated by the Request Animation Frame or SetTimeout.
-             */
-            touchstart(event: TouchEvent, time: integer): void;
-
-            /**
-             * [description]
-             * @param event [description]
-             * @param time The current timestamp as generated by the Request Animation Frame or SetTimeout.
-             */
-            up(event: MouseEvent, time: integer): void;
-
-            /**
-             * [description]
-             * @param event [description]
-             * @param time The current timestamp as generated by the Request Animation Frame or SetTimeout.
-             */
-            touchend(event: TouchEvent, time: integer): void;
-
-            /**
-             * [description]
+             * Checks to see if any buttons are being held down on this Pointer.
              */
             noButtonDown(): boolean;
 
             /**
-             * [description]
+             * Checks to see if the left button is being held down on this Pointer.
              */
             leftButtonDown(): boolean;
 
             /**
-             * [description]
+             * Checks to see if the right button is being held down on this Pointer.
              */
             rightButtonDown(): boolean;
 
             /**
-             * [description]
+             * Checks to see if the middle button is being held down on this Pointer.
              */
             middleButtonDown(): boolean;
 
             /**
-             * [description]
+             * Checks to see if the back button is being held down on this Pointer.
              */
             backButtonDown(): boolean;
 
             /**
-             * [description]
+             * Checks to see if the forward button is being held down on this Pointer.
              */
             forwardButtonDown(): boolean;
 
             /**
-             * [description]
+             * Destroys this Pointer instance and resets its external references.
              */
             destroy(): void;
+
+            /**
+             * The x position of this Pointer.
+             * The value is in screen space.
+             * See `worldX` to get a camera converted position.
+             */
+            x: number;
+
+            /**
+             * The y position of this Pointer.
+             * The value is in screen space.
+             * See `worldY` to get a camera converted position.
+             */
+            y: number;
         }
 
         namespace Touch {
             /**
-             * [description]
+             * The Touch Manager is a helper class that belongs to the Input Manager.
+             *
+             * Its role is to listen for native DOM Touch Events and then pass them onto the Input Manager for further processing.
+             *
+             * You do not need to create this class directly, the Input Manager will create an instance of it automatically.
              */
             class TouchManager {
                 /**
                  *
-                 * @param inputManager [description]
+                 * @param inputManager A reference to the Input Manager.
                  */
                 constructor(inputManager: Phaser.Input.InputManager);
 
                 /**
-                 * [description]
+                 * A reference to the Input Manager.
                  */
                 manager: Phaser.Input.InputManager;
 
@@ -29638,37 +31001,49 @@ declare namespace Phaser {
                 capture: boolean;
 
                 /**
-                 * [description]
+                 * A boolean that controls if the Touch Manager is enabled or not.
+                 * Can be toggled on the fly.
                  */
                 enabled: boolean;
 
                 /**
-                 * [description]
+                 * The Touch Event target, as defined in the Game Config.
+                 * Typically the canvas to which the game is rendering, but can be any interactive DOM element.
                  */
-                target: null;
+                target: any;
 
                 /**
-                 * [description]
+                 * The Touch Start Event Handler.
+                 * @param event The native DOM Touch Start Event.
                  */
-                handler: TouchHandler;
+                onTouchStart(event: TouchEvent): void;
 
                 /**
-                 * [description]
+                 * The Touch Move Event Handler.
+                 * @param event The native DOM Touch Move Event.
                  */
-                boot(): void;
+                onTouchMove(event: TouchEvent): void;
 
                 /**
-                 * [description]
+                 * The Touch End Event Handler.
+                 * @param event The native DOM Touch End Event.
+                 */
+                onTouchEnd(event: TouchEvent): void;
+
+                /**
+                 * Starts the Touch Event listeners running.
+                 * This is called automatically and does not need to be manually invoked.
                  */
                 startListeners(): void;
 
                 /**
-                 * [description]
+                 * Stops the Touch Event listeners.
+                 * This is called automatically and does not need to be manually invoked.
                  */
                 stopListeners(): void;
 
                 /**
-                 * [description]
+                 * Destroys this Touch Manager instance.
                  */
                 destroy(): void;
             }
@@ -30790,6 +32165,14 @@ declare namespace Phaser {
                  */
                 extension?: string;
                 /**
+                 * Automatically start the plugin after loading?
+                 */
+                start?: boolean;
+                /**
+                 * If this plugin is to be injected into the Scene, this is the property key used.
+                 */
+                mapping?: string;
+                /**
                  * Extra XHR Settings specifically for this file.
                  */
                 xhrSettings?: XHRSettingsObject;
@@ -30808,12 +32191,76 @@ declare namespace Phaser {
                  * @param loader A reference to the Loader that is responsible for this file.
                  * @param key The key to use for this file, or a file configuration object.
                  * @param url The absolute or relative URL to load this file from. If undefined or `null` it will be set to `<key>.js`, i.e. if `key` was "alien" then the URL will be "alien.js".
+                 * @param start Automatically start the plugin after loading? Default false.
+                 * @param mapping If this plugin is to be injected into the Scene, this is the property key used.
                  * @param xhrSettings Extra XHR Settings specifically for this file.
                  */
                 constructor(
                     loader: Phaser.Loader.LoaderPlugin,
                     key: string | Phaser.Loader.FileTypes.PluginFileConfig,
                     url?: string,
+                    start?: boolean,
+                    mapping?: string,
+                    xhrSettings?: XHRSettingsObject
+                );
+
+                /**
+                 * Called automatically by Loader.nextFile.
+                 * This method controls what extra work this File does with its loaded data.
+                 */
+                onProcess(): void;
+            }
+
+            type ScenePluginFileConfig = {
+                /**
+                 * The key of the file. Must be unique within the Loader.
+                 */
+                key: string;
+                /**
+                 * The absolute or relative URL to load the file from. Or, a Scene Plugin.
+                 */
+                url?: string | Function;
+                /**
+                 * The default file extension to use if no url is provided.
+                 */
+                extension?: string;
+                /**
+                 * If this plugin is to be added to Scene.Systems, this is the property key for it.
+                 */
+                systemKey?: string;
+                /**
+                 * If this plugin is to be added to the Scene, this is the property key for it.
+                 */
+                sceneKey?: string;
+                /**
+                 * Extra XHR Settings specifically for this file.
+                 */
+                xhrSettings?: XHRSettingsObject;
+            };
+
+            /**
+             * A single Scene Plugin Script File suitable for loading by the Loader.
+             *
+             * These are created when you use the Phaser.Loader.LoaderPlugin#scenePlugin method and are not typically created directly.
+             *
+             * For documentation about what all the arguments and configuration options mean please see Phaser.Loader.LoaderPlugin#scenePlugin.
+             */
+            class ScenePluginFile extends Phaser.Loader.File {
+                /**
+                 *
+                 * @param loader A reference to the Loader that is responsible for this file.
+                 * @param key The key to use for this file, or a file configuration object.
+                 * @param url The absolute or relative URL to load this file from. If undefined or `null` it will be set to `<key>.js`, i.e. if `key` was "alien" then the URL will be "alien.js".
+                 * @param systemKey If this plugin is to be added to Scene.Systems, this is the property key for it.
+                 * @param sceneKey If this plugin is to be added to the Scene, this is the property key for it.
+                 * @param xhrSettings Extra XHR Settings specifically for this file.
+                 */
+                constructor(
+                    loader: Phaser.Loader.LoaderPlugin,
+                    key: string | Phaser.Loader.FileTypes.ScenePluginFileConfig,
+                    url?: string,
+                    systemKey?: string,
+                    sceneKey?: string,
                     xhrSettings?: XHRSettingsObject
                 );
 
@@ -32570,7 +34017,70 @@ declare namespace Phaser {
              * Once the file has finished loading it will automatically be converted into a script element
              * via `document.createElement('script')`. It will have its language set to JavaScript, `defer` set to
              * false and then the resulting element will be appended to `document.head`. Any code then in the
-             * script will be executed. It will then be passed to the Phaser PluginManager.register method.
+             * script will be executed. It will then be passed to the Phaser PluginCache.register method.
+             *
+             * The URL can be relative or absolute. If the URL is relative the `Loader.baseURL` and `Loader.path` values will be prepended to it.
+             *
+             * If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"
+             * and no URL is given then the Loader will set the URL to be "alien.js". It will always add `.js` as the extension, although
+             * this can be overridden if using an object instead of method arguments. If you do not desire this action then provide a URL.
+             *
+             * Note: The ability to load this type of file will only be available if the Plugin File type has been built into Phaser.
+             * It is available in the default build but can be excluded from custom builds.
+             * @param key The key to use for this file, or a file configuration object, or array of them.
+             * @param url The absolute or relative URL to load this file from. If undefined or `null` it will be set to `<key>.js`, i.e. if `key` was "alien" then the URL will be "alien.js". Or, a plugin function.
+             * @param start The plugin mapping configuration object.
+             * @param mapping If this plugin is to be injected into the Scene, this is the property key used.
+             * @param xhrSettings An XHR Settings configuration object. Used in replacement of the Loaders default XHR Settings.
+             */
+            plugin(
+                key:
+                    | string
+                    | Phaser.Loader.FileTypes.PluginFileConfig
+                    | Phaser.Loader.FileTypes.PluginFileConfig[],
+                url?: string | Function,
+                start?: boolean,
+                mapping?: string,
+                xhrSettings?: XHRSettingsObject
+            ): Phaser.Loader.LoaderPlugin;
+
+            /**
+             * Adds a Scene Plugin Script file, or array of plugin files, to the current load queue.
+             *
+             * You can call this method from within your Scene's `preload`, along with any other files you wish to load:
+             *
+             * ```javascript
+             * function preload ()
+             * {
+             *     this.load.scenePlugin('ModPlayer', 'plugins/ModPlayer.js', 'modPlayer', 'mods');
+             * }
+             * ```
+             *
+             * The file is **not** loaded right away. It is added to a queue ready to be loaded either when the loader starts,
+             * or if it's already running, when the next free load slot becomes available. This happens automatically if you
+             * are calling this from within the Scene's `preload` method, or a related callback. Because the file is queued
+             * it means you cannot use the file immediately after calling this method, but must wait for the file to complete.
+             * The typical flow for a Phaser Scene is that you load assets in the Scene's `preload` method and then when the
+             * Scene's `create` method is called you are guaranteed that all of those assets are ready for use and have been
+             * loaded.
+             *
+             * The key must be a unique String and not already in-use by another file in the Loader.
+             *
+             * Instead of passing arguments you can pass a configuration object, such as:
+             *
+             * ```javascript
+             * this.load.scenePlugin({
+             *     key: 'modplayer',
+             *     url: 'plugins/ModPlayer.js'
+             * });
+             * ```
+             *
+             * See the documentation for `Phaser.Loader.FileTypes.ScenePluginFileConfig` for more details.
+             *
+             * Once the file has finished loading it will automatically be converted into a script element
+             * via `document.createElement('script')`. It will have its language set to JavaScript, `defer` set to
+             * false and then the resulting element will be appended to `document.head`. Any code then in the
+             * script will be executed. It will then be passed to the Phaser PluginCache.register method.
              *
              * The URL can be relative or absolute. If the URL is relative the `Loader.baseURL` and `Loader.path` values will be prepended to it.
              *
@@ -32581,15 +34091,19 @@ declare namespace Phaser {
              * Note: The ability to load this type of file will only be available if the Script File type has been built into Phaser.
              * It is available in the default build but can be excluded from custom builds.
              * @param key The key to use for this file, or a file configuration object, or array of them.
-             * @param url The absolute or relative URL to load this file from. If undefined or `null` it will be set to `<key>.js`, i.e. if `key` was "alien" then the URL will be "alien.js".
+             * @param url The absolute or relative URL to load this file from. If undefined or `null` it will be set to `<key>.js`, i.e. if `key` was "alien" then the URL will be "alien.js". Or, set to a plugin function.
+             * @param systemKey If this plugin is to be added to Scene.Systems, this is the property key for it.
+             * @param sceneKey If this plugin is to be added to the Scene, this is the property key for it.
              * @param xhrSettings An XHR Settings configuration object. Used in replacement of the Loaders default XHR Settings.
              */
-            plugin(
+            scenePlugin(
                 key:
                     | string
-                    | Phaser.Loader.FileTypes.PluginFileConfig
-                    | Phaser.Loader.FileTypes.PluginFileConfig[],
-                url?: string,
+                    | Phaser.Loader.FileTypes.ScenePluginFileConfig
+                    | Phaser.Loader.FileTypes.ScenePluginFileConfig[],
+                url?: string | Function,
+                systemKey?: string,
+                sceneKey?: string,
                 xhrSettings?: XHRSettingsObject
             ): Phaser.Loader.LoaderPlugin;
 
@@ -33544,6 +35058,11 @@ declare namespace Phaser {
             updateProgress(): void;
 
             /**
+             * Called automatically during the load process.
+             */
+            update(): void;
+
+            /**
              * An internal method called automatically by the XHRLoader belong to a File.
              *
              * This method will remove the given file from the inflight Set and update the load progress.
@@ -33558,7 +35077,7 @@ declare namespace Phaser {
              *
              * If the process was successful, and the File isn't part of a MultiFile, its `addToCache` method is called.
              *
-             * It this then removed from the queue. If there are more files to load, `checkLoadQueue` is called, otherwise `loadComplete` is.
+             * It this then removed from the queue. If there are no more files to load `loadComplete` is called.
              * @param file The file that has finished processing.
              */
             fileProcessComplete(file: Phaser.Loader.File): void;
@@ -33746,11 +35265,11 @@ declare namespace Phaser {
     namespace Math {
         namespace Angle {
             /**
-             * [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
+             * Find the angle of a segment from (x1, y1) -> (x2, y2).
+             * @param x1 The x coordinate of the first point.
+             * @param y1 The y coordinate of the first point.
+             * @param x2 The x coordinate of the second point.
+             * @param y2 The y coordinate of the second point.
              */
             function Between(
                 x1: number,
@@ -33760,9 +35279,11 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
-             * @param point1 [description]
-             * @param point2 [description]
+             * Find the angle of a segment from (point1.x, point1.y) -> (point2.x, point2.y).
+             *
+             * Calculates the angle of the vector from the first point to the second point.
+             * @param point1 The first point.
+             * @param point2 The second point.
              */
             function BetweenPoints(
                 point1: Phaser.Geom.Point | object,
@@ -33770,9 +35291,12 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
-             * @param point1 [description]
-             * @param point2 [description]
+             * Find the angle of a segment from (point1.x, point1.y) -> (point2.x, point2.y).
+             *
+             * The difference between this method and {@link Phaser.Math.Angle.BetweenPoints} is that this assumes the y coordinate
+             * travels down the screen.
+             * @param point1 The first point.
+             * @param point2 The second point.
              */
             function BetweenPointsY(
                 point1: Phaser.Geom.Point | object,
@@ -33780,11 +35304,14 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
+             * Find the angle of a segment from (x1, y1) -> (x2, y2).
+             *
+             * The difference between this method and {@link Phaser.Math.Angle.Between} is that this assumes the y coordinate
+             * travels down the screen.
+             * @param x1 The x coordinate of the first point.
+             * @param y1 The y coordinate of the first point.
+             * @param x2 The x coordinate of the second point.
+             * @param y2 The y coordinate of the second point.
              */
             function BetweenY(
                 x1: number,
@@ -33794,14 +35321,14 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
-             * @param angle [description]
+             * Normalize an angle to the [0, 2pi] range.
+             * @param angle The angle to normalize, in radians.
              */
             function Normalize(angle: number): number;
 
             /**
-             * [description]
-             * @param angle [description]
+             * Reverse the given angle.
+             * @param angle The angle to reverse, in radians.
              */
             function Reverse(angle: number): number;
 
@@ -33819,6 +35346,7 @@ declare namespace Phaser {
 
             /**
              * Gets the shortest angle between `angle1` and `angle2`.
+             *
              * Both angles must be in the range -180 to 180, which is the same clamped
              * range that `sprite.angle` uses, so you can pass in two sprite angles to
              * this method and get the shortest angle back between the two of them.
@@ -33826,27 +35354,33 @@ declare namespace Phaser {
              * The angle returned will be in the same range. If the returned angle is
              * greater than 0 then it's a counter-clockwise rotation, if < 0 then it's
              * a clockwise rotation.
+             *
+             * TODO: Wrap the angles in this function?
              * @param angle1 The first angle in the range -180 to 180.
              * @param angle2 The second angle in the range -180 to 180.
              */
             function ShortestBetween(angle1: number, angle2: number): number;
 
             /**
-             * [description]
-             * @param angle [description]
+             * Wrap an angle.
+             *
+             * Wraps the angle to a value in the range of -PI to PI.
+             * @param angle The angle to wrap, in radians.
              */
             function Wrap(angle: number): number;
 
             /**
-             * [description]
-             * @param angle [description]
+             * Wrap an angle in degrees.
+             *
+             * Wraps the angle to a value in the range of -180 to 180.
+             * @param angle The angle to wrap, in degrees.
              */
             function WrapDegrees(angle: number): number;
         }
 
         /**
-         * [description]
-         * @param values [description]
+         * Calculate the mean average of the given values.
+         * @param values The values to average.
          */
         function Average(values: number[]): number;
 
@@ -33858,14 +35392,14 @@ declare namespace Phaser {
         function Bernstein(n: number, i: number): number;
 
         /**
-         * [description]
-         * @param min [description]
-         * @param max [description]
+         * Compute a random integer between the `min` and `max` values, inclusive.
+         * @param min The minimum value.
+         * @param max The maximum value.
          */
         function Between(min: integer, max: integer): integer;
 
         /**
-         * [description]
+         * Calculates a Catmull-Rom value.
          * @param t [description]
          * @param p0 [description]
          * @param p1 [description]
@@ -33881,10 +35415,12 @@ declare namespace Phaser {
         ): number;
 
         /**
-         * [description]
-         * @param value [description]
-         * @param place [description] Default 0.
-         * @param base [description] Default 10.
+         * Ceils to some place comparative to a `base`, default is 10 for decimal place.
+         *
+         * The `place` is represented by the power applied to `base` to get that place.
+         * @param value The value to round.
+         * @param place The place to round to. Default 0.
+         * @param base The base to round in. Default is 10 for decimal. Default 10.
          */
         function CeilTo(value: number, place?: number, base?: integer): number;
 
@@ -33941,11 +35477,11 @@ declare namespace Phaser {
 
         namespace Distance {
             /**
-             * [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
+             * Calculate the distance between two sets of coordinates (points).
+             * @param x1 The x coordinate of the first point.
+             * @param y1 The y coordinate of the first point.
+             * @param x2 The x coordinate of the second point.
+             * @param y2 The y coordinate of the second point.
              */
             function Between(
                 x1: number,
@@ -33955,12 +35491,12 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
-             * @param pow [description]
+             * Calculate the distance between two sets of coordinates (points) to the power of `pow`.
+             * @param x1 The x coordinate of the first point.
+             * @param y1 The y coordinate of the first point.
+             * @param x2 The x coordinate of the second point.
+             * @param y2 The y coordinate of the second point.
+             * @param pow The exponent.
              */
             function Power(
                 x1: number,
@@ -33971,11 +35507,11 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
-             * @param x1 [description]
-             * @param y1 [description]
-             * @param x2 [description]
-             * @param y2 [description]
+             * Calculate the distance between two sets of coordinates (points), squared.
+             * @param x1 The x coordinate of the first point.
+             * @param y1 The y coordinate of the first point.
+             * @param x2 The x coordinate of the second point.
+             * @param y2 The y coordinate of the second point.
              */
             function Squared(
                 x1: number,
@@ -33988,92 +35524,92 @@ declare namespace Phaser {
         namespace Easing {
             namespace Back {
                 /**
-                 * [description]
-                 * @param v [description]
-                 * @param overshoot [description] Default 1.70158.
+                 * Back ease-in.
+                 * @param v The value to be tweened.
+                 * @param overshoot The overshoot amount. Default 1.70158.
                  */
                 function In(v: number, overshoot?: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
-                 * @param overshoot [description] Default 1.70158.
+                 * Back ease-in/out.
+                 * @param v The value to be tweened.
+                 * @param overshoot The overshoot amount. Default 1.70158.
                  */
                 function InOut(v: number, overshoot?: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
-                 * @param overshoot [description] Default 1.70158.
+                 * Back ease-out.
+                 * @param v The value to be tweened.
+                 * @param overshoot The overshoot amount. Default 1.70158.
                  */
                 function Out(v: number, overshoot?: number): number;
             }
 
             namespace Bounce {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Bounce ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Bounce ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Bounce ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Circular {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Circular ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Circular ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Circular ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Cubic {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Cubic ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Cubic ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Cubic ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Elastic {
                 /**
-                 * [description]
-                 * @param v [description]
-                 * @param amplitude [description] Default 0.1.
+                 * Elastic ease-in.
+                 * @param v The value to be tweened.
+                 * @param amplitude The amplitude of the elastic ease. Default 0.1.
                  * @param period [description] Default 0.1.
                  */
                 function In(
@@ -34083,9 +35619,9 @@ declare namespace Phaser {
                 ): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
-                 * @param amplitude [description] Default 0.1.
+                 * Elastic ease-in/out.
+                 * @param v The value to be tweened.
+                 * @param amplitude The amplitude of the elastic ease. Default 0.1.
                  * @param period [description] Default 0.1.
                  */
                 function InOut(
@@ -34095,9 +35631,9 @@ declare namespace Phaser {
                 ): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
-                 * @param amplitude [description] Default 0.1.
+                 * Elastic ease-out.
+                 * @param v The value to be tweened.
+                 * @param amplitude The amplitude of the elastic ease. Default 0.1.
                  * @param period [description] Default 0.1.
                  */
                 function Out(
@@ -34109,117 +35645,117 @@ declare namespace Phaser {
 
             namespace Expo {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Exponential ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Exponential ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Exponential ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Linear {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Linear easing (no variation).
+                 * @param v The value to be tweened.
                  */
                 function Linear(v: number): number;
             }
 
             namespace Quadratic {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quadratic ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quadratic ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quadratic ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Quartic {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quartic ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quartic ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quartic ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Quintic {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quintic ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quintic ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Quintic ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Sine {
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Sinusoidal ease-in.
+                 * @param v The value to be tweened.
                  */
                 function In(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Sinusoidal ease-in/out.
+                 * @param v The value to be tweened.
                  */
                 function InOut(v: number): number;
 
                 /**
-                 * [description]
-                 * @param v [description]
+                 * Sinusoidal ease-out.
+                 * @param v The value to be tweened.
                  */
                 function Out(v: number): number;
             }
 
             namespace Stepped {
                 /**
-                 * [description]
-                 * @param v [description]
-                 * @param steps [description] Default 1.
+                 * Stepped easing.
+                 * @param v The value to be tweened.
+                 * @param steps The number of steps in the ease. Default 1.
                  */
                 function Stepped(v: number, steps?: number): number;
             }
@@ -34239,10 +35775,12 @@ declare namespace Phaser {
         function FloatBetween(min: number, max: number): number;
 
         /**
-         * [description]
-         * @param value [description]
-         * @param place  Default 0 - [description.
-         * @param base [description] Default 10.
+         * Floors to some place comparative to a `base`, default is 10 for decimal place.
+         *
+         * The `place` is represented by the power applied to `base` to get that place.
+         * @param value The value to round.
+         * @param place The place to round to. Default 0.
+         * @param base The base to round in. Default is 10 for decimal. Default 10.
          */
         function FloorTo(
             value: number,
@@ -34253,8 +35791,8 @@ declare namespace Phaser {
         /**
          * Return a value based on the range between `min` and `max` and the percentage given.
          * @param percent A value between 0 and 1 representing the percentage.
-         * @param min [description]
-         * @param max [description]
+         * @param min The minimum value.
+         * @param max The maximum value.
          */
         function FromPercent(
             percent: number,
@@ -34264,32 +35802,36 @@ declare namespace Phaser {
 
         namespace Fuzzy {
             /**
-             * [description]
-             * @param value [description]
-             * @param epsilon [description] Default 0.0001.
+             * Calculate the fuzzy ceiling of the given value.
+             * @param value The value.
+             * @param epsilon The epsilon. Default 0.0001.
              */
             function Ceil(value: number, epsilon?: number): number;
 
             /**
-             * [description]
-             * @param a [description]
-             * @param b [description]
-             * @param epsilon [description] Default 0.0001.
+             * Check whether the given values are fuzzily equal.
+             *
+             * Two numbers are fuzzily equal if their difference is less than `epsilon`.
+             * @param a The first value.
+             * @param b The second value.
+             * @param epsilon The epsilon. Default 0.0001.
              */
             function Equal(a: number, b: number, epsilon?: number): boolean;
 
             /**
-             * [description]
-             * @param value [description]
-             * @param epsilon [description] Default 0.0001.
+             * Calculate the fuzzy floor of the given value.
+             * @param value The value.
+             * @param epsilon The epsilon. Default 0.0001.
              */
             function Floor(value: number, epsilon?: number): number;
 
             /**
-             * [description]
-             * @param a [description]
-             * @param b [description]
-             * @param epsilon [description] Default 0.0001.
+             * Check whether `a` is fuzzily greater than `b`.
+             *
+             * `a` is fuzzily greater than `b` if it is more than `b - epsilon`.
+             * @param a The first value.
+             * @param b The second value.
+             * @param epsilon The epsilon. Default 0.0001.
              */
             function GreaterThan(
                 a: number,
@@ -34298,16 +35840,18 @@ declare namespace Phaser {
             ): boolean;
 
             /**
-             * [description]
-             * @param a [description]
-             * @param b [description]
-             * @param epsilon [description] Default 0.0001.
+             * Check whether `a` is fuzzily less than `b`.
+             *
+             * `a` is fuzzily less than `b` if it is less than `b + epsilon`.
+             * @param a The first value.
+             * @param b The second value.
+             * @param epsilon The epsilon. Default 0.0001.
              */
             function LessThan(a: number, b: number, epsilon?: number): boolean;
         }
 
         /**
-         * [description]
+         * Calculate the speed required to cover a distance in the time given.
          * @param distance The distance to travel in pixels.
          * @param time The time, in ms, to cover the distance in.
          */
@@ -34315,26 +35859,26 @@ declare namespace Phaser {
 
         namespace Interpolation {
             /**
-             * [description]
-             * @param v [description]
-             * @param k [description]
+             * A bezier interpolation method.
+             * @param v The input array of values to interpolate between.
+             * @param k The percentage of interpolation, between 0 and 1.
              */
-            function Bezier(v: number, k: number): number;
+            function Bezier(v: number[], k: number): number;
 
             /**
-             * [description]
-             * @param v [description]
-             * @param k [description]
+             * A Catmull-Rom interpolation method.
+             * @param v The input array of values to interpolate between.
+             * @param k The percentage of interpolation, between 0 and 1.
              */
-            function CatmullRom(v: number, k: number): number;
+            function CatmullRom(v: number[], k: number): number;
 
             /**
-             * [description]
-             * @param t [description]
-             * @param p0 [description]
-             * @param p1 [description]
-             * @param p2 [description]
-             * @param p3 [description]
+             * A cubic bezier interpolation method.
+             * @param t The percentage of interpolation, between 0 and 1.
+             * @param p0 The start point.
+             * @param p1 The first control point.
+             * @param p2 The second control point.
+             * @param p3 The end point.
              */
             function CubicBezier(
                 t: number,
@@ -34345,18 +35889,18 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * A Linear Interpolation Method.
+             * A linear interpolation method.
              * @param v The input array of values to interpolate between.
-             * @param k The percentage of interploation, between 0 and 1.
+             * @param k The percentage of interpolation, between 0 and 1.
              */
             function Linear(v: number[], k: number): number;
 
             /**
-             * [description]
-             * @param t [description]
-             * @param p0 [description]
-             * @param p1 [description]
-             * @param p2 [description]
+             * A quadratic bezier interpolation method.
+             * @param t The percentage of interpolation, between 0 and 1.
+             * @param p0 The start point.
+             * @param p1 The control point.
+             * @param p2 The end point.
              */
             function QuadraticBezier(
                 t: number,
@@ -34364,6 +35908,22 @@ declare namespace Phaser {
                 p1: number,
                 p2: number
             ): number;
+
+            /**
+             * A Smoother Step interpolation method.
+             * @param t The percentage of interpolation, between 0 and 1.
+             * @param min The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+             * @param max The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
+             */
+            function SmootherStep(t: number, min: number, max: number): number;
+
+            /**
+             * A Smooth Step interpolation method.
+             * @param t The percentage of interpolation, between 0 and 1.
+             * @param min The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+             * @param max The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
+             */
+            function SmoothStep(t: number, min: number, max: number): number;
         }
 
         /**
@@ -34373,97 +35933,99 @@ declare namespace Phaser {
         function IsEven(value: number): boolean;
 
         /**
-         * [description]
-         * @param value [description]
+         * Check if a given value is an even number using a strict type check.
+         * @param value The number to perform the check with.
          */
         function IsEvenStrict(value: number): boolean;
 
         /**
          * Calculates a linear (interpolation) value over t.
-         * @param p0 The first point
-         * @param p1 The second point
-         * @param t The percentage between p0 and p1 to return represented as a number between 0 and 1.
+         * @param p0 The first point.
+         * @param p1 The second point.
+         * @param t The percentage between p0 and p1 to return, represented as a number between 0 and 1.
          */
         function Linear(p0: number, p1: number, t: number): number;
 
         /**
-         * [description]
+         * A three-dimensional matrix.
+         *
+         * Defaults to the identity matrix when instantiated.
          */
         class Matrix3 {
             /**
              *
-             * @param m [description]
+             * @param m Optional Matrix3 to copy values from.
              */
             constructor(m?: Phaser.Math.Matrix3);
 
             /**
-             * [description]
+             * The matrix values.
              */
             val: Float32Array;
 
             /**
-             * [description]
+             * Make a clone of this Matrix3.
              */
             clone(): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param src [description]
+             * This method is an alias for `Matrix3.copy`.
+             * @param src The Matrix to set the values of this Matrix's from.
              */
             set(src: Phaser.Math.Matrix3): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param src [description]
+             * Copy the values of a given Matrix into this Matrix.
+             * @param src The Matrix to copy the values from.
              */
             copy(src: Phaser.Math.Matrix3): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param m [description]
+             * Copy the values of a given Matrix4 into this Matrix3.
+             * @param m The Matrix4 to copy the values from.
              */
             fromMat4(m: Phaser.Math.Matrix4): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param a [description]
+             * Set the values of this Matrix from the given array.
+             * @param a The array to copy the values from.
              */
             fromArray(a: any[]): Phaser.Math.Matrix3;
 
             /**
-             * [description]
+             * Reset this Matrix to an identity (default) matrix.
              */
             identity(): Phaser.Math.Matrix3;
 
             /**
-             * [description]
+             * Transpose this Matrix.
              */
             transpose(): Phaser.Math.Matrix3;
 
             /**
-             * [description]
+             * Invert this Matrix.
              */
             invert(): Phaser.Math.Matrix3;
 
             /**
-             * [description]
+             * Calculate the adjoint, or adjugate, of this Matrix.
              */
             adjoint(): Phaser.Math.Matrix3;
 
             /**
-             * [description]
+             * Calculate the determinant of this Matrix.
              */
             determinant(): number;
 
             /**
-             * [description]
-             * @param src [description]
+             * Multiply this Matrix by the given Matrix.
+             * @param src The Matrix to multiply this Matrix by.
              */
             multiply(src: Phaser.Math.Matrix3): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Translate this Matrix using the given Vector.
+             * @param v The Vector to translate this Matrix with.
              */
             translate(
                 v:
@@ -34473,14 +36035,16 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param rad [description]
+             * Apply a rotation transformation to this Matrix.
+             * @param rad The angle in radians to rotate by.
              */
             rotate(rad: number): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Apply a scale transformation to this Matrix.
+             *
+             * Uses the `x` and `y` components of the given Vector to scale the Matrix.
+             * @param v The Vector to scale this Matrix with.
              */
             scale(
                 v:
@@ -34490,8 +36054,8 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix3;
 
             /**
-             * [description]
-             * @param q [description]
+             * Set the values of this Matrix from the given Quaternion.
+             * @param q The Quaternion to set the values of this Matrix from.
              */
             fromQuat(q: Phaser.Math.Quaternion): Phaser.Math.Matrix3;
 
@@ -34503,92 +36067,94 @@ declare namespace Phaser {
         }
 
         /**
-         * [description]
+         * A four-dimensional matrix.
          */
         class Matrix4 {
             /**
              *
-             * @param m [description]
+             * @param m Optional Matrix4 to copy values from.
              */
             constructor(m?: Phaser.Math.Matrix4);
 
             /**
-             * [description]
+             * The matrix values.
              */
             val: Float32Array;
 
             /**
-             * [description]
+             * Make a clone of this Matrix4.
              */
             clone(): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param src [description]
+             * This method is an alias for `Matrix4.copy`.
+             * @param src The Matrix to set the values of this Matrix's from.
              */
             set(src: Phaser.Math.Matrix4): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param src [description]
+             * Copy the values of a given Matrix into this Matrix.
+             * @param src The Matrix to copy the values from.
              */
             copy(src: Phaser.Math.Matrix4): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param a [description]
+             * Set the values of this Matrix from the given array.
+             * @param a The array to copy the values from.
              */
             fromArray(a: any[]): Phaser.Math.Matrix4;
 
             /**
-             * [description]
+             * Reset this Matrix.
+             *
+             * Sets all values to `0`.
              */
             zero(): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param z [description]
+             * Set the `x`, `y` and `z` values of this Matrix.
+             * @param x The x value.
+             * @param y The y value.
+             * @param z The z value.
              */
             xyz(x: number, y: number, z: number): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param z [description]
+             * Set the scaling values of this Matrix.
+             * @param x The x scaling value.
+             * @param y The y scaling value.
+             * @param z The z scaling value.
              */
             scaling(x: number, y: number, z: number): Phaser.Math.Matrix4;
 
             /**
-             * [description]
+             * Reset this Matrix to an identity (default) matrix.
              */
             identity(): Phaser.Math.Matrix4;
 
             /**
-             * [description]
+             * Transpose this Matrix.
              */
             transpose(): Phaser.Math.Matrix4;
 
             /**
-             * [description]
+             * Invert this Matrix.
              */
             invert(): Phaser.Math.Matrix4;
 
             /**
-             * [description]
+             * Calculate the adjoint, or adjugate, of this Matrix.
              */
             adjoint(): Phaser.Math.Matrix4;
 
             /**
-             * [description]
+             * Calculate the determinant of this Matrix.
              */
             determinant(): number;
 
             /**
-             * [description]
-             * @param src [description]
+             * Multiply this Matrix by the given Matrix.
+             * @param src The Matrix to multiply this Matrix by.
              */
             multiply(src: Phaser.Math.Matrix4): Phaser.Math.Matrix4;
 
@@ -34599,25 +36165,27 @@ declare namespace Phaser {
             multiplyLocal(src: Phaser.Math.Matrix4): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param v [description]
+             * Translate this Matrix using the given Vector.
+             * @param v The Vector to translate this Matrix with.
              */
             translate(
                 v: Phaser.Math.Vector3 | Phaser.Math.Vector4
             ): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param v [description]
+             * Apply a scale transformation to this Matrix.
+             *
+             * Uses the `x`, `y` and `z` components of the given Vector to scale the Matrix.
+             * @param v The Vector to scale this Matrix with.
              */
             scale(
                 v: Phaser.Math.Vector3 | Phaser.Math.Vector4
             ): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param axis [description]
-             * @param angle The angle of rotation in radians.
+             * Derive a rotation matrix around the given axis.
+             * @param axis The rotation axis.
+             * @param angle The rotation angle in radians.
              */
             makeRotationAxis(
                 axis: Phaser.Math.Vector3 | Phaser.Math.Vector4,
@@ -34625,34 +36193,34 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param rad [description]
-             * @param axis [description]
+             * Apply a rotation transformation to this Matrix.
+             * @param rad The angle in radians to rotate by.
+             * @param axis The axis to rotate upon.
              */
             rotate(rad: number, axis: Phaser.Math.Vector3): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param rad [description]
+             * Rotate this matrix on its X axis.
+             * @param rad The angle in radians to rotate by.
              */
             rotateX(rad: number): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param rad [description]
+             * Rotate this matrix on its Y axis.
+             * @param rad The angle to rotate by, in radians.
              */
             rotateY(rad: number): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param rad [description]
+             * Rotate this matrix on its Z axis.
+             * @param rad The angle to rotate by, in radians.
              */
             rotateZ(rad: number): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param q [description]
-             * @param v [description]
+             * Set the values of this Matrix from the given rotation Quaternion and translation Vector.
+             * @param q The Quaternion to set rotation from.
+             * @param v The Vector to set translation from.
              */
             fromRotationTranslation(
                 q: Phaser.Math.Quaternion,
@@ -34660,13 +36228,13 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param q [description]
+             * Set the values of this Matrix from the given Quaternion.
+             * @param q The Quaternion to set the values of this Matrix from.
              */
             fromQuat(q: Phaser.Math.Quaternion): Phaser.Math.Matrix4;
 
             /**
-             * Generates a frustum matrix with the given bounds.
+             * Generate a frustum matrix with the given bounds.
              * @param left The left bound of the frustum.
              * @param right The right bound of the frustum.
              * @param bottom The bottom bound of the frustum.
@@ -34684,8 +36252,7 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * Generates a perspective projection matrix with the given bounds.
-             * perspective fov lh
+             * Generate a perspective projection matrix with the given bounds.
              * @param fovy Vertical field of view in radians
              * @param aspect Aspect ratio. Typically viewport width  /height.
              * @param near Near bound of the frustum.
@@ -34699,9 +36266,9 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param width [description]
-             * @param height [description]
+             * Generate a perspective projection matrix with the given bounds.
+             * @param width The width of the frustum.
+             * @param height The height of the frustum.
              * @param near Near bound of the frustum.
              * @param far Far bound of the frustum.
              */
@@ -34713,7 +36280,7 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * Generates a orthogonal projection matrix with the given bounds.
+             * Generate an orthogonal projection matrix with the given bounds.
              * @param left The left bound of the frustum.
              * @param right The right bound of the frustum.
              * @param bottom The bottom bound of the frustum.
@@ -34731,7 +36298,7 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * Generates a look-at matrix with the given eye position, focal point, and up axis.
+             * Generate a look-at matrix with the given eye position, focal point, and up axis.
              * @param eye Position of the viewer
              * @param center Point the viewer is looking at
              * @param up vec3 pointing up.
@@ -34743,7 +36310,7 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * [description]
+             * Set the values of this matrix from the given `yaw`, `pitch` and `roll` values.
              * @param yaw [description]
              * @param pitch [description]
              * @param roll [description]
@@ -34755,12 +36322,12 @@ declare namespace Phaser {
             ): Phaser.Math.Matrix4;
 
             /**
-             * [description]
-             * @param rotation [description]
-             * @param position [description]
-             * @param scale [description]
-             * @param viewMatrix [description]
-             * @param projectionMatrix [description]
+             * Generate a world matrix from the given rotation, position, scale, view matrix and projection matrix.
+             * @param rotation The rotation of the world matrix.
+             * @param position The position of the world matrix.
+             * @param scale The scale of the world matrix.
+             * @param viewMatrix The view matrix.
+             * @param projectionMatrix The projection matrix.
              */
             setWorldMatrix(
                 rotation: Phaser.Math.Vector3,
@@ -34772,18 +36339,18 @@ declare namespace Phaser {
         }
 
         /**
-         * [description]
-         * @param value [description]
-         * @param amount [description]
-         * @param max [description]
+         * Add an `amount` to a `value`, limiting the maximum result to `max`.
+         * @param value The value to add to.
+         * @param amount The amount to add.
+         * @param max The maximum value to return.
          */
         function MaxAdd(value: number, amount: number, max: number): number;
 
         /**
-         * [description]
-         * @param value [description]
-         * @param amount [description]
-         * @param min [description]
+         * Subtract an `amount` from `value`, limiting the minimum result to `min`.
+         * @param value The value to subtract from.
+         * @param amount The amount to subtract.
+         * @param min The minimum value to return.
          */
         function MinSub(value: number, amount: number, min: number): number;
 
@@ -34792,10 +36359,10 @@ declare namespace Phaser {
          * If `max` isn't given then it will return the percentage of `value` to `min`.
          *
          * You can optionally specify an `upperMax` value, which is a mid-way point in the range that represents 100%, after which the % starts to go down to zero again.
-         * @param value [description]
-         * @param min [description]
-         * @param max [description]
-         * @param upperMax [description]
+         * @param value The value to determine the percentage of.
+         * @param min The minimum value.
+         * @param max The maximum value.
+         * @param upperMax The mid-way point in the range that represents 100%.
          */
         function Percent(
             value: number,
@@ -34807,7 +36374,7 @@ declare namespace Phaser {
         namespace Pow2 {
             /**
              * Returns the nearest power of 2 to the given `value`.
-             * @param value [description]
+             * @param value The value.
              */
             function GetPowerOfTwo(value: number): integer;
 
@@ -34827,15 +36394,15 @@ declare namespace Phaser {
         }
 
         /**
-         * [description]
+         * A quaternion.
          */
         class Quaternion {
             /**
              *
-             * @param x [description]
-             * @param y [description]
-             * @param z [description]
-             * @param w [description]
+             * @param x The x component.
+             * @param y The y component.
+             * @param z The z component.
+             * @param w The w component.
              */
             constructor(x?: number, y?: number, z?: number, w?: number);
 
@@ -34860,19 +36427,19 @@ declare namespace Phaser {
             w: number;
 
             /**
-             * [description]
-             * @param src [description]
+             * Copy the components of a given Quaternion or Vector into this Quaternion.
+             * @param src The Quaternion or Vector to copy the components from.
              */
             copy(
                 src: Phaser.Math.Quaternion | Phaser.Math.Vector4
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param x [description] Default 0.
-             * @param y [description] Default 0.
-             * @param z [description] Default 0.
-             * @param w [description] Default 0.
+             * Set the components of this Quaternion.
+             * @param x The x component, or an object containing x, y, z, and w components. Default 0.
+             * @param y The y component. Default 0.
+             * @param z The z component. Default 0.
+             * @param w The w component. Default 0.
              */
             set(
                 x?: number | object,
@@ -34882,52 +36449,52 @@ declare namespace Phaser {
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param v [description]
+             * Add a given Quaternion or Vector to this Quaternion. Addition is component-wise.
+             * @param v The Quaternion or Vector to add to this Quaternion.
              */
             add(
                 v: Phaser.Math.Quaternion | Phaser.Math.Vector4
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param v [description]
+             * Subtract a given Quaternion or Vector from this Quaternion. Subtraction is component-wise.
+             * @param v The Quaternion or Vector to subtract from this Quaternion.
              */
             subtract(
                 v: Phaser.Math.Quaternion | Phaser.Math.Vector4
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param scale [description]
+             * Scale this Quaternion by the given value.
+             * @param scale The value to scale this Quaternion by.
              */
             scale(scale: number): Phaser.Math.Quaternion;
 
             /**
-             * [description]
+             * Calculate the length of this Quaternion.
              */
             length(): number;
 
             /**
-             * [description]
+             * Calculate the length of this Quaternion squared.
              */
             lengthSq(): number;
 
             /**
-             * [description]
+             * Normalize this Quaternion.
              */
             normalize(): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param v [description]
+             * Calculate the dot product of this Quaternion and the given Quaternion or Vector.
+             * @param v The Quaternion or Vector to dot product with this Quaternion.
              */
             dot(v: Phaser.Math.Quaternion | Phaser.Math.Vector4): number;
 
             /**
-             * [description]
-             * @param v [description]
-             * @param t [description] Default 0.
+             * Linearly interpolate this Quaternion towards the given Quaternion or Vector.
+             * @param v The Quaternion or Vector to interpolate towards.
+             * @param t The percentage of interpolation. Default 0.
              */
             lerp(
                 v: Phaser.Math.Quaternion | Phaser.Math.Vector4,
@@ -34945,10 +36512,10 @@ declare namespace Phaser {
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param view [description]
-             * @param right [description]
-             * @param up [description]
+             * Set the axes of this Quaternion.
+             * @param view The view axis.
+             * @param right The right axis.
+             * @param up The upwards axis.
              */
             setAxes(
                 view: Phaser.Math.Vector3,
@@ -34957,14 +36524,14 @@ declare namespace Phaser {
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
+             * Reset this Matrix to an identity (default) Quaternion.
              */
             identity(): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param axis [description]
-             * @param rad [description]
+             * Set the axis angle of this Quaternion.
+             * @param axis The axis.
+             * @param rad The angle in radians.
              */
             setAxisAngle(
                 axis: Phaser.Math.Vector3,
@@ -34972,17 +36539,17 @@ declare namespace Phaser {
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param b [description]
+             * Multiply this Quaternion by the given Quaternion or Vector.
+             * @param b The Quaternion or Vector to multiply this Quaternion by.
              */
             multiply(
                 b: Phaser.Math.Quaternion | Phaser.Math.Vector4
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param b [description]
-             * @param t [description]
+             * Smoothly linearly interpolate this Quaternion towards the given Quaternion or Vector.
+             * @param b The Quaternion or Vector to interpolate towards.
+             * @param t The percentage of interpolation.
              */
             slerp(
                 b: Phaser.Math.Quaternion | Phaser.Math.Vector4,
@@ -34990,41 +36557,45 @@ declare namespace Phaser {
             ): Phaser.Math.Quaternion;
 
             /**
-             * [description]
+             * Invert this Quaternion.
              */
             invert(): Phaser.Math.Quaternion;
 
             /**
-             * [description]
+             * Convert this Quaternion into its conjugate.
+             *
+             * Sets the x, y and z components.
              */
             conjugate(): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param rad [description]
+             * Rotate this Quaternion on the X axis.
+             * @param rad The rotation angle in radians.
              */
             rotateX(rad: number): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param rad [description]
+             * Rotate this Quaternion on the Y axis.
+             * @param rad The rotation angle in radians.
              */
             rotateY(rad: number): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param rad [description]
+             * Rotate this Quaternion on the Z axis.
+             * @param rad The rotation angle in radians.
              */
             rotateZ(rad: number): Phaser.Math.Quaternion;
 
             /**
-             * [description]
+             * Create a unit (or rotation) Quaternion from its x, y, and z components.
+             *
+             * Sets the w component.
              */
             calculateW(): Phaser.Math.Quaternion;
 
             /**
-             * [description]
-             * @param mat [description]
+             * Convert the given Matrix into this Quaternion.
+             * @param mat The Matrix to convert from.
              */
             fromMat3(mat: Phaser.Math.Matrix3): Phaser.Math.Quaternion;
         }
@@ -35036,23 +36607,23 @@ declare namespace Phaser {
         function RadToDeg(radians: number): integer;
 
         /**
-         * [description]
+         * A seeded random data generator.
          */
         class RandomDataGenerator {
             /**
              *
-             * @param seeds [description]
+             * @param seeds The seeds.
              */
             constructor(seeds?: string[]);
 
             /**
-             * [description]
+             * Signs to choose from.
              */
             signs: number[];
 
             /**
-             * [description]
-             * @param seeds [description]
+             * Initialize the state of the random data generator.
+             * @param seeds The seeds to initialize the random data generator with.
              */
             init(seeds: string | string[]): void;
 
@@ -35165,23 +36736,27 @@ declare namespace Phaser {
              * Shuffles the given array, using the current seed.
              * @param array The array to be shuffled.
              */
-            shuffle(array?: any[][]): any[];
+            shuffle(array?: any[]): any[];
         }
 
         /**
-         * [description]
-         * @param vector [description]
-         * @param scale [description]
+         * Compute a random unit vector.
+         *
+         * Computes random values for the given vector between -1 and 1 that can be used to represent a direction.
+         *
+         * Optionally accepts a scale value to scale the resulting vector by.
+         * @param vector The Vector to compute random values for.
+         * @param scale The scale of the random values. Default 1.
          */
         function RandomXY(
             vector: Phaser.Math.Vector2,
-            scale: number
+            scale?: number
         ): Phaser.Math.Vector2;
 
         /**
-         * [description]
-         * @param vec3 [description]
-         * @param radius [description] Default 1.
+         * Compute a random position vector in a spherical area, optionally defined by the given radius.
+         * @param vec3 The Vector to compute random values for.
+         * @param radius The radius. Default 1.
          */
         function RandomXYZ(
             vec3: Phaser.Math.Vector3,
@@ -35189,9 +36764,9 @@ declare namespace Phaser {
         ): Phaser.Math.Vector3;
 
         /**
-         * [description]
-         * @param vec4 [description]
-         * @param scale [description] Default 1.
+         * Compute a random four-dimensional vector.
+         * @param vec4 The Vector to compute random values for.
+         * @param scale The scale of the random values. Default 1.
          */
         function RandomXYZW(
             vec4: Phaser.Math.Vector4,
@@ -35209,11 +36784,11 @@ declare namespace Phaser {
         ): Phaser.Geom.Point;
 
         /**
-         * [description]
-         * @param point [description]
-         * @param x [description]
-         * @param y [description]
-         * @param angle [description]
+         * Rotate a `point` around `x` and `y` by the given `angle`.
+         * @param point The point to be rotated.
+         * @param x The horizontal coordinate to rotate around.
+         * @param y The vertical coordinate to rotate around.
+         * @param angle The angle of rotation in radians.
          */
         function RotateAround(
             point: Phaser.Geom.Point | object,
@@ -35224,7 +36799,7 @@ declare namespace Phaser {
 
         /**
          * [description]
-         * @param point The Point to be rotated.
+         * @param point The point to be rotated.
          * @param x The horizontal coordinate to rotate around.
          * @param y The vertical coordinate to rotate around.
          * @param angle The angle of rotation in radians.
@@ -35243,9 +36818,9 @@ declare namespace Phaser {
          *
          * This is the same as transforming a point by an
          * axis-angle quaternion, but it has higher precision.
-         * @param vec [description]
-         * @param axis [description]
-         * @param radians [description]
+         * @param vec The vector to be rotated.
+         * @param axis The axis to rotate around.
+         * @param radians The angle of rotation in radians.
          */
         function RotateVec3(
             vec: Phaser.Math.Vector3,
@@ -35260,10 +36835,10 @@ declare namespace Phaser {
         function RoundAwayFromZero(value: number): number;
 
         /**
-         * [description]
-         * @param value [description]
-         * @param place [description] Default 0.
-         * @param base [description] Default 10.
+         * Round a value to a given decimal place.
+         * @param value The value to round.
+         * @param place The place to round to. Default 0.
+         * @param base The base to round in. Default is 10 for decimal. Default 10.
          */
         function RoundTo(
             value: number,
@@ -35272,57 +36847,75 @@ declare namespace Phaser {
         ): number;
 
         /**
-         * [description]
-         * @param length [description]
-         * @param sinAmp [description]
-         * @param cosAmp [description]
-         * @param frequency [description]
+         * Generate a series of sine and cosine values.
+         * @param length The number of values to generate.
+         * @param sinAmp The sine value amplitude. Default 1.
+         * @param cosAmp The cosine value amplitude. Default 1.
+         * @param frequency The frequency of the values. Default 1.
          */
         function SinCosTableGenerator(
             length: number,
-            sinAmp: number,
-            cosAmp: number,
-            frequency: number
+            sinAmp?: number,
+            cosAmp?: number,
+            frequency?: number
         ): SinCosTable;
 
         /**
-         * [description]
-         * @param x [description]
-         * @param min [description]
-         * @param max [description]
+         * Calculate a smoother interpolation percentage of `x` between `min` and `max`.
+         *
+         * The function receives the number `x` as an argument and returns 0 if `x` is less than or equal to the left edge,
+         * 1 if `x` is greater than or equal to the right edge, and smoothly interpolates, using a Hermite polynomial,
+         * between 0 and 1 otherwise.
+         *
+         * Produces an even smoother interpolation than {@link Phaser.Math.SmoothStep}.
+         * @param x The input value.
+         * @param min The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+         * @param max The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
          */
         function SmootherStep(x: number, min: number, max: number): number;
 
         /**
-         * [description]
-         * @param x [description]
-         * @param min [description]
-         * @param max [description]
+         * Calculate a smooth interpolation percentage of `x` between `min` and `max`.
+         *
+         * The function receives the number `x` as an argument and returns 0 if `x` is less than or equal to the left edge,
+         * 1 if `x` is greater than or equal to the right edge, and smoothly interpolates, using a Hermite polynomial,
+         * between 0 and 1 otherwise.
+         * @param x The input value.
+         * @param min The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+         * @param max The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
          */
         function SmoothStep(x: number, min: number, max: number): number;
 
         namespace Snap {
             /**
-             * [description]
-             * @param value [description]
-             * @param gap [description]
-             * @param start [description] Default 0.
+             * Snap a value to nearest grid slice, using ceil.
+             *
+             * Example: if you have an interval gap of `5` and a position of `12`... you will snap to `15`.
+             * As will `14` snap to `15`... but `16` will snap to `20`.
+             * @param value The value to snap.
+             * @param gap The interval gap of the grid.
+             * @param start Optional starting offset for gap. Default 0.
              */
             function Ceil(value: number, gap: number, start?: number): number;
 
             /**
-             * [description]
-             * @param value [description]
-             * @param gap [description]
-             * @param start [description] Default 0.
+             * Snap a value to nearest grid slice, using floor.
+             *
+             * Example: if you have an interval gap of `5` and a position of `12`... you will snap to `10`.
+             * As will `14` snap to `10`... but `16` will snap to `15`.
+             * @param value The value to snap.
+             * @param gap The interval gap of the grid.
+             * @param start Optional starting offset for gap. Default 0.
              */
             function Floor(value: number, gap: number, start?: number): number;
 
             /**
-             * [description]
-             * @param value [description]
-             * @param gap [description]
-             * @param start [description] Default 0.
+             * Snap a value to nearest grid slice, using rounding.
+             *
+             * Example: if you have an interval gap of `5` and a position of `12`... you will snap to `10` whereas `14` will snap to `15`.
+             * @param value The value to snap.
+             * @param gap The interval gap of the grid.
+             * @param start Optional starting offset for gap. Default 0.
              */
             function To(value: number, gap: number, start?: number): number;
         }
@@ -35337,7 +36930,7 @@ declare namespace Phaser {
          * @param rotation Rotation of the transform point, in radians.
          * @param scaleX Horizontal scale of the transform point.
          * @param scaleY Vertical scale of the transform point.
-         * @param output [description]
+         * @param output The output vector, point or object for the translated coordinates.
          */
         function TransformXY(
             x: number,
@@ -35352,12 +36945,14 @@ declare namespace Phaser {
 
         /**
          * A representation of a vector in 2D space.
+         *
+         * A two-component vector.
          */
         class Vector2 {
             /**
              *
-             * @param x The x component of this Vector.
-             * @param y The y component of this Vector.
+             * @param x The x component.
+             * @param y The y component.
              */
             constructor(x?: number, y?: number);
 
@@ -35377,7 +36972,7 @@ declare namespace Phaser {
             clone(): Phaser.Math.Vector2;
 
             /**
-             * Copy the components of a given vector, into this Vector.
+             * Copy the components of a given Vector into this Vector.
              * @param src The Vector to copy the components from.
              */
             copy(src: Phaser.Math.Vector2): Phaser.Math.Vector2;
@@ -35389,7 +36984,7 @@ declare namespace Phaser {
             setFromObject(obj: Vector2Like): Phaser.Math.Vector2;
 
             /**
-             * Set the x and y components of the this Vector to the given x and y values.
+             * Set the `x` and `y` components of the this Vector to the given `x` and `y` values.
              * @param x The x value to set for this Vector.
              * @param y The y value to set for this Vector. Default x.
              */
@@ -35410,7 +37005,9 @@ declare namespace Phaser {
             setToPolar(azimuth: number, radius?: number): Phaser.Math.Vector2;
 
             /**
-             * Check if this Vector is equal to a given Vector.
+             * Check whether this Vector is equal to a given Vector.
+             *
+             * Performs a strict equality check against each Vector's components.
              * @param v The vector to compare with this Vector.
              */
             equals(v: Phaser.Math.Vector2): boolean;
@@ -35421,19 +37018,21 @@ declare namespace Phaser {
             angle(): number;
 
             /**
-             * Add a given Vector to this Vector. Addition is element-wise.
+             * Add a given Vector to this Vector. Addition is component-wise.
              * @param src The Vector to add to this Vector.
              */
             add(src: Phaser.Math.Vector2): Phaser.Math.Vector2;
 
             /**
-             * Subtract the given Vector from this Vector. Subtraction is element-wise.
+             * Subtract the given Vector from this Vector. Subtraction is component-wise.
              * @param src The Vector to subtract from this Vector.
              */
             subtract(src: Phaser.Math.Vector2): Phaser.Math.Vector2;
 
             /**
-             * Perform an element-wise multiplication between this Vector and the given Vector.
+             * Perform a component-wise multiplication between this Vector and the given Vector.
+             *
+             * Multiplies this Vector by the given Vector.
              * @param src The Vector to multiply this Vector by.
              */
             multiply(src: Phaser.Math.Vector2): Phaser.Math.Vector2;
@@ -35445,30 +37044,32 @@ declare namespace Phaser {
             scale(value: number): Phaser.Math.Vector2;
 
             /**
-             * Perform an element-wise division between this Vector and the given Vector. This Vector is divided by the given Vector.
+             * Perform a component-wise division between this Vector and the given Vector.
+             *
+             * Divides this Vector by the given Vector.
              * @param src The Vector to divide this Vector by.
              */
             divide(src: Phaser.Math.Vector2): Phaser.Math.Vector2;
 
             /**
-             * Negate the x and y components of this Vector.
+             * Negate the `x` and `y` components of this Vector.
              */
             negate(): Phaser.Math.Vector2;
 
             /**
-             * Calculate the distance between this Vector, and the given Vector.
+             * Calculate the distance between this Vector and the given Vector.
              * @param src The Vector to calculate the distance to.
              */
             distance(src: Phaser.Math.Vector2): number;
 
             /**
-             * The distance between this Vector, and the given Vector, squared.
+             * Calculate the distance between this Vector, and the given Vector, squared.
              * @param src The Vector to calculate the distance to.
              */
             distanceSq(src: Phaser.Math.Vector2): number;
 
             /**
-             * The length (or magnitude) of this Vector.
+             * Calculate the length (or magnitude) of this Vector.
              */
             length(): number;
 
@@ -35478,17 +37079,19 @@ declare namespace Phaser {
             lengthSq(): number;
 
             /**
-             * Normalise this Vector, that is, make it a unit length vector (magnitude of 1) in the same direction.
+             * Normalize this Vector.
+             *
+             * Makes the vector a unit length vector (magnitude of 1) in the same direction.
              */
             normalize(): Phaser.Math.Vector2;
 
             /**
-             * [description]
+             * Right-hand normalize (make unit length) this Vector.
              */
             normalizeRightHand(): Phaser.Math.Vector2;
 
             /**
-             * Perform a dot product between this Vector and the given Vector
+             * Calculate the dot product of this Vector and the given Vector.
              * @param src The Vector2 to dot product with this Vector2.
              */
             dot(src: Phaser.Math.Vector2): number;
@@ -35500,21 +37103,23 @@ declare namespace Phaser {
             cross(src: Phaser.Math.Vector2): number;
 
             /**
-             * [description]
-             * @param src [description]
-             * @param t [description] Default 0.
+             * Linearly interpolate between this Vector and the given Vector.
+             *
+             * Interpolates this Vector towards the given Vector.
+             * @param src The Vector2 to interpolate towards.
+             * @param t The interpolation percentage, between 0 and 1. Default 0.
              */
             lerp(src: Phaser.Math.Vector2, t?: number): Phaser.Math.Vector2;
 
             /**
-             * [description]
-             * @param mat [description]
+             * Transform this Vector with the given Matrix.
+             * @param mat The Matrix3 to transform this Vector2 with.
              */
             transformMat3(mat: Phaser.Math.Matrix3): Phaser.Math.Vector2;
 
             /**
-             * [description]
-             * @param mat [description]
+             * Transform this Vector with the given Matrix.
+             * @param mat The Matrix4 to transform this Vector2 with.
              */
             transformMat4(mat: Phaser.Math.Matrix4): Phaser.Math.Vector2;
 
@@ -35530,14 +37135,16 @@ declare namespace Phaser {
         }
 
         /**
-         * [description]
+         * A representation of a vector in 3D space.
+         *
+         * A three-component vector.
          */
         class Vector3 {
             /**
              *
-             * @param x [description]
-             * @param y [description]
-             * @param z [description]
+             * @param x The x component.
+             * @param y The y component.
+             * @param z The z component.
              */
             constructor(x?: number, y?: number, z?: number);
 
@@ -35557,12 +37164,14 @@ declare namespace Phaser {
             z: number;
 
             /**
-             * [description]
+             * Set this Vector to point up.
+             *
+             * Sets the y component of the vector to 1, and the others to 0.
              */
             up(): Phaser.Math.Vector3;
 
             /**
-             * [description]
+             * Make a clone of this Vector3.
              */
             clone(): Phaser.Math.Vector3;
 
@@ -35577,24 +37186,26 @@ declare namespace Phaser {
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
+             * Check whether this Vector is equal to a given Vector.
+             *
+             * Performs a strict equality check against each Vector's components.
              * @param v The Vector3 to compare against.
              */
             equals(v: Phaser.Math.Vector3): boolean;
 
             /**
-             * [description]
-             * @param src [description]
+             * Copy the components of a given Vector into this Vector.
+             * @param src The Vector to copy the components from.
              */
             copy(
                 src: Phaser.Math.Vector2 | Phaser.Math.Vector3
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param z [description]
+             * Set the `x`, `y`, and `z` components of this Vector to the given `x`, `y`, and `z` values.
+             * @param x The x value to set for this Vector, or an object containing x, y and z components.
+             * @param y The y value to set for this Vector.
+             * @param z The z value to set for this Vector.
              */
             set(
                 x: number | object,
@@ -35603,81 +37214,84 @@ declare namespace Phaser {
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Add a given Vector to this Vector. Addition is component-wise.
+             * @param v The Vector to add to this Vector.
              */
             add(
                 v: Phaser.Math.Vector2 | Phaser.Math.Vector3
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Subtract the given Vector from this Vector. Subtraction is component-wise.
+             * @param v The Vector to subtract from this Vector.
              */
             subtract(
                 v: Phaser.Math.Vector2 | Phaser.Math.Vector3
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Perform a component-wise multiplication between this Vector and the given Vector.
+             *
+             * Multiplies this Vector by the given Vector.
+             * @param v The Vector to multiply this Vector by.
              */
             multiply(
                 v: Phaser.Math.Vector2 | Phaser.Math.Vector3
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param scale [description]
+             * Scale this Vector by the given value.
+             * @param scale The value to scale this Vector by.
              */
             scale(scale: number): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Perform a component-wise division between this Vector and the given Vector.
+             *
+             * Divides this Vector by the given Vector.
+             * @param v The Vector to divide this Vector by.
              */
             divide(
                 v: Phaser.Math.Vector2 | Phaser.Math.Vector3
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
+             * Negate the `x`, `y` and `z` components of this Vector.
              */
             negate(): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Calculate the distance between this Vector and the given Vector.
+             * @param v The Vector to calculate the distance to.
              */
             distance(v: Phaser.Math.Vector2 | Phaser.Math.Vector3): number;
 
             /**
-             * [description]
-             * @param v [description]
+             * Calculate the distance between this Vector, and the given Vector, squared.
+             * @param v The Vector to calculate the distance to.
              */
             distanceSq(v: Phaser.Math.Vector2 | Phaser.Math.Vector3): number;
 
             /**
-             * [description]
+             * Calculate the length (or magnitude) of this Vector.
              */
             length(): number;
 
             /**
-             * [description]
+             * Calculate the length of this Vector squared.
              */
             lengthSq(): number;
 
             /**
-             * [description]
-             * @param v [description]
+             * Normalize this Vector.
+             *
+             * Makes the vector a unit length vector (magnitude of 1) in the same direction.
              */
-            normalize(
-                v: Phaser.Math.Vector2 | Phaser.Math.Vector3
-            ): Phaser.Math.Vector3;
+            normalize(): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param v [description]
+             * Calculate the dot product of this Vector and the given Vector.
+             * @param v The Vector3 to dot product with this Vector3.
              */
             dot(v: Phaser.Math.Vector3): number;
 
@@ -35688,40 +37302,42 @@ declare namespace Phaser {
             cross(v: Phaser.Math.Vector3): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param v [description]
-             * @param t [description] Default 0.
+             * Linearly interpolate between this Vector and the given Vector.
+             *
+             * Interpolates this Vector towards the given Vector.
+             * @param v The Vector3 to interpolate towards.
+             * @param t The interpolation percentage, between 0 and 1. Default 0.
              */
             lerp(v: Phaser.Math.Vector3, t?: number): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param mat [description]
+             * Transform this Vector with the given Matrix.
+             * @param mat The Matrix3 to transform this Vector3 with.
              */
             transformMat3(mat: Phaser.Math.Matrix3): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param mat [description]
+             * Transform this Vector with the given Matrix.
+             * @param mat The Matrix4 to transform this Vector3 with.
              */
             transformMat4(mat: Phaser.Math.Matrix4): Phaser.Math.Vector3;
 
             /**
              * [description]
-             * @param mat [description]
+             * @param mat The Matrix4 to transform this Vector3 with.
              */
             transformCoordinates(mat: Phaser.Math.Matrix4): Phaser.Math.Vector3;
 
             /**
-             * [description]
-             * @param q [description]
+             * Transform this Vector with the given Quaternion.
+             * @param q The Quaternion to transform this Vector with.
              */
             transformQuat(q: Phaser.Math.Quaternion): Phaser.Math.Vector3;
 
             /**
              * Multiplies this Vector3 by the specified matrix, applying a W divide. This is useful for projection,
              * e.g. unprojecting a 2D point into 3D space.
-             * @param mat [description]
+             * @param mat The Matrix4 to multiply this Vector3 with.
              */
             project(mat: Phaser.Math.Matrix4): Phaser.Math.Vector3;
 
@@ -35743,21 +37359,23 @@ declare namespace Phaser {
             ): Phaser.Math.Vector3;
 
             /**
-             * [description]
+             * Make this Vector the zero vector (0, 0, 0).
              */
             reset(): Phaser.Math.Vector3;
         }
 
         /**
-         * [description]
+         * A representation of a vector in 4D space.
+         *
+         * A four-component vector.
          */
         class Vector4 {
             /**
              *
-             * @param x [description]
-             * @param y [description]
-             * @param z [description]
-             * @param w [description]
+             * @param x The x component.
+             * @param y The y component.
+             * @param z The z component.
+             * @param w The w component.
              */
             constructor(x?: number, y?: number, z?: number, w?: number);
 
@@ -35782,39 +37400,41 @@ declare namespace Phaser {
             w: number;
 
             /**
-             * [description]
+             * Make a clone of this Vector4.
              */
             clone(): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param src [description]
+             * Copy the components of a given Vector into this Vector.
+             * @param src The Vector to copy the components from.
              */
             copy(src: Phaser.Math.Vector4): Phaser.Math.Vector4;
 
             /**
-             * [description]
+             * Check whether this Vector is equal to a given Vector.
+             *
+             * Performs a strict quality check against each Vector's components.
              * @param v [description]
              */
             equals(v: Phaser.Math.Vector4): boolean;
 
             /**
-             * [description]
-             * @param x [description]
-             * @param y [description]
-             * @param z [description]
-             * @param w [description]
+             * Set the `x`, `y`, `z` and `w` components of the this Vector to the given `x`, `y`, `z` and `w` values.
+             * @param x The x value to set for this Vector, or an object containing x, y, z and w components.
+             * @param y The y value to set for this Vector.
+             * @param z The z value to set for this Vector.
+             * @param w The z value to set for this Vector.
              */
             set(
-                x: number,
+                x: number | object,
                 y: number,
                 z: number,
                 w: number
             ): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param v [description]
+             * Add a given Vector to this Vector. Addition is component-wise.
+             * @param v The Vector to add to this Vector.
              */
             add(
                 v:
@@ -35824,8 +37444,8 @@ declare namespace Phaser {
             ): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param v [description]
+             * Subtract the given Vector from this Vector. Subtraction is component-wise.
+             * @param v The Vector to subtract from this Vector.
              */
             subtract(
                 v:
@@ -35835,42 +37455,48 @@ declare namespace Phaser {
             ): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param scale [description]
+             * Scale this Vector by the given value.
+             * @param scale The value to scale this Vector by.
              */
             scale(scale: number): Phaser.Math.Vector4;
 
             /**
-             * [description]
+             * Calculate the length (or magnitude) of this Vector.
              */
             length(): number;
 
             /**
-             * [description]
+             * Calculate the length of this Vector squared.
              */
             lengthSq(): number;
 
             /**
-             * [description]
+             * Normalize this Vector.
+             *
+             * Makes the vector a unit length vector (magnitude of 1) in the same direction.
              */
             normalize(): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param v [description]
+             * Calculate the dot product of this Vector and the given Vector.
+             * @param v The Vector4 to dot product with this Vector4.
              */
             dot(v: Phaser.Math.Vector4): number;
 
             /**
-             * [description]
-             * @param v [description]
-             * @param t [description] Default 0.
+             * Linearly interpolate between this Vector and the given Vector.
+             *
+             * Interpolates this Vector towards the given Vector.
+             * @param v The Vector4 to interpolate towards.
+             * @param t The interpolation percentage, between 0 and 1. Default 0.
              */
             lerp(v: Phaser.Math.Vector4, t?: number): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param v [description]
+             * Perform a component-wise multiplication between this Vector and the given Vector.
+             *
+             * Multiplies this Vector by the given Vector.
+             * @param v The Vector to multiply this Vector by.
              */
             multiply(
                 v:
@@ -35880,8 +37506,10 @@ declare namespace Phaser {
             ): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param v [description]
+             * Perform a component-wise division between this Vector and the given Vector.
+             *
+             * Divides this Vector by the given Vector.
+             * @param v The Vector to divide this Vector by.
              */
             divide(
                 v:
@@ -35891,7 +37519,7 @@ declare namespace Phaser {
             ): Phaser.Math.Vector4;
 
             /**
-             * [description]
+             * Calculate the distance between this Vector and the given Vector.
              * @param v [description]
              */
             distance(
@@ -35902,8 +37530,8 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
-             * @param v [description]
+             * Calculate the distance between this Vector, and the given Vector, squared.
+             * @param v The Vector to calculate the distance to.
              */
             distanceSq(
                 v:
@@ -35913,24 +37541,24 @@ declare namespace Phaser {
             ): number;
 
             /**
-             * [description]
+             * Negate the `x`, `y`, `z` and `w` components of this Vector.
              */
             negate(): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param mat [description]
+             * Transform this Vector with the given Matrix.
+             * @param mat The Matrix4 to transform this Vector4 with.
              */
             transformMat4(mat: Phaser.Math.Matrix4): Phaser.Math.Vector4;
 
             /**
-             * [description]
-             * @param q [description]
+             * Transform this Vector with the given Quaternion.
+             * @param q The Quaternion to transform this Vector with.
              */
             transformQuat(q: Phaser.Math.Quaternion): Phaser.Math.Vector4;
 
             /**
-             * [description]
+             * Make this Vector the zero vector (0, 0, 0, 0).
              */
             reset(): Phaser.Math.Vector4;
         }
@@ -35944,10 +37572,10 @@ declare namespace Phaser {
         function Within(a: number, b: number, tolerance: number): boolean;
 
         /**
-         * [description]
-         * @param value [description]
-         * @param min [description]
-         * @param max [description]
+         * Wrap the given `value` between `min` and `max.
+         * @param value The value to wrap.
+         * @param min The minimum value.
+         * @param max The maximum value.
          */
         function Wrap(value: number, min: number, max: number): number;
     }
@@ -36008,9 +37636,10 @@ declare namespace Phaser {
 
                 /**
                  * Clears all alpha values associated with this Game Object.
-                 * Immediately sets the alpha levels back to 1 (fully opaque)
+                 *
+                 * Immediately sets the alpha levels back to 1 (fully opaque).
                  */
-                clearAlpha(): Phaser.GameObjects.GameObject;
+                clearAlpha(): this;
 
                 /**
                  * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -36028,7 +37657,7 @@ declare namespace Phaser {
                     topRight?: number,
                     bottomLeft?: number,
                     bottomRight?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The alpha value of the Game Object.
@@ -36104,9 +37733,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
 
                 /**
                  * The depth of this Game Object within the Scene.
@@ -36133,7 +37760,7 @@ declare namespace Phaser {
                  * Setting the depth will queue a depth sort event within the Scene.
                  * @param value The depth of this Game Object.
                  */
-                setDepth(value: integer): Phaser.GameObjects.GameObject;
+                setDepth(value: integer): this;
 
                 /**
                  * The horizontally flipped state of the Game Object.
@@ -36152,36 +37779,36 @@ declare namespace Phaser {
                 /**
                  * Toggles the horizontal flipped state of this Game Object.
                  */
-                toggleFlipX(): Phaser.GameObjects.GameObject;
+                toggleFlipX(): this;
 
                 /**
                  * Toggles the vertical flipped state of this Game Object.
                  */
-                toggleFlipY(): Phaser.GameObjects.GameObject;
+                toggleFlipY(): this;
 
                 /**
                  * Sets the horizontal flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipX(value: boolean): this;
 
                 /**
                  * Sets the vertical flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipY(value: boolean): this;
 
                 /**
                  * Sets the horizontal and vertical flipped state of this Game Object.
                  * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+                setFlip(x: boolean, y: boolean): this;
 
                 /**
                  * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
                  */
-                resetFlip(): Phaser.GameObjects.GameObject;
+                resetFlip(): this;
 
                 /**
                  * Gets the center coordinate of this Game Object, regardless of origin.
@@ -36263,13 +37890,13 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
 
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -36341,15 +37968,12 @@ declare namespace Phaser {
                  * @param x The horizontal origin value. Default 0.5.
                  * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setOrigin(x?: number, y?: number): this;
 
                 /**
                  * Sets the origin of this Game Object based on the Pivot values in its Frame.
                  */
-                setOriginFromFrame(): Phaser.GameObjects.GameObject;
+                setOriginFromFrame(): this;
 
                 /**
                  * Sets the display origin of this Game Object.
@@ -36357,24 +37981,21 @@ declare namespace Phaser {
                  * @param x The horizontal display origin value. Default 0.
                  * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setDisplayOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplayOrigin(x?: number, y?: number): this;
 
                 /**
                  * Updates the Display Origin cached values internally stored on this Game Object.
                  * You don't usually call this directly, but it is exposed for edge-cases where you may.
                  */
-                updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+                updateDisplayOrigin(): this;
 
                 /**
-                 * [description]
+                 * The initial WebGL pipeline of this Game Object.
                  */
                 defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
                 /**
-                 * [description]
+                 * The current WebGL pipeline of this Game Object.
                  */
                 pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -36412,9 +38033,7 @@ declare namespace Phaser {
                  * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
                  * @param value The Scale Mode to be used by this Game Object.
                  */
-                setScaleMode(
-                    value: Phaser.ScaleModes
-                ): Phaser.GameObjects.GameObject;
+                setScaleMode(value: Phaser.ScaleModes): this;
 
                 /**
                  * The horizontal scroll factor of this Game Object.
@@ -36458,10 +38077,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
 
                 /**
                  * The native (un-scaled) width of this Game Object.
@@ -36489,19 +38105,14 @@ declare namespace Phaser {
                  * Sets the size of this Game Object to be that of the given Frame.
                  * @param frame The frame to base the size of this Game Object on.
                  */
-                setSizeToFrame(
-                    frame: Phaser.Textures.Frame
-                ): Phaser.GameObjects.GameObject;
+                setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
                 /**
                  * Sets the size of this Game Object.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
 
                 /**
                  * Sets the display size of this Game Object.
@@ -36509,10 +38120,7 @@ declare namespace Phaser {
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
 
                 /**
                  * The Texture this Game Object is using to render with.
@@ -36533,10 +38141,7 @@ declare namespace Phaser {
                  * @param key The key of the texture to be used, as stored in the Texture Manager.
                  * @param frame The name or index of the frame within the Texture.
                  */
-                setTexture(
-                    key: string,
-                    frame?: string | integer
-                ): Phaser.GameObjects.GameObject;
+                setTexture(key: string, frame?: string | integer): this;
 
                 /**
                  * Sets the frame this Game Object will use to render with.
@@ -36555,13 +38160,13 @@ declare namespace Phaser {
                     frame: string | integer,
                     updateSize?: boolean,
                     updateOrigin?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears all tint values associated with this Game Object.
                  * Immediately sets the alpha levels back to 0xffffff (no tint)
                  */
-                clearTint(): Phaser.GameObjects.GameObject;
+                clearTint(): this;
 
                 /**
                  * Sets the tint values for this Game Object.
@@ -36575,7 +38180,7 @@ declare namespace Phaser {
                     topRight?: integer,
                     bottomLeft?: integer,
                     bottomRight?: integer
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The tint value being applied to the top-left of the Game Object.
@@ -36665,50 +38270,70 @@ declare namespace Phaser {
                     y?: number,
                     z?: number,
                     w?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
+
+                /**
+                 * Sets the position of this Game Object to be a random position within the confines of
+                 * the given area.
+                 *
+                 * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+                 *
+                 * The position does not factor in the size of this Game Object, meaning that only the origin is
+                 * guaranteed to be within the area.
+                 * @param x The x position of the top-left of the random area. Default 0.
+                 * @param y The y position of the top-left of the random area. Default 0.
+                 * @param width The width of the random area.
+                 * @param height The height of the random area.
+                 */
+                setRandomPosition(
+                    x?: number,
+                    y?: number,
+                    width?: number,
+                    height?: number
+                ): this;
 
                 /**
                  * Sets the rotation of this Game Object.
                  * @param radians The rotation of this Game Object, in radians. Default 0.
                  */
-                setRotation(radians?: number): Phaser.GameObjects.GameObject;
+                setRotation(radians?: number): this;
 
                 /**
                  * Sets the angle of this Game Object.
                  * @param degrees The rotation of this Game Object, in degrees. Default 0.
                  */
-                setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+                setAngle(degrees?: number): this;
 
                 /**
                  * Sets the scale of this Game Object.
                  * @param x The horizontal scale of this Game Object.
                  * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setScale(x: number, y?: number): this;
 
                 /**
                  * Sets the x position of this Game Object.
                  * @param value The x position of this Game Object. Default 0.
                  */
-                setX(value?: number): Phaser.GameObjects.GameObject;
+                setX(value?: number): this;
 
                 /**
                  * Sets the y position of this Game Object.
                  * @param value The y position of this Game Object. Default 0.
                  */
-                setY(value?: number): Phaser.GameObjects.GameObject;
+                setY(value?: number): this;
 
                 /**
                  * Sets the z position of this Game Object.
                  * @param value The z position of this Game Object. Default 0.
                  */
-                setZ(value?: number): Phaser.GameObjects.GameObject;
+                setZ(value?: number): this;
 
                 /**
                  * Sets the w position of this Game Object.
                  * @param value The w position of this Game Object. Default 0.
                  */
-                setW(value?: number): Phaser.GameObjects.GameObject;
+                setW(value?: number): this;
 
                 /**
                  * Gets the local transform matrix for this Game Object.
@@ -36739,78 +38364,69 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
 
                 /**
                  * [description]
                  * @param x The horizontal acceleration
                  * @param y The vertical acceleration Default x.
                  */
-                setAcceleration(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setAcceleration(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param value The horizontal acceleration
                  */
-                setAccelerationX(value: number): Phaser.GameObjects.GameObject;
+                setAccelerationX(value: number): this;
 
                 /**
                  * [description]
                  * @param value The vertical acceleration
                  */
-                setAccelerationY(value: number): Phaser.GameObjects.GameObject;
+                setAccelerationY(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setAngularVelocity(
-                    value: number
-                ): Phaser.GameObjects.GameObject;
+                setAngularVelocity(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setAngularAcceleration(
-                    value: number
-                ): Phaser.GameObjects.GameObject;
+                setAngularAcceleration(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setAngularDrag(value: number): Phaser.GameObjects.GameObject;
+                setAngularDrag(value: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setBounce(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setBounce(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setBounceX(value: number): Phaser.GameObjects.GameObject;
+                setBounceX(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setBounceY(value: number): Phaser.GameObjects.GameObject;
+                setBounceY(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setCollideWorldBounds(
-                    value: number
-                ): Phaser.GameObjects.GameObject;
+                setCollideWorldBounds(value: boolean): this;
 
                 /**
                  * [description]
@@ -36822,13 +38438,13 @@ declare namespace Phaser {
                     showBody: boolean,
                     showVelocity: boolean,
                     bodyColor: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setDebugBodyColor(value: number): Phaser.GameObjects.GameObject;
+                setDebugBodyColor(value: number): this;
 
                 /**
                  * [description]
@@ -36850,19 +38466,25 @@ declare namespace Phaser {
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setDrag(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setDrag(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setDragX(value: number): Phaser.GameObjects.GameObject;
+                setDragX(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setDragY(value: number): Phaser.GameObjects.GameObject;
+                setDragY(value: number): this;
+
+                /**
+                 * [description]
+                 * @param value `true` to use damping for deceleration, or `false` to use linear deceleration.
+                 */
+                setDamping(value: boolean): this;
 
                 /**
                  * [description]
@@ -36878,7 +38500,7 @@ declare namespace Phaser {
                     y: number,
                     enableGameObject: boolean,
                     showGameObject: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * [description]
@@ -36888,7 +38510,7 @@ declare namespace Phaser {
                 disableBody(
                     disableGameObject?: boolean,
                     hideGameObject?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Syncs the Bodies position and size with its parent Game Object.
@@ -36896,70 +38518,64 @@ declare namespace Phaser {
                  * But for Static bodies it's a useful way of modifying the position of a Static Body
                  * in the Physics World, based on its Game Object.
                  */
-                refreshBody(): Phaser.GameObjects.GameObject;
+                refreshBody(): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setFriction(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setFriction(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  */
-                setFrictionX(x: number): Phaser.GameObjects.GameObject;
+                setFrictionX(x: number): this;
 
                 /**
                  * [description]
                  * @param y [description]
                  */
-                setFrictionY(y: number): Phaser.GameObjects.GameObject;
+                setFrictionY(y: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setGravity(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setGravity(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  */
-                setGravityX(x: number): Phaser.GameObjects.GameObject;
+                setGravityX(x: number): this;
 
                 /**
                  * [description]
                  * @param y [description]
                  */
-                setGravityY(y: number): Phaser.GameObjects.GameObject;
+                setGravityY(y: number): this;
 
                 /**
                  * [description]
                  * @param value [description] Default true.
                  */
-                setImmovable(value?: boolean): Phaser.GameObjects.GameObject;
+                setImmovable(value?: boolean): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setMass(value: number): Phaser.GameObjects.GameObject;
+                setMass(value: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setOffset(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setOffset(x: number, y?: number): this;
 
                 /**
                  * [description]
@@ -36971,39 +38587,33 @@ declare namespace Phaser {
                     radius: number,
                     offsetX?: number,
                     offsetY?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setVelocity(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setVelocity(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  */
-                setVelocityX(x: number): Phaser.GameObjects.GameObject;
+                setVelocityX(x: number): this;
 
                 /**
                  * [description]
                  * @param y [description]
                  */
-                setVelocityY(y: number): Phaser.GameObjects.GameObject;
+                setVelocityY(y: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setMaxVelocity(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setMaxVelocity(x: number, y?: number): this;
             }
 
             /**
@@ -37102,7 +38712,7 @@ declare namespace Phaser {
                 resume(): Phaser.Physics.Arcade.World;
 
                 /**
-                 * Sets the acceleration.x/y property on the game object so it will move towards the x/y coordinates at the given speed (in pixels per second sq.)
+                 * Sets the acceleration.x/y property on the game object so it will move towards the x/y coordinates at the given rate (in pixels per second squared)
                  *
                  * You must give a maximum speed value, beyond which the game object won't go any faster.
                  *
@@ -37111,7 +38721,7 @@ declare namespace Phaser {
                  * @param gameObject Any Game Object with an Arcade Physics body.
                  * @param x The x coordinate to accelerate towards.
                  * @param y The y coordinate to accelerate towards.
-                 * @param speed The speed it will accelerate in pixels per second. Default 60.
+                 * @param speed The acceleration (change in speed) in pixels per second squared. Default 60.
                  * @param xSpeedMax The maximum x velocity the game object can reach. Default 500.
                  * @param ySpeedMax The maximum y velocity the game object can reach. Default 500.
                  */
@@ -37125,7 +38735,7 @@ declare namespace Phaser {
                 ): number;
 
                 /**
-                 * Sets the acceleration.x/y property on the game object so it will move towards the x/y coordinates at the given speed (in pixels per second sq.)
+                 * Sets the acceleration.x/y property on the game object so it will move towards the x/y coordinates at the given rate (in pixels per second squared)
                  *
                  * You must give a maximum speed value, beyond which the game object won't go any faster.
                  *
@@ -37133,7 +38743,7 @@ declare namespace Phaser {
                  * Note: The game object doesn't stop moving once it reaches the destination coordinates.
                  * @param gameObject Any Game Object with an Arcade Physics body.
                  * @param destination The Game Object to move towards. Can be any object but must have visible x/y properties.
-                 * @param speed The speed it will accelerate in pixels per second. Default 60.
+                 * @param speed The acceleration (change in speed) in pixels per second squared. Default 60.
                  * @param xSpeedMax The maximum x velocity the game object can reach. Default 500.
                  * @param ySpeedMax The maximum y velocity the game object can reach. Default 500.
                  */
@@ -37146,13 +38756,13 @@ declare namespace Phaser {
                 ): number;
 
                 /**
-                 * From a set of points or display objects, find the one closest to a source point or object.
+                 * Finds the Body closest to a source point or object.
                  * @param source Any object with public `x` and `y` properties, such as a Game Object or Geometry object.
                  */
                 closest(source: object): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * From a set of points or display objects, find the one farthest from a source point or object.
+                 * Finds the Body farthest from a source point or object.
                  * @param source Any object with public `x` and `y` properties, such as a Game Object or Geometry object.
                  */
                 furthest(source: object): Phaser.Physics.Arcade.Body;
@@ -37198,10 +38808,10 @@ declare namespace Phaser {
                 ): number;
 
                 /**
-                 * Given the angle (in degrees) and speed calculate the velocity and return it as a Point object, or set it to the given point object.
-                 * One way to use this is: velocityFromAngle(angle, 200, sprite.velocity) which will set the values directly to the sprites velocity and not create a new Point object.
+                 * Given the angle (in degrees) and speed calculate the velocity and return it as a vector, or set it to the given vector object.
+                 * One way to use this is: velocityFromAngle(angle, 200, sprite.body.velocity) which will set the values directly to the sprite's velocity and not create a new vector object.
                  * @param angle The angle in degrees calculated in clockwise positive direction (down = 90 degrees positive, right = 0 degrees positive, up = 90 degrees negative)
-                 * @param speed The speed it will move, in pixels per second sq. Default 60.
+                 * @param speed The speed it will move, in pixels per second squared. Default 60.
                  * @param vec2 The Vector2 in which the x and y properties will be set to the calculated velocity.
                  */
                 velocityFromAngle(
@@ -37211,10 +38821,10 @@ declare namespace Phaser {
                 ): Phaser.Math.Vector2;
 
                 /**
-                 * Given the rotation (in radians) and speed calculate the velocity and return it as a Point object, or set it to the given point object.
-                 * One way to use this is: velocityFromRotation(rotation, 200, sprite.velocity) which will set the values directly to the sprites velocity and not create a new Point object.
+                 * Given the rotation (in radians) and speed calculate the velocity and return it as a vector, or set it to the given vector object.
+                 * One way to use this is: velocityFromRotation(rotation, 200, sprite.body.velocity) which will set the values directly to the sprite's velocity and not create a new vector object.
                  * @param rotation The angle in radians.
-                 * @param speed The speed it will move, in pixels per second sq. Default 60.
+                 * @param speed The speed it will move, in pixels per second squared Default 60.
                  * @param vec2 The Vector2 in which the x and y properties will be set to the calculated velocity.
                  */
                 velocityFromRotation(
@@ -37292,10 +38902,16 @@ declare namespace Phaser {
                 );
 
                 /**
-                 * Clears all alpha values associated with this Game Object.
-                 * Immediately sets the alpha levels back to 1 (fully opaque)
+                 * If this Game Object is enabled for physics then this property will contain a reference to a Physics Body.
                  */
-                clearAlpha(): Phaser.GameObjects.GameObject;
+                body: Phaser.Physics.Arcade.Body;
+
+                /**
+                 * Clears all alpha values associated with this Game Object.
+                 *
+                 * Immediately sets the alpha levels back to 1 (fully opaque).
+                 */
+                clearAlpha(): this;
 
                 /**
                  * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -37313,7 +38929,7 @@ declare namespace Phaser {
                     topRight?: number,
                     bottomLeft?: number,
                     bottomRight?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The alpha value of the Game Object.
@@ -37389,9 +39005,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
 
                 /**
                  * The depth of this Game Object within the Scene.
@@ -37418,7 +39032,7 @@ declare namespace Phaser {
                  * Setting the depth will queue a depth sort event within the Scene.
                  * @param value The depth of this Game Object.
                  */
-                setDepth(value: integer): Phaser.GameObjects.GameObject;
+                setDepth(value: integer): this;
 
                 /**
                  * The horizontally flipped state of the Game Object.
@@ -37437,36 +39051,36 @@ declare namespace Phaser {
                 /**
                  * Toggles the horizontal flipped state of this Game Object.
                  */
-                toggleFlipX(): Phaser.GameObjects.GameObject;
+                toggleFlipX(): this;
 
                 /**
                  * Toggles the vertical flipped state of this Game Object.
                  */
-                toggleFlipY(): Phaser.GameObjects.GameObject;
+                toggleFlipY(): this;
 
                 /**
                  * Sets the horizontal flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipX(value: boolean): this;
 
                 /**
                  * Sets the vertical flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipY(value: boolean): this;
 
                 /**
                  * Sets the horizontal and vertical flipped state of this Game Object.
                  * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+                setFlip(x: boolean, y: boolean): this;
 
                 /**
                  * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
                  */
-                resetFlip(): Phaser.GameObjects.GameObject;
+                resetFlip(): this;
 
                 /**
                  * Gets the center coordinate of this Game Object, regardless of origin.
@@ -37548,13 +39162,13 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
 
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -37626,15 +39240,12 @@ declare namespace Phaser {
                  * @param x The horizontal origin value. Default 0.5.
                  * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setOrigin(x?: number, y?: number): this;
 
                 /**
                  * Sets the origin of this Game Object based on the Pivot values in its Frame.
                  */
-                setOriginFromFrame(): Phaser.GameObjects.GameObject;
+                setOriginFromFrame(): this;
 
                 /**
                  * Sets the display origin of this Game Object.
@@ -37642,24 +39253,21 @@ declare namespace Phaser {
                  * @param x The horizontal display origin value. Default 0.
                  * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setDisplayOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplayOrigin(x?: number, y?: number): this;
 
                 /**
                  * Updates the Display Origin cached values internally stored on this Game Object.
                  * You don't usually call this directly, but it is exposed for edge-cases where you may.
                  */
-                updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+                updateDisplayOrigin(): this;
 
                 /**
-                 * [description]
+                 * The initial WebGL pipeline of this Game Object.
                  */
                 defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
                 /**
-                 * [description]
+                 * The current WebGL pipeline of this Game Object.
                  */
                 pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -37697,9 +39305,7 @@ declare namespace Phaser {
                  * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
                  * @param value The Scale Mode to be used by this Game Object.
                  */
-                setScaleMode(
-                    value: Phaser.ScaleModes
-                ): Phaser.GameObjects.GameObject;
+                setScaleMode(value: Phaser.ScaleModes): this;
 
                 /**
                  * The horizontal scroll factor of this Game Object.
@@ -37743,10 +39349,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
 
                 /**
                  * The native (un-scaled) width of this Game Object.
@@ -37774,19 +39377,14 @@ declare namespace Phaser {
                  * Sets the size of this Game Object to be that of the given Frame.
                  * @param frame The frame to base the size of this Game Object on.
                  */
-                setSizeToFrame(
-                    frame: Phaser.Textures.Frame
-                ): Phaser.GameObjects.GameObject;
+                setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
                 /**
                  * Sets the size of this Game Object.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
 
                 /**
                  * Sets the display size of this Game Object.
@@ -37794,10 +39392,7 @@ declare namespace Phaser {
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
 
                 /**
                  * The Texture this Game Object is using to render with.
@@ -37818,10 +39413,7 @@ declare namespace Phaser {
                  * @param key The key of the texture to be used, as stored in the Texture Manager.
                  * @param frame The name or index of the frame within the Texture.
                  */
-                setTexture(
-                    key: string,
-                    frame?: string | integer
-                ): Phaser.GameObjects.GameObject;
+                setTexture(key: string, frame?: string | integer): this;
 
                 /**
                  * Sets the frame this Game Object will use to render with.
@@ -37840,13 +39432,13 @@ declare namespace Phaser {
                     frame: string | integer,
                     updateSize?: boolean,
                     updateOrigin?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears all tint values associated with this Game Object.
                  * Immediately sets the alpha levels back to 0xffffff (no tint)
                  */
-                clearTint(): Phaser.GameObjects.GameObject;
+                clearTint(): this;
 
                 /**
                  * Sets the tint values for this Game Object.
@@ -37860,7 +39452,7 @@ declare namespace Phaser {
                     topRight?: integer,
                     bottomLeft?: integer,
                     bottomRight?: integer
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The tint value being applied to the top-left of the Game Object.
@@ -37950,50 +39542,70 @@ declare namespace Phaser {
                     y?: number,
                     z?: number,
                     w?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
+
+                /**
+                 * Sets the position of this Game Object to be a random position within the confines of
+                 * the given area.
+                 *
+                 * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+                 *
+                 * The position does not factor in the size of this Game Object, meaning that only the origin is
+                 * guaranteed to be within the area.
+                 * @param x The x position of the top-left of the random area. Default 0.
+                 * @param y The y position of the top-left of the random area. Default 0.
+                 * @param width The width of the random area.
+                 * @param height The height of the random area.
+                 */
+                setRandomPosition(
+                    x?: number,
+                    y?: number,
+                    width?: number,
+                    height?: number
+                ): this;
 
                 /**
                  * Sets the rotation of this Game Object.
                  * @param radians The rotation of this Game Object, in radians. Default 0.
                  */
-                setRotation(radians?: number): Phaser.GameObjects.GameObject;
+                setRotation(radians?: number): this;
 
                 /**
                  * Sets the angle of this Game Object.
                  * @param degrees The rotation of this Game Object, in degrees. Default 0.
                  */
-                setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+                setAngle(degrees?: number): this;
 
                 /**
                  * Sets the scale of this Game Object.
                  * @param x The horizontal scale of this Game Object.
                  * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setScale(x: number, y?: number): this;
 
                 /**
                  * Sets the x position of this Game Object.
                  * @param value The x position of this Game Object. Default 0.
                  */
-                setX(value?: number): Phaser.GameObjects.GameObject;
+                setX(value?: number): this;
 
                 /**
                  * Sets the y position of this Game Object.
                  * @param value The y position of this Game Object. Default 0.
                  */
-                setY(value?: number): Phaser.GameObjects.GameObject;
+                setY(value?: number): this;
 
                 /**
                  * Sets the z position of this Game Object.
                  * @param value The z position of this Game Object. Default 0.
                  */
-                setZ(value?: number): Phaser.GameObjects.GameObject;
+                setZ(value?: number): this;
 
                 /**
                  * Sets the w position of this Game Object.
                  * @param value The w position of this Game Object. Default 0.
                  */
-                setW(value?: number): Phaser.GameObjects.GameObject;
+                setW(value?: number): this;
 
                 /**
                  * Gets the local transform matrix for this Game Object.
@@ -38024,78 +39636,69 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
 
                 /**
                  * [description]
                  * @param x The horizontal acceleration
                  * @param y The vertical acceleration Default x.
                  */
-                setAcceleration(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setAcceleration(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param value The horizontal acceleration
                  */
-                setAccelerationX(value: number): Phaser.GameObjects.GameObject;
+                setAccelerationX(value: number): this;
 
                 /**
                  * [description]
                  * @param value The vertical acceleration
                  */
-                setAccelerationY(value: number): Phaser.GameObjects.GameObject;
+                setAccelerationY(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setAngularVelocity(
-                    value: number
-                ): Phaser.GameObjects.GameObject;
+                setAngularVelocity(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setAngularAcceleration(
-                    value: number
-                ): Phaser.GameObjects.GameObject;
+                setAngularAcceleration(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setAngularDrag(value: number): Phaser.GameObjects.GameObject;
+                setAngularDrag(value: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setBounce(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setBounce(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setBounceX(value: number): Phaser.GameObjects.GameObject;
+                setBounceX(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setBounceY(value: number): Phaser.GameObjects.GameObject;
+                setBounceY(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setCollideWorldBounds(
-                    value: number
-                ): Phaser.GameObjects.GameObject;
+                setCollideWorldBounds(value: boolean): this;
 
                 /**
                  * [description]
@@ -38107,13 +39710,13 @@ declare namespace Phaser {
                     showBody: boolean,
                     showVelocity: boolean,
                     bodyColor: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setDebugBodyColor(value: number): Phaser.GameObjects.GameObject;
+                setDebugBodyColor(value: number): this;
 
                 /**
                  * [description]
@@ -38135,19 +39738,25 @@ declare namespace Phaser {
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setDrag(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setDrag(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setDragX(value: number): Phaser.GameObjects.GameObject;
+                setDragX(value: number): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setDragY(value: number): Phaser.GameObjects.GameObject;
+                setDragY(value: number): this;
+
+                /**
+                 * [description]
+                 * @param value `true` to use damping for deceleration, or `false` to use linear deceleration.
+                 */
+                setDamping(value: boolean): this;
 
                 /**
                  * [description]
@@ -38163,7 +39772,7 @@ declare namespace Phaser {
                     y: number,
                     enableGameObject: boolean,
                     showGameObject: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * [description]
@@ -38173,7 +39782,7 @@ declare namespace Phaser {
                 disableBody(
                     disableGameObject?: boolean,
                     hideGameObject?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Syncs the Bodies position and size with its parent Game Object.
@@ -38181,70 +39790,64 @@ declare namespace Phaser {
                  * But for Static bodies it's a useful way of modifying the position of a Static Body
                  * in the Physics World, based on its Game Object.
                  */
-                refreshBody(): Phaser.GameObjects.GameObject;
+                refreshBody(): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setFriction(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setFriction(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  */
-                setFrictionX(x: number): Phaser.GameObjects.GameObject;
+                setFrictionX(x: number): this;
 
                 /**
                  * [description]
                  * @param y [description]
                  */
-                setFrictionY(y: number): Phaser.GameObjects.GameObject;
+                setFrictionY(y: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setGravity(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setGravity(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  */
-                setGravityX(x: number): Phaser.GameObjects.GameObject;
+                setGravityX(x: number): this;
 
                 /**
                  * [description]
                  * @param y [description]
                  */
-                setGravityY(y: number): Phaser.GameObjects.GameObject;
+                setGravityY(y: number): this;
 
                 /**
                  * [description]
                  * @param value [description] Default true.
                  */
-                setImmovable(value?: boolean): Phaser.GameObjects.GameObject;
+                setImmovable(value?: boolean): this;
 
                 /**
                  * [description]
                  * @param value [description]
                  */
-                setMass(value: number): Phaser.GameObjects.GameObject;
+                setMass(value: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setOffset(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setOffset(x: number, y?: number): this;
 
                 /**
                  * [description]
@@ -38256,49 +39859,43 @@ declare namespace Phaser {
                     radius: number,
                     offsetX?: number,
                     offsetY?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setVelocity(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setVelocity(x: number, y?: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  */
-                setVelocityX(x: number): Phaser.GameObjects.GameObject;
+                setVelocityX(x: number): this;
 
                 /**
                  * [description]
                  * @param y [description]
                  */
-                setVelocityY(y: number): Phaser.GameObjects.GameObject;
+                setVelocityY(y: number): this;
 
                 /**
                  * [description]
                  * @param x [description]
                  * @param y [description] Default x.
                  */
-                setMaxVelocity(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setMaxVelocity(x: number, y?: number): this;
             }
 
             /**
-             * [description]
+             * A Dynamic Arcade Body.
              */
             class Body {
                 /**
                  *
-                 * @param world [description]
-                 * @param gameObject [description]
+                 * @param world The Arcade Physics simulation this Body belongs to.
+                 * @param gameObject The Game Object this Body belongs to.
                  */
                 constructor(
                     world: Phaser.Physics.Arcade.World,
@@ -38306,358 +39903,378 @@ declare namespace Phaser {
                 );
 
                 /**
-                 * [description]
+                 * The Arcade Physics simulation this Body belongs to.
                  */
                 world: Phaser.Physics.Arcade.World;
 
                 /**
-                 * [description]
+                 * The Game Object this Body belongs to.
                  */
                 gameObject: Phaser.GameObjects.GameObject;
 
                 /**
-                 * [description]
+                 * Transformations applied to this Body.
                  */
                 transform: object;
 
                 /**
-                 * [description]
+                 * Whether the Body's boundary is drawn to the debug display.
                  */
                 debugShowBody: boolean;
 
                 /**
-                 * [description]
+                 * Whether the Body's velocity is drawn to the debug display.
                  */
                 debugShowVelocity: boolean;
 
                 /**
-                 * [description]
+                 * The color of this Body on the debug display.
                  */
                 debugBodyColor: integer;
 
                 /**
-                 * [description]
+                 * Whether this Body is updated by the physics simulation.
                  */
                 enable: boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body's boundary is circular (true) or rectangular (false).
                  */
                 isCircle: boolean;
 
                 /**
-                 * [description]
+                 * The unscaled radius of this Body's boundary (if circular), as set by setCircle, in source pixels.
+                 * The true radius (if circular) is equal to halfWidth.
                  */
                 radius: number;
 
                 /**
-                 * [description]
+                 * The offset of this Body's position from its Game Object's position, in source pixels.
                  */
                 offset: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * The position of this Body within the simulation.
                  */
                 position: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * The position of this Body during the previous step.
                  */
                 prev: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * Whether this Body's rotation is affected by its angular acceleration and velocity.
                  */
                 allowRotation: boolean;
 
                 /**
-                 * [description]
+                 * This body's rotation, in degrees, based on its angular acceleration and velocity.
+                 * The Body's rotation controls the `angle` of its Game Object.
+                 * It doesn't rotate the Body's boundary, which is always an axis-aligned rectangle or a circle.
                  */
                 rotation: number;
 
                 /**
-                 * [description]
+                 * The Body's rotation, in degrees, during the previous step.
                  */
                 preRotation: number;
 
                 /**
-                 * [description]
+                 * The width of the Body's boundary. If circular, this is also the Body's diameter.
                  */
                 width: number;
 
                 /**
-                 * [description]
+                 * The height of the Body's boundary. If circular, this is also the Body's diameter.
                  */
                 height: number;
 
                 /**
-                 * [description]
+                 * The unscaled width of the Body, in source pixels. The default is the width of the Body's Game Object's texture frame.
                  */
                 sourceWidth: number;
 
                 /**
-                 * [description]
+                 * The unscaled height of the Body, in source pixels. The default is the height of the Body's Game Object's texture frame.
                  */
                 sourceHeight: number;
 
                 /**
-                 * [description]
+                 * Half the Body's width.
                  */
                 halfWidth: number;
 
                 /**
-                 * [description]
+                 * Half the Body's height.
                  */
                 halfHeight: number;
 
                 /**
-                 * [description]
+                 * The center of the Body's boundary. The midpoint of its `position` (top-left corner) and its bottom-right corner.
                  */
                 center: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * The Body's change in position, in pixels per second.
                  */
                 velocity: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * The Body's calculated change in position, in pixels, at the last step.
                  */
-                newVelocity: Phaser.Math.Vector2;
+                readonly newVelocity: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * The Body's absolute maximum change in position, in pixels per step.
                  */
                 deltaMax: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * The Body's change in velocity, in pixels per second squared.
                  */
                 acceleration: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * Whether this Body's velocity is affected by its drag vector.
                  */
                 allowDrag: boolean;
 
                 /**
-                 * [description]
+                 * Absolute loss of velocity due to movement, in pixels per second squared.
                  */
                 drag: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * Whether this Body's position is affected by its gravity vector.
                  */
                 allowGravity: boolean;
 
                 /**
-                 * [description]
+                 * Acceleration due to gravity (specific to this Body), in pixels per second squared.
+                 * Total gravity is the sum of this vector and the simulation's `gravity`.
                  */
                 gravity: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * Rebound following a collision, relative to 1.
                  */
                 bounce: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * Rebound following a collision with the world boundary, relative to 1.
+                 * If empty, `bounce` is used instead.
                  */
                 worldBounce: Phaser.Math.Vector2;
 
                 /**
-                 * Emit a `worldbounds` event when this body collides with the world bounds (and `collideWorldBounds` is also true).
+                 * Whether the simulation emits a `worldbounds` event when this Body collides with the world boundary (and `collideWorldBounds` is also true).
                  */
                 onWorldBounds: boolean;
 
                 /**
-                 * [description]
+                 * Whether the simulation emits a `collide` event when this Body collides with another.
                  */
                 onCollide: boolean;
 
                 /**
-                 * [description]
+                 * Whether the simulation emits an `overlap` event when this Body overlaps with another.
                  */
                 onOverlap: boolean;
 
                 /**
-                 * [description]
+                 * The Body's absolute maximum velocity.
+                 *
+                 * This limits the Body's rate of movement but not its `velocity` values (which can still exceed `maxVelocity`).
                  */
                 maxVelocity: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * If this Body is `immovable` and in motion, this the proportion of this Body's movement received by the riding body on each axis, relative to 1.
+                 * The default value (1, 0) moves the riding body horizontally in equal proportion and vertically not at all.
                  */
                 friction: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * If this Body is using `drag` for deceleration this property controls how the drag is applied.
+                 * If set to `true` drag will use a damping effect rather than a linear approach. If you are
+                 * creating a game where the Body moves freely at any angle (i.e. like the way the ship moves in
+                 * the game Asteroids) then you will get a far smoother and more visually correct deceleration
+                 * by using damping, avoiding the axis-drift that is prone with linear deceleration.
+                 *
+                 * If you enable this property then you should use far smaller `drag` values than with linear, as
+                 * they are used as a multiplier on the velocity. Values such as 0.95 will give a nice slow
+                 * deceleration, where-as smaller values, such as 0.5 will stop an object almost immediately.
+                 */
+                useDamping: boolean;
+
+                /**
+                 * The rate of change of this Body's rotation, in degrees per second.
                  */
                 angularVelocity: number;
 
                 /**
-                 * [description]
+                 * The rate of change of this Body's angular velocity, in degrees per second squared.
                  */
                 angularAcceleration: number;
 
                 /**
-                 * [description]
+                 * Loss of angular velocity due to angular movement, in degrees per second.
                  */
                 angularDrag: number;
 
                 /**
-                 * [description]
+                 * The Body's maximum angular velocity, in degrees per second.
                  */
                 maxAngular: number;
 
                 /**
-                 * [description]
+                 * The Body's inertia, relative to a default unit (1).
+                 * With `bounce`, this affects the exchange of momentum (velocities) during collisions.
                  */
                 mass: number;
 
                 /**
-                 * [description]
+                 * The angle of this Body's velocity vector, in degrees.
                  */
                 angle: number;
 
                 /**
-                 * [description]
+                 * The magnitude of the Body's velocity, as calculated during the last update.
                  */
                 speed: number;
 
                 /**
-                 * [description]
+                 * The calculated direction of the Body's velocity.
                  */
                 facing: integer;
 
                 /**
-                 * [description]
+                 * Whether this object can be moved by collisions with another body.
                  */
                 immovable: boolean;
 
                 /**
-                 * [description]
+                 * Whether the Body's position and rotation are affected by its velocity, acceleration, drag, and gravity.
                  */
                 moves: boolean;
 
                 /**
-                 * [description]
+                 * A flag disabling the default horizontal separation of colliding bodies. Pass your own `processHandler` to the collider.
                  */
                 customSeparateX: boolean;
 
                 /**
-                 * [description]
+                 * A flag disabling the default vertical separation of colliding bodies. Pass your own `processHandler` to the collider.
                  */
                 customSeparateY: boolean;
 
                 /**
-                 * [description]
+                 * The amount of horizontal overlap (before separation), if this Body is colliding with another.
                  */
                 overlapX: number;
 
                 /**
-                 * [description]
+                 * The amount of vertical overlap (before separation), if this Body is colliding with another.
                  */
                 overlapY: number;
 
                 /**
-                 * [description]
+                 * The amount of overlap (before separation), if this Body is circular and colliding with another circular body.
                  */
                 overlapR: number;
 
                 /**
-                 * [description]
+                 * Whether this Body is overlapped with another and both have zero velocity.
                  */
                 embedded: boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body interacts with the world boundary.
                  */
                 collideWorldBounds: boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body is checked for collisions and for which directions.
+                 * You can set `checkCollision.none = false` to disable collision checks.
                  */
                 checkCollision: ArcadeBodyCollision;
 
                 /**
-                 * [description]
+                 * Whether this Body is colliding with another and in which direction.
                  */
                 touching: ArcadeBodyCollision;
 
                 /**
-                 * [description]
+                 * Whether this Body was colliding with another during the last step, and in which direction.
                  */
                 wasTouching: ArcadeBodyCollision;
 
                 /**
-                 * [description]
+                 * Whether this Body is colliding with a tile or the world boundary.
                  */
                 blocked: ArcadeBodyCollision;
 
                 /**
-                 * [description]
-                 */
-                dirty: boolean;
-
-                /**
-                 * [description]
+                 * Whether to automatically synchronize this Body's dimensions to the dimensions of its Game Object's visual bounds.
                  */
                 syncBounds: boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body is being moved by the `moveTo` or `moveFrom` methods.
                  */
                 isMoving: boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body's movement by `moveTo` or `moveFrom` will be stopped by collisions with other bodies.
                  */
                 stopVelocityOnCollide: boolean;
 
                 /**
-                 * [description]
+                 * The Body's physics type (dynamic or static).
                  */
                 readonly physicsType: integer;
 
                 /**
-                 * [description]
+                 * Updates this Body's transform, dimensions, and position from its Game Object.
                  */
                 updateBounds(): void;
 
                 /**
-                 * [description]
+                 * Updates the Body's `center` from its `position` and dimensions.
                  */
                 updateCenter(): void;
 
                 /**
-                 * [description]
-                 * @param delta [description]
+                 * Updates the Body.
+                 * @param delta The delta time, in ms, elapsed since the last frame.
                  */
                 update(delta: number): void;
 
                 /**
-                 * Feeds the body results back into the parent gameobject.
+                 * Feeds the Body results back into the parent Game Object.
+                 * @param resetDelta Reset the delta properties?
                  */
-                postUpdate(): void;
+                postUpdate(resetDelta: boolean): void;
 
                 /**
-                 * [description]
+                 * Checks for collisions between this Body and the world boundary and separates them.
                  */
                 checkWorldBounds(): boolean;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Sets the offset of the Body's position from its Game Object's position.
+                 * @param x The horizontal offset, in source pixels.
+                 * @param y The vertical offset, in source pixels. Default x.
                  */
-                setOffset(x: number, y: number): Phaser.Physics.Arcade.Body;
+                setOffset(x: number, y?: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param width [description]
-                 * @param height [description]
-                 * @param center [description] Default true.
+                 * Sizes and positions this Body's boundary, as a rectangle.
+                 * Modifies the Body's `offset` if `center` is true (the default).
+                 * @param width The width of the Body, in source pixels.
+                 * @param height The height of the Body, in source pixels.
+                 * @param center Modify the Body's `offset`, placing the Body's center on its Game Object's center. Default true.
                  */
                 setSize(
                     width: number,
@@ -38666,10 +40283,10 @@ declare namespace Phaser {
                 ): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param radius [description]
-                 * @param offsetX [description]
-                 * @param offsetY [description]
+                 * Sizes and positions this Body's boundary, as a circle.
+                 * @param radius The radius of the Body, in source pixels.
+                 * @param offsetX The horizontal offset of the Body from its Game Object, in source pixels.
+                 * @param offsetY The vertical offset of the Body from its Game Object, in source pixels.
                  */
                 setCircle(
                     radius: number,
@@ -38679,136 +40296,148 @@ declare namespace Phaser {
 
                 /**
                  * Resets this Body to the given coordinates. Also positions its parent Game Object to the same coordinates.
-                 * If the body had any velocity or acceleration it is lost as a result of calling this.
+                 * If the Body had any velocity or acceleration it is lost as a result of calling this.
                  * @param x The horizontal position to place the Game Object and Body.
                  * @param y The vertical position to place the Game Object and Body.
                  */
                 reset(x: number, y: number): void;
 
                 /**
-                 * [description]
+                 * Sets acceleration, velocity, and speed to zero.
                  */
                 stop(): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param obj [description]
+                 * Copies the coordinates of this Body's edges into an object.
+                 * @param obj An object to copy the values into.
                  */
                 getBounds(obj: ArcadeBodyBounds): ArcadeBodyBounds;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Tests if the coordinates are within this Body's boundary.
+                 * @param x The horizontal coordinate.
+                 * @param y The vertical coordinate.
                  */
                 hitTest(x: number, y: number): boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body is touching a tile or the world boundary while moving down.
                  */
                 onFloor(): boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body is touching a tile or the world boundary while moving up.
                  */
                 onCeiling(): boolean;
 
                 /**
-                 * [description]
+                 * Whether this Body is touching a tile or the world boundary while moving left or right.
                  */
                 onWall(): boolean;
 
                 /**
-                 * [description]
+                 * The absolute (non-negative) change in this Body's horizontal position from the previous step.
                  */
                 deltaAbsX(): number;
 
                 /**
-                 * [description]
+                 * The absolute (non-negative) change in this Body's vertical position from the previous step.
                  */
                 deltaAbsY(): number;
 
                 /**
-                 * [description]
+                 * The change in this Body's horizontal position from the previous step.
+                 * This value is set during the Body's update phase.
                  */
                 deltaX(): number;
 
                 /**
-                 * [description]
+                 * The change in this Body's vertical position from the previous step.
+                 * This value is set during the Body's update phase.
                  */
                 deltaY(): number;
 
                 /**
-                 * [description]
+                 * The change in this Body's rotation from the previous step, in degrees.
                  */
                 deltaZ(): number;
 
                 /**
-                 * [description]
+                 * Disables this Body and marks it for deletion by the simulation.
                  */
                 destroy(): void;
 
                 /**
-                 * [description]
-                 * @param graphic [description]
+                 * Draws this Body's boundary and velocity, if enabled.
+                 * @param graphic The Graphics object to draw on.
                  */
                 drawDebug(graphic: Phaser.GameObjects.Graphics): void;
 
                 /**
-                 * [description]
+                 * Whether this Body will be drawn to the debug display.
                  */
                 willDrawDebug(): boolean;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets whether this Body collides with the world boundary.
+                 * @param value True (collisions) or false (no collisions). Default true.
                  */
                 setCollideWorldBounds(
-                    value: boolean
+                    value?: boolean
                 ): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Sets the Body's velocity.
+                 * @param x The horizontal velocity, in pixels per second.
+                 * @param y The vertical velocity, in pixels per second. Default x.
                  */
-                setVelocity(x: number, y: number): Phaser.Physics.Arcade.Body;
+                setVelocity(x: number, y?: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's horizontal velocity.
+                 * @param value The velocity, in pixels per second.
                  */
                 setVelocityX(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's vertical velocity.
+                 * @param value The velocity, in pixels per second.
                  */
                 setVelocityY(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Sets the Body's maximum velocity.
+                 * @param x The horizontal velocity, in pixels per second.
+                 * @param y The vertical velocity, in pixels per second. Default x.
+                 */
+                setMaxVelocity(
+                    x: number,
+                    y?: number
+                ): Phaser.Physics.Arcade.Body;
+
+                /**
+                 * Sets the Body's bounce.
+                 * @param x The horizontal bounce, relative to 1.
+                 * @param y The vertical bounce, relative to 1.
                  */
                 setBounce(x: number, y: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's horizontal bounce.
+                 * @param value The bounce, relative to 1.
                  */
                 setBounceX(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's vertical bounce.
+                 * @param value The bounce, relative to 1.
                  */
                 setBounceY(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Sets the Body's acceleration.
+                 * @param x The horizontal component, in pixels per second squared.
+                 * @param y The vertical component, in pixels per second squared.
                  */
                 setAcceleration(
                     x: number,
@@ -38816,133 +40445,151 @@ declare namespace Phaser {
                 ): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's horizontal acceleration.
+                 * @param value The acceleration, in pixels per second squared.
                  */
                 setAccelerationX(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's vertical acceleration.
+                 * @param value The acceleration, in pixels per second squared.
                  */
                 setAccelerationY(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Enables or disables drag.
+                 * @param value `true` to allow drag on this body, or `false` to disable it. Default true.
+                 */
+                setAllowDrag(value?: boolean): Phaser.Physics.Arcade.Body;
+
+                /**
+                 * Enables or disables gravity's effect on this Body.
+                 * @param value `true` to allow gravity on this body, or `false` to disable it. Default true.
+                 */
+                setAllowGravity(value?: boolean): Phaser.Physics.Arcade.Body;
+
+                /**
+                 * Enables or disables rotation.
+                 * @param value `true` to allow rotation on this body, or `false` to disable it. Default true.
+                 */
+                setAllowRotation(value?: boolean): Phaser.Physics.Arcade.Body;
+
+                /**
+                 * Sets the Body's drag.
+                 * @param x The horizontal component, in pixels per second squared.
+                 * @param y The vertical component, in pixels per second squared.
                  */
                 setDrag(x: number, y: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's horizontal drag.
+                 * @param value The drag, in pixels per second squared.
                  */
                 setDragX(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's vertical drag.
+                 * @param value The drag, in pixels per second squared.
                  */
                 setDragY(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Sets the Body's gravity.
+                 * @param x The horizontal component, in pixels per second squared.
+                 * @param y The vertical component, in pixels per second squared.
                  */
                 setGravity(x: number, y: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's horizontal gravity.
+                 * @param value The gravity, in pixels per second squared.
                  */
                 setGravityX(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's vertical gravity.
+                 * @param value The gravity, in pixels per second squared.
                  */
                 setGravityY(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
+                 * Sets the Body's friction.
+                 * @param x The horizontal component, relative to 1.
+                 * @param y The vertical component, relative to 1.
                  */
                 setFriction(x: number, y: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's horizontal friction.
+                 * @param value The friction value, relative to 1.
                  */
                 setFrictionX(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's vertical friction.
+                 * @param value The friction value, relative to 1.
                  */
                 setFrictionY(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's angular velocity.
+                 * @param value The velocity, in degrees per second.
                  */
                 setAngularVelocity(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's angular acceleration.
+                 * @param value The acceleration, in degrees per second squared.
                  */
                 setAngularAcceleration(
                     value: number
                 ): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's angular drag.
+                 * @param value The drag, in degrees per second squared.
                  */
                 setAngularDrag(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's mass.
+                 * @param value The mass value, relative to 1.
                  */
                 setMass(value: number): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
-                 * @param value [description]
+                 * Sets the Body's `immovable` property.
+                 * @param value The value to assign to `immovable`. Default true.
                  */
-                setImmovable(value: boolean): Phaser.Physics.Arcade.Body;
+                setImmovable(value?: boolean): Phaser.Physics.Arcade.Body;
 
                 /**
-                 * [description]
+                 * The Body's horizontal position (left edge).
                  */
                 x: number;
 
                 /**
-                 * [description]
+                 * The Body's vertical position (top edge).
                  */
                 y: number;
 
                 /**
-                 * [description]
+                 * The left edge of the Body's boundary. Identical to x.
                  */
                 readonly left: number;
 
                 /**
-                 * [description]
+                 * The right edge of the Body's boundary.
                  */
                 readonly right: number;
 
                 /**
-                 * [description]
+                 * The top edge of the Body's boundary. Identical to y.
                  */
                 readonly top: number;
 
                 /**
-                 * [description]
+                 * The bottom edge of this Body's boundary.
                  */
                 readonly bottom: number;
             }
@@ -38964,15 +40611,11 @@ declare namespace Phaser {
                 constructor(
                     world: Phaser.Physics.Arcade.World,
                     overlapOnly: boolean,
-                    object1:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
-                    object2:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                    object1: ArcadeColliderType,
+                    object2: ArcadeColliderType,
                     collideCallback: ArcadePhysicsCallback,
                     processCallback: ArcadePhysicsCallback,
-                    callbackContext: object
+                    callbackContext: any
                 );
 
                 /**
@@ -38998,12 +40641,12 @@ declare namespace Phaser {
                 /**
                  * [description]
                  */
-                object1: Phaser.Physics.Arcade.Body;
+                object1: ArcadeColliderType;
 
                 /**
                  * [description]
                  */
-                object2: Phaser.Physics.Arcade.Body;
+                object2: ArcadeColliderType;
 
                 /**
                  * [description]
@@ -39047,24 +40690,17 @@ declare namespace Phaser {
                      * @param x The horizontal acceleration
                      * @param y The vertical acceleration Default x.
                      */
-                    setAcceleration(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setAcceleration(x: number, y?: number): this;
                     /**
                      * [description]
                      * @param value The horizontal acceleration
                      */
-                    setAccelerationX(
-                        value: number
-                    ): Phaser.GameObjects.GameObject;
+                    setAccelerationX(value: number): this;
                     /**
                      * [description]
                      * @param value The vertical acceleration
                      */
-                    setAccelerationY(
-                        value: number
-                    ): Phaser.GameObjects.GameObject;
+                    setAccelerationY(value: number): this;
                 }
 
                 /**
@@ -39075,23 +40711,17 @@ declare namespace Phaser {
                      * [description]
                      * @param value [description]
                      */
-                    setAngularVelocity(
-                        value: number
-                    ): Phaser.GameObjects.GameObject;
+                    setAngularVelocity(value: number): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setAngularAcceleration(
-                        value: number
-                    ): Phaser.GameObjects.GameObject;
+                    setAngularAcceleration(value: number): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setAngularDrag(
-                        value: number
-                    ): Phaser.GameObjects.GameObject;
+                    setAngularDrag(value: number): this;
                 }
 
                 /**
@@ -39103,27 +40733,22 @@ declare namespace Phaser {
                      * @param x [description]
                      * @param y [description] Default x.
                      */
-                    setBounce(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setBounce(x: number, y?: number): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setBounceX(value: number): Phaser.GameObjects.GameObject;
+                    setBounceX(value: number): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setBounceY(value: number): Phaser.GameObjects.GameObject;
+                    setBounceY(value: number): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setCollideWorldBounds(
-                        value: number
-                    ): Phaser.GameObjects.GameObject;
+                    setCollideWorldBounds(value: boolean): this;
                 }
 
                 /**
@@ -39140,14 +40765,12 @@ declare namespace Phaser {
                         showBody: boolean,
                         showVelocity: boolean,
                         bodyColor: number
-                    ): Phaser.GameObjects.GameObject;
+                    ): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setDebugBodyColor(
-                        value: number
-                    ): Phaser.GameObjects.GameObject;
+                    setDebugBodyColor(value: number): this;
                     /**
                      * [description]
                      */
@@ -39171,20 +40794,22 @@ declare namespace Phaser {
                      * @param x [description]
                      * @param y [description] Default x.
                      */
-                    setDrag(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setDrag(x: number, y?: number): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setDragX(value: number): Phaser.GameObjects.GameObject;
+                    setDragX(value: number): this;
                     /**
                      * [description]
                      * @param value [description]
                      */
-                    setDragY(value: number): Phaser.GameObjects.GameObject;
+                    setDragY(value: number): this;
+                    /**
+                     * [description]
+                     * @param value `true` to use damping for deceleration, or `false` to use linear deceleration.
+                     */
+                    setDamping(value: boolean): this;
                 }
 
                 /**
@@ -39205,7 +40830,7 @@ declare namespace Phaser {
                         y: number,
                         enableGameObject: boolean,
                         showGameObject: boolean
-                    ): Phaser.GameObjects.GameObject;
+                    ): this;
                     /**
                      * [description]
                      * @param disableGameObject [description] Default false.
@@ -39214,14 +40839,14 @@ declare namespace Phaser {
                     disableBody(
                         disableGameObject?: boolean,
                         hideGameObject?: boolean
-                    ): Phaser.GameObjects.GameObject;
+                    ): this;
                     /**
                      * Syncs the Bodies position and size with its parent Game Object.
                      * You don't need to call this for Dynamic Bodies, as it happens automatically.
                      * But for Static bodies it's a useful way of modifying the position of a Static Body
                      * in the Physics World, based on its Game Object.
                      */
-                    refreshBody(): Phaser.GameObjects.GameObject;
+                    refreshBody(): this;
                 }
 
                 /**
@@ -39233,20 +40858,17 @@ declare namespace Phaser {
                      * @param x [description]
                      * @param y [description] Default x.
                      */
-                    setFriction(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setFriction(x: number, y?: number): this;
                     /**
                      * [description]
                      * @param x [description]
                      */
-                    setFrictionX(x: number): Phaser.GameObjects.GameObject;
+                    setFrictionX(x: number): this;
                     /**
                      * [description]
                      * @param y [description]
                      */
-                    setFrictionY(y: number): Phaser.GameObjects.GameObject;
+                    setFrictionY(y: number): this;
                 }
 
                 /**
@@ -39258,20 +40880,17 @@ declare namespace Phaser {
                      * @param x [description]
                      * @param y [description] Default x.
                      */
-                    setGravity(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setGravity(x: number, y?: number): this;
                     /**
                      * [description]
                      * @param x [description]
                      */
-                    setGravityX(x: number): Phaser.GameObjects.GameObject;
+                    setGravityX(x: number): this;
                     /**
                      * [description]
                      * @param y [description]
                      */
-                    setGravityY(y: number): Phaser.GameObjects.GameObject;
+                    setGravityY(y: number): this;
                 }
 
                 /**
@@ -39282,9 +40901,7 @@ declare namespace Phaser {
                      * [description]
                      * @param value [description] Default true.
                      */
-                    setImmovable(
-                        value?: boolean
-                    ): Phaser.GameObjects.GameObject;
+                    setImmovable(value?: boolean): this;
                 }
 
                 /**
@@ -39295,7 +40912,7 @@ declare namespace Phaser {
                      * [description]
                      * @param value [description]
                      */
-                    setMass(value: number): Phaser.GameObjects.GameObject;
+                    setMass(value: number): this;
                 }
 
                 /**
@@ -39307,10 +40924,7 @@ declare namespace Phaser {
                      * @param x [description]
                      * @param y [description] Default x.
                      */
-                    setOffset(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setOffset(x: number, y?: number): this;
                     /**
                      * [description]
                      * @param width [description]
@@ -39321,7 +40935,7 @@ declare namespace Phaser {
                         width: number,
                         height: number,
                         center?: boolean
-                    ): Phaser.GameObjects.GameObject;
+                    ): this;
                     /**
                      * [description]
                      * @param radius [description]
@@ -39332,7 +40946,7 @@ declare namespace Phaser {
                         radius: number,
                         offsetX?: number,
                         offsetY?: number
-                    ): Phaser.GameObjects.GameObject;
+                    ): this;
                 }
 
                 /**
@@ -39344,29 +40958,23 @@ declare namespace Phaser {
                      * @param x [description]
                      * @param y [description] Default x.
                      */
-                    setVelocity(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setVelocity(x: number, y?: number): this;
                     /**
                      * [description]
                      * @param x [description]
                      */
-                    setVelocityX(x: number): Phaser.GameObjects.GameObject;
+                    setVelocityX(x: number): this;
                     /**
                      * [description]
                      * @param y [description]
                      */
-                    setVelocityY(y: number): Phaser.GameObjects.GameObject;
+                    setVelocityY(y: number): this;
                     /**
                      * [description]
                      * @param x [description]
                      * @param y [description] Default x.
                      */
-                    setMaxVelocity(
-                        x: number,
-                        y?: number
-                    ): Phaser.GameObjects.GameObject;
+                    setMaxVelocity(x: number, y?: number): this;
                 }
             }
 
@@ -39452,10 +41060,14 @@ declare namespace Phaser {
                 collider(
                     object1:
                         | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                        | Phaser.GameObjects.GameObject[]
+                        | Phaser.GameObjects.Group
+                        | Phaser.GameObjects.Group[],
                     object2:
                         | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                        | Phaser.GameObjects.GameObject[]
+                        | Phaser.GameObjects.Group
+                        | Phaser.GameObjects.Group[],
                     collideCallback?: ArcadePhysicsCallback,
                     processCallback?: ArcadePhysicsCallback,
                     callbackContext?: any
@@ -39472,10 +41084,14 @@ declare namespace Phaser {
                 overlap(
                     object1:
                         | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                        | Phaser.GameObjects.GameObject[]
+                        | Phaser.GameObjects.Group
+                        | Phaser.GameObjects.Group[],
                     object2:
                         | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                        | Phaser.GameObjects.GameObject[]
+                        | Phaser.GameObjects.Group
+                        | Phaser.GameObjects.Group[],
                     collideCallback?: ArcadePhysicsCallback,
                     processCallback?: ArcadePhysicsCallback,
                     callbackContext?: any
@@ -39554,7 +41170,7 @@ declare namespace Phaser {
                  * @param config [description]
                  */
                 staticGroup(
-                    children?: any[],
+                    children?: object | object[],
                     config?: GroupConfig
                 ): Phaser.Physics.Arcade.StaticGroup;
 
@@ -39565,7 +41181,7 @@ declare namespace Phaser {
                  * @param config [description]
                  */
                 group(
-                    children?: any[],
+                    children?: object | object[],
                     config?: PhysicsGroupConfig
                 ): Phaser.Physics.Arcade.Group;
 
@@ -39627,6 +41243,11 @@ declare namespace Phaser {
                  * [description]
                  */
                 world: Phaser.Physics.Arcade.World;
+
+                /**
+                 * The class to create new group members from.
+                 */
+                classType: Phaser.Physics.Arcade.Sprite;
 
                 /**
                  * [description]
@@ -40217,134 +41838,227 @@ declare namespace Phaser {
             }
 
             /**
-             * [description]
+             * The Arcade Physics World.
+             *
+             * The World is responsible for creating, managing, colliding and updating all of the bodies within it.
+             *
+             * An instance of the World belongs to a Phaser.Scene and is accessed via the property `physics.world`.
              */
             class World extends Phaser.Events.EventEmitter {
                 /**
                  *
-                 * @param scene [description]
-                 * @param config [description]
+                 * @param scene The Scene to which this World instance belongs.
+                 * @param config An Arcade Physics Configuration object.
                  */
                 constructor(scene: Phaser.Scene, config: ArcadeWorldConfig);
 
                 /**
-                 * [description]
+                 * The Scene this simulation belongs to.
                  */
                 scene: Phaser.Scene;
 
                 /**
-                 * Dynamic Bodies
+                 * Dynamic Bodies in this simulation.
                  */
                 bodies: Phaser.Structs.Set<Phaser.Physics.Arcade.Body>;
 
                 /**
-                 * Static Bodies
+                 * Static Bodies in this simulation.
                  */
                 staticBodies: Phaser.Structs.Set<
                     Phaser.Physics.Arcade.StaticBody
                 >;
 
                 /**
-                 * Static Bodies
+                 * Static Bodies marked for deletion.
                  */
                 pendingDestroy: Phaser.Structs.Set<
-
-                        | Phaser.Physics.Arcade.Body
-                        | Phaser.Physics.Arcade.StaticBody
+                    | Phaser.Physics.Arcade.Body
+                    | Phaser.Physics.Arcade.StaticBody
                 >;
 
                 /**
-                 * [description]
+                 * This simulation's collision processors.
                  */
                 colliders: Phaser.Structs.ProcessQueue<
                     Phaser.Physics.Arcade.Collider
                 >;
 
                 /**
-                 * [description]
+                 * Acceleration of Bodies due to gravity, in pixels per second.
                  */
                 gravity: Phaser.Math.Vector2;
 
                 /**
-                 * [description]
+                 * A boundary constraining Bodies.
                  */
                 bounds: Phaser.Geom.Rectangle;
 
                 /**
-                 * [description]
+                 * The boundary edges that Bodies can collide with.
                  */
                 checkCollision: CheckCollisionObject;
 
                 /**
-                 * [description]
+                 * The number of physics steps to be taken per second.
+                 *
+                 * This property is read-only. Use the `setFPS` method to modify it at run-time.
+                 */
+                readonly fps: number;
+
+                /**
+                 * The number of steps that took place in the last frame.
+                 */
+                readonly stepsLastFrame: number;
+
+                /**
+                 * Scaling factor applied to the frame rate.
+                 *
+                 * - 1.0 = normal speed
+                 * - 2.0 = half speed
+                 * - 0.5 = double speed
+                 */
+                timeScale: any;
+
+                /**
+                 * The maximum absolute difference of a Body's per-step velocity and its overlap with another Body that will result in separation on *each axis*.
+                 * Larger values favor separation.
+                 * Smaller values favor no separation.
                  */
                 OVERLAP_BIAS: number;
 
                 /**
-                 * [description]
+                 * The maximum absolute value of a Body's overlap with a tile that will result in separation on *each axis*.
+                 * Larger values favor separation.
+                 * Smaller values favor no separation.
+                 * The optimum value may be similar to the tile size.
                  */
                 TILE_BIAS: number;
 
                 /**
-                 * [description]
+                 * Always separate overlapping Bodies horizontally before vertically.
+                 * False (the default) means Bodies are first separated on the axis of greater gravity, or the vertical axis if neither is greater.
                  */
                 forceX: boolean;
 
                 /**
-                 * [description]
+                 * Whether the simulation advances with the game loop.
                  */
                 isPaused: boolean;
 
                 /**
-                 * [description]
+                 * Enables the debug display.
                  */
                 drawDebug: boolean;
 
                 /**
-                 * [description]
+                 * The graphics object drawing the debug display.
                  */
                 debugGraphic: Phaser.GameObjects.Graphics;
 
                 /**
-                 * [description]
+                 * Default debug display settings for new Bodies.
                  */
                 defaults: ArcadeWorldDefaults;
 
                 /**
-                 * [description]
+                 * The maximum number of items per node on the RTree.
+                 *
+                 * This is ignored if `useTree` is `false`. If you have a large number of bodies in
+                 * your world then you may find search performance improves by increasing this value,
+                 * to allow more items per node and less node division.
                  */
                 maxEntries: integer;
 
                 /**
-                 * [description]
+                 * Should this Arcade Physics World use an RTree for Dynamic Physics bodies or not?
+                 *
+                 * An RTree is a fast way of spatially sorting of all the moving bodies in the world.
+                 * However, at certain limits, the cost of clearing and inserting the bodies into the
+                 * tree every frame becomes more expensive than the search speed gains it provides.
+                 *
+                 * If you have a large number of dynamic bodies in your world then it may be best to
+                 * disable the use of the RTree by setting this property to `true`.
+                 * The number it can cope with depends on browser and device, but a conservative estimate
+                 * of around 5,000 bodies should be considered the max before disabling it.
+                 *
+                 * Note this only applies to dynamic bodies. Static bodies are always kept in an RTree,
+                 * because they don't have to be cleared every frame, so you benefit from the
+                 * massive search speeds all the time.
+                 */
+                useTree: boolean;
+
+                /**
+                 * The spatial index of Dynamic Bodies.
                  */
                 tree: Phaser.Structs.RTree;
 
                 /**
-                 * [description]
+                 * The spatial index of Static Bodies.
                  */
                 staticTree: Phaser.Structs.RTree;
 
                 /**
-                 * [description]
+                 * Recycled input for tree searches.
                  */
                 treeMinMax: ArcadeWorldTreeMinMax;
 
                 /**
-                 * [description]
-                 * @param object [description]
+                 * Adds an Arcade Physics Body to a Game Object, an array of Game Objects, or the children of a Group.
+                 *
+                 * The difference between this and the `enableBody` method is that you can pass arrays or Groups
+                 * to this method.
+                 *
+                 * You can specify if the bodies are to be Dynamic or Static. A dynamic body can move via velocity and
+                 * acceleration. A static body remains fixed in place and as such is able to use an optimized search
+                 * tree, making it ideal for static elements such as level objects. You can still collide and overlap
+                 * with static bodies.
+                 *
+                 * Normally, rather than calling this method directly, you'd use the helper methods available in the
+                 * Arcade Physics Factory, such as:
+                 *
+                 * ```javascript
+                 * this.physics.add.image(x, y, textureKey);
+                 * this.physics.add.sprite(x, y, textureKey);
+                 * ```
+                 *
+                 * Calling factory methods encapsulates the creation of a Game Object and the creation of its
+                 * body at the same time. If you are creating custom classes then you can pass them to this
+                 * method to have their bodies created.
+                 * @param object The object, or objects, on which to create the bodies.
                  * @param bodyType The type of Body to create. Either `DYNAMIC_BODY` or `STATIC_BODY`.
                  */
                 enable(
                     object:
                         | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                        | Phaser.GameObjects.GameObject[]
+                        | Phaser.GameObjects.Group
+                        | Phaser.GameObjects.Group[],
                     bodyType?: integer
                 ): void;
 
                 /**
-                 * [description]
-                 * @param object [description]
+                 * Creates an Arcade Physics Body on a single Game Object.
+                 *
+                 * If the Game Object already has a body, this method will simply add it back into the simulation.
+                 *
+                 * You can specify if the body is Dynamic or Static. A dynamic body can move via velocity and
+                 * acceleration. A static body remains fixed in place and as such is able to use an optimized search
+                 * tree, making it ideal for static elements such as level objects. You can still collide and overlap
+                 * with static bodies.
+                 *
+                 * Normally, rather than calling this method directly, you'd use the helper methods available in the
+                 * Arcade Physics Factory, such as:
+                 *
+                 * ```javascript
+                 * this.physics.add.image(x, y, textureKey);
+                 * this.physics.add.sprite(x, y, textureKey);
+                 * ```
+                 *
+                 * Calling factory methods encapsulates the creation of a Game Object and the creation of its
+                 * body at the same time. If you are creating custom classes then you can pass them to this
+                 * method to have their bodies created.
+                 * @param object The Game Object on which to create the body.
                  * @param bodyType The type of Body to create. Either `DYNAMIC_BODY` or `STATIC_BODY`.
                  */
                 enableBody(
@@ -40353,50 +42067,96 @@ declare namespace Phaser {
                 ): Phaser.GameObjects.GameObject;
 
                 /**
-                 * [description]
-                 * @param object [description]
+                 * Adds an existing Arcade Physics Body or StaticBody to the simulation.
+                 *
+                 * The body is enabled and added to the local search trees.
+                 * @param body The Body to be added to the simulation.
                  */
-                remove(object: Phaser.Physics.Arcade.Body): void;
+                add(
+                    body:
+                        | Phaser.Physics.Arcade.Body
+                        | Phaser.Physics.Arcade.StaticBody
+                ):
+                    | Phaser.Physics.Arcade.Body
+                    | Phaser.Physics.Arcade.StaticBody;
 
                 /**
-                 * [description]
-                 * @param object [description]
+                 * Disables the Arcade Physics Body of a Game Object, an array of Game Objects, or the children of a Group.
+                 *
+                 * The difference between this and the `disableBody` method is that you can pass arrays or Groups
+                 * to this method.
+                 *
+                 * The body itself is not deleted, it just has its `enable` property set to false, which
+                 * means you can re-enable it again at any point by passing it to enable `World.enable` or `World.add`.
+                 * @param object The object, or objects, on which to disable the bodies.
                  */
                 disable(
                     object:
                         | Phaser.GameObjects.GameObject
                         | Phaser.GameObjects.GameObject[]
+                        | Phaser.GameObjects.Group
+                        | Phaser.GameObjects.Group[]
                 ): void;
 
                 /**
-                 * [description]
-                 * @param object [description]
+                 * Disables an existing Arcade Physics Body or StaticBody and removes it from the simulation.
+                 *
+                 * The body is disabled and removed from the local search trees.
+                 *
+                 * The body itself is not deleted, it just has its `enable` property set to false, which
+                 * means you can re-enable it again at any point by passing it to enable `World.enable` or `World.add`.
+                 * @param body The Body to be disabled.
                  */
-                disableGameObjectBody(
-                    object: Phaser.GameObjects.GameObject
-                ): Phaser.GameObjects.GameObject;
+                disableBody(
+                    body:
+                        | Phaser.Physics.Arcade.Body
+                        | Phaser.Physics.Arcade.StaticBody
+                ): void;
 
                 /**
-                 * [description]
-                 * @param body [description]
+                 * Removes an existing Arcade Physics Body or StaticBody from the simulation.
+                 *
+                 * The body is disabled and removed from the local search trees.
+                 *
+                 * The body itself is not deleted, it just has its `enabled` property set to false, which
+                 * means you can re-enable it again at any point by passing it to enable `enable` or `add`.
+                 * @param body The body to be removed from the simulation.
                  */
-                disableBody(body: Phaser.Physics.Arcade.Body): void;
+                remove(
+                    body:
+                        | Phaser.Physics.Arcade.Body
+                        | Phaser.Physics.Arcade.StaticBody
+                ): void;
 
                 /**
-                 * [description]
+                 * Creates a Graphics Game Object that the world will use to render the debug display to.
+                 *
+                 * This is called automatically when the World is instantiated if the `debug` config property
+                 * was set to `true`. However, you can call it at any point should you need to display the
+                 * debug Graphic from a fixed point.
+                 *
+                 * You can control which objects are drawn to the Graphics object, and the colors they use,
+                 * by setting the debug properties in the physics config.
+                 *
+                 * You should not typically use this in a production game. Use it to aid during debugging.
                  */
                 createDebugGraphic(): Phaser.GameObjects.Graphics;
 
                 /**
-                 * [description]
-                 * @param x [description]
-                 * @param y [description]
-                 * @param width [description]
-                 * @param height [description]
-                 * @param checkLeft [description]
-                 * @param checkRight [description]
-                 * @param checkUp [description]
-                 * @param checkDown [description]
+                 * Sets the position, size and properties of the World boundary.
+                 *
+                 * The World boundary is an invisible rectangle that defines the edges of the World.
+                 * If a Body is set to collide with the world bounds then it will automatically stop
+                 * when it reaches any of the edges. You can optionally set which edges of the boundary
+                 * should be checked against.
+                 * @param x The top-left x coordinate of the boundary.
+                 * @param y The top-left y coordinate of the boundary.
+                 * @param width The width of the boundary.
+                 * @param height The height of the boundary.
+                 * @param checkLeft Should bodies check against the left edge of the boundary?
+                 * @param checkRight Should bodies check against the right edge of the boundary?
+                 * @param checkUp Should bodies check against the top edge of the boundary?
+                 * @param checkDown Should bodies check against the bottom edge of the boundary?
                  */
                 setBounds(
                     x: number,
@@ -40410,11 +42170,11 @@ declare namespace Phaser {
                 ): Phaser.Physics.Arcade.World;
 
                 /**
-                 * [description]
-                 * @param left [description] Default true.
-                 * @param right [description] Default true.
-                 * @param up [description] Default true.
-                 * @param down [description] Default true.
+                 * Enables or disables collisions on each edge of the World boundary.
+                 * @param left Should bodies check against the left edge of the boundary? Default true.
+                 * @param right Should bodies check against the right edge of the boundary? Default true.
+                 * @param up Should bodies check against the top edge of the boundary? Default true.
+                 * @param down Should bodies check against the bottom edge of the boundary? Default true.
                  */
                 setBoundsCollision(
                     left?: boolean,
@@ -40424,17 +42184,30 @@ declare namespace Phaser {
                 ): Phaser.Physics.Arcade.World;
 
                 /**
-                 * [description]
+                 * Pauses the simulation.
+                 *
+                 * A paused simulation does not update any existing bodies, or run any Colliders.
+                 *
+                 * However, you can still enable and disable bodies within it, or manually run collide or overlap
+                 * checks.
                  */
                 pause(): Phaser.Physics.Arcade.World;
 
                 /**
-                 * [description]
+                 * Resumes the simulation, if paused.
                  */
                 resume(): Phaser.Physics.Arcade.World;
 
                 /**
-                 * [description]
+                 * Creates a new Collider object and adds it to the simulation.
+                 *
+                 * A Collider is a way to automatically perform collision checks between two objects,
+                 * calling the collide and process callbacks if they occur.
+                 *
+                 * Colliders are run as part of the World update, after all of the Bodies have updated.
+                 *
+                 * By creating a Collider you don't need then call `World.collide` in your `update` loop,
+                 * as it will be handled for you automatically.
                  * @param object1 The first object to check for collision.
                  * @param object2 The second object to check for collision.
                  * @param collideCallback The callback to invoke when the two objects collide.
@@ -40442,19 +42215,23 @@ declare namespace Phaser {
                  * @param callbackContext The scope in which to call the callbacks.
                  */
                 addCollider(
-                    object1:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
-                    object2:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                    object1: ArcadeColliderType,
+                    object2: ArcadeColliderType,
                     collideCallback?: ArcadePhysicsCallback,
                     processCallback?: ArcadePhysicsCallback,
                     callbackContext?: any
                 ): Phaser.Physics.Arcade.Collider;
 
                 /**
-                 * [description]
+                 * Creates a new Overlap Collider object and adds it to the simulation.
+                 *
+                 * A Collider is a way to automatically perform overlap checks between two objects,
+                 * calling the collide and process callbacks if they occur.
+                 *
+                 * Colliders are run as part of the World update, after all of the Bodies have updated.
+                 *
+                 * By creating a Collider you don't need then call `World.overlap` in your `update` loop,
+                 * as it will be handled for you automatically.
                  * @param object1 The first object to check for overlap.
                  * @param object2 The second object to check for overlap.
                  * @param collideCallback The callback to invoke when the two objects overlap.
@@ -40462,68 +42239,100 @@ declare namespace Phaser {
                  * @param callbackContext The scope in which to call the callbacks.
                  */
                 addOverlap(
-                    object1:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
-                    object2:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
+                    object1: ArcadeColliderType,
+                    object2: ArcadeColliderType,
                     collideCallback?: ArcadePhysicsCallback,
                     processCallback?: ArcadePhysicsCallback,
                     callbackContext?: any
                 ): Phaser.Physics.Arcade.Collider;
 
                 /**
-                 * [description]
-                 * @param collider [description]
+                 * Removes a Collider from the simulation so it is no longer processed.
+                 *
+                 * This method does not destroy the Collider. If you wish to add it back at a later stage you can call
+                 * `World.colliders.add(Collider)`.
+                 *
+                 * If you no longer need the Collider you can call the `Collider.destroy` method instead, which will
+                 * automatically clear all of its references and then remove it from the World. If you call destroy on
+                 * a Collider you _don't_ need to pass it to this method too.
+                 * @param collider The Collider to remove from the simulation.
                  */
                 removeCollider(
                     collider: Phaser.Physics.Arcade.Collider
                 ): Phaser.Physics.Arcade.World;
 
                 /**
-                 * [description]
-                 * @param time [description]
-                 * @param delta [description]
+                 * Sets the frame rate to run the simulation at.
+                 *
+                 * The frame rate value is used to simulate a fixed update time step. This fixed
+                 * time step allows for a straightforward implementation of a deterministic game state.
+                 *
+                 * This frame rate is independent of the frequency at which the game is rendering. The
+                 * higher you set the fps, the more physics simulation steps will occur per game step.
+                 * Conversely, the lower you set it, the less will take place.
+                 *
+                 * You can optionally advance the simulation directly yourself by calling the `step` method.
+                 * @param framerate The frame rate to advance the simulation at.
                  */
-                update(time: number, delta: number): void;
+                setFPS(framerate: integer): this;
 
                 /**
-                 * [description]
+                 * Advances the simulation based on the elapsed time and fps rate.
+                 *
+                 * This is called automatically by your Scene and does not need to be invoked directly.
+                 * @param time The current timestamp as generated by the Request Animation Frame or SetTimeout.
+                 * @param delta The delta time, in ms, elapsed since the last frame.
+                 */
+                protected update(time: number, delta: number): void;
+
+                /**
+                 * Advances the simulation by one step.
+                 * @param delta The delta time amount, in ms, by which to advance the simulation.
+                 */
+                step(delta: number): void;
+
+                /**
+                 * Updates bodies, draws the debug display, and handles pending queue operations.
                  */
                 postUpdate(): void;
 
                 /**
-                 * [description]
-                 * @param body [description]
+                 * Calculates a Body's velocity and updates its position.
+                 * @param body The Body to be updated.
+                 * @param delta The delta value to be used in the motion calculations.
                  */
-                updateMotion(body: Phaser.Physics.Arcade.Body): void;
+                updateMotion(
+                    body: Phaser.Physics.Arcade.Body,
+                    delta: number
+                ): void;
 
                 /**
-                 * [description]
-                 * @param axis [description]
-                 * @param body [description]
-                 * @param velocity [description]
-                 * @param acceleration [description]
-                 * @param drag [description]
-                 * @param max [description]
+                 * Calculates a Body's angular velocity.
+                 * @param body The Body to compute the velocity for.
+                 * @param delta The delta value to be used in the calculation.
+                 */
+                computeAngularVelocity(
+                    body: Phaser.Physics.Arcade.Body,
+                    delta: number
+                ): void;
+
+                /**
+                 * Calculates a Body's per-axis velocity.
+                 * @param body The Body to compute the velocity for.
+                 * @param delta The delta value to be used in the calculation.
                  */
                 computeVelocity(
-                    axis: integer,
                     body: Phaser.Physics.Arcade.Body,
-                    velocity: number,
-                    acceleration: number,
-                    drag: number,
-                    max: number
-                ): number;
+                    delta: number
+                ): void;
 
                 /**
-                 * [description]
-                 * @param body1 [description]
-                 * @param body2 [description]
-                 * @param processCallback [description]
-                 * @param callbackContext [description]
-                 * @param overlapOnly [description]
+                 * Separates two Bodies.
+                 * @param body1 The first Body to be separated.
+                 * @param body2 The second Body to be separated.
+                 * @param processCallback The process callback.
+                 * @param callbackContext The context in which to invoke the callback.
+                 * @param overlapOnly If this a collide or overlap check?
                  */
                 separate(
                     body1: Phaser.Physics.Arcade.Body,
@@ -40534,23 +42343,23 @@ declare namespace Phaser {
                 ): boolean;
 
                 /**
-                 * [description]
-                 * @param body1 [description]
-                 * @param body2 [description]
-                 * @param overlapOnly [description]
-                 * @param bias [description]
+                 * Separates two Bodies, when both are circular.
+                 * @param body1 The first Body to be separated.
+                 * @param body2 The second Body to be separated.
+                 * @param overlapOnly If this a collide or overlap check?
+                 * @param bias A small value added to the calculations.
                  */
                 separateCircle(
                     body1: Phaser.Physics.Arcade.Body,
                     body2: Phaser.Physics.Arcade.Body,
-                    overlapOnly: boolean,
-                    bias: number
+                    overlapOnly?: boolean,
+                    bias?: number
                 ): boolean;
 
                 /**
-                 * [description]
-                 * @param body1 [description]
-                 * @param body2 [description]
+                 * Checks to see if two Bodies intersect at all.
+                 * @param body1 The first body to check.
+                 * @param body2 The second body to check.
                  */
                 intersects(
                     body1: Phaser.Physics.Arcade.Body,
@@ -40558,9 +42367,9 @@ declare namespace Phaser {
                 ): boolean;
 
                 /**
-                 * [description]
-                 * @param circle [description]
-                 * @param body [description]
+                 * Tests if a circular Body intersects with another Body.
+                 * @param circle The circular body to test.
+                 * @param body The rectangular body to test.
                  */
                 circleBodyIntersects(
                     circle: Phaser.Physics.Arcade.Body,
@@ -40568,7 +42377,7 @@ declare namespace Phaser {
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Tests if Game Objects overlap.
                  * @param object1 [description]
                  * @param object2 [description]
                  * @param overlapCallback [description]
@@ -40576,15 +42385,30 @@ declare namespace Phaser {
                  * @param callbackContext [description]
                  */
                 overlap(
-                    object1: Phaser.GameObjects.GameObject,
-                    object2: Phaser.GameObjects.GameObject,
+                    object1: ArcadeColliderType,
+                    object2?: ArcadeColliderType,
                     overlapCallback?: ArcadePhysicsCallback,
                     processCallback?: ArcadePhysicsCallback,
                     callbackContext?: any
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Performs a collision check and separation between the two physics enabled objects given, which can be single
+                 * Game Objects, arrays of Game Objects, Physics Groups, arrays of Physics Groups or normal Groups.
+                 *
+                 * If you don't require separation then use {@link #overlap} instead.
+                 *
+                 * If two Groups or arrays are passed, each member of one will be tested against each member of the other.
+                 *
+                 * If one Group **only** is passed (as `object1`), each member of the Group will be collided against the other members.
+                 *
+                 * Two callbacks can be provided. The `collideCallback` is invoked if a collision occurs and the two colliding
+                 * objects are passed to it.
+                 *
+                 * Arcade Physics uses the Projection Method of collision resolution and separation. While it's fast and suitable
+                 * for 'arcade' style games it lacks stability when multiple objects are in close proximity or resting upon each other.
+                 * The separation that stops two objects penetrating may create a new penetration against a different object. If you
+                 * require a high level of stability please consider using an alternative physics system, such as Matter.js.
                  * @param object1 [description]
                  * @param object2 [description]
                  * @param collideCallback [description]
@@ -40592,15 +42416,15 @@ declare namespace Phaser {
                  * @param callbackContext [description]
                  */
                 collide(
-                    object1: Phaser.GameObjects.GameObject,
-                    object2: Phaser.GameObjects.GameObject,
+                    object1: ArcadeColliderType,
+                    object2?: ArcadeColliderType,
                     collideCallback?: ArcadePhysicsCallback,
                     processCallback?: ArcadePhysicsCallback,
                     callbackContext?: any
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Helper for Phaser.Physics.Arcade.World#collide.
                  * @param object1 [description]
                  * @param object2 [description]
                  * @param collideCallback [description]
@@ -40609,20 +42433,16 @@ declare namespace Phaser {
                  * @param overlapOnly [description]
                  */
                 collideObjects(
-                    object1:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
-                    object2:
-                        | Phaser.GameObjects.GameObject
-                        | Phaser.GameObjects.GameObject[],
-                    collideCallback: ArcadePhysicsCallback,
-                    processCallback: ArcadePhysicsCallback,
-                    callbackContext: any,
-                    overlapOnly: boolean
+                    object1: ArcadeColliderType,
+                    object2?: ArcadeColliderType,
+                    collideCallback?: ArcadePhysicsCallback,
+                    processCallback?: ArcadePhysicsCallback,
+                    callbackContext?: any,
+                    overlapOnly?: boolean
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Helper for Phaser.Physics.Arcade.World#collide and Phaser.Physics.Arcade.World#overlap.
                  * @param object1 [description]
                  * @param object2 [description]
                  * @param collideCallback [description]
@@ -40631,16 +42451,16 @@ declare namespace Phaser {
                  * @param overlapOnly [description]
                  */
                 collideHandler(
-                    object1: Phaser.GameObjects.GameObject,
-                    object2: Phaser.GameObjects.GameObject,
-                    collideCallback: ArcadePhysicsCallback,
-                    processCallback: ArcadePhysicsCallback,
-                    callbackContext: any,
-                    overlapOnly: boolean
+                    object1: ArcadeColliderType,
+                    object2?: ArcadeColliderType,
+                    collideCallback?: ArcadePhysicsCallback,
+                    processCallback?: ArcadePhysicsCallback,
+                    callbackContext?: any,
+                    overlapOnly?: boolean
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Handler for Sprite vs. Sprite collisions.
                  * @param sprite1 [description]
                  * @param sprite2 [description]
                  * @param collideCallback [description]
@@ -40658,7 +42478,7 @@ declare namespace Phaser {
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Handler for Sprite vs. Group collisions.
                  * @param sprite [description]
                  * @param group [description]
                  * @param collideCallback [description]
@@ -40676,7 +42496,7 @@ declare namespace Phaser {
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Helper for Group vs. Tilemap collisions.
                  * @param group [description]
                  * @param tilemapLayer [description]
                  * @param collideCallback [description]
@@ -40696,7 +42516,7 @@ declare namespace Phaser {
                 ): boolean;
 
                 /**
-                 * [description]
+                 * Helper for Sprite vs. Tilemap collisions.
                  * @param sprite [description]
                  * @param tilemapLayer [description]
                  * @param collideCallback [description]
@@ -40716,7 +42536,7 @@ declare namespace Phaser {
                 ): boolean;
 
                 /**
-                 * TODO!
+                 * Helper for Group vs. Group collisions.
                  * @param group1 [description]
                  * @param group2 [description]
                  * @param collideCallback [description]
@@ -40744,9 +42564,10 @@ declare namespace Phaser {
 
                 /**
                  * Wrap each object's coordinates within {@link Phaser.Physics.Arcade.World#bounds}.
+                 * @param objects An array of objects to be wrapped.
                  * @param padding An amount added to the boundary. Default 0.
                  */
-                wrapArray(arr: any[], padding?: number): void;
+                wrapArray(objects: any[], padding?: number): void;
 
                 /**
                  * Wrap an object's coordinates within {@link Phaser.Physics.Arcade.World#bounds}.
@@ -40756,12 +42577,12 @@ declare namespace Phaser {
                 wrapObject(object: any, padding?: number): void;
 
                 /**
-                 * [description]
+                 * Shuts down the simulation, clearing physics data and removing listeners.
                  */
                 shutdown(): void;
 
                 /**
-                 * [description]
+                 * Shuts down the simulation and disconnects it from the current scene.
                  */
                 destroy(): void;
             }
@@ -42023,9 +43844,10 @@ declare namespace Phaser {
 
                 /**
                  * Clears all alpha values associated with this Game Object.
-                 * Immediately sets the alpha levels back to 1 (fully opaque)
+                 *
+                 * Immediately sets the alpha levels back to 1 (fully opaque).
                  */
-                clearAlpha(): Phaser.GameObjects.GameObject;
+                clearAlpha(): this;
 
                 /**
                  * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -42043,7 +43865,7 @@ declare namespace Phaser {
                     topRight?: number,
                     bottomLeft?: number,
                     bottomRight?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The alpha value of the Game Object.
@@ -42119,9 +43941,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
 
                 /**
                  * The depth of this Game Object within the Scene.
@@ -42148,7 +43968,7 @@ declare namespace Phaser {
                  * Setting the depth will queue a depth sort event within the Scene.
                  * @param value The depth of this Game Object.
                  */
-                setDepth(value: integer): Phaser.GameObjects.GameObject;
+                setDepth(value: integer): this;
 
                 /**
                  * The horizontally flipped state of the Game Object.
@@ -42167,36 +43987,36 @@ declare namespace Phaser {
                 /**
                  * Toggles the horizontal flipped state of this Game Object.
                  */
-                toggleFlipX(): Phaser.GameObjects.GameObject;
+                toggleFlipX(): this;
 
                 /**
                  * Toggles the vertical flipped state of this Game Object.
                  */
-                toggleFlipY(): Phaser.GameObjects.GameObject;
+                toggleFlipY(): this;
 
                 /**
                  * Sets the horizontal flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipX(value: boolean): this;
 
                 /**
                  * Sets the vertical flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipY(value: boolean): this;
 
                 /**
                  * Sets the horizontal and vertical flipped state of this Game Object.
                  * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+                setFlip(x: boolean, y: boolean): this;
 
                 /**
                  * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
                  */
-                resetFlip(): Phaser.GameObjects.GameObject;
+                resetFlip(): this;
 
                 /**
                  * Gets the center coordinate of this Game Object, regardless of origin.
@@ -42278,13 +44098,13 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
 
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -42356,15 +44176,12 @@ declare namespace Phaser {
                  * @param x The horizontal origin value. Default 0.5.
                  * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setOrigin(x?: number, y?: number): this;
 
                 /**
                  * Sets the origin of this Game Object based on the Pivot values in its Frame.
                  */
-                setOriginFromFrame(): Phaser.GameObjects.GameObject;
+                setOriginFromFrame(): this;
 
                 /**
                  * Sets the display origin of this Game Object.
@@ -42372,24 +44189,21 @@ declare namespace Phaser {
                  * @param x The horizontal display origin value. Default 0.
                  * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setDisplayOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplayOrigin(x?: number, y?: number): this;
 
                 /**
                  * Updates the Display Origin cached values internally stored on this Game Object.
                  * You don't usually call this directly, but it is exposed for edge-cases where you may.
                  */
-                updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+                updateDisplayOrigin(): this;
 
                 /**
-                 * [description]
+                 * The initial WebGL pipeline of this Game Object.
                  */
                 defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
                 /**
-                 * [description]
+                 * The current WebGL pipeline of this Game Object.
                  */
                 pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -42427,9 +44241,7 @@ declare namespace Phaser {
                  * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
                  * @param value The Scale Mode to be used by this Game Object.
                  */
-                setScaleMode(
-                    value: Phaser.ScaleModes
-                ): Phaser.GameObjects.GameObject;
+                setScaleMode(value: Phaser.ScaleModes): this;
 
                 /**
                  * The horizontal scroll factor of this Game Object.
@@ -42473,10 +44285,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
 
                 /**
                  * The native (un-scaled) width of this Game Object.
@@ -42504,19 +44313,14 @@ declare namespace Phaser {
                  * Sets the size of this Game Object to be that of the given Frame.
                  * @param frame The frame to base the size of this Game Object on.
                  */
-                setSizeToFrame(
-                    frame: Phaser.Textures.Frame
-                ): Phaser.GameObjects.GameObject;
+                setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
                 /**
                  * Sets the size of this Game Object.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
 
                 /**
                  * Sets the display size of this Game Object.
@@ -42524,10 +44328,7 @@ declare namespace Phaser {
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
 
                 /**
                  * The Texture this Game Object is using to render with.
@@ -42548,10 +44349,7 @@ declare namespace Phaser {
                  * @param key The key of the texture to be used, as stored in the Texture Manager.
                  * @param frame The name or index of the frame within the Texture.
                  */
-                setTexture(
-                    key: string,
-                    frame?: string | integer
-                ): Phaser.GameObjects.GameObject;
+                setTexture(key: string, frame?: string | integer): this;
 
                 /**
                  * Sets the frame this Game Object will use to render with.
@@ -42570,13 +44368,13 @@ declare namespace Phaser {
                     frame: string | integer,
                     updateSize?: boolean,
                     updateOrigin?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears all tint values associated with this Game Object.
                  * Immediately sets the alpha levels back to 0xffffff (no tint)
                  */
-                clearTint(): Phaser.GameObjects.GameObject;
+                clearTint(): this;
 
                 /**
                  * Sets the tint values for this Game Object.
@@ -42590,7 +44388,7 @@ declare namespace Phaser {
                     topRight?: integer,
                     bottomLeft?: integer,
                     bottomRight?: integer
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The tint value being applied to the top-left of the Game Object.
@@ -42680,50 +44478,70 @@ declare namespace Phaser {
                     y?: number,
                     z?: number,
                     w?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
+
+                /**
+                 * Sets the position of this Game Object to be a random position within the confines of
+                 * the given area.
+                 *
+                 * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+                 *
+                 * The position does not factor in the size of this Game Object, meaning that only the origin is
+                 * guaranteed to be within the area.
+                 * @param x The x position of the top-left of the random area. Default 0.
+                 * @param y The y position of the top-left of the random area. Default 0.
+                 * @param width The width of the random area.
+                 * @param height The height of the random area.
+                 */
+                setRandomPosition(
+                    x?: number,
+                    y?: number,
+                    width?: number,
+                    height?: number
+                ): this;
 
                 /**
                  * Sets the rotation of this Game Object.
                  * @param radians The rotation of this Game Object, in radians. Default 0.
                  */
-                setRotation(radians?: number): Phaser.GameObjects.GameObject;
+                setRotation(radians?: number): this;
 
                 /**
                  * Sets the angle of this Game Object.
                  * @param degrees The rotation of this Game Object, in degrees. Default 0.
                  */
-                setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+                setAngle(degrees?: number): this;
 
                 /**
                  * Sets the scale of this Game Object.
                  * @param x The horizontal scale of this Game Object.
                  * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setScale(x: number, y?: number): this;
 
                 /**
                  * Sets the x position of this Game Object.
                  * @param value The x position of this Game Object. Default 0.
                  */
-                setX(value?: number): Phaser.GameObjects.GameObject;
+                setX(value?: number): this;
 
                 /**
                  * Sets the y position of this Game Object.
                  * @param value The y position of this Game Object. Default 0.
                  */
-                setY(value?: number): Phaser.GameObjects.GameObject;
+                setY(value?: number): this;
 
                 /**
                  * Sets the z position of this Game Object.
                  * @param value The z position of this Game Object. Default 0.
                  */
-                setZ(value?: number): Phaser.GameObjects.GameObject;
+                setZ(value?: number): this;
 
                 /**
                  * Sets the w position of this Game Object.
                  * @param value The w position of this Game Object. Default 0.
                  */
-                setW(value?: number): Phaser.GameObjects.GameObject;
+                setW(value?: number): this;
 
                 /**
                  * Gets the local transform matrix for this Game Object.
@@ -42754,7 +44572,7 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
 
                 /**
                  * [description]
@@ -43178,9 +44996,10 @@ declare namespace Phaser {
 
                 /**
                  * Clears all alpha values associated with this Game Object.
-                 * Immediately sets the alpha levels back to 1 (fully opaque)
+                 *
+                 * Immediately sets the alpha levels back to 1 (fully opaque).
                  */
-                clearAlpha(): Phaser.GameObjects.GameObject;
+                clearAlpha(): this;
 
                 /**
                  * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -43198,7 +45017,7 @@ declare namespace Phaser {
                     topRight?: number,
                     bottomLeft?: number,
                     bottomRight?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The alpha value of the Game Object.
@@ -43274,9 +45093,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
 
                 /**
                  * The depth of this Game Object within the Scene.
@@ -43303,7 +45120,7 @@ declare namespace Phaser {
                  * Setting the depth will queue a depth sort event within the Scene.
                  * @param value The depth of this Game Object.
                  */
-                setDepth(value: integer): Phaser.GameObjects.GameObject;
+                setDepth(value: integer): this;
 
                 /**
                  * The horizontally flipped state of the Game Object.
@@ -43322,36 +45139,36 @@ declare namespace Phaser {
                 /**
                  * Toggles the horizontal flipped state of this Game Object.
                  */
-                toggleFlipX(): Phaser.GameObjects.GameObject;
+                toggleFlipX(): this;
 
                 /**
                  * Toggles the vertical flipped state of this Game Object.
                  */
-                toggleFlipY(): Phaser.GameObjects.GameObject;
+                toggleFlipY(): this;
 
                 /**
                  * Sets the horizontal flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipX(value: boolean): this;
 
                 /**
                  * Sets the vertical flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipY(value: boolean): this;
 
                 /**
                  * Sets the horizontal and vertical flipped state of this Game Object.
                  * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+                setFlip(x: boolean, y: boolean): this;
 
                 /**
                  * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
                  */
-                resetFlip(): Phaser.GameObjects.GameObject;
+                resetFlip(): this;
 
                 /**
                  * Gets the center coordinate of this Game Object, regardless of origin.
@@ -43433,13 +45250,13 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
 
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -43511,15 +45328,12 @@ declare namespace Phaser {
                  * @param x The horizontal origin value. Default 0.5.
                  * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setOrigin(x?: number, y?: number): this;
 
                 /**
                  * Sets the origin of this Game Object based on the Pivot values in its Frame.
                  */
-                setOriginFromFrame(): Phaser.GameObjects.GameObject;
+                setOriginFromFrame(): this;
 
                 /**
                  * Sets the display origin of this Game Object.
@@ -43527,24 +45341,21 @@ declare namespace Phaser {
                  * @param x The horizontal display origin value. Default 0.
                  * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setDisplayOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplayOrigin(x?: number, y?: number): this;
 
                 /**
                  * Updates the Display Origin cached values internally stored on this Game Object.
                  * You don't usually call this directly, but it is exposed for edge-cases where you may.
                  */
-                updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+                updateDisplayOrigin(): this;
 
                 /**
-                 * [description]
+                 * The initial WebGL pipeline of this Game Object.
                  */
                 defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
                 /**
-                 * [description]
+                 * The current WebGL pipeline of this Game Object.
                  */
                 pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -43582,9 +45393,7 @@ declare namespace Phaser {
                  * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
                  * @param value The Scale Mode to be used by this Game Object.
                  */
-                setScaleMode(
-                    value: Phaser.ScaleModes
-                ): Phaser.GameObjects.GameObject;
+                setScaleMode(value: Phaser.ScaleModes): this;
 
                 /**
                  * The horizontal scroll factor of this Game Object.
@@ -43628,10 +45437,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
 
                 /**
                  * The native (un-scaled) width of this Game Object.
@@ -43659,19 +45465,14 @@ declare namespace Phaser {
                  * Sets the size of this Game Object to be that of the given Frame.
                  * @param frame The frame to base the size of this Game Object on.
                  */
-                setSizeToFrame(
-                    frame: Phaser.Textures.Frame
-                ): Phaser.GameObjects.GameObject;
+                setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
                 /**
                  * Sets the size of this Game Object.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
 
                 /**
                  * Sets the display size of this Game Object.
@@ -43679,10 +45480,7 @@ declare namespace Phaser {
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
 
                 /**
                  * The Texture this Game Object is using to render with.
@@ -43703,10 +45501,7 @@ declare namespace Phaser {
                  * @param key The key of the texture to be used, as stored in the Texture Manager.
                  * @param frame The name or index of the frame within the Texture.
                  */
-                setTexture(
-                    key: string,
-                    frame?: string | integer
-                ): Phaser.GameObjects.GameObject;
+                setTexture(key: string, frame?: string | integer): this;
 
                 /**
                  * Sets the frame this Game Object will use to render with.
@@ -43725,13 +45520,13 @@ declare namespace Phaser {
                     frame: string | integer,
                     updateSize?: boolean,
                     updateOrigin?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears all tint values associated with this Game Object.
                  * Immediately sets the alpha levels back to 0xffffff (no tint)
                  */
-                clearTint(): Phaser.GameObjects.GameObject;
+                clearTint(): this;
 
                 /**
                  * Sets the tint values for this Game Object.
@@ -43745,7 +45540,7 @@ declare namespace Phaser {
                     topRight?: integer,
                     bottomLeft?: integer,
                     bottomRight?: integer
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The tint value being applied to the top-left of the Game Object.
@@ -43835,50 +45630,70 @@ declare namespace Phaser {
                     y?: number,
                     z?: number,
                     w?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
+
+                /**
+                 * Sets the position of this Game Object to be a random position within the confines of
+                 * the given area.
+                 *
+                 * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+                 *
+                 * The position does not factor in the size of this Game Object, meaning that only the origin is
+                 * guaranteed to be within the area.
+                 * @param x The x position of the top-left of the random area. Default 0.
+                 * @param y The y position of the top-left of the random area. Default 0.
+                 * @param width The width of the random area.
+                 * @param height The height of the random area.
+                 */
+                setRandomPosition(
+                    x?: number,
+                    y?: number,
+                    width?: number,
+                    height?: number
+                ): this;
 
                 /**
                  * Sets the rotation of this Game Object.
                  * @param radians The rotation of this Game Object, in radians. Default 0.
                  */
-                setRotation(radians?: number): Phaser.GameObjects.GameObject;
+                setRotation(radians?: number): this;
 
                 /**
                  * Sets the angle of this Game Object.
                  * @param degrees The rotation of this Game Object, in degrees. Default 0.
                  */
-                setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+                setAngle(degrees?: number): this;
 
                 /**
                  * Sets the scale of this Game Object.
                  * @param x The horizontal scale of this Game Object.
                  * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setScale(x: number, y?: number): this;
 
                 /**
                  * Sets the x position of this Game Object.
                  * @param value The x position of this Game Object. Default 0.
                  */
-                setX(value?: number): Phaser.GameObjects.GameObject;
+                setX(value?: number): this;
 
                 /**
                  * Sets the y position of this Game Object.
                  * @param value The y position of this Game Object. Default 0.
                  */
-                setY(value?: number): Phaser.GameObjects.GameObject;
+                setY(value?: number): this;
 
                 /**
                  * Sets the z position of this Game Object.
                  * @param value The z position of this Game Object. Default 0.
                  */
-                setZ(value?: number): Phaser.GameObjects.GameObject;
+                setZ(value?: number): this;
 
                 /**
                  * Sets the w position of this Game Object.
                  * @param value The w position of this Game Object. Default 0.
                  */
-                setW(value?: number): Phaser.GameObjects.GameObject;
+                setW(value?: number): this;
 
                 /**
                  * Gets the local transform matrix for this Game Object.
@@ -43909,7 +45724,7 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
 
                 /**
                  * [description]
@@ -44925,6 +46740,10 @@ declare namespace Phaser {
                      * @param value [description]
                      */
                     setDensity(value: number): Phaser.GameObjects.GameObject;
+                    /**
+                     * The body's center of mass.
+                     */
+                    readonly centerOfMass: any;
                 }
 
                 /**
@@ -45632,9 +47451,10 @@ declare namespace Phaser {
 
                 /**
                  * Clears all alpha values associated with this Game Object.
-                 * Immediately sets the alpha levels back to 1 (fully opaque)
+                 *
+                 * Immediately sets the alpha levels back to 1 (fully opaque).
                  */
-                clearAlpha(): Phaser.GameObjects.GameObject;
+                clearAlpha(): this;
 
                 /**
                  * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -45652,7 +47472,7 @@ declare namespace Phaser {
                     topRight?: number,
                     bottomLeft?: number,
                     bottomRight?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The alpha value of the Game Object.
@@ -45728,9 +47548,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
 
                 /**
                  * The depth of this Game Object within the Scene.
@@ -45757,7 +47575,7 @@ declare namespace Phaser {
                  * Setting the depth will queue a depth sort event within the Scene.
                  * @param value The depth of this Game Object.
                  */
-                setDepth(value: integer): Phaser.GameObjects.GameObject;
+                setDepth(value: integer): this;
 
                 /**
                  * The horizontally flipped state of the Game Object.
@@ -45776,36 +47594,36 @@ declare namespace Phaser {
                 /**
                  * Toggles the horizontal flipped state of this Game Object.
                  */
-                toggleFlipX(): Phaser.GameObjects.GameObject;
+                toggleFlipX(): this;
 
                 /**
                  * Toggles the vertical flipped state of this Game Object.
                  */
-                toggleFlipY(): Phaser.GameObjects.GameObject;
+                toggleFlipY(): this;
 
                 /**
                  * Sets the horizontal flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipX(value: boolean): this;
 
                 /**
                  * Sets the vertical flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipY(value: boolean): this;
 
                 /**
                  * Sets the horizontal and vertical flipped state of this Game Object.
                  * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+                setFlip(x: boolean, y: boolean): this;
 
                 /**
                  * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
                  */
-                resetFlip(): Phaser.GameObjects.GameObject;
+                resetFlip(): this;
 
                 /**
                  * Gets the center coordinate of this Game Object, regardless of origin.
@@ -45887,13 +47705,13 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
 
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -45965,15 +47783,12 @@ declare namespace Phaser {
                  * @param x The horizontal origin value. Default 0.5.
                  * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setOrigin(x?: number, y?: number): this;
 
                 /**
                  * Sets the origin of this Game Object based on the Pivot values in its Frame.
                  */
-                setOriginFromFrame(): Phaser.GameObjects.GameObject;
+                setOriginFromFrame(): this;
 
                 /**
                  * Sets the display origin of this Game Object.
@@ -45981,24 +47796,21 @@ declare namespace Phaser {
                  * @param x The horizontal display origin value. Default 0.
                  * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setDisplayOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplayOrigin(x?: number, y?: number): this;
 
                 /**
                  * Updates the Display Origin cached values internally stored on this Game Object.
                  * You don't usually call this directly, but it is exposed for edge-cases where you may.
                  */
-                updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+                updateDisplayOrigin(): this;
 
                 /**
-                 * [description]
+                 * The initial WebGL pipeline of this Game Object.
                  */
                 defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
                 /**
-                 * [description]
+                 * The current WebGL pipeline of this Game Object.
                  */
                 pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -46036,9 +47848,7 @@ declare namespace Phaser {
                  * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
                  * @param value The Scale Mode to be used by this Game Object.
                  */
-                setScaleMode(
-                    value: Phaser.ScaleModes
-                ): Phaser.GameObjects.GameObject;
+                setScaleMode(value: Phaser.ScaleModes): this;
 
                 /**
                  * The horizontal scroll factor of this Game Object.
@@ -46082,10 +47892,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
 
                 /**
                  * The native (un-scaled) width of this Game Object.
@@ -46113,19 +47920,14 @@ declare namespace Phaser {
                  * Sets the size of this Game Object to be that of the given Frame.
                  * @param frame The frame to base the size of this Game Object on.
                  */
-                setSizeToFrame(
-                    frame: Phaser.Textures.Frame
-                ): Phaser.GameObjects.GameObject;
+                setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
                 /**
                  * Sets the size of this Game Object.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
 
                 /**
                  * Sets the display size of this Game Object.
@@ -46133,10 +47935,7 @@ declare namespace Phaser {
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
 
                 /**
                  * The Texture this Game Object is using to render with.
@@ -46157,10 +47956,7 @@ declare namespace Phaser {
                  * @param key The key of the texture to be used, as stored in the Texture Manager.
                  * @param frame The name or index of the frame within the Texture.
                  */
-                setTexture(
-                    key: string,
-                    frame?: string | integer
-                ): Phaser.GameObjects.GameObject;
+                setTexture(key: string, frame?: string | integer): this;
 
                 /**
                  * Sets the frame this Game Object will use to render with.
@@ -46179,13 +47975,13 @@ declare namespace Phaser {
                     frame: string | integer,
                     updateSize?: boolean,
                     updateOrigin?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears all tint values associated with this Game Object.
                  * Immediately sets the alpha levels back to 0xffffff (no tint)
                  */
-                clearTint(): Phaser.GameObjects.GameObject;
+                clearTint(): this;
 
                 /**
                  * Sets the tint values for this Game Object.
@@ -46199,7 +47995,7 @@ declare namespace Phaser {
                     topRight?: integer,
                     bottomLeft?: integer,
                     bottomRight?: integer
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The tint value being applied to the top-left of the Game Object.
@@ -46289,50 +48085,70 @@ declare namespace Phaser {
                     y?: number,
                     z?: number,
                     w?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
+
+                /**
+                 * Sets the position of this Game Object to be a random position within the confines of
+                 * the given area.
+                 *
+                 * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+                 *
+                 * The position does not factor in the size of this Game Object, meaning that only the origin is
+                 * guaranteed to be within the area.
+                 * @param x The x position of the top-left of the random area. Default 0.
+                 * @param y The y position of the top-left of the random area. Default 0.
+                 * @param width The width of the random area.
+                 * @param height The height of the random area.
+                 */
+                setRandomPosition(
+                    x?: number,
+                    y?: number,
+                    width?: number,
+                    height?: number
+                ): this;
 
                 /**
                  * Sets the rotation of this Game Object.
                  * @param radians The rotation of this Game Object, in radians. Default 0.
                  */
-                setRotation(radians?: number): Phaser.GameObjects.GameObject;
+                setRotation(radians?: number): this;
 
                 /**
                  * Sets the angle of this Game Object.
                  * @param degrees The rotation of this Game Object, in degrees. Default 0.
                  */
-                setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+                setAngle(degrees?: number): this;
 
                 /**
                  * Sets the scale of this Game Object.
                  * @param x The horizontal scale of this Game Object.
                  * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setScale(x: number, y?: number): this;
 
                 /**
                  * Sets the x position of this Game Object.
                  * @param value The x position of this Game Object. Default 0.
                  */
-                setX(value?: number): Phaser.GameObjects.GameObject;
+                setX(value?: number): this;
 
                 /**
                  * Sets the y position of this Game Object.
                  * @param value The y position of this Game Object. Default 0.
                  */
-                setY(value?: number): Phaser.GameObjects.GameObject;
+                setY(value?: number): this;
 
                 /**
                  * Sets the z position of this Game Object.
                  * @param value The z position of this Game Object. Default 0.
                  */
-                setZ(value?: number): Phaser.GameObjects.GameObject;
+                setZ(value?: number): this;
 
                 /**
                  * Sets the w position of this Game Object.
                  * @param value The w position of this Game Object. Default 0.
                  */
-                setW(value?: number): Phaser.GameObjects.GameObject;
+                setW(value?: number): this;
 
                 /**
                  * Gets the local transform matrix for this Game Object.
@@ -46363,7 +48179,7 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
 
                 /**
                  * [description]
@@ -46476,6 +48292,11 @@ declare namespace Phaser {
                  * @param value [description]
                  */
                 setDensity(value: number): Phaser.GameObjects.GameObject;
+
+                /**
+                 * The body's center of mass.
+                 */
+                readonly centerOfMass: any;
 
                 /**
                  * [description]
@@ -46797,9 +48618,10 @@ declare namespace Phaser {
 
                 /**
                  * Clears all alpha values associated with this Game Object.
-                 * Immediately sets the alpha levels back to 1 (fully opaque)
+                 *
+                 * Immediately sets the alpha levels back to 1 (fully opaque).
                  */
-                clearAlpha(): Phaser.GameObjects.GameObject;
+                clearAlpha(): this;
 
                 /**
                  * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -46817,7 +48639,7 @@ declare namespace Phaser {
                     topRight?: number,
                     bottomLeft?: number,
                     bottomRight?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The alpha value of the Game Object.
@@ -46893,9 +48715,7 @@ declare namespace Phaser {
                  * are used.
                  * @param value The BlendMode value. Either a string or a CONST.
                  */
-                setBlendMode(
-                    value: string | Phaser.BlendModes
-                ): Phaser.GameObjects.GameObject;
+                setBlendMode(value: string | Phaser.BlendModes): this;
 
                 /**
                  * The depth of this Game Object within the Scene.
@@ -46922,7 +48742,7 @@ declare namespace Phaser {
                  * Setting the depth will queue a depth sort event within the Scene.
                  * @param value The depth of this Game Object.
                  */
-                setDepth(value: integer): Phaser.GameObjects.GameObject;
+                setDepth(value: integer): this;
 
                 /**
                  * The horizontally flipped state of the Game Object.
@@ -46941,36 +48761,36 @@ declare namespace Phaser {
                 /**
                  * Toggles the horizontal flipped state of this Game Object.
                  */
-                toggleFlipX(): Phaser.GameObjects.GameObject;
+                toggleFlipX(): this;
 
                 /**
                  * Toggles the vertical flipped state of this Game Object.
                  */
-                toggleFlipY(): Phaser.GameObjects.GameObject;
+                toggleFlipY(): this;
 
                 /**
                  * Sets the horizontal flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipX(value: boolean): this;
 
                 /**
                  * Sets the vertical flipped state of this Game Object.
                  * @param value The flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+                setFlipY(value: boolean): this;
 
                 /**
                  * Sets the horizontal and vertical flipped state of this Game Object.
                  * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
                  */
-                setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+                setFlip(x: boolean, y: boolean): this;
 
                 /**
                  * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
                  */
-                resetFlip(): Phaser.GameObjects.GameObject;
+                resetFlip(): this;
 
                 /**
                  * Gets the center coordinate of this Game Object, regardless of origin.
@@ -47052,13 +48872,13 @@ declare namespace Phaser {
                     mask:
                         | Phaser.Display.Masks.BitmapMask
                         | Phaser.Display.Masks.GeometryMask
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears the mask that this Game Object was using.
                  * @param destroyMask Destroy the mask before clearing it? Default false.
                  */
-                clearMask(destroyMask?: boolean): Phaser.GameObjects.GameObject;
+                clearMask(destroyMask?: boolean): this;
 
                 /**
                  * Creates and returns a Bitmap Mask. This mask can be used by any Game Object,
@@ -47130,15 +48950,12 @@ declare namespace Phaser {
                  * @param x The horizontal origin value. Default 0.5.
                  * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setOrigin(x?: number, y?: number): this;
 
                 /**
                  * Sets the origin of this Game Object based on the Pivot values in its Frame.
                  */
-                setOriginFromFrame(): Phaser.GameObjects.GameObject;
+                setOriginFromFrame(): this;
 
                 /**
                  * Sets the display origin of this Game Object.
@@ -47146,24 +48963,21 @@ declare namespace Phaser {
                  * @param x The horizontal display origin value. Default 0.
                  * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
                  */
-                setDisplayOrigin(
-                    x?: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplayOrigin(x?: number, y?: number): this;
 
                 /**
                  * Updates the Display Origin cached values internally stored on this Game Object.
                  * You don't usually call this directly, but it is exposed for edge-cases where you may.
                  */
-                updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+                updateDisplayOrigin(): this;
 
                 /**
-                 * [description]
+                 * The initial WebGL pipeline of this Game Object.
                  */
                 defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
                 /**
-                 * [description]
+                 * The current WebGL pipeline of this Game Object.
                  */
                 pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -47201,9 +49015,7 @@ declare namespace Phaser {
                  * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
                  * @param value The Scale Mode to be used by this Game Object.
                  */
-                setScaleMode(
-                    value: Phaser.ScaleModes
-                ): Phaser.GameObjects.GameObject;
+                setScaleMode(value: Phaser.ScaleModes): this;
 
                 /**
                  * The horizontal scroll factor of this Game Object.
@@ -47247,10 +49059,7 @@ declare namespace Phaser {
                  * @param x The horizontal scroll factor of this Game Object.
                  * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScrollFactor(
-                    x: number,
-                    y?: number
-                ): Phaser.GameObjects.GameObject;
+                setScrollFactor(x: number, y?: number): this;
 
                 /**
                  * The native (un-scaled) width of this Game Object.
@@ -47278,19 +49087,14 @@ declare namespace Phaser {
                  * Sets the size of this Game Object to be that of the given Frame.
                  * @param frame The frame to base the size of this Game Object on.
                  */
-                setSizeToFrame(
-                    frame: Phaser.Textures.Frame
-                ): Phaser.GameObjects.GameObject;
+                setSizeToFrame(frame: Phaser.Textures.Frame): this;
 
                 /**
                  * Sets the size of this Game Object.
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setSize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setSize(width: number, height: number): this;
 
                 /**
                  * Sets the display size of this Game Object.
@@ -47298,10 +49102,7 @@ declare namespace Phaser {
                  * @param width The width of this Game Object.
                  * @param height The height of this Game Object.
                  */
-                setDisplaySize(
-                    width: number,
-                    height: number
-                ): Phaser.GameObjects.GameObject;
+                setDisplaySize(width: number, height: number): this;
 
                 /**
                  * The Texture this Game Object is using to render with.
@@ -47322,10 +49123,7 @@ declare namespace Phaser {
                  * @param key The key of the texture to be used, as stored in the Texture Manager.
                  * @param frame The name or index of the frame within the Texture.
                  */
-                setTexture(
-                    key: string,
-                    frame?: string | integer
-                ): Phaser.GameObjects.GameObject;
+                setTexture(key: string, frame?: string | integer): this;
 
                 /**
                  * Sets the frame this Game Object will use to render with.
@@ -47344,13 +49142,13 @@ declare namespace Phaser {
                     frame: string | integer,
                     updateSize?: boolean,
                     updateOrigin?: boolean
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * Clears all tint values associated with this Game Object.
                  * Immediately sets the alpha levels back to 0xffffff (no tint)
                  */
-                clearTint(): Phaser.GameObjects.GameObject;
+                clearTint(): this;
 
                 /**
                  * Sets the tint values for this Game Object.
@@ -47364,7 +49162,7 @@ declare namespace Phaser {
                     topRight?: integer,
                     bottomLeft?: integer,
                     bottomRight?: integer
-                ): Phaser.GameObjects.GameObject;
+                ): this;
 
                 /**
                  * The tint value being applied to the top-left of the Game Object.
@@ -47454,50 +49252,70 @@ declare namespace Phaser {
                     y?: number,
                     z?: number,
                     w?: number
-                ): Phaser.GameObjects.GameObject;
+                ): this;
+
+                /**
+                 * Sets the position of this Game Object to be a random position within the confines of
+                 * the given area.
+                 *
+                 * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+                 *
+                 * The position does not factor in the size of this Game Object, meaning that only the origin is
+                 * guaranteed to be within the area.
+                 * @param x The x position of the top-left of the random area. Default 0.
+                 * @param y The y position of the top-left of the random area. Default 0.
+                 * @param width The width of the random area.
+                 * @param height The height of the random area.
+                 */
+                setRandomPosition(
+                    x?: number,
+                    y?: number,
+                    width?: number,
+                    height?: number
+                ): this;
 
                 /**
                  * Sets the rotation of this Game Object.
                  * @param radians The rotation of this Game Object, in radians. Default 0.
                  */
-                setRotation(radians?: number): Phaser.GameObjects.GameObject;
+                setRotation(radians?: number): this;
 
                 /**
                  * Sets the angle of this Game Object.
                  * @param degrees The rotation of this Game Object, in degrees. Default 0.
                  */
-                setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+                setAngle(degrees?: number): this;
 
                 /**
                  * Sets the scale of this Game Object.
                  * @param x The horizontal scale of this Game Object.
                  * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
                  */
-                setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+                setScale(x: number, y?: number): this;
 
                 /**
                  * Sets the x position of this Game Object.
                  * @param value The x position of this Game Object. Default 0.
                  */
-                setX(value?: number): Phaser.GameObjects.GameObject;
+                setX(value?: number): this;
 
                 /**
                  * Sets the y position of this Game Object.
                  * @param value The y position of this Game Object. Default 0.
                  */
-                setY(value?: number): Phaser.GameObjects.GameObject;
+                setY(value?: number): this;
 
                 /**
                  * Sets the z position of this Game Object.
                  * @param value The z position of this Game Object. Default 0.
                  */
-                setZ(value?: number): Phaser.GameObjects.GameObject;
+                setZ(value?: number): this;
 
                 /**
                  * Sets the w position of this Game Object.
                  * @param value The w position of this Game Object. Default 0.
                  */
-                setW(value?: number): Phaser.GameObjects.GameObject;
+                setW(value?: number): this;
 
                 /**
                  * Gets the local transform matrix for this Game Object.
@@ -47528,7 +49346,7 @@ declare namespace Phaser {
                  * An invisible Game Object will skip rendering, but will still process update logic.
                  * @param value The visible state of the Game Object.
                  */
-                setVisible(value: boolean): Phaser.GameObjects.GameObject;
+                setVisible(value: boolean): this;
 
                 /**
                  * [description]
@@ -47641,6 +49459,11 @@ declare namespace Phaser {
                  * @param value [description]
                  */
                 setDensity(value: number): Phaser.GameObjects.GameObject;
+
+                /**
+                 * The body's center of mass.
+                 */
+                readonly centerOfMass: any;
 
                 /**
                  * [description]
@@ -47975,6 +49798,11 @@ declare namespace Phaser {
                 setDensity(value: number): Phaser.GameObjects.GameObject;
 
                 /**
+                 * The body's center of mass.
+                 */
+                readonly centerOfMass: any;
+
+                /**
                  * [description]
                  * @param value [description]
                  */
@@ -48027,6 +49855,44 @@ declare namespace Phaser {
                  * [description]
                  */
                 isStatic(): boolean;
+            }
+
+            /**
+             * Use PhysicsEditorParser.parseBody() to build a Matter body object, based on a physics data file
+             * created and exported with PhysicsEditor (https://www.codeandweb.com/physicseditor).
+             */
+            namespace PhysicsEditorParser {
+                /**
+                 * Parses a body element exported by PhysicsEditor.
+                 * @param x x position.
+                 * @param y y position.
+                 * @param w width.
+                 * @param h height.
+                 * @param config body configuration and fixture (child body) definitions.
+                 */
+                function parseBody(
+                    x: number,
+                    y: number,
+                    w: number,
+                    h: number,
+                    config: object
+                ): object;
+
+                /**
+                 * Parses an element of the "fixtures" list exported by PhysicsEditor
+                 * @param fixtureConfig the fixture object to parse
+                 */
+                function parseFixture(fixtureConfig: object): object[];
+
+                /**
+                 * Parses the "vertices" lists exported by PhysicsEditor.
+                 * @param vertexSets The vertex lists to parse.
+                 * @param options Matter body options.
+                 */
+                function parseVertices(
+                    vertexSets: object,
+                    options: object
+                ): object[];
             }
 
             /**
@@ -48435,6 +50301,97 @@ declare namespace Phaser {
 
     namespace Plugins {
         /**
+         * A Global Plugin is installed just once into the Game owned Plugin Manager.
+         * It can listen for Game events and respond to them.
+         */
+        class BasePlugin {
+            /**
+             *
+             * @param pluginManager A reference to the Plugin Manager.
+             */
+            constructor(pluginManager: Phaser.Plugins.PluginManager);
+
+            /**
+             * A handy reference to the Plugin Manager that is responsible for this plugin.
+             * Can be used as a route to gain access to game systems and  events.
+             */
+            protected pluginManager: Phaser.Plugins.PluginManager;
+
+            /**
+             * A reference to the Game instance this plugin is running under.
+             */
+            protected game: Phaser.Game;
+
+            /**
+             * A reference to the Scene that has installed this plugin.
+             * Only set if it's a Scene Plugin, otherwise `null`.
+             * This property is only set when the plugin is instantiated and added to the Scene, not before.
+             * You cannot use it during the `init` method, but you can during the `boot` method.
+             */
+            protected scene: Phaser.Scene;
+
+            /**
+             * A reference to the Scene Systems of the Scene that has installed this plugin.
+             * Only set if it's a Scene Plugin, otherwise `null`.
+             * This property is only set when the plugin is instantiated and added to the Scene, not before.
+             * You cannot use it during the `init` method, but you can during the `boot` method.
+             */
+            protected systems: Phaser.Scenes.Systems;
+
+            /**
+             * Called by the PluginManager when this plugin is first instantiated.
+             * It will never be called again on this instance.
+             * In here you can set-up whatever you need for this plugin to run.
+             * If a plugin is set to automatically start then `BasePlugin.start` will be called immediately after this.
+             */
+            init(): void;
+
+            /**
+             * Called by the PluginManager when this plugin is started.
+             * If a plugin is stopped, and then started again, this will get called again.
+             * Typically called immediately after `BasePlugin.init`.
+             */
+            start(): void;
+
+            /**
+             * Called by the PluginManager when this plugin is stopped.
+             * The game code has requested that your plugin stop doing whatever it does.
+             * It is now considered as 'inactive' by the PluginManager.
+             * Handle that process here (i.e. stop listening for events, etc)
+             * If the plugin is started again then `BasePlugin.start` will be called again.
+             */
+            stop(): void;
+
+            /**
+             * If this is a Scene Plugin (i.e. installed into a Scene) then this method is called when the Scene boots.
+             * By this point the plugin properties `scene` and `systems` will have already been set.
+             * In here you can listen for Scene events and set-up whatever you need for this plugin to run.
+             */
+            boot(): void;
+
+            /**
+             * Game instance has been destroyed.
+             * You must release everything in here, all references, all objects, free it all up.
+             */
+            destroy(): void;
+        }
+
+        type DefaultPlugins = {
+            /**
+             * These are the Global Managers that are created by the Phaser.Game instance.
+             */
+            Global: any[];
+            /**
+             * These are the core plugins that are installed into every Scene.Systems instance, no matter what.
+             */
+            CoreScene: any[];
+            /**
+             * These plugins are created in Scene.Systems in addition to the CoreScenePlugins.
+             */
+            DefaultScene: any[];
+        };
+
+        /**
          * These are the Global Managers that are created by the Phaser.Game instance.
          * They are referenced from Scene.Systems so that plugins can use them.
          */
@@ -48460,6 +50417,375 @@ declare namespace Phaser {
          * They are always created in the order in which they appear in the array.
          */
         var DefaultScene: any[];
+
+        /**
+         * The PluginManager is responsible for installing and adding plugins to Phaser.
+         *
+         * It is a global system and therefore belongs to the Game instance, not a specific Scene.
+         *
+         * It works in conjunction with the PluginCache. Core internal plugins automatically register themselves
+         * with the Cache, but it's the Plugin Manager that is responsible for injecting them into the Scenes.
+         *
+         * There are two types of plugin:
+         *
+         * 1) A Global Plugin
+         * 2) A Scene Plugin
+         *
+         * A Global Plugin is a plugin that lives within the Plugin Manager rather than a Scene. You can get
+         * access to it by calling `PluginManager.get` and providing a key. Any Scene that requests a plugin in
+         * this way will all get access to the same plugin instance, allowing you to use a single plugin across
+         * multiple Scenes.
+         *
+         * A Scene Plugin is a plugin dedicated to running within a Scene. These are different to Global Plugins
+         * in that their instances do not live within the Plugin Manager, but within the Scene Systems class instead.
+         * And that every Scene created is given its own unique instance of a Scene Plugin. Examples of core Scene
+         * Plugins include the Input Plugin, the Tween Plugin and the physics Plugins.
+         *
+         * You can add a plugin to Phaser in three different ways:
+         *
+         * 1) Preload it
+         * 2) Include it in your source code and install it via the Game Config
+         * 3) Include it in your source code and install it within a Scene
+         *
+         * For examples of all of these approaches please see the Phaser 3 Examples Repo `plugins` folder.
+         *
+         * For information on creating your own plugin please see the Phaser 3 Plugin Template.
+         */
+        class PluginManager {
+            /**
+             *
+             * @param game The game instance that owns this Plugin Manager.
+             */
+            constructor(game: Phaser.Game);
+
+            /**
+             * The game instance that owns this Plugin Manager.
+             */
+            game: Phaser.Game;
+
+            /**
+             * The global plugins currently running and managed by this Plugin Manager.
+             * A plugin must have been started at least once in order to appear in this list.
+             */
+            plugins: GlobalPlugin[];
+
+            /**
+             * A list of plugin keys that should be installed into Scenes as well as the Core Plugins.
+             */
+            scenePlugins: string[];
+
+            /**
+             * Run once the game has booted and installs all of the plugins configured in the Game Config.
+             */
+            protected boot(): void;
+
+            /**
+             * Called by the Scene Systems class. Tells the plugin manager to install all Scene plugins into it.
+             *
+             * First it will install global references, i.e. references from the Game systems into the Scene Systems (and Scene if mapped.)
+             * Then it will install Core Scene Plugins followed by Scene Plugins registered with the PluginManager.
+             * Finally it will install any references to Global Plugins that have a Scene mapping property into the Scene itself.
+             * @param sys The Scene Systems class to install all the plugins in to.
+             * @param globalPlugins An array of global plugins to install.
+             * @param scenePlugins An array of scene plugins to install.
+             */
+            protected addToScene(
+                sys: Phaser.Scenes.Systems,
+                globalPlugins: any[],
+                scenePlugins: any[]
+            ): void;
+
+            /**
+             * Called by the Scene Systems class. Returns a list of plugins to be installed.
+             */
+            protected getDefaultScenePlugins(): string[];
+
+            /**
+             * Installs a new Scene Plugin into the Plugin Manager and optionally adds it
+             * to the given Scene as well. A Scene Plugin added to the manager in this way
+             * will be automatically installed into all new Scenes using the key and mapping given.
+             *
+             * The `key` property is what the plugin is injected into Scene.Systems as.
+             * The `mapping` property is optional, and if specified is what the plugin is installed into
+             * the Scene as. For example:
+             *
+             * ```javascript
+             * this.plugins.installScenePlugin('powerupsPlugin', pluginCode, 'powerups');
+             *
+             * // and from within the scene:
+             * this.sys.powerupsPlugin; // key value
+             * this.powerups; // mapping value
+             * ```
+             *
+             * This method is called automatically by Phaser if you install your plugins using either the
+             * Game Configuration object, or by preloading them via the Loader.
+             * @param key The property key that will be used to add this plugin to Scene.Systems.
+             * @param plugin The plugin code. This should be the non-instantiated version.
+             * @param mapping If this plugin is injected into the Phaser.Scene class, this is the property key to use.
+             * @param addToScene Optionally automatically add this plugin to the given Scene.
+             */
+            installScenePlugin(
+                key: string,
+                plugin: Function,
+                mapping?: string,
+                addToScene?: Phaser.Scene
+            ): void;
+
+            /**
+             * Installs a new Global Plugin into the Plugin Manager and optionally starts it running.
+             * A global plugin belongs to the Plugin Manager, rather than a specific Scene, and can be accessed
+             * and used by all Scenes in your game.
+             *
+             * The `key` property is what you use to access this plugin from the Plugin Manager.
+             *
+             * ```javascript
+             * this.plugins.install('powerupsPlugin', pluginCode);
+             *
+             * // and from within the scene:
+             * this.plugins.get('powerupsPlugin');
+             * ```
+             *
+             * This method is called automatically by Phaser if you install your plugins using either the
+             * Game Configuration object, or by preloading them via the Loader.
+             *
+             * The same plugin can be installed multiple times into the Plugin Manager by simply giving each
+             * instance its own unique key.
+             * @param key The unique handle given to this plugin within the Plugin Manager.
+             * @param plugin The plugin code. This should be the non-instantiated version.
+             * @param start Automatically start the plugin running? This is always `true` if you provide a mapping value. Default false.
+             * @param mapping If this plugin is injected into the Phaser.Scene class, this is the property key to use.
+             */
+            install(
+                key: string,
+                plugin: Function,
+                start?: boolean,
+                mapping?: string
+            ): void;
+
+            /**
+             * Gets an index of a global plugin based on the given key.
+             * @param key The unique plugin key.
+             */
+            protected getIndex(key: string): integer;
+
+            /**
+             * Gets a global plugin based on the given key.
+             * @param key The unique plugin key.
+             */
+            protected getEntry(key: string): GlobalPlugin;
+
+            /**
+             * Checks if the given global plugin, based on its key, is active or not.
+             * @param key The unique plugin key.
+             */
+            isActive(key: string): boolean;
+
+            /**
+             * Starts a global plugin running.
+             *
+             * If the plugin was previously active then calling `start` will reset it to an active state and then
+             * call its `start` method.
+             *
+             * If the plugin has never been run before a new instance of it will be created within the Plugin Manager,
+             * its active state set and then both of its `init` and `start` methods called, in that order.
+             *
+             * If the plugin is already running under the given key then nothing happens.
+             * @param key The key of the plugin to start.
+             * @param runAs Run the plugin under a new key. This allows you to run one plugin multiple times.
+             */
+            start(key: string, runAs?: string): Phaser.Plugins.BasePlugin;
+
+            /**
+             * Stops a global plugin from running.
+             *
+             * If the plugin is active then its active state will be set to false and the plugins `stop` method
+             * will be called.
+             *
+             * If the plugin is not already running, nothing will happen.
+             * @param key The key of the plugin to stop.
+             */
+            stop(key: string): Phaser.Plugins.PluginManager;
+
+            /**
+             * Gets a global plugin from the Plugin Manager based on the given key and returns it.
+             *
+             * If it cannot find an active plugin based on the key, but there is one in the Plugin Cache with the same key,
+             * then it will create a new instance of the cached plugin and return that.
+             * @param key The key of the plugin to get.
+             * @param autoStart Automatically start a new instance of the plugin if found in the cache, but not actively running. Default true.
+             */
+            get(
+                key: string,
+                autoStart?: boolean
+            ): Phaser.Plugins.BasePlugin | Function;
+
+            /**
+             * Returns the plugin class from the cache.
+             * Used internally by the Plugin Manager.
+             * @param key The key of the plugin to get.
+             */
+            getClass(key: string): Phaser.Plugins.BasePlugin;
+
+            /**
+             * Removes a global plugin from the Plugin Manager and Plugin Cache.
+             *
+             * It is up to you to remove all references to this plugin that you may hold within your game code.
+             * @param key The key of the plugin to remove.
+             */
+            removeGlobalPlugin(key: string): void;
+
+            /**
+             * Removes a scene plugin from the Plugin Manager and Plugin Cache.
+             *
+             * This will not remove the plugin from any active Scenes that are already using it.
+             *
+             * It is up to you to remove all references to this plugin that you may hold within your game code.
+             * @param key The key of the plugin to remove.
+             */
+            removeScenePlugin(key: string): void;
+
+            /**
+             * Registers a new type of Game Object with the global Game Object Factory and / or Creator.
+             * This is usually called from within your Plugin code and is a helpful short-cut for creating
+             * new Game Objects.
+             *
+             * The key is the property that will be injected into the factories and used to create the
+             * Game Object. For example:
+             *
+             * ```javascript
+             * this.plugins.registerGameObject('clown', clownFactoryCallback, clownCreatorCallback);
+             * // later in your game code:
+             * this.add.clown();
+             * this.make.clown();
+             * ```
+             *
+             * The callbacks are what are called when the factories try to create a Game Object
+             * matching the given key. It's important to understand that the callbacks are invoked within
+             * the context of the GameObjectFactory. In this context there are several properties available
+             * to use:
+             *
+             * this.scene - A reference to the Scene that owns the GameObjectFactory.
+             * this.displayList - A reference to the Display List the Scene owns.
+             * this.updateList - A reference to the Update List the Scene owns.
+             *
+             * See the GameObjectFactory and GameObjectCreator classes for more details.
+             * Any public property or method listed is available from your callbacks under `this`.
+             * @param key The key of the Game Object that the given callbacks will create, i.e. `image`, `sprite`.
+             * @param factoryCallback The callback to invoke when the Game Object Factory is called.
+             * @param creatorCallback The callback to invoke when the Game Object Creator is called.
+             */
+            registerGameObject(
+                key: string,
+                factoryCallback?: Function,
+                creatorCallback?: Function
+            ): void;
+
+            /**
+             * Registers a new file type with the global File Types Manager, making it available to all Loader
+             * Plugins created after this.
+             *
+             * This is usually called from within your Plugin code and is a helpful short-cut for creating
+             * new loader file types.
+             *
+             * The key is the property that will be injected into the Loader Plugin and used to load the
+             * files. For example:
+             *
+             * ```javascript
+             * this.plugins.registerFileType('wad', doomWadLoaderCallback);
+             * // later in your preload code:
+             * this.load.wad();
+             * ```
+             *
+             * The callback is what is called when the loader tries to load a file  matching the given key.
+             * It's important to understand that the callback is invoked within
+             * the context of the LoaderPlugin. In this context there are several properties / methods available
+             * to use:
+             *
+             * this.addFile - A method to add the new file to the load queue.
+             * this.scene - The Scene that owns the Loader Plugin instance.
+             *
+             * See the LoaderPlugin class for more details. Any public property or method listed is available from
+             * your callback under `this`.
+             * @param key The key of the Game Object that the given callbacks will create, i.e. `image`, `sprite`.
+             * @param callback The callback to invoke when the Game Object Factory is called.
+             * @param addToScene Optionally add this file type into the Loader Plugin owned by the given Scene.
+             */
+            registerFileType(
+                key: string,
+                callback: Function,
+                addToScene?: Phaser.Scene
+            ): void;
+
+            /**
+             * Destroys this Plugin Manager and all associated plugins.
+             * It will iterate all plugins found and call their `destroy` methods.
+             * Note that the PluginCache is NOT cleared by this as it doesn't hold any plugin instances.
+             */
+            destroy(): void;
+        }
+
+        /**
+         * A Scene Level Plugin is installed into every Scene and belongs to that Scene.
+         * It can listen for Scene events and respond to them.
+         * It can map itself to a Scene property, or into the Scene Systems, or both.
+         */
+        class ScenePlugin extends Phaser.Plugins.BasePlugin {
+            /**
+             *
+             * @param scene A reference to the Scene that has installed this plugin.
+             * @param pluginManager A reference to the Plugin Manager.
+             */
+            constructor(
+                scene: Phaser.Scene,
+                pluginManager: Phaser.Plugins.PluginManager
+            );
+
+            /**
+             * A reference to the Scene that has installed this plugin.
+             * This property is only set when the plugin is instantiated and added to the Scene, not before.
+             */
+            protected scene: Phaser.Scene;
+
+            /**
+             * A reference to the Scene Systems of the Scene that has installed this plugin.
+             * This property is only set when the plugin is instantiated and added to the Scene, not before.
+             */
+            protected systems: Phaser.Scenes.Systems;
+
+            /**
+             * This method is called when the Scene boots. It is only ever called once.
+             *
+             * By this point the plugin properties `scene` and `systems` will have already been set.
+             *
+             * In here you can listen for Scene events and set-up whatever you need for this plugin to run.
+             * Here are the Scene events you can listen to:
+             *
+             * start
+             * ready
+             * preupdate
+             * update
+             * postupdate
+             * resize
+             * pause
+             * resume
+             * sleep
+             * wake
+             * transitioninit
+             * transitionstart
+             * transitioncomplete
+             * transitionout
+             * shutdown
+             * destroy
+             *
+             * At the very least you should offer a destroy handler for when the Scene closes down, i.e:
+             *
+             * ```javascript
+             * var eventEmitter = this.systems.events;
+             * eventEmitter.once('destroy', this.sceneDestroy, this);
+             * ```
+             */
+            boot(): void;
+        }
     }
 
     /**
@@ -49514,7 +51840,7 @@ declare namespace Phaser {
 
                     /**
                      * Renders immediately a static tilemap. This function won't use
-                     * the batching functionality of the pipieline.
+                     * the batching functionality of the pipeline.
                      * @param tilemap [description]
                      * @param camera [description]
                      * @param parentTransformMatrix [description]
@@ -49928,6 +52254,12 @@ declare namespace Phaser {
                 flushLocked: boolean;
 
                 /**
+                 * Indicates if the current pipeline is active or not for this frame only.
+                 * Reset in the onRender method.
+                 */
+                active: boolean;
+
+                /**
                  * Adds a description of vertex attribute to the pipeline
                  * @param name Name of the vertex attribute
                  * @param size Vertex component size
@@ -50305,6 +52637,11 @@ declare namespace Phaser {
                  * Stores the current WebGL component formats for further use
                  */
                 glFormats: any[];
+
+                /**
+                 * Stores the supported WebGL texture compression formats.
+                 */
+                compression: any[];
 
                 /**
                  * Creates a new WebGLRenderingContext and initializes all internal
@@ -50866,6 +53203,18 @@ declare namespace Phaser {
                 ): Phaser.Renderer.WebGL.WebGLRenderer;
 
                 /**
+                 * Returns the maximum number of texture units that can be used in a fragment shader.
+                 */
+                getMaxTextures(): integer;
+
+                /**
+                 * Returns the largest texture size (either width or height) that can be created.
+                 * Note that VRAM may not allow a texture of any given size, it just expresses
+                 * hardware / driver support for a given size.
+                 */
+                getMaxTextureSize(): integer;
+
+                /**
                  * [description]
                  */
                 destroy(): void;
@@ -51111,6 +53460,19 @@ declare namespace Phaser {
             wake(key: string): Phaser.Scenes.SceneManager;
 
             /**
+             * Runs the given Scene, but does not change the state of this Scene.
+             *
+             * If the given Scene is paused, it will resume it. If sleeping, it will wake it.
+             * If not running at all, it will be started.
+             *
+             * Use this if you wish to open a modal Scene by calling `pause` on the current
+             * Scene, then `run` on the modal Scene.
+             * @param key The Scene to run.
+             * @param data A data object that will be passed to the Scene that is run _only if the Scene isn't asleep or paused_.
+             */
+            run(key: string, data?: object): Phaser.Scenes.SceneManager;
+
+            /**
              * Starts the given Scene.
              * @param key The Scene to start.
              * @param data Optional data object to pass to Scene.Settings and Scene.init.
@@ -51325,6 +53687,19 @@ declare namespace Phaser {
              * @param data The Scene data.
              */
             launch(key: string, data?: object): Phaser.Scenes.ScenePlugin;
+
+            /**
+             * Runs the given Scene, but does not change the state of this Scene.
+             *
+             * If the given Scene is paused, it will resume it. If sleeping, it will wake it.
+             * If not running at all, it will be started.
+             *
+             * Use this if you wish to open a modal Scene by calling `pause` on the current
+             * Scene, then `run` on the modal Scene.
+             * @param key The Scene to run.
+             * @param data A data object that will be passed to the Scene that is run _only if the Scene isn't asleep or paused_.
+             */
+            run(key: string, data?: object): Phaser.Scenes.ScenePlugin;
 
             /**
              * Pause the Scene - this stops the update step from happening but it still renders.
@@ -51658,7 +54033,7 @@ declare namespace Phaser {
             /**
              * [description]
              */
-            plugins: Phaser.Boot.PluginManager;
+            plugins: Phaser.Plugins.PluginManager;
 
             /**
              * [description]
@@ -51721,8 +54096,8 @@ declare namespace Phaser {
             /**
              * A single game step. Called automatically by the Scene Manager as a result of a Request Animation
              * Frame or Set Timeout call to the main Game instance.
-             * @param time [description]
-             * @param delta [description]
+             * @param time The time value from the most recent Game step. Typically a high-resolution timer value, or Date.now().
+             * @param delta The delta value since the last frame. This is smoothed to avoid delta spikes by the TimeStep class.
              */
             step(time: number, delta: number): void;
 
@@ -51940,7 +54315,7 @@ declare namespace Phaser {
          * A scene level Lights Manager Plugin.
          * This property will only be available if defined in the Scene Injection Map and the plugin is installed.
          */
-        lights: Phaser.GameObjects.DisplayList;
+        lights: Phaser.GameObjects.LightsManager;
 
         /**
          * A scene level Data Manager Plugin.
@@ -53916,6 +56291,7 @@ declare namespace Phaser {
 
             /**
              * Checks the given texture key and throws a console.warn if the key is already in use, then returns false.
+             * If you wish to avoid the console.warn then use `TextureManager.exists` instead.
              * @param key The texture key to check.
              */
             checkKey(key: string): boolean;
@@ -54162,6 +56538,22 @@ declare namespace Phaser {
                 key: string,
                 frame: string | integer
             ): Phaser.Display.Color;
+
+            /**
+             * Given a Texture and an `x` and `y` coordinate this method will return a value between 0 and 255
+             * corresponding to the alpha value of the pixel at that location in the Texture. If the coordinate
+             * is out of bounds it will return null.
+             * @param x The x coordinate of the pixel within the Texture.
+             * @param y The y coordinate of the pixel within the Texture.
+             * @param key The unique string-based key of the Texture.
+             * @param frame The string or index of the Frame.
+             */
+            getPixelAlpha(
+                x: integer,
+                y: integer,
+                key: string,
+                frame: string | integer
+            ): integer;
 
             /**
              * Sets the given Game Objects `texture` and `frame` properties so that it uses
@@ -55143,9 +57535,10 @@ declare namespace Phaser {
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -55163,7 +57556,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -55239,9 +57632,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -55270,10 +57661,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -55281,10 +57669,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -55311,7 +57696,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -55330,36 +57715,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -55456,12 +57841,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -55469,24 +57854,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -55524,9 +57906,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -55570,10 +57950,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
 
             /**
              * The x position of this Game Object.
@@ -55629,55 +58006,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -55708,7 +58100,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         namespace Formats {
@@ -56921,9 +59313,10 @@ declare namespace Phaser {
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -56941,7 +59334,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -57017,9 +59410,7 @@ declare namespace Phaser {
              * are used.
              * @param value The BlendMode value. Either a string or a CONST.
              */
-            setBlendMode(
-                value: string | Phaser.BlendModes
-            ): Phaser.GameObjects.GameObject;
+            setBlendMode(value: string | Phaser.BlendModes): this;
 
             /**
              * The native (un-scaled) width of this Game Object.
@@ -57048,10 +59439,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setSize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setSize(width: number, height: number): this;
 
             /**
              * Sets the display size of this Game Object.
@@ -57059,10 +59447,7 @@ declare namespace Phaser {
              * @param width The width of this Game Object.
              * @param height The height of this Game Object.
              */
-            setDisplaySize(
-                width: number,
-                height: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplaySize(width: number, height: number): this;
 
             /**
              * The depth of this Game Object within the Scene.
@@ -57089,7 +59474,7 @@ declare namespace Phaser {
              * Setting the depth will queue a depth sort event within the Scene.
              * @param value The depth of this Game Object.
              */
-            setDepth(value: integer): Phaser.GameObjects.GameObject;
+            setDepth(value: integer): this;
 
             /**
              * The horizontally flipped state of the Game Object.
@@ -57108,36 +59493,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * Gets the center coordinate of this Game Object, regardless of origin.
@@ -57234,12 +59619,12 @@ declare namespace Phaser {
              * @param x The horizontal origin value. Default 0.5.
              * @param y The vertical origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setOrigin(x?: number, y?: number): Phaser.GameObjects.GameObject;
+            setOrigin(x?: number, y?: number): this;
 
             /**
              * Sets the origin of this Game Object based on the Pivot values in its Frame.
              */
-            setOriginFromFrame(): Phaser.GameObjects.GameObject;
+            setOriginFromFrame(): this;
 
             /**
              * Sets the display origin of this Game Object.
@@ -57247,24 +59632,21 @@ declare namespace Phaser {
              * @param x The horizontal display origin value. Default 0.
              * @param y The vertical display origin value. If not defined it will be set to the value of `x`. Default x.
              */
-            setDisplayOrigin(
-                x?: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setDisplayOrigin(x?: number, y?: number): this;
 
             /**
              * Updates the Display Origin cached values internally stored on this Game Object.
              * You don't usually call this directly, but it is exposed for edge-cases where you may.
              */
-            updateDisplayOrigin(): Phaser.GameObjects.GameObject;
+            updateDisplayOrigin(): this;
 
             /**
-             * [description]
+             * The initial WebGL pipeline of this Game Object.
              */
             defaultPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
             /**
-             * [description]
+             * The current WebGL pipeline of this Game Object.
              */
             pipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -57302,9 +59684,7 @@ declare namespace Phaser {
              * Can be either `ScaleModes.LINEAR` or `ScaleModes.NEAREST`.
              * @param value The Scale Mode to be used by this Game Object.
              */
-            setScaleMode(
-                value: Phaser.ScaleModes
-            ): Phaser.GameObjects.GameObject;
+            setScaleMode(value: Phaser.ScaleModes): this;
 
             /**
              * The x position of this Game Object.
@@ -57360,55 +59740,70 @@ declare namespace Phaser {
              * @param z The z position of this Game Object. Default 0.
              * @param w The w position of this Game Object. Default 0.
              */
-            setPosition(
+            setPosition(x?: number, y?: number, z?: number, w?: number): this;
+
+            /**
+             * Sets the position of this Game Object to be a random position within the confines of
+             * the given area.
+             *
+             * If no area is specified a random position between 0 x 0 and the game width x height is used instead.
+             *
+             * The position does not factor in the size of this Game Object, meaning that only the origin is
+             * guaranteed to be within the area.
+             * @param x The x position of the top-left of the random area. Default 0.
+             * @param y The y position of the top-left of the random area. Default 0.
+             * @param width The width of the random area.
+             * @param height The height of the random area.
+             */
+            setRandomPosition(
                 x?: number,
                 y?: number,
-                z?: number,
-                w?: number
-            ): Phaser.GameObjects.GameObject;
+                width?: number,
+                height?: number
+            ): this;
 
             /**
              * Sets the rotation of this Game Object.
              * @param radians The rotation of this Game Object, in radians. Default 0.
              */
-            setRotation(radians?: number): Phaser.GameObjects.GameObject;
+            setRotation(radians?: number): this;
 
             /**
              * Sets the angle of this Game Object.
              * @param degrees The rotation of this Game Object, in degrees. Default 0.
              */
-            setAngle(degrees?: number): Phaser.GameObjects.GameObject;
+            setAngle(degrees?: number): this;
 
             /**
              * Sets the scale of this Game Object.
              * @param x The horizontal scale of this Game Object.
              * @param y The vertical scale of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScale(x: number, y?: number): Phaser.GameObjects.GameObject;
+            setScale(x: number, y?: number): this;
 
             /**
              * Sets the x position of this Game Object.
              * @param value The x position of this Game Object. Default 0.
              */
-            setX(value?: number): Phaser.GameObjects.GameObject;
+            setX(value?: number): this;
 
             /**
              * Sets the y position of this Game Object.
              * @param value The y position of this Game Object. Default 0.
              */
-            setY(value?: number): Phaser.GameObjects.GameObject;
+            setY(value?: number): this;
 
             /**
              * Sets the z position of this Game Object.
              * @param value The z position of this Game Object. Default 0.
              */
-            setZ(value?: number): Phaser.GameObjects.GameObject;
+            setZ(value?: number): this;
 
             /**
              * Sets the w position of this Game Object.
              * @param value The w position of this Game Object. Default 0.
              */
-            setW(value?: number): Phaser.GameObjects.GameObject;
+            setW(value?: number): this;
 
             /**
              * Gets the local transform matrix for this Game Object.
@@ -57439,7 +59834,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -57483,10 +59878,7 @@ declare namespace Phaser {
              * @param x The horizontal scroll factor of this Game Object.
              * @param y The vertical scroll factor of this Game Object. If not set it will use the `x` value. Default x.
              */
-            setScrollFactor(
-                x: number,
-                y?: number
-            ): Phaser.GameObjects.GameObject;
+            setScrollFactor(x: number, y?: number): this;
         }
 
         /**
@@ -57859,9 +60251,10 @@ declare namespace Phaser {
 
             /**
              * Clears all alpha values associated with this Game Object.
-             * Immediately sets the alpha levels back to 1 (fully opaque)
+             *
+             * Immediately sets the alpha levels back to 1 (fully opaque).
              */
-            clearAlpha(): Phaser.GameObjects.GameObject;
+            clearAlpha(): this;
 
             /**
              * Set the Alpha level of this Game Object. The alpha controls the opacity of the Game Object as it renders.
@@ -57879,7 +60272,7 @@ declare namespace Phaser {
                 topRight?: number,
                 bottomLeft?: number,
                 bottomRight?: number
-            ): Phaser.GameObjects.GameObject;
+            ): this;
 
             /**
              * The alpha value of the Game Object.
@@ -57929,36 +60322,36 @@ declare namespace Phaser {
             /**
              * Toggles the horizontal flipped state of this Game Object.
              */
-            toggleFlipX(): Phaser.GameObjects.GameObject;
+            toggleFlipX(): this;
 
             /**
              * Toggles the vertical flipped state of this Game Object.
              */
-            toggleFlipY(): Phaser.GameObjects.GameObject;
+            toggleFlipY(): this;
 
             /**
              * Sets the horizontal flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipX(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipX(value: boolean): this;
 
             /**
              * Sets the vertical flipped state of this Game Object.
              * @param value The flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlipY(value: boolean): Phaser.GameObjects.GameObject;
+            setFlipY(value: boolean): this;
 
             /**
              * Sets the horizontal and vertical flipped state of this Game Object.
              * @param x The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              * @param y The horizontal flipped state. `false` for no flip, or `true` to be flipped.
              */
-            setFlip(x: boolean, y: boolean): Phaser.GameObjects.GameObject;
+            setFlip(x: boolean, y: boolean): this;
 
             /**
              * Resets the horizontal and vertical flipped state of this Game Object back to their default un-flipped state.
              */
-            resetFlip(): Phaser.GameObjects.GameObject;
+            resetFlip(): this;
 
             /**
              * The visible state of the Game Object.
@@ -57973,7 +60366,7 @@ declare namespace Phaser {
              * An invisible Game Object will skip rendering, but will still process update logic.
              * @param value The visible state of the Game Object.
              */
-            setVisible(value: boolean): Phaser.GameObjects.GameObject;
+            setVisible(value: boolean): this;
         }
 
         /**
@@ -61364,42 +63757,42 @@ declare namespace Phaser {
 
 declare type ArcadeBodyBounds = {
     /**
-     * [description]
+     * The left edge.
      */
     x: number;
     /**
-     * [description]
+     * The upper edge.
      */
     y: number;
     /**
-     * [description]
+     * The right edge.
      */
     right: number;
     /**
-     * [description]
+     * The lower edge.
      */
     bottom: number;
 };
 
 declare type ArcadeBodyCollision = {
     /**
-     * [description]
+     * True if the Body is not colliding.
      */
     none: boolean;
     /**
-     * [description]
+     * True if the Body is colliding on its upper edge.
      */
     up: boolean;
     /**
-     * [description]
+     * True if the Body is colliding on its lower edge.
      */
     down: boolean;
     /**
-     * [description]
+     * True if the Body is colliding on its left edge.
      */
     left: boolean;
     /**
-     * [description]
+     * True if the Body is colliding on its right edge.
      */
     right: boolean;
 };
@@ -61411,75 +63804,87 @@ declare type ArcadePhysicsCallback = (
 
 declare type PhysicsGroupConfig = GroupConfig & {
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#collideWorldBounds}.
      */
-    collideWorldBounds?: any;
+    collideWorldBounds?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#acceleration acceleration.x}.
      */
     accelerationX?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#acceleration acceleration.y}.
      */
     accelerationY?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#allowDrag}.
+     */
+    allowDrag?: boolean;
+    /**
+     * Sets {@link Phaser.Physics.Arcade.Body#allowGravity}.
+     */
+    allowGravity?: boolean;
+    /**
+     * Sets {@link Phaser.Physics.Arcade.Body#allowRotation}.
+     */
+    allowRotation?: boolean;
+    /**
+     * Sets {@link Phaser.Physics.Arcade.Body#bounce bounce.x}.
      */
     bounceX?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#bounce bounce.y}.
      */
     bounceY?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#drag drag.x}.
      */
     dragX?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#drag drag.y}.
      */
     dragY?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#gravity gravity.x}.
      */
     gravityX?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#gravity gravity.y}.
      */
     gravityY?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#friction friction.x}.
      */
     frictionX?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#friction friction.y}.
      */
     frictionY?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#velocity velocity.x}.
      */
     velocityX?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#velocity velocity.y}.
      */
     velocityY?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#angularVelocity}.
      */
     angularVelocity?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#angularAcceleration}.
      */
     angularAcceleration?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#angularDrag}.
      */
     angularDrag?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#mass}.
      */
     mass?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.Body#immovable}.
      */
     immovable?: boolean;
 };
@@ -61488,7 +63893,7 @@ declare type PhysicsGroupDefaults = {
     /**
      * [description]
      */
-    setCollideWorldBounds: any;
+    setCollideWorldBounds: boolean;
     /**
      * [description]
      */
@@ -61497,6 +63902,18 @@ declare type PhysicsGroupDefaults = {
      * [description]
      */
     setAccelerationY: number;
+    /**
+     * [description]
+     */
+    setAllowDrag: boolean;
+    /**
+     * [description]
+     */
+    setAllowGravity: boolean;
+    /**
+     * [description]
+     */
+    setAllowRotation: boolean;
     /**
      * [description]
      */
@@ -61561,101 +63978,113 @@ declare type PhysicsGroupDefaults = {
 
 declare type ArcadeWorldConfig = {
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#fps}.
+     */
+    fps?: number;
+    /**
+     * Sets {@link Phaser.Physics.Arcade.World#timeScale}.
+     */
+    timeScale?: number;
+    /**
+     * Sets {@link Phaser.Physics.Arcade.World#gravity}.
      */
     gravity?: object;
     /**
-     * [description]
+     * The horizontal world gravity value.
      */
     'gravity.x'?: number;
     /**
-     * [description]
+     * The vertical world gravity value.
      */
     'gravity.y'?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#bounds bounds.x}.
      */
     x?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#bounds bounds.y}.
      */
     y?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#bounds bounds.width}.
      */
     width?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#bounds bounds.height}.
      */
     height?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#checkCollision}.
      */
     checkCollision?: object;
     /**
-     * [description]
+     * Should bodies collide with the top of the world bounds?
      */
     'checkCollision.up'?: boolean;
     /**
-     * [description]
+     * Should bodies collide with the bottom of the world bounds?
      */
     'checkCollision.down'?: boolean;
     /**
-     * [description]
+     * Should bodies collide with the left of the world bounds?
      */
     'checkCollision.left'?: boolean;
     /**
-     * [description]
+     * Should bodies collide with the right of the world bounds?
      */
     'checkCollision.right'?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#OVERLAP_BIAS}.
      */
     overlapBias?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#TILE_BIAS}.
      */
     tileBias?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#forceX}.
      */
     forceX?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#isPaused}.
      */
     isPaused?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#debug}.
      */
     debug?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#defaults debugShowBody}.
      */
     debugShowBody?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#defaults debugShowStaticBody}.
      */
     debugShowStaticBody?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#defaults debugShowStaticBody}.
      */
     debugShowVelocity?: boolean;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#defaults debugBodyColor}.
      */
     debugBodyColor?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#defaults debugStaticBodyColor}.
      */
     debugStaticBodyColor?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#defaults debugVelocityColor}.
      */
     debugVelocityColor?: number;
     /**
-     * [description]
+     * Sets {@link Phaser.Physics.Arcade.World#maxEntries}.
      */
     maxEntries?: number;
+    /**
+     * Sets {@link Phaser.Physics.Arcade.World#useTree}.
+     */
+    useTree?: boolean;
 };
 
 declare type CheckCollisionObject = {
@@ -61722,6 +64151,11 @@ declare type ArcadeWorldTreeMinMax = {
      */
     maxY: number;
 };
+
+/**
+ * An Arcade Physics Collider Type.
+ */
+declare type ArcadeColliderType = () => void;
 
 declare type BodyUpdateCallback = (body: Phaser.Physics.Impact.Body) => void;
 
@@ -61824,6 +64258,129 @@ declare namespace MatterJS {
      */
     class Engine {}
 }
+
+declare type CorePluginContainer = {
+    /**
+     * The unique name of this plugin in the core plugin cache.
+     */
+    key: string;
+    /**
+     * The plugin to be stored. Should be the source object, not instantiated.
+     */
+    plugin: Function;
+    /**
+     * If this plugin is to be injected into the Scene Systems, this is the property key map used.
+     */
+    mapping?: string;
+    /**
+     * Core Scene plugin or a Custom Scene plugin?
+     */
+    custom?: boolean;
+};
+
+declare type CustomPluginContainer = {
+    /**
+     * The unique name of this plugin in the custom plugin cache.
+     */
+    key: string;
+    /**
+     * The plugin to be stored. Should be the source object, not instantiated.
+     */
+    plugin: Function;
+};
+
+declare namespace Phaser.Plugins.PluginCache {
+    /**
+     * Static method called directly by the Core internal Plugins.
+     * Key is a reference used to get the plugin from the plugins object (i.e. InputPlugin)
+     * Plugin is the object to instantiate to create the plugin
+     * Mapping is what the plugin is injected into the Scene.Systems as (i.e. input)
+     * @param key A reference used to get this plugin from the plugin cache.
+     * @param plugin The plugin to be stored. Should be the core object, not instantiated.
+     * @param mapping If this plugin is to be injected into the Scene Systems, this is the property key map used.
+     * @param custom Core Scene plugin or a Custom Scene plugin? Default false.
+     */
+    function register(
+        key: string,
+        plugin: Function,
+        mapping: string,
+        custom?: boolean
+    ): void;
+
+    /**
+     * Stores a custom plugin in the global plugin cache.
+     * The key must be unique, within the scope of the cache.
+     * @param key A reference used to get this plugin from the plugin cache.
+     * @param plugin The plugin to be stored. Should be the core object, not instantiated.
+     * @param mapping If this plugin is to be injected into the Scene Systems, this is the property key map used.
+     */
+    function registerCustom(
+        key: string,
+        plugin: Function,
+        mapping: string
+    ): void;
+
+    /**
+     * Checks if the given key is already being used in the core plugin cache.
+     * @param key The key to check for.
+     */
+    function hasCore(key: string): boolean;
+
+    /**
+     * Checks if the given key is already being used in the custom plugin cache.
+     * @param key The key to check for.
+     */
+    function hasCustom(key: string): boolean;
+
+    /**
+     * Returns the core plugin object from the cache based on the given key.
+     * @param key The key of the core plugin to get.
+     */
+    function getCore(key: string): CorePluginContainer;
+
+    /**
+     * Returns the custom plugin object from the cache based on the given key.
+     * @param key The key of the custom plugin to get.
+     */
+    function getCustom(key: string): CustomPluginContainer;
+
+    /**
+     * Returns an object from the custom cache based on the given key that can be instantiated.
+     * @param key The key of the custom plugin to get.
+     */
+    function getCustomClass(key: string): Function;
+
+    /**
+     * Removes a core plugin based on the given key.
+     * @param key The key of the core plugin to remove.
+     */
+    function remove(key: string): void;
+
+    /**
+     * Removes a custom plugin based on the given key.
+     * @param key The key of the custom plugin to remove.
+     */
+    function removeCustom(key: string): void;
+}
+
+declare type GlobalPlugin = {
+    /**
+     * The unique name of this plugin within the plugin cache.
+     */
+    key: string;
+    /**
+     * An instance of the plugin.
+     */
+    plugin: Function;
+    /**
+     * Is the plugin active or not?
+     */
+    active?: boolean;
+    /**
+     * If this plugin is to be injected into the Scene Systems, this is the property key map used.
+     */
+    mapping?: string;
+};
 
 declare type RendererConfig = {
     /**
@@ -61999,11 +64556,11 @@ declare namespace Phaser.Scenes.ScenePlugin {
          */
         allowInput?: boolean;
         /**
-         * More the target Scene to be above this one before the transition starts.
+         * Move the target Scene to be above this one before the transition starts.
          */
         moveAbove?: boolean;
         /**
-         * More the target Scene to be below this one before the transition starts.
+         * Move the target Scene to be below this one before the transition starts.
          */
         moveBelow?: boolean;
         /**
