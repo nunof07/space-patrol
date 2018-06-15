@@ -1,3 +1,15 @@
+# [1.9.0](https://github.com/nunof07/space-patrol/compare/v1.8.0...v1.9.0) (2018-06-15)
+
+
+### Bug Fixes
+
+* **crates:** resize explosion ([7f67c6c](https://github.com/nunof07/space-patrol/commit/7f67c6c))
+
+
+### Features
+
+* **pause:** system ([cccd711](https://github.com/nunof07/space-patrol/commit/cccd711))
+
 # [1.8.0](https://github.com/nunof07/space-patrol/compare/v1.7.0...v1.8.0) (2018-06-15)
 
 
