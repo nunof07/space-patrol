@@ -2,6 +2,7 @@ import { Position } from '@src/core/Position';
 import { body } from '@src/physics/arcade/body';
 import { activateBullet } from '@src/weapons/activateBullet';
 import { Bullet } from '@src/weapons/Bullet';
+import { disableBullet } from '@src/weapons/disableBullet';
 import { isBulletAlive } from '@src/weapons/isBulletAlive';
 import { updateBullet } from '@src/weapons/updateBullet';
 import * as Phaser from 'phaser';
@@ -53,7 +54,16 @@ export class Pulse implements Bullet {
         return this.lifespanImpl;
     }
 
+    public get damage(): number {
+        return 10;
+    }
+
     public isAlive(): boolean {
         return isBulletAlive(this);
+    }
+
+    public destroy(): void {
+        this.lifespanImpl = 0;
+        disableBullet(this);
     }
 }

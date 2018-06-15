@@ -38,8 +38,7 @@ export class Burst implements Bullet {
             ease: 'Quint.easeIn',
             duration: 800,
             onComplete: (): void => {
-                disableBullet(this);
-                this.lifespanImpl = 0;
+                this.destroy();
             },
         });
     }
@@ -60,7 +59,16 @@ export class Burst implements Bullet {
         return this.lifespanImpl;
     }
 
+    public get damage(): number {
+        return 50;
+    }
+
     public isAlive(): boolean {
         return isBulletAlive(this);
+    }
+
+    public destroy(): void {
+        this.lifespanImpl = 0;
+        disableBullet(this);
     }
 }

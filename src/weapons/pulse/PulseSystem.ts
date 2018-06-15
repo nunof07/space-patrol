@@ -1,34 +1,31 @@
-import { CompositeComponent } from '@src/core/CompositeComponent';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { PulseFactory } from '@src/weapons/pulse/PulseFactory';
-import { PulseLevel6 } from '@src/weapons/pulse/PulseLevel6';
-import { TriggerFactory } from '@src/weapons/TriggerFactory';
-import { WeaponFactory } from '@src/weapons/WeaponFactory';
+import { PulseLevel1 } from '@src/weapons/pulse/PulseLevel1';
+import { WeaponComponent } from '@src/weapons/WeaponComponent';
+import { WeaponSystem } from '@src/weapons/WeaponSystem';
 import * as Phaser from 'phaser';
 
 export class PulseSystem implements System {
-    private readonly scene: Phaser.Scene;
-    private readonly player: PlayerSystem;
-    private components: CompositeComponent;
+    private system: WeaponSystem;
 
     constructor(scene: Phaser.Scene, player: PlayerSystem) {
-        this.scene = scene;
-        this.player = player;
+        this.system = new WeaponSystem(scene, player, {
+            bulletFactory: new PulseFactory(scene, new PulseLevel1()),
+            group: { frame: 'player/bullet-primary.png', maxSize: 200 },
+            triggerStep: 150,
+        });
     }
 
     public create(): void {
-        const primary = new WeaponFactory(
-            this.scene,
-            this.player.player(),
-            new PulseFactory(this.scene, new PulseLevel6()),
-            { frame: 'player/bullet-primary.png', maxSize: 100 }
-        ).create();
-        const trigger = new TriggerFactory(this.scene, primary, 150).create();
-        this.components = new CompositeComponent([primary, trigger]);
+        this.system.create();
     }
 
     public update(time: number, delta: number): void {
-        this.components.update(time, delta);
+        this.system.update(time, delta);
+    }
+
+    public get weaponComponent(): WeaponComponent {
+        return this.system.weaponComponent;
     }
 }

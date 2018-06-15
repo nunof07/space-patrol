@@ -1,38 +1,38 @@
-import { CompositeComponent } from '@src/core/CompositeComponent';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { addBurstExplosion } from '@src/weapons/burst/addBurstExplosion';
 import { BurstDynamicLevel } from '@src/weapons/burst/BurstDynamicLevel';
 import { BurstFactory } from '@src/weapons/burst/BurstFactory';
-import { TriggerFactory } from '@src/weapons/TriggerFactory';
-import { WeaponFactory } from '@src/weapons/WeaponFactory';
+import { WeaponComponent } from '@src/weapons/WeaponComponent';
+import { WeaponSystem } from '@src/weapons/WeaponSystem';
 import * as Phaser from 'phaser';
 
 export class BurstSystem implements System {
     private readonly scene: Phaser.Scene;
-    private readonly player: PlayerSystem;
-    private components: CompositeComponent;
+    private system: WeaponSystem;
 
     constructor(scene: Phaser.Scene, player: PlayerSystem) {
         this.scene = scene;
-        this.player = player;
+        this.system = new WeaponSystem(scene, player, {
+            bulletFactory: new BurstFactory(
+                this.scene,
+                new BurstDynamicLevel(1)
+            ),
+            group: { frame: 'player/bullet-burst.png', maxSize: 30 },
+            triggerStep: 1000,
+        });
     }
 
     public create(): void {
         addBurstExplosion(this.scene);
-        const primary = new WeaponFactory(
-            this.scene,
-            this.player.player(),
-            new BurstFactory(this.scene, new BurstDynamicLevel(6)),
-            { frame: 'player/bullet-burst.png', maxSize: 30 }
-        ).create();
-        this.components = new CompositeComponent([
-            primary,
-            new TriggerFactory(this.scene, primary, 1000).create(),
-        ]);
+        this.system.create();
     }
 
     public update(time: number, delta: number): void {
-        this.components.update(time, delta);
+        this.system.update(time, delta);
+    }
+
+    public get weaponComponent(): WeaponComponent {
+        return this.system.weaponComponent;
     }
 }

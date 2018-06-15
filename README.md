@@ -16,14 +16,17 @@
 
 Shoot 'em up space game made with [Phaser 3](http://phaser.io/).
 
+Work in progress.
+
 ## Credits
 
 Everything not mentioned below was made by [Nuno Freitas](https://github.com/nunof07/) (programming and game design).
 
 ### Artwork
 
--   [Big Rook Games](http://bigrookgames.com/), [Undead Empire](https://opengameart.org/content/undeadempire-tileset-64x64-repack-floor-lava-walls-and-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/): Burst explosion.
--   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, and stars background.
+-   [Big Rook Games](http://bigrookgames.com/), [Undead Empire](https://opengameart.org/content/undeadempire-tileset-64x64-repack-floor-lava-walls-and-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/): Crate smoke explosion, burst weapon explosion.
+-   [Kenney](http://kenney.nl/), [Sokoban](http://kenney.nl/assets/sokoban) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Crates.
+-   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, and stars background.
 -   [Skorpio](https://opengameart.org/users/skorpio), [Sci-fi effects](https://opengameart.org/content/sci-fi-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Player explosion and stars background.
 -   [xbost](https://twitter.com/xbost), [NES Cyrillic](http://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=234) - Public Domain: Font.
 
@@ -50,7 +53,7 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 
 ### Weapon stats
 
-| Weapon | Step | Level 1 | Level 2 | Level 3 | Level 4 | Level 5  | Level 6  |
-| ------ | ---- | ------- | ------- | ------- | ------- | -------- | -------- |
-| Pulse  | 150  | 1 \* 10 | 2 \* 10 | 4 \* 10 | 6 \* 10 | 10 \* 10 | 14 \* 10 |
-| Burst  | 1000 | 2 \* 15 | 4 \* 15 | 6 \* 15 | 8 \* 15 | 10 \* 15 | 12 \* 15 |
+| Weapon | Step | Damage | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 | Level 6 |
+| ------ | ---- | ------ | ------- | ------- | ------- | ------- | ------- | ------- |
+| Pulse  | 150  | 10     | 1       | 2       | 4       | 6       | 10      | 18      |
+| Burst  | 1000 | 50     | 2       | 4       | 6       | 8       | 10      | 12      |
