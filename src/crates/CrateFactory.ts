@@ -1,5 +1,7 @@
 import { Factory } from '@src/core/Factory';
 import { Crate } from '@src/crates/Crate';
+import { PowerupType } from '@src/crates/PowerupType';
+import { randomPowerupType } from '@src/crates/randomPowerupType';
 import { HealthComponent } from '@src/health/HealthComponent';
 import { HealthFactory } from '@src/health/HealthFactory';
 import { Hitpoints } from '@src/health/Hitpoints';
@@ -20,14 +22,19 @@ export class CrateFactory implements Factory<Crate> {
     }
 
     public create(): Crate {
-        const full = this.addSprite(this.randomX(), 'health');
+        return this.createType(randomPowerupType(this.randomEngine));
+    }
+
+    private createType(powerup: PowerupType): Crate {
+        const key = powerup.toString().toLowerCase();
+        const full = this.addSprite(this.randomX(), key);
         const health = this.addHealth(full);
 
         return new Crate(
             this.scene,
             full,
             health,
-            this.spriteFrame('health_damaged')
+            this.spriteFrame(`${key}_damaged`)
         );
     }
 
