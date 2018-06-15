@@ -1617,7 +1617,7 @@ declare type GraphicsLineStyle = {
     /**
      * The stroke alpha.
      */
-    alpha: number;
+    alpha?: number;
 };
 
 /**
@@ -1631,7 +1631,7 @@ declare type GraphicsFillStyle = {
     /**
      * The fill alpha.
      */
-    alpha: number;
+    alpha?: number;
 };
 
 /**
@@ -1655,11 +1655,11 @@ declare type GraphicsOptions = GraphicsStyles & {
     /**
      * The x coordinate of the Graphics.
      */
-    x: number;
+    x?: number;
     /**
      * The y coordinate of the Graphics.
      */
-    y: number;
+    y?: number;
 };
 
 declare type GroupCallback = (item: Phaser.GameObjects.GameObject) => void;
@@ -41873,9 +41873,8 @@ declare namespace Phaser {
                  * Static Bodies marked for deletion.
                  */
                 pendingDestroy: Phaser.Structs.Set<
-
-                        | Phaser.Physics.Arcade.Body
-                        | Phaser.Physics.Arcade.StaticBody
+                    | Phaser.Physics.Arcade.Body
+                    | Phaser.Physics.Arcade.StaticBody
                 >;
 
                 /**
