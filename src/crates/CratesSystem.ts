@@ -1,3 +1,4 @@
+import { addAnimation } from '@src/animation/addAnimation';
 import { System } from '@src/core/System';
 import { Crate } from '@src/crates/Crate';
 import { CrateBulletCollider } from '@src/crates/CrateBulletCollider';
@@ -5,7 +6,6 @@ import { CrateFactory } from '@src/crates/CrateFactory';
 import { updateCrates } from '@src/crates/updateCrates';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
 import * as Phaser from 'phaser';
-import { addAnimation } from '@src/animation/addAnimation';
 
 export class CratesSystem implements System {
     private readonly scene: Phaser.Scene;

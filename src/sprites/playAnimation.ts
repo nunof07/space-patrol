@@ -10,7 +10,7 @@ export function playAnimation(
         readonly position: Position;
     },
     animation: string,
-    transform: (sprite: Phaser.GameObjects.Sprite) => void = () => void {}
+    transform: (sprite: Phaser.GameObjects.Sprite) => void = Phaser.Utils.NOOP
 ): void {
     const sprite = scene.add.sprite(
         info.position.x,

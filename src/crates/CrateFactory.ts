@@ -1,5 +1,6 @@
 import { Factory } from '@src/core/Factory';
 import { Crate } from '@src/crates/Crate';
+import { HealthComponent } from '@src/health/HealthComponent';
 import { HealthFactory } from '@src/health/HealthFactory';
 import { Hitpoints } from '@src/health/Hitpoints';
 import { Vitality } from '@src/health/Vitality';
@@ -20,9 +21,20 @@ export class CrateFactory implements Factory<Crate> {
 
     public create(): Crate {
         const full = this.addSprite(this.randomX(), 'health');
-        const health = new HealthFactory(
+        const health = this.addHealth(full);
+
+        return new Crate(
             this.scene,
             full,
+            health,
+            this.spriteFrame('health_damaged')
+        );
+    }
+
+    private addHealth(parent: Phaser.GameObjects.Sprite): HealthComponent {
+        return new HealthFactory(
+            this.scene,
+            parent,
             new Vitality(new Hitpoints(150, 150), new Hitpoints(0, 0)),
             {
                 width: 1,
@@ -32,13 +44,10 @@ export class CrateFactory implements Factory<Crate> {
                 },
             }
         ).create();
+    }
 
-        return new Crate(
-            this.scene,
-            full,
-            health,
-            'crates/crate_health_damaged.png'
-        );
+    private spriteFrame(prefix: string): string {
+        return `crates/crate_${prefix}.png`;
     }
 
     private addSprite(
@@ -50,7 +59,7 @@ export class CrateFactory implements Factory<Crate> {
             x,
             0,
             'sprites',
-            `crates/crate_${key}.png`
+            this.spriteFrame(key)
         );
         sprite.scaleX = 0.5;
         sprite.scaleY = 0.5;
