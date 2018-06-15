@@ -1,3 +1,20 @@
+# [1.8.0](https://github.com/nunof07/space-patrol/compare/v1.7.0...v1.8.0) (2018-06-15)
+
+
+### Bug Fixes
+
+* **crates:** explosion animation ([81de6e6](https://github.com/nunof07/space-patrol/commit/81de6e6))
+* **crates:** random crate ([fd55a89](https://github.com/nunof07/space-patrol/commit/fd55a89))
+* **crates:** show damaged crate ([2152545](https://github.com/nunof07/space-patrol/commit/2152545))
+
+
+### Features
+
+* **crates:** add health bar ([a1b0022](https://github.com/nunof07/space-patrol/commit/a1b0022))
+* **crates:** collide with burst ([8be6147](https://github.com/nunof07/space-patrol/commit/8be6147))
+* **crates:** pulse collision ([fce8a14](https://github.com/nunof07/space-patrol/commit/fce8a14))
+* **crates:** random falling crates ([1669c8f](https://github.com/nunof07/space-patrol/commit/1669c8f))
+
 # [1.7.0](https://github.com/nunof07/space-patrol/compare/v1.6.4...v1.7.0) (2018-06-14)
 
 
