@@ -1,4 +1,3 @@
-import { asType } from '@src/core/asType';
 import { Crate } from '@src/crates/Crate';
 import { getData } from '@src/gameObjects/getData';
 import { Bullet } from '@src/weapons/Bullet';
@@ -15,7 +14,7 @@ export class CrateBulletCollider {
     public setup(crate: Crate, weapon: Weapon): void {
         this.scene.physics.add.overlap(
             crate.sprite,
-            asType<Phaser.GameObjects.GameObject>(weapon.group),
+            weapon.group,
             (_crate, bulletObj) => {
                 const bullet = getData<Bullet>(bulletObj, 'bullet');
                 crate.hit(bullet.damage);

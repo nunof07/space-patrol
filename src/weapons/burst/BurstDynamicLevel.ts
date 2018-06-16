@@ -1,6 +1,8 @@
 import { circlePosition } from '@src/core/circlePosition';
 import { Position } from '@src/core/Position';
 import { cockpit } from '@src/player/cockpit';
+import { Bullet } from '@src/weapons/Bullet';
+import { Burst } from '@src/weapons/burst/Burst';
 import { BurstLevel } from '@src/weapons/burst/BurstLevel';
 import { Weapon } from '@src/weapons/Weapon';
 import { WeaponLevel } from '@src/weapons/WeaponLevel';
@@ -59,7 +61,23 @@ export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
         );
     }
 
+    public createBullet(
+        scene: Phaser.Scene,
+        weapon: Weapon,
+        index: number,
+        sprite: Phaser.GameObjects.Sprite
+    ): Bullet {
+        const position = this.position(index, weapon);
+        const destination = this.destination(index, weapon);
+
+        return new Burst(scene, sprite, position, destination);
+    }
+
     public get currentLevel(): number {
         return this.currentLevelImpl;
+    }
+
+    public get bulletsCount(): number {
+        return this.count;
     }
 }

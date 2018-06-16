@@ -660,11 +660,11 @@
                     }
                 },
                 {
-                    "filename": "player/engine.png",
+                    "filename": "crates/powerup_health.png",
                     "frame": {
                         "x": 495,
                         "y": 1242,
-                        "w": 27,
+                        "w": 26,
                         "h": 22
                     },
                     "rotated": false,
@@ -672,11 +672,11 @@
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 27,
+                        "w": 26,
                         "h": 22
                     },
                     "sourceSize": {
-                        "w": 27,
+                        "w": 26,
                         "h": 22
                     },
                     "pivot": {
@@ -710,24 +710,24 @@
                     }
                 },
                 {
-                    "filename": "player/engine-particle.png",
+                    "filename": "player/engine.png",
                     "frame": {
                         "x": 337,
                         "y": 1276,
-                        "w": 10,
-                        "h": 10
+                        "w": 27,
+                        "h": 22
                     },
                     "rotated": false,
-                    "trimmed": true,
+                    "trimmed": false,
                     "spriteSourceSize": {
-                        "x": 31,
-                        "y": 29,
-                        "w": 10,
-                        "h": 10
+                        "x": 0,
+                        "y": 0,
+                        "w": 27,
+                        "h": 22
                     },
                     "sourceSize": {
-                        "w": 70,
-                        "h": 70
+                        "w": 27,
+                        "h": 22
                     },
                     "pivot": {
                         "x": 0.5,
@@ -785,6 +785,31 @@
                     }
                 },
                 {
+                    "filename": "crates/powerup_shield.png",
+                    "frame": {
+                        "x": 1284,
+                        "y": 516,
+                        "w": 26,
+                        "h": 20
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 26,
+                        "h": 20
+                    },
+                    "sourceSize": {
+                        "w": 26,
+                        "h": 20
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
                     "filename": "player/shield1.png",
                     "frame": {
                         "x": 1466,
@@ -803,6 +828,31 @@
                     "sourceSize": {
                         "w": 133,
                         "h": 108
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "player/engine-particle.png",
+                    "frame": {
+                        "x": 1556,
+                        "y": 214,
+                        "w": 10,
+                        "h": 10
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 31,
+                        "y": 29,
+                        "w": 10,
+                        "h": 10
+                    },
+                    "sourceSize": {
+                        "w": 70,
+                        "h": 70
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1328,6 +1378,56 @@
                     "sourceSize": {
                         "w": 300,
                         "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/powerup_burst.png",
+                    "frame": {
+                        "x": 973,
+                        "y": 1014,
+                        "w": 39,
+                        "h": 42
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 39,
+                        "h": 42
+                    },
+                    "sourceSize": {
+                        "w": 39,
+                        "h": 42
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/powerup_pulse.png",
+                    "frame": {
+                        "x": 683,
+                        "y": 1231,
+                        "w": 39,
+                        "h": 43
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 39,
+                        "h": 43
+                    },
+                    "sourceSize": {
+                        "w": 39,
+                        "h": 43
                     },
                     "pivot": {
                         "x": 0.5,

@@ -1,6 +1,5 @@
 import { weaponNewLevel } from '@src/weapons/weaponNewLevel';
 import { expect } from 'chai';
-import * as Phaser from 'phaser';
 
 describe('weapons', () => {
     describe('#weaponNewLevel', () => {

@@ -1,4 +1,6 @@
 import { Position } from '@src/core/Position';
+import { Bullet } from '@src/weapons/Bullet';
+import { Pulse } from '@src/weapons/pulse/Pulse';
 import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { PulseLevel1 } from '@src/weapons/pulse/PulseLevel1';
 import { PulseLevel2 } from '@src/weapons/pulse/PulseLevel2';
@@ -42,12 +44,28 @@ export class PulseDynamicLevel implements PulseLevel, WeaponLevel {
         );
     }
 
+    public createBullet(
+        scene: Phaser.Scene,
+        weapon: Weapon,
+        index: number,
+        sprite: Phaser.GameObjects.Sprite
+    ): Bullet {
+        const position = this.position(index, weapon);
+        const angle = this.angle(index, weapon);
+
+        return new Pulse(scene, sprite, position, angle);
+    }
+
     public get count(): number {
         return this.current().count;
     }
 
     public get currentLevel(): number {
         return this.currentLevelImpl;
+    }
+
+    public get bulletsCount(): number {
+        return this.count;
     }
 
     private current(): PulseLevel {

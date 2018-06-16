@@ -1,6 +1,6 @@
 import { Factory } from '@src/core/Factory';
 import { Crate } from '@src/crates/Crate';
-import { powerupSpriteFrame } from '@src/crates/powerupSpriteFrame';
+import { crateSpriteFrame } from '@src/crates/crateSpriteFrame';
 import { PowerupType } from '@src/crates/PowerupType';
 import { randomPowerupType } from '@src/crates/randomPowerupType';
 import { HealthComponent } from '@src/health/HealthComponent';
@@ -57,7 +57,7 @@ export class CrateFactory implements Factory<Crate> {
             x,
             0,
             'sprites',
-            powerupSpriteFrame(powerup, false)
+            crateSpriteFrame(powerup, false)
         );
         sprite.scaleX = 0.5;
         sprite.scaleY = 0.5;

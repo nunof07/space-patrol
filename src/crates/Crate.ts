@@ -1,6 +1,6 @@
 import { Component } from '@src/core/Component';
+import { crateSpriteFrame } from '@src/crates/crateSpriteFrame';
 import { playCrateExplosion } from '@src/crates/playCrateExplosion';
-import { powerupSpriteFrame } from '@src/crates/powerupSpriteFrame';
 import { PowerupType } from '@src/crates/PowerupType';
 import { flashDamage } from '@src/effects/flashDamage';
 import { flyOffText } from '@src/effects/flyOffText';
@@ -16,6 +16,7 @@ export class Crate implements Component {
     private readonly speed: number;
     private readonly powerupTypeImpl: PowerupType;
     private isDamaged: boolean;
+    private isDestroyed: boolean;
 
     constructor(
         scene: Phaser.Scene,
@@ -30,6 +31,7 @@ export class Crate implements Component {
         this.emitter = new Phaser.Events.EventEmitter();
         this.isDamaged = false;
         this.powerupTypeImpl = powerupType;
+        this.isDestroyed = false;
     }
 
     public update(time: number, delta: number): void {
@@ -50,13 +52,17 @@ export class Crate implements Component {
         if (this.health.hit(damage)) {
             flyOffText(this.scene, `-${damage}`, this.spriteImpl, true);
             flashDamage(this.scene, this.spriteImpl, 510, () => {
-                if (!this.isAlive()) {
+                if (!this.isAlive() && !this.isDestroyed) {
                     playCrateExplosion(this.scene, this.spriteImpl);
-                    this.emitter.emit('crateExplosion', this);
+                    this.emitter.emit('explosion', this);
                     this.destroy();
                 }
             });
         }
+    }
+
+    public onExplosion(callback: (crate: Crate) => void): void {
+        this.emitter.on('explosion', callback);
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {
@@ -70,6 +76,7 @@ export class Crate implements Component {
     private destroy(): void {
         this.spriteImpl.destroy();
         this.health.destroy();
+        this.isDestroyed = true;
     }
 
     private setDamaged(): void {
@@ -80,7 +87,7 @@ export class Crate implements Component {
             this.isDamaged = true;
             this.spriteImpl.setTexture(
                 'sprites',
-                powerupSpriteFrame(this.powerupTypeImpl, true)
+                crateSpriteFrame(this.powerupTypeImpl, true)
             );
         }
     }
