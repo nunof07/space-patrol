@@ -16,7 +16,7 @@ export class BurstSystem implements System {
         this.system = new WeaponSystem(scene, player, {
             bulletFactory: new BurstFactory(
                 this.scene,
-                new BurstDynamicLevel(1)
+                new BurstDynamicLevel()
             ),
             group: { frame: 'player/bullet-burst.png', maxSize: 30 },
             triggerStep: 1000,

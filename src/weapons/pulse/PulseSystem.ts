@@ -1,7 +1,7 @@
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
+import { PulseDynamicLevel } from '@src/weapons/pulse/PulseDynamicLevel';
 import { PulseFactory } from '@src/weapons/pulse/PulseFactory';
-import { PulseLevel1 } from '@src/weapons/pulse/PulseLevel1';
 import { WeaponComponent } from '@src/weapons/WeaponComponent';
 import { WeaponSystem } from '@src/weapons/WeaponSystem';
 import * as Phaser from 'phaser';
@@ -11,7 +11,7 @@ export class PulseSystem implements System {
 
     constructor(scene: Phaser.Scene, player: PlayerSystem) {
         this.system = new WeaponSystem(scene, player, {
-            bulletFactory: new PulseFactory(scene, new PulseLevel1()),
+            bulletFactory: new PulseFactory(scene, new PulseDynamicLevel()),
             group: { frame: 'player/bullet-primary.png', maxSize: 200 },
             triggerStep: 150,
         });
