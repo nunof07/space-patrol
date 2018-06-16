@@ -1,5 +1,7 @@
 import { Component } from '@src/core/Component';
 import { playCrateExplosion } from '@src/crates/playCrateExplosion';
+import { powerupSpriteFrame } from '@src/crates/powerupSpriteFrame';
+import { PowerupType } from '@src/crates/PowerupType';
 import { flashDamage } from '@src/effects/flashDamage';
 import { flyOffText } from '@src/effects/flyOffText';
 import { HealthComponent } from '@src/health/HealthComponent';
@@ -12,14 +14,14 @@ export class Crate implements Component {
     private readonly health: HealthComponent;
     private readonly emitter: Phaser.Events.EventEmitter;
     private readonly speed: number;
-    private readonly damagedFrame: string;
+    private readonly powerupTypeImpl: PowerupType;
     private isDamaged: boolean;
 
     constructor(
         scene: Phaser.Scene,
         sprite: Phaser.GameObjects.Sprite,
         health: HealthComponent,
-        damagedFrame: string
+        powerupType: PowerupType
     ) {
         this.scene = scene;
         this.spriteImpl = sprite;
@@ -27,7 +29,7 @@ export class Crate implements Component {
         this.health = health;
         this.emitter = new Phaser.Events.EventEmitter();
         this.isDamaged = false;
-        this.damagedFrame = damagedFrame;
+        this.powerupTypeImpl = powerupType;
     }
 
     public update(time: number, delta: number): void {
@@ -44,16 +46,13 @@ export class Crate implements Component {
         return this.health.health().vitality.isAlive();
     }
 
-    public onDestroy(callback: () => void): void {
-        this.emitter.on('destroy', callback);
-    }
-
     public hit(damage: number): void {
         if (this.health.hit(damage)) {
             flyOffText(this.scene, `-${damage}`, this.spriteImpl, true);
             flashDamage(this.scene, this.spriteImpl, 510, () => {
                 if (!this.isAlive()) {
                     playCrateExplosion(this.scene, this.spriteImpl);
+                    this.emitter.emit('crateExplosion', this);
                     this.destroy();
                 }
             });
@@ -64,10 +63,13 @@ export class Crate implements Component {
         return this.spriteImpl;
     }
 
+    public get powerupType(): PowerupType {
+        return this.powerupTypeImpl;
+    }
+
     private destroy(): void {
         this.spriteImpl.destroy();
         this.health.destroy();
-        this.emitter.emit('destroy');
     }
 
     private setDamaged(): void {
@@ -76,7 +78,10 @@ export class Crate implements Component {
             this.health.health().vitality.health.percentage <= 0.6
         ) {
             this.isDamaged = true;
-            this.spriteImpl.setTexture('sprites', this.damagedFrame);
+            this.spriteImpl.setTexture(
+                'sprites',
+                powerupSpriteFrame(this.powerupTypeImpl, true)
+            );
         }
     }
 }
