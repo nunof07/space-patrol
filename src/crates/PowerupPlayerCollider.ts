@@ -22,7 +22,7 @@ export class PowerupPlayerCollider {
     public setup(powerup: Powerup): void {
         this.scene.physics.add.overlap(
             powerup.sprite,
-            this.player.player().group,
+            this.player.player.group,
             () => {
                 switch (powerup.powerupType) {
                     case PowerupType.Burst:
@@ -32,7 +32,14 @@ export class PowerupPlayerCollider {
                         this.weapons.pulse.upgrade();
                         break;
                     case PowerupType.Health:
+                        this.player.healthComponent.incHealth(25);
+                        this.player.healthComponent.refreshFilled();
+                        break;
                     case PowerupType.Shield:
+                        this.player.healthComponent.incShield(25);
+                        this.player.healthComponent.refreshFilled();
+                        this.player.refreshShield();
+                        break;
                     default:
                 }
                 powerup.destroy();

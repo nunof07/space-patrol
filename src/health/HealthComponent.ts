@@ -1,6 +1,7 @@
 import { Component } from '@src/core/Component';
 import { Health } from '@src/health/Health';
 import { healthHit } from '@src/health/healthHit';
+import { incHitpoints } from '@src/health/incHitpoints';
 import { renderHealthBar } from '@src/health/renderHealthBar';
 import { updateFilled } from '@src/health/updateFilled';
 import { Vitality } from '@src/health/Vitality';
@@ -51,7 +52,7 @@ export class HealthComponent implements Component {
             this.healthImpl = this.newHealth(
                 healthHit(this.healthImpl.vitality, amount)
             );
-            updateFilled(this.healthImpl);
+            this.refreshFilled();
 
             if (!this.healthImpl.vitality.isAlive()) {
                 this.emitter.emit('death');
@@ -75,6 +76,24 @@ export class HealthComponent implements Component {
 
     public destroy(): void {
         this.healthImpl.graphics.destroy();
+    }
+
+    public incHealth(amount: number): void {
+        const vitality = this.healthImpl.vitality;
+        this.healthImpl = this.newHealth(
+            new Vitality(incHitpoints(vitality.health, amount), vitality.shield)
+        );
+    }
+
+    public incShield(amount: number): void {
+        const vitality = this.healthImpl.vitality;
+        this.healthImpl = this.newHealth(
+            new Vitality(vitality.health, incHitpoints(vitality.shield, amount))
+        );
+    }
+
+    public refreshFilled(): void {
+        updateFilled(this.healthImpl);
     }
 
     private newHealth(vitality: Vitality): Health {

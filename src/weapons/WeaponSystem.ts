@@ -27,7 +27,7 @@ export class WeaponSystem implements System {
     public create(): void {
         this.weaponImpl = new WeaponFactory(
             this.scene,
-            this.player.player(),
+            this.player.player,
             this.info.bulletFactory,
             this.info.group
         ).create();
