@@ -7,6 +7,7 @@ import { BurstLevel } from '@src/weapons/burst/BurstLevel';
 import { Weapon } from '@src/weapons/Weapon';
 import { WeaponLevel } from '@src/weapons/WeaponLevel';
 import { weaponNewLevel } from '@src/weapons/weaponNewLevel';
+import { incWeaponLevel } from '@src/weapons/incWeaponLevel';
 
 export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
     private readonly counts: ReadonlyArray<number>;
@@ -54,8 +55,7 @@ export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
     }
 
     public incLevel(): void {
-        this.currentLevelImpl = weaponNewLevel(
-            this.currentLevelImpl + 1,
+        this.currentLevelImpl = incWeaponLevel(
             this.currentLevelImpl,
             this.counts.length
         );

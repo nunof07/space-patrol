@@ -11,6 +11,7 @@ import { PulseLevel6 } from '@src/weapons/pulse/PulseLevel6';
 import { Weapon } from '@src/weapons/Weapon';
 import { WeaponLevel } from '@src/weapons/WeaponLevel';
 import { weaponNewLevel } from '@src/weapons/weaponNewLevel';
+import { incWeaponLevel } from '@src/weapons/incWeaponLevel';
 
 export class PulseDynamicLevel implements PulseLevel, WeaponLevel {
     private readonly levels: ReadonlyArray<PulseLevel>;
@@ -37,8 +38,7 @@ export class PulseDynamicLevel implements PulseLevel, WeaponLevel {
     }
 
     public incLevel(): void {
-        this.currentLevelImpl = weaponNewLevel(
-            this.currentLevelImpl + 1,
+        this.currentLevelImpl = incWeaponLevel(
             this.currentLevelImpl,
             this.levels.length
         );
