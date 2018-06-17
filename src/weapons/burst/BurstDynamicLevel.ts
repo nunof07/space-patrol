@@ -1,20 +1,29 @@
 import { circlePosition } from '@src/core/circlePosition';
 import { Position } from '@src/core/Position';
 import { cockpit } from '@src/player/cockpit';
+import { Bullet } from '@src/weapons/Bullet';
+import { Burst } from '@src/weapons/burst/Burst';
 import { BurstLevel } from '@src/weapons/burst/BurstLevel';
+import { incWeaponLevel } from '@src/weapons/incWeaponLevel';
 import { Weapon } from '@src/weapons/Weapon';
+import { WeaponLevel } from '@src/weapons/WeaponLevel';
+import { weaponNewLevel } from '@src/weapons/weaponNewLevel';
 
-export class BurstDynamicLevel implements BurstLevel {
+export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
     private readonly counts: ReadonlyArray<number>;
-    private currentLevel: number;
+    private currentLevelImpl: number;
 
     constructor(currentLevel: number = 1) {
         this.counts = [2, 4, 6, 8, 10, 12];
-        this.setLevel(currentLevel, 1);
+        this.currentLevelImpl = weaponNewLevel(
+            currentLevel,
+            1,
+            this.counts.length
+        );
     }
 
     public get count(): number {
-        return this.counts[this.currentLevel - 1];
+        return this.counts[this.currentLevelImpl - 1];
     }
 
     public position(index: number, weapon: Weapon): Position {
@@ -46,15 +55,29 @@ export class BurstDynamicLevel implements BurstLevel {
     }
 
     public incLevel(): void {
-        const newLevel = this.currentLevel + 1;
-        this.setLevel(newLevel, this.currentLevel);
+        this.currentLevelImpl = incWeaponLevel(
+            this.currentLevelImpl,
+            this.counts.length
+        );
     }
 
-    private setLevel(level: number, defaultLevel: number): void {
-        const newLevel = Math.round(level);
-        this.currentLevel =
-            newLevel >= 1 && newLevel <= this.counts.length
-                ? newLevel
-                : defaultLevel;
+    public createBullet(
+        scene: Phaser.Scene,
+        weapon: Weapon,
+        index: number,
+        sprite: Phaser.GameObjects.Sprite
+    ): Bullet {
+        const position = this.position(index, weapon);
+        const destination = this.destination(index, weapon);
+
+        return new Burst(scene, sprite, position, destination);
+    }
+
+    public get currentLevel(): number {
+        return this.currentLevelImpl;
+    }
+
+    public get bulletsCount(): number {
+        return this.count;
     }
 }

@@ -1,5 +1,6 @@
 import { Factory } from '@src/core/Factory';
 import { Crate } from '@src/crates/Crate';
+import { crateSpriteFrame } from '@src/crates/crateSpriteFrame';
 import { PowerupType } from '@src/crates/PowerupType';
 import { randomPowerupType } from '@src/crates/randomPowerupType';
 import { HealthComponent } from '@src/health/HealthComponent';
@@ -26,16 +27,10 @@ export class CrateFactory implements Factory<Crate> {
     }
 
     private createType(powerup: PowerupType): Crate {
-        const key = powerup.toString().toLowerCase();
-        const full = this.addSprite(this.randomX(), key);
+        const full = this.addSprite(this.randomX(), powerup);
         const health = this.addHealth(full);
 
-        return new Crate(
-            this.scene,
-            full,
-            health,
-            this.spriteFrame(`${key}_damaged`)
-        );
+        return new Crate(this.scene, full, health, powerup);
     }
 
     private addHealth(parent: Phaser.GameObjects.Sprite): HealthComponent {
@@ -53,20 +48,16 @@ export class CrateFactory implements Factory<Crate> {
         ).create();
     }
 
-    private spriteFrame(prefix: string): string {
-        return `crates/crate_${prefix}.png`;
-    }
-
     private addSprite(
         x: number,
-        key: string,
+        powerup: PowerupType,
         visible: boolean = true
     ): Phaser.GameObjects.Sprite {
         const sprite = this.scene.add.sprite(
             x,
             0,
             'sprites',
-            this.spriteFrame(key)
+            crateSpriteFrame(powerup, false)
         );
         sprite.scaleX = 0.5;
         sprite.scaleY = 0.5;

@@ -6,11 +6,11 @@ import { Weapon } from '@src/weapons/Weapon';
 
 export class WeaponComponent implements Component {
     private weaponImpl: Weapon;
-    private factory: BulletFactory;
+    private factoryImpl: BulletFactory;
 
     constructor(weapon: Weapon, factory: BulletFactory) {
         this.weaponImpl = weapon;
-        this.factory = factory;
+        this.factoryImpl = factory;
     }
 
     public update(time: number, delta: number): void {
@@ -20,7 +20,7 @@ export class WeaponComponent implements Component {
     }
 
     public fire(): void {
-        const bullets = this.factory.create(this.weaponImpl);
+        const bullets = this.factoryImpl.create(this.weaponImpl);
         this.weaponImpl = this.newWeapon(
             this.weaponImpl.bullets.concat(bullets)
         );
@@ -28,6 +28,10 @@ export class WeaponComponent implements Component {
 
     public get weapon(): Weapon {
         return this.weaponImpl;
+    }
+
+    public get factory(): BulletFactory {
+        return this.factoryImpl;
     }
 
     private newWeapon(bullets: ReadonlyArray<Bullet>): Weapon {

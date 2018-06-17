@@ -12,6 +12,7 @@ export class CratesSystem implements System {
     private readonly factory: CrateFactory;
     private readonly weapons: WeaponsSystem;
     private readonly collider: CrateBulletCollider;
+    private readonly emitter: Phaser.Events.EventEmitter;
     private crates: ReadonlyArray<Crate>;
 
     constructor(scene: Phaser.Scene, weapons: WeaponsSystem) {
@@ -20,6 +21,7 @@ export class CratesSystem implements System {
         this.crates = [];
         this.weapons = weapons;
         this.collider = new CrateBulletCollider(this.scene);
+        this.emitter = new Phaser.Events.EventEmitter();
     }
 
     public create(): void {
@@ -29,6 +31,9 @@ export class CratesSystem implements System {
             loop: true,
             callback: () => {
                 const crate = this.factory.create();
+                crate.onExplosion(crateObj => {
+                    this.emitter.emit('crateExplosion', crateObj);
+                });
                 this.crates = this.crates.concat(crate);
                 this.collider.setup(
                     crate,
@@ -40,6 +45,10 @@ export class CratesSystem implements System {
                 );
             },
         });
+    }
+
+    public onCrateExploded(callback: (crate: Crate) => void): void {
+        this.emitter.on('crateExplosion', callback);
     }
 
     public update(time: number, delta: number): void {

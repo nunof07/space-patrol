@@ -22,16 +22,16 @@ describe('health', () => {
             const health = healthHit(newHealth(100, 100), 50);
             expectHealthShield(health, 1, 0.5);
         });
-        it('should take part of health and all shield', () => {
+        it('should take all shield and no health', () => {
             const health = healthHit(newHealth(100, 100), 150);
-            expectHealthShield(health, 0.5, 0);
+            expectHealthShield(health, 1, 0);
         });
         it('should take part of health', () => {
             const health = healthHit(newHealth(100, 0), 50);
             expectHealthShield(health, 0.5, 0);
         });
         it('should take all health', () => {
-            const health = healthHit(newHealth(100, 100), 500);
+            const health = healthHit(newHealth(100, 0), 500);
             expectHealthShield(health, 0, 0);
         });
     });

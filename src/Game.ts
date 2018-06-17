@@ -1,5 +1,7 @@
 import { CompositeSystem } from '@src/core/CompositeSystem';
 import { CratesSystem } from '@src/crates/CratesSystem';
+import { PowerupPlayerCollider } from '@src/crates/PowerupPlayerCollider';
+import { PowerupSystem } from '@src/crates/PowerupSystem';
 import { PauseSystem } from '@src/PauseSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
@@ -14,11 +16,18 @@ export class Game extends Phaser.Scene {
         super({ key: 'game' });
         const player = new PlayerSystem(this);
         const weapons = new WeaponsSystem(this, player);
+        const crates = new CratesSystem(this, weapons);
+        const powerups = new PowerupSystem(
+            this,
+            crates,
+            new PowerupPlayerCollider(this, player, weapons)
+        );
         this.systems = new CompositeSystem([
             new Background(this),
             player,
             weapons,
-            new CratesSystem(this, weapons),
+            crates,
+            powerups,
             new PauseSystem(this),
         ]);
     }

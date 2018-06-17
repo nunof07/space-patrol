@@ -4,6 +4,8 @@ import { Player } from '@src/player/Player';
 import { PlayerFactory } from '@src/player/PlayerFactory';
 import { PlayerHealthFactory } from '@src/player/PlayerHealthFactory';
 import { PlayerInput } from '@src/player/PlayerInputFactory';
+import { switchShield } from '@src/player/switchShield';
+import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
 
 export class PlayerSystem implements System {
@@ -28,11 +30,18 @@ export class PlayerSystem implements System {
         this.healthImpl.update(time, delta);
     }
 
-    public player(): Player {
+    public refreshShield(): void {
+        switchShield(
+            this.healthImpl.health().vitality,
+            spriteChildren(this.playerImpl.group)
+        );
+    }
+
+    public get player(): Player {
         return this.playerImpl;
     }
 
-    public health(): HealthComponent {
+    public get healthComponent(): HealthComponent {
         return this.healthImpl;
     }
 }
