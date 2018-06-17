@@ -1,5 +1,6 @@
 import { Position } from '@src/core/Position';
 import { Bullet } from '@src/weapons/Bullet';
+import { incWeaponLevel } from '@src/weapons/incWeaponLevel';
 import { Pulse } from '@src/weapons/pulse/Pulse';
 import { PulseLevel } from '@src/weapons/pulse/PulseLevel';
 import { PulseLevel1 } from '@src/weapons/pulse/PulseLevel1';
@@ -11,7 +12,6 @@ import { PulseLevel6 } from '@src/weapons/pulse/PulseLevel6';
 import { Weapon } from '@src/weapons/Weapon';
 import { WeaponLevel } from '@src/weapons/WeaponLevel';
 import { weaponNewLevel } from '@src/weapons/weaponNewLevel';
-import { incWeaponLevel } from '@src/weapons/incWeaponLevel';
 
 export class PulseDynamicLevel implements PulseLevel, WeaponLevel {
     private readonly levels: ReadonlyArray<PulseLevel>;

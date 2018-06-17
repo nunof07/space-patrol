@@ -4,10 +4,10 @@ import { cockpit } from '@src/player/cockpit';
 import { Bullet } from '@src/weapons/Bullet';
 import { Burst } from '@src/weapons/burst/Burst';
 import { BurstLevel } from '@src/weapons/burst/BurstLevel';
+import { incWeaponLevel } from '@src/weapons/incWeaponLevel';
 import { Weapon } from '@src/weapons/Weapon';
 import { WeaponLevel } from '@src/weapons/WeaponLevel';
 import { weaponNewLevel } from '@src/weapons/weaponNewLevel';
-import { incWeaponLevel } from '@src/weapons/incWeaponLevel';
 
 export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
     private readonly counts: ReadonlyArray<number>;
