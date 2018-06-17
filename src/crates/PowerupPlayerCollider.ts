@@ -32,18 +32,26 @@ export class PowerupPlayerCollider {
                         this.weapons.pulse.upgrade();
                         break;
                     case PowerupType.Health:
-                        this.player.healthComponent.incHealth(25);
-                        this.player.healthComponent.refreshFilled();
+                        this.healthPowerup();
                         break;
                     case PowerupType.Shield:
-                        this.player.healthComponent.incShield(25);
-                        this.player.healthComponent.refreshFilled();
-                        this.player.refreshShield();
+                        this.shieldPowerup();
                         break;
                     default:
                 }
                 powerup.destroy();
             }
         );
+    }
+
+    private healthPowerup(): void {
+        this.player.healthComponent.incHealth(25);
+        this.player.healthComponent.refreshFilled();
+    }
+
+    private shieldPowerup(): void {
+        this.player.healthComponent.incShield(25);
+        this.player.healthComponent.refreshFilled();
+        this.player.refreshShield();
     }
 }
