@@ -1,3 +1,16 @@
+# [1.10.0](https://github.com/nunof07/space-patrol/compare/v1.9.0...v1.10.0) (2018-06-17)
+
+
+### Bug Fixes
+
+* **health:** damage no longer can take both shield and health ([d40c344](https://github.com/nunof07/space-patrol/commit/d40c344))
+
+
+### Features
+
+* **powerups:** health and shield ([1213c9c](https://github.com/nunof07/space-patrol/commit/1213c9c))
+* **powerups:** pulse and burst ([3c78a24](https://github.com/nunof07/space-patrol/commit/3c78a24))
+
 # [1.9.0](https://github.com/nunof07/space-patrol/compare/v1.8.0...v1.9.0) (2018-06-15)
 
 
