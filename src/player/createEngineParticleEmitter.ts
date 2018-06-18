@@ -12,6 +12,7 @@ export function createEngineParticleEmitter(
         speed: { min: 0, max: 5 },
         gravityX: (isLeft ? -1 : 1) * 70,
         gravityY: 50,
+        depth: 10,
     });
     emitter.startFollow(asType<Phaser.GameObjects.Particles.Particle>(engine));
 

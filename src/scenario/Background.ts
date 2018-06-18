@@ -15,12 +15,12 @@ export class Background implements System {
         const stars2 = addBackground(
             this.scene,
             'scenario/stars-02.png',
-            2,
+            -90,
             0.65
         );
         stars2.alpha = 0.2;
         this.backgrounds = [
-            addBackground(this.scene, 'scenario/stars-01.png', 1),
+            addBackground(this.scene, 'scenario/stars-01.png', -100),
             stars2,
         ];
         this.scene.events.on('resize', (width: number, height: number) => {
