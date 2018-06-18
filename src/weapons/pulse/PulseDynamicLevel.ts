@@ -37,11 +37,14 @@ export class PulseDynamicLevel implements PulseLevel, WeaponLevel {
         return this.current().angle(index, weapon);
     }
 
-    public incLevel(): void {
+    public incLevel(): boolean {
+        const incremented = this.currentLevelImpl < this.levels.length;
         this.currentLevelImpl = incWeaponLevel(
             this.currentLevelImpl,
             this.levels.length
         );
+
+        return incremented;
     }
 
     public createBullet(

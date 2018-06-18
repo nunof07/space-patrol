@@ -54,11 +54,14 @@ export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
         }
     }
 
-    public incLevel(): void {
+    public incLevel(): boolean {
+        const incremented = this.currentLevelImpl < this.counts.length;
         this.currentLevelImpl = incWeaponLevel(
             this.currentLevelImpl,
             this.counts.length
         );
+
+        return incremented;
     }
 
     public createBullet(

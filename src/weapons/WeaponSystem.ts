@@ -29,7 +29,7 @@ export class WeaponSystem implements System {
             this.scene,
             this.player.player,
             this.info.bulletFactory,
-            this.info.group
+            { group: this.info.group, fireAudioKey: this.info.fireAudioKey }
         ).create();
         const trigger = new TriggerFactory(
             this.scene,

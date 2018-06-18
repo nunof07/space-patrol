@@ -21,6 +21,7 @@ export class BurstSystem implements System, UpgradableWeaponSystem {
             ),
             group: { frame: 'player/bullet-burst.png', maxSize: 30 },
             triggerStep: 1000,
+            fireAudioKey: 'weapon_burst_fire',
         });
     }
 
@@ -33,8 +34,8 @@ export class BurstSystem implements System, UpgradableWeaponSystem {
         this.system.update(time, delta);
     }
 
-    public upgrade(): void {
-        this.weaponComponent.factory.level.incLevel();
+    public upgrade(): boolean {
+        return this.weaponComponent.factory.level.incLevel();
     }
 
     public get weaponComponent(): WeaponComponent {

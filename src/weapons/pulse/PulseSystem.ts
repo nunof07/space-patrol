@@ -15,6 +15,7 @@ export class PulseSystem implements System, UpgradableWeaponSystem {
             bulletFactory: new BulletFactory(scene, new PulseDynamicLevel()),
             group: { frame: 'player/bullet-primary.png', maxSize: 200 },
             triggerStep: 150,
+            fireAudioKey: 'weapon_pulse_fire',
         });
     }
 
@@ -26,8 +27,8 @@ export class PulseSystem implements System, UpgradableWeaponSystem {
         this.system.update(time, delta);
     }
 
-    public upgrade(): void {
-        this.weaponComponent.factory.level.incLevel();
+    public upgrade(): boolean {
+        return this.weaponComponent.factory.level.incLevel();
     }
 
     public get weaponComponent(): WeaponComponent {

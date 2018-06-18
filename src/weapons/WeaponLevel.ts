@@ -5,7 +5,7 @@ import * as Phaser from 'phaser';
 export interface WeaponLevel {
     readonly currentLevel: number;
     readonly bulletsCount: number;
-    incLevel(): void;
+    incLevel(): boolean;
     createBullet(
         scene: Phaser.Scene,
         weapon: Weapon,

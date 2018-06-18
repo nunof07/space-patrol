@@ -122,6 +122,7 @@ module.exports = {
                 'src/assets/manifest.json',
                 { from: 'src/assets/fonts', to: 'fonts' },
                 { from: 'src/assets/sprites', to: 'sprites' },
+                { from: 'src/assets/audio', to: 'audio' },
             ],
             { cache: true }
         ),

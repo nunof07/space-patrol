@@ -33,6 +33,7 @@ export class CratesSystem implements System {
                 const crate = this.factory.create();
                 crate.onExplosion(crateObj => {
                     this.emitter.emit('crateExplosion', crateObj);
+                    this.scene.sound.play('crate_explosion');
                 });
                 this.crates = this.crates.concat(crate);
                 this.collider.setup(

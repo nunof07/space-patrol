@@ -18,6 +18,7 @@ export class CrateBulletCollider {
             (_crate, bulletObj) => {
                 const bullet = getData<Bullet>(bulletObj, 'bullet');
                 crate.hit(bullet.damage);
+                this.scene.sound.play(bullet.hitAudioKey);
                 bullet.destroy();
             }
         );

@@ -58,6 +58,10 @@ export class Pulse implements Bullet {
         return 10;
     }
 
+    public get hitAudioKey(): string {
+        return 'weapon_pulse_hit';
+    }
+
     public isAlive(): boolean {
         return isBulletAlive(this);
     }
