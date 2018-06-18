@@ -2,6 +2,7 @@ import { CompositeSystem } from '@src/core/CompositeSystem';
 import { CratesSystem } from '@src/crates/CratesSystem';
 import { PowerupPlayerCollider } from '@src/crates/PowerupPlayerCollider';
 import { PowerupSystem } from '@src/crates/PowerupSystem';
+import { MusicSystem } from '@src/MusicSystem';
 import { PauseSystem } from '@src/PauseSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
@@ -29,6 +30,7 @@ export class Game extends Phaser.Scene {
             crates,
             powerups,
             new PauseSystem(this),
+            new MusicSystem(this),
         ]);
     }
 

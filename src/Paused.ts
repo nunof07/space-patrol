@@ -11,6 +11,7 @@ export class Paused extends Phaser.Scene {
         addText(this, mainCameraCenter(this), 'PAUSED', 32);
         this.input.keyboard.on('keydown_ESC', () => {
             this.scene.resume('game');
+            this.sound.resumeAll();
             this.scene.stop('paused');
         });
     }
