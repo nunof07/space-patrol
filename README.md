@@ -38,17 +38,17 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 
 All audio effects from [Sonniss](https://sonniss.com), [GDC 2018](https://sonniss.com/gameaudiogdc18/) - [GDC Bundle](https://sonniss.com/gdc-bundle-license/):
 
+-   3maze, "drop_multiple_boxes_003": Crate explosion.
 -   Airborne Sound, "Drone,Cyber,Deep,Pulse,Disturbing,Invasive,Loop": Ambient music.
--   Airborne Sound - Nikolay Overchenk, "Whoosh,Sound Design,Whip By,Airy to Whine,High": Burst weapon fire.
 -   Fox Audio Post-Production, "Droid_Vocal_23": Shield upgrade.
 -   Fox Audio Post-Production, "SFX_Sub_Sonic_Bass_28": Player explosion.
+-   Gamemaster Audio, "gun_silenced_sniper1_shot_01": Burst weapon fire.
 -   Glitchedtones, "User Interface Notification Bubbles 04": Weapon upgrade.
 -   Glitchedtones, "User Interface Shut Down 01": Game over.
--   Lukas Tvrdon, "Distant Blast 17": Crate explosion.
 -   Olivier Girardot, "Bullet Impact 22": Pulse weapon hit.
 -   Phil Michalski, "PM_CS_beep_denied5": Powerup picked.
 -   SoundMorph, "Future Weapons 3 - Grenade Launcher 2 - Hit 2": Burst weapon hit.
--   Sound Spark LLC, "Feedback_Synth_Delayed_Evolving_Tones_19": Pulse weapon fire.
+-   Tone Manufacture - Michael F. Bates, "TM_GLITCH UI_Glitches dry_53": Pulse weapon fire.
 
 ### Libraries
 
