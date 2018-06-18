@@ -80,7 +80,7 @@
         "prettier": "1.13.5",
         "pretty-quick": "1.6.0",
         "request": "2.87.0",
-        "semantic-release": "15.5.4",
+        "semantic-release": "15.5.5",
         "sinon": "6.0.0",
         "style-loader": "0.21.0",
         "thread-loader": "1.1.5",
