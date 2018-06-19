@@ -13,6 +13,9 @@ export function flashSprite(
     fillCamera(scene, graphics, 0xffffff);
     graphics.mask = new Phaser.Display.Masks.BitmapMask(scene, sprite);
     fadeInAndOut(scene, graphics, 100, () => {
+        graphics.mask.destroy();
+        graphics.clearMask(true);
+        graphics.clear();
         graphics.destroy();
         done();
     });

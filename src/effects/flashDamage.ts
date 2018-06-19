@@ -1,11 +1,21 @@
-import { flashSprite } from '@src/sprites/flashSprite';
 import * as Phaser from 'phaser';
 
 export function flashDamage(
     scene: Phaser.Scene,
     sprite: Phaser.GameObjects.Sprite,
-    depth: number,
+    _depth: number,
     done: () => void = Phaser.Utils.NOOP
 ): void {
-    flashSprite(scene, sprite, depth, done);
+    sprite.alpha = 1;
+    scene.tweens.add({
+        targets: sprite,
+        alpha: 0.5,
+        duration: 100,
+        yoyo: true,
+        ease: 'Quad.easeInOut',
+        onComplete: () => {
+            sprite.alpha = 1;
+            done();
+        },
+    });
 }
