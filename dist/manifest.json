@@ -19,6 +19,56 @@
             }
         ]
     },
+    "audio": {
+        "path": "audio",
+        "defaultType": "audio",
+        "files": [
+            {
+                "key": "ambient_music",
+                "url": ["ambient_music.ogg", "ambient_music.mp3"]
+            },
+            {
+                "key": "crate_explosion",
+                "url": ["crate_explosion.ogg", "crate_explosion.mp3"]
+            },
+            {
+                "key": "player_explosion",
+                "url": ["player_explosion.ogg", "player_explosion.mp3"]
+            },
+            {
+                "key": "player_shutdown",
+                "url": ["player_shutdown.ogg", "player_shutdown.mp3"]
+            },
+            {
+                "key": "powerup_shield",
+                "url": ["powerup_shield.ogg", "powerup_shield.mp3"]
+            },
+            {
+                "key": "powerup_weapon",
+                "url": ["powerup_weapon.ogg", "powerup_weapon.mp3"]
+            },
+            {
+                "key": "powerup",
+                "url": ["powerup.ogg", "powerup.mp3"]
+            },
+            {
+                "key": "weapon_burst_fire",
+                "url": ["weapon_burst_fire.ogg", "weapon_burst_fire.mp3"]
+            },
+            {
+                "key": "weapon_burst_hit",
+                "url": ["weapon_burst_hit.ogg", "weapon_burst_hit.mp3"]
+            },
+            {
+                "key": "weapon_pulse_fire",
+                "url": ["weapon_pulse_fire.ogg", "weapon_pulse_fire.mp3"]
+            },
+            {
+                "key": "weapon_pulse_hit",
+                "url": ["weapon_pulse_hit.ogg", "weapon_pulse_hit.mp3"]
+            }
+        ]
+    },
     "meta": {
         "generated": "1526835788373",
         "app": "Space Patrol",

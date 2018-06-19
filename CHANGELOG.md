@@ -1,3 +1,21 @@
+# [1.11.0](https://github.com/nunof07/space-patrol/compare/v1.10.0...v1.11.0) (2018-06-19)
+
+
+### Bug Fixes
+
+* **audio:** replace sound effects ([9650567](https://github.com/nunof07/space-patrol/commit/9650567))
+* **effects:** flash damage memory leak ([1adb516](https://github.com/nunof07/space-patrol/commit/1adb516))
+* **player:** show engine particles ([d7e1bb0](https://github.com/nunof07/space-patrol/commit/d7e1bb0))
+* **player:** start with full health ([660b034](https://github.com/nunof07/space-patrol/commit/660b034))
+
+
+### Features
+
+* **audio:** music ([68963a6](https://github.com/nunof07/space-patrol/commit/68963a6))
+* **audio:** play ([eaa9863](https://github.com/nunof07/space-patrol/commit/eaa9863))
+* **audio:** update weapon sound effects ([a6c4acc](https://github.com/nunof07/space-patrol/commit/a6c4acc))
+* **title:** show sequence ([329a928](https://github.com/nunof07/space-patrol/commit/329a928))
+
 # [1.10.0](https://github.com/nunof07/space-patrol/compare/v1.9.0...v1.10.0) (2018-06-17)
 
 

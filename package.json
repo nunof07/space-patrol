@@ -1,6 +1,6 @@
 {
     "name": "space-patrol",
-    "version": "1.10.0",
+    "version": "1.11.0",
     "description": "Shoot 'em up space game",
     "main": "index.js",
     "scripts": {
