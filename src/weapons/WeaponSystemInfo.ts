@@ -4,4 +4,5 @@ export interface WeaponSystemInfo {
     readonly bulletFactory: BulletFactory;
     readonly group: { frame: string; maxSize: number };
     readonly triggerStep: number;
+    readonly fireAudioKey: string;
 }

@@ -85,11 +85,14 @@ export class HealthComponent implements Component {
         );
     }
 
-    public incShield(amount: number): void {
+    public incShield(amount: number): boolean {
         const vitality = this.healthImpl.vitality;
+        const incremented = vitality.shield.percentage < 1;
         this.healthImpl = this.newHealth(
             new Vitality(vitality.health, incHitpoints(vitality.shield, amount))
         );
+
+        return incremented;
     }
 
     public refreshFilled(): void {

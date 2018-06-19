@@ -63,6 +63,10 @@ export class Burst implements Bullet {
         return 50;
     }
 
+    public get hitAudioKey(): string {
+        return 'weapon_burst_hit';
+    }
+
     public isAlive(): boolean {
         return isBulletAlive(this);
     }

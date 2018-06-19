@@ -1,7 +1,7 @@
 import { System } from '@src/core/System';
 import * as Phaser from 'phaser';
 
-export class PauseSystem implements System {
+export class MusicSystem implements System {
     private readonly scene: Phaser.Scene;
 
     constructor(scene: Phaser.Scene) {
@@ -9,11 +9,8 @@ export class PauseSystem implements System {
     }
 
     public create(): void {
-        this.scene.input.keyboard.on('keydown_ESC', () => {
-            this.scene.scene.pause('game');
-            this.scene.sound.pauseAll();
-            this.scene.scene.launch('paused');
-        });
+        const music = this.scene.sound.add('ambient_music', { loop: true });
+        music.play();
     }
 
     public update(_time: number, _delta: number): void {

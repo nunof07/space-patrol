@@ -1,6 +1,7 @@
 import { Powerup } from '@src/crates/Powerup';
 import { PowerupType } from '@src/crates/PowerupType';
 import { PlayerSystem } from '@src/player/PlayerSystem';
+import { UpgradableWeaponSystem } from '@src/weapons/UpgradableWeaponSystem';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
 import * as Phaser from 'phaser';
 
@@ -24,12 +25,13 @@ export class PowerupPlayerCollider {
             powerup.sprite,
             this.player.player.group,
             () => {
+                this.scene.sound.play('powerup');
                 switch (powerup.powerupType) {
                     case PowerupType.Burst:
-                        this.weapons.burst.upgrade();
+                        this.weaponPowerup(this.weapons.burst);
                         break;
                     case PowerupType.Pulse:
-                        this.weapons.pulse.upgrade();
+                        this.weaponPowerup(this.weapons.pulse);
                         break;
                     case PowerupType.Health:
                         this.healthPowerup();
@@ -44,13 +46,21 @@ export class PowerupPlayerCollider {
         );
     }
 
+    private weaponPowerup(weapon: UpgradableWeaponSystem): void {
+        if (weapon.upgrade()) {
+            this.scene.sound.play('powerup_weapon');
+        }
+    }
+
     private healthPowerup(): void {
         this.player.healthComponent.incHealth(25);
         this.player.healthComponent.refreshFilled();
     }
 
     private shieldPowerup(): void {
-        this.player.healthComponent.incShield(25);
+        if (this.player.healthComponent.incShield(25)) {
+            this.scene.sound.play('powerup_shield');
+        }
         this.player.healthComponent.refreshFilled();
         this.player.refreshShield();
     }

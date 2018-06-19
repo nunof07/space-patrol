@@ -12,28 +12,35 @@ export class WeaponFactory implements Factory<WeaponComponent> {
     private readonly factory: BulletFactory;
     private readonly frame: string;
     private readonly maxSize: number;
+    private readonly fireAudioKey: string;
 
     constructor(
         scene: Phaser.Scene,
         player: Player,
         factory: BulletFactory,
-        group: { frame: string; maxSize: number }
+        info: {
+            group: { frame: string; maxSize: number };
+            fireAudioKey: string;
+        }
     ) {
         this.scene = scene;
         this.player = player;
         this.factory = factory;
-        this.frame = group.frame;
-        this.maxSize = group.maxSize;
+        this.frame = info.group.frame;
+        this.maxSize = info.group.maxSize;
+        this.fireAudioKey = info.fireAudioKey;
     }
 
     public create(): WeaponComponent {
         return new WeaponComponent(
+            this.scene,
             new Weapon(
                 this.player,
                 [],
                 addBulletGroup(this.scene, this.frame, this.maxSize)
             ),
-            this.factory
+            this.factory,
+            this.fireAudioKey
         );
     }
 }
