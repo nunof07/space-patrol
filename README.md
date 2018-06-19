@@ -42,12 +42,11 @@ All audio effects from [Sonniss](https://sonniss.com), [GDC 2018](https://sonnis
 -   Airborne Sound, "Drone,Cyber,Deep,Pulse,Disturbing,Invasive,Loop": Ambient music.
 -   Fox Audio Post-Production, "Droid_Vocal_23": Shield upgrade.
 -   Fox Audio Post-Production, "SFX_Sub_Sonic_Bass_28": Player explosion.
--   Gamemaster Audio, "gun_silenced_sniper1_shot_01": Burst weapon fire.
+-   Gamemaster Audio, "gun_silenced_sniper1_shot_01": Burst weapon fire and hit.
 -   Glitchedtones, "User Interface Notification Bubbles 04": Weapon upgrade.
 -   Glitchedtones, "User Interface Shut Down 01": Game over.
 -   Olivier Girardot, "Bullet Impact 22": Pulse weapon hit.
 -   Phil Michalski, "PM_CS_beep_denied5": Powerup picked.
--   SoundMorph, "Future Weapons 3 - Grenade Launcher 2 - Hit 2": Burst weapon hit.
 -   Tone Manufacture - Michael F. Bates, "TM_GLITCH UI_Glitches dry_53": Pulse weapon fire.
 
 ### Libraries
