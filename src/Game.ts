@@ -6,6 +6,7 @@ import { MusicSystem } from '@src/MusicSystem';
 import { PauseSystem } from '@src/PauseSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { Background } from '@src/scenario/Background';
+import { ScenarioSystem } from '@src/scenario/ScenarioSystem';
 import { setupCamerasResize } from '@src/scene/setupCamerasResize';
 import { TitleSystem } from '@src/TitleSystem';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
@@ -33,6 +34,7 @@ export class Game extends Phaser.Scene {
             new PauseSystem(this),
             new MusicSystem(this),
             new TitleSystem(this),
+            new ScenarioSystem(this),
         ]);
     }
 
