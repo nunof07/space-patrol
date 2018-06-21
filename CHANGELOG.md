@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/nunof07/space-patrol/compare/v1.11.0...v1.12.0) (2018-06-21)
+
+
+### Features
+
+* **scenario:** system ([f4aa53c](https://github.com/nunof07/space-patrol/commit/f4aa53c))
+
 # [1.11.0](https://github.com/nunof07/space-patrol/compare/v1.10.0...v1.11.0) (2018-06-19)
 
 
