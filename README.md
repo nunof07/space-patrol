@@ -27,6 +27,7 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 #### Graphics
 
 -   [Big Rook Games](http://bigrookgames.com/), [Undead Empire](https://opengameart.org/content/undeadempire-tileset-64x64-repack-floor-lava-walls-and-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/): Crate smoke explosion, burst weapon explosion.
+-   [Jonas Wagner](http://29a.ch/), [JS WARS](https://opengameart.org/content/asteroid-explosions-rocket-mine-and-laser) - [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/): Meteor and enemy explosion.
 -   [Kenney](http://kenney.nl/), [Platformer Pack Redux](http://kenney.nl/assets/platformer-pack-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Health and shield powerups.
 -   [Kenney](http://kenney.nl/), [Sokoban](http://kenney.nl/assets/sokoban) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Crates.
 -   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, meteors, and stars background.
@@ -47,6 +48,7 @@ All audio effects from [Sonniss](https://sonniss.com), [GDC 2018](https://sonnis
 -   Gamemaster Audio, "gun_silenced_sniper1_shot_01": Burst weapon fire and hit.
 -   Glitchedtones, "User Interface Notification Bubbles 04": Weapon upgrade.
 -   Glitchedtones, "User Interface Shut Down 01": Game over.
+-   Lukas Tvrdon, "Distant Blast 17": Explosion.
 -   Olivier Girardot, "Bullet Impact 22": Pulse weapon hit.
 -   Phil Michalski, "PM_CS_beep_denied5": Powerup picked.
 -   Tone Manufacture - Michael F. Bates, "TM_GLITCH UI_Glitches dry_53": Pulse weapon fire.
