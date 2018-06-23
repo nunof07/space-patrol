@@ -1,5 +1,4 @@
 import { Factory } from '@src/core/Factory';
-import { getScalar } from '@src/core/getScalar';
 import { Scalar } from '@src/core/Scalar';
 import { addHealthBar } from '@src/health/addHealthBar';
 import { addShieldBar } from '@src/health/addShieldBar';
@@ -48,7 +47,7 @@ export class HealthFactory implements Factory<HealthComponent> {
     public create(): HealthComponent {
         const graphics = this.scene.add.graphics();
         graphics.depth = 800;
-        const parent = getScalar(this.parent);
+        const parent = this.parent.value;
         const healthBar = addHealthBar(parent, this.bar.width);
         const shieldBar = addShieldBar(parent, this.bar.width);
         const health = new Health(

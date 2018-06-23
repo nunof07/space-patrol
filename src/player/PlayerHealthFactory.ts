@@ -1,4 +1,5 @@
 import { Factory } from '@src/core/Factory';
+import { ScalarOf } from '@src/core/ScalarOf';
 import { HealthComponent } from '@src/health/HealthComponent';
 import { HealthFactory } from '@src/health/HealthFactory';
 import { Hitpoints } from '@src/health/Hitpoints';
@@ -20,7 +21,7 @@ export class PlayerHealthFactory implements Factory<HealthComponent> {
     public create(): HealthComponent {
         const health = new HealthFactory(
             this.scene,
-            cockpit(this.player.group),
+            new ScalarOf(cockpit(this.player.group)),
             new Vitality(new Hitpoints(100, 100), new Hitpoints(100, 0)),
             {
                 width: 2.5,
