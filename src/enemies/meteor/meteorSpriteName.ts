@@ -14,5 +14,5 @@ export function meteorSpriteName(
                 ? 'med'
                 : 'small';
 
-    return `neutrals/meteor-${compositionStr}-${sizeStr}-0${index}`;
+    return `neutrals/meteor-${compositionStr}-${sizeStr}-0${index}.png`;
 }

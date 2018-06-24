@@ -1,14 +1,14 @@
-import { Component } from '@src/core/Component';
 import { crateSpriteFrame } from '@src/crates/crateSpriteFrame';
 import { playCrateExplosion } from '@src/crates/playCrateExplosion';
 import { PowerupType } from '@src/crates/PowerupType';
 import { Destructable } from '@src/health/Destructable';
+import { DestructableComponent } from '@src/health/DestructableComponent';
 import { HealthComponent } from '@src/health/HealthComponent';
 import { Vitality } from '@src/health/Vitality';
 import { isOffCameraDown } from '@src/sprites/isOffCameraDown';
 import * as Phaser from 'phaser';
 
-export class Crate implements Component {
+export class Crate implements DestructableComponent {
     private readonly scene: Phaser.Scene;
     private readonly emitter: Phaser.Events.EventEmitter;
     private readonly speed: number;

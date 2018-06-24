@@ -2,7 +2,7 @@ import { addAnimation } from '@src/animation/addAnimation';
 import { System } from '@src/core/System';
 import { Crate } from '@src/crates/Crate';
 import { CrateFactory } from '@src/crates/CrateFactory';
-import { updateCrates } from '@src/crates/updateCrates';
+import { updateDestructables } from '@src/health/updateDestructables';
 import { DestructableBulletCollider } from '@src/weapons/DestructableBulletCollider';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
 import * as Phaser from 'phaser';
@@ -53,6 +53,6 @@ export class CratesSystem implements System {
     }
 
     public update(time: number, delta: number): void {
-        this.crates = updateCrates(this.crates, time, delta);
+        this.crates = updateDestructables(this.crates, time, delta);
     }
 }

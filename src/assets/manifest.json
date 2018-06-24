@@ -32,6 +32,10 @@
                 "url": ["crate_explosion.ogg", "crate_explosion.mp3"]
             },
             {
+                "key": "explosion",
+                "url": ["explosion.ogg", "explosion.mp3"]
+            },
+            {
                 "key": "player_explosion",
                 "url": ["player_explosion.ogg", "player_explosion.mp3"]
             },

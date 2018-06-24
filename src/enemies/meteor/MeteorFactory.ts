@@ -36,16 +36,18 @@ export class MeteorFactory implements Factory<Meteor> {
     }
 
     private createSprite(): Phaser.GameObjects.Sprite {
+        const frame = randomMeteorSpriteName(
+            this.info.composition,
+            this.info.size,
+            this.engine
+        );
         const sprite = this.scene.add.sprite(
             this.info.startX,
             0,
             'sprites',
-            randomMeteorSpriteName(
-                this.info.composition,
-                this.info.size,
-                this.engine
-            )
+            frame
         );
+        sprite.depth = 500;
         sprite.y = -sprite.originY * sprite.displayHeight;
         sprite.setOrigin(0.5, 0);
         this.scene.physics.world.enable(sprite);
