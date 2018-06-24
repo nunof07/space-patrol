@@ -13,7 +13,7 @@ export class Crate implements Component {
     private readonly emitter: Phaser.Events.EventEmitter;
     private readonly speed: number;
     private readonly powerupTypeImpl: PowerupType;
-    private readonly destructable: Destructable;
+    private readonly destructableImpl: Destructable;
     private isDamaged: boolean;
     private isDestroyed: boolean;
 
@@ -29,16 +29,18 @@ export class Crate implements Component {
         this.isDamaged = false;
         this.powerupTypeImpl = powerupType;
         this.isDestroyed = false;
-        this.destructable = new Destructable(scene, sprite, health);
-        this.destructable.onDamage(() => this.onHit());
+        this.destructableImpl = new Destructable(scene, sprite, health);
+        this.destructableImpl.onDamage(() => {
+            this.onHit();
+        });
     }
 
     public update(time: number, delta: number): void {
-        this.destructable.update(time, delta);
+        this.destructableImpl.update(time, delta);
         this.sprite.y += this.speed;
         this.setDamaged();
 
-        if (isOffCameraDown(this.scene, this.destructable.sprite)) {
+        if (isOffCameraDown(this.scene, this.destructableImpl.sprite)) {
             this.destroy();
         }
     }
@@ -48,7 +50,7 @@ export class Crate implements Component {
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {
-        return this.destructable.sprite;
+        return this.destructableImpl.sprite;
     }
 
     public get powerupType(): PowerupType {
@@ -56,11 +58,15 @@ export class Crate implements Component {
     }
 
     public get vitality(): Vitality {
-        return this.destructable.healthComponent.health().vitality;
+        return this.destructableImpl.healthComponent.health().vitality;
+    }
+
+    public get destructable(): Destructable {
+        return this.destructableImpl;
     }
 
     private destroy(): void {
-        this.destructable.destroy();
+        this.destructableImpl.destroy();
         this.isDestroyed = true;
     }
 

@@ -1,3 +1,4 @@
+import { addAnimation } from '@src/animation/addAnimation';
 import { Factory } from '@src/core/Factory';
 import { Scalar } from '@src/core/Scalar';
 import { System } from '@src/core/System';
@@ -25,6 +26,7 @@ export class WaveSystem implements System {
 
     public create(): void {
         this.startTimer();
+        addAnimation(this.scene, 'explosion', 'effects/explosion_', 17);
     }
 
     public update(time: number, delta: number): void {
