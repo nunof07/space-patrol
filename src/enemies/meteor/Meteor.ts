@@ -52,6 +52,12 @@ export class Meteor implements Component {
         return this.destructableImpl;
     }
 
+    public explode(): void {
+        playExplosion(this.scene, this.sprite);
+        this.scene.sound.play('explosion');
+        this.destroy();
+    }
+
     private destroy(): void {
         this.destructableImpl.destroy();
         this.isDestroyed = true;
@@ -59,8 +65,7 @@ export class Meteor implements Component {
 
     private onHit(): void {
         if (!this.vitality.isAlive() && !this.isDestroyed) {
-            playExplosion(this.scene, this.sprite);
-            this.destroy();
+            this.explode();
         }
     }
 }
