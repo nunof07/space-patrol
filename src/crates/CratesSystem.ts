@@ -1,9 +1,9 @@
 import { addAnimation } from '@src/animation/addAnimation';
 import { System } from '@src/core/System';
 import { Crate } from '@src/crates/Crate';
-import { CrateBulletCollider } from '@src/crates/CrateBulletCollider';
 import { CrateFactory } from '@src/crates/CrateFactory';
 import { updateCrates } from '@src/crates/updateCrates';
+import { DestructableBulletCollider } from '@src/weapons/DestructableBulletCollider';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
 import * as Phaser from 'phaser';
 
@@ -11,7 +11,7 @@ export class CratesSystem implements System {
     private readonly scene: Phaser.Scene;
     private readonly factory: CrateFactory;
     private readonly weapons: WeaponsSystem;
-    private readonly collider: CrateBulletCollider;
+    private readonly collider: DestructableBulletCollider;
     private readonly emitter: Phaser.Events.EventEmitter;
     private crates: ReadonlyArray<Crate>;
 
@@ -20,7 +20,7 @@ export class CratesSystem implements System {
         this.factory = new CrateFactory(scene);
         this.crates = [];
         this.weapons = weapons;
-        this.collider = new CrateBulletCollider(this.scene);
+        this.collider = new DestructableBulletCollider(this.scene);
         this.emitter = new Phaser.Events.EventEmitter();
     }
 

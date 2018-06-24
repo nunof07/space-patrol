@@ -29,8 +29,10 @@ export class MeteorFactory implements Factory<Meteor> {
     public create(): Meteor {
         const sprite = this.createSprite();
         const health = this.createHealth(sprite);
+        const meteor = new Meteor(this.scene, sprite, health, this.info.size);
+        sprite.setData('meteor', meteor);
 
-        return new Meteor(this.scene, sprite, health, this.info.size);
+        return meteor;
     }
 
     private createSprite(): Phaser.GameObjects.Sprite {

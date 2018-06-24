@@ -80,3 +80,11 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 | ------ | ---- | ------ | ------- | ------- | ------- | ------- | ------- | ------- |
 | Pulse  | 150  | 10     | 1       | 2       | 4       | 6       | 10      | 18      |
 | Burst  | 1000 | 50     | 2       | 4       | 6       | 8       | 10      | 12      |
+
+### Enemy stats
+
+| Enemy           | Hitpoints | Damage |
+| --------------- | --------- | ------ |
+| Meteor (Small)  | 75        | 50     |
+| Meteor (Medium) | 125       | 75     |
+| Meteor (Large)  | 200       | 125    |

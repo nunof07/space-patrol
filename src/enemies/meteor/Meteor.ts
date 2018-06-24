@@ -9,7 +9,7 @@ import * as Phaser from 'phaser';
 
 export class Meteor implements Component {
     private readonly scene: Phaser.Scene;
-    private readonly destructable: Destructable;
+    private readonly destructableImpl: Destructable;
     private readonly sizeImpl: MeteorSize;
     private isDestroyed: boolean;
 
@@ -21,21 +21,23 @@ export class Meteor implements Component {
     ) {
         this.scene = scene;
         this.isDestroyed = false;
-        this.destructable = new Destructable(scene, sprite, health);
-        this.destructable.onDamage(() => this.onHit());
+        this.destructableImpl = new Destructable(scene, sprite, health);
+        this.destructableImpl.onDamage(() => {
+            this.onHit();
+        });
         this.sizeImpl = size;
     }
 
     public update(time: number, delta: number): void {
-        this.destructable.update(time, delta);
+        this.destructableImpl.update(time, delta);
 
-        if (isOffCameraDown(this.scene, this.destructable.sprite)) {
+        if (isOffCameraDown(this.scene, this.destructableImpl.sprite)) {
             this.destroy();
         }
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {
-        return this.destructable.sprite;
+        return this.destructableImpl.sprite;
     }
 
     public get size(): MeteorSize {
@@ -43,11 +45,15 @@ export class Meteor implements Component {
     }
 
     public get vitality(): Vitality {
-        return this.destructable.healthComponent.health().vitality;
+        return this.destructableImpl.healthComponent.health().vitality;
+    }
+
+    public get destructable(): Destructable {
+        return this.destructableImpl;
     }
 
     private destroy(): void {
-        this.destructable.destroy();
+        this.destructableImpl.destroy();
         this.isDestroyed = true;
     }
 
