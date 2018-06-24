@@ -2,19 +2,18 @@ import { Component } from '@src/core/Component';
 import { crateSpriteFrame } from '@src/crates/crateSpriteFrame';
 import { playCrateExplosion } from '@src/crates/playCrateExplosion';
 import { PowerupType } from '@src/crates/PowerupType';
-import { flashDamage } from '@src/effects/flashDamage';
-import { flyOffText } from '@src/effects/flyOffText';
+import { Destructable } from '@src/health/Destructable';
 import { HealthComponent } from '@src/health/HealthComponent';
+import { Vitality } from '@src/health/Vitality';
 import { isOffCameraDown } from '@src/sprites/isOffCameraDown';
 import * as Phaser from 'phaser';
 
 export class Crate implements Component {
     private readonly scene: Phaser.Scene;
-    private readonly spriteImpl: Phaser.GameObjects.Sprite;
-    private readonly health: HealthComponent;
     private readonly emitter: Phaser.Events.EventEmitter;
     private readonly speed: number;
     private readonly powerupTypeImpl: PowerupType;
+    private readonly destructable: Destructable;
     private isDamaged: boolean;
     private isDestroyed: boolean;
 
@@ -25,39 +24,22 @@ export class Crate implements Component {
         powerupType: PowerupType
     ) {
         this.scene = scene;
-        this.spriteImpl = sprite;
         this.speed = 2;
-        this.health = health;
         this.emitter = new Phaser.Events.EventEmitter();
         this.isDamaged = false;
         this.powerupTypeImpl = powerupType;
         this.isDestroyed = false;
+        this.destructable = new Destructable(scene, sprite, health);
+        this.destructable.onDamage(() => this.onHit());
     }
 
     public update(time: number, delta: number): void {
-        this.health.update(time, delta);
-        this.spriteImpl.y += this.speed;
+        this.destructable.update(time, delta);
+        this.sprite.y += this.speed;
         this.setDamaged();
 
-        if (isOffCameraDown(this.scene, this.spriteImpl)) {
+        if (isOffCameraDown(this.scene, this.destructable.sprite)) {
             this.destroy();
-        }
-    }
-
-    public isAlive(): boolean {
-        return this.health.health().vitality.isAlive();
-    }
-
-    public hit(damage: number): void {
-        if (this.health.hit(damage)) {
-            flyOffText(this.scene, `-${damage}`, this.spriteImpl, true);
-            flashDamage(this.scene, this.spriteImpl, 510, () => {
-                if (!this.isAlive() && !this.isDestroyed) {
-                    playCrateExplosion(this.scene, this.spriteImpl);
-                    this.emitter.emit('explosion', this);
-                    this.destroy();
-                }
-            });
         }
     }
 
@@ -66,29 +48,37 @@ export class Crate implements Component {
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {
-        return this.spriteImpl;
+        return this.destructable.sprite;
     }
 
     public get powerupType(): PowerupType {
         return this.powerupTypeImpl;
     }
 
+    public get vitality(): Vitality {
+        return this.destructable.healthComponent.health().vitality;
+    }
+
     private destroy(): void {
-        this.spriteImpl.destroy();
-        this.health.destroy();
+        this.destructable.destroy();
         this.isDestroyed = true;
     }
 
     private setDamaged(): void {
-        if (
-            !this.isDamaged &&
-            this.health.health().vitality.health.percentage <= 0.6
-        ) {
+        if (!this.isDamaged && this.vitality.health.percentage <= 0.6) {
             this.isDamaged = true;
-            this.spriteImpl.setTexture(
+            this.sprite.setTexture(
                 'sprites',
                 crateSpriteFrame(this.powerupTypeImpl, true)
             );
+        }
+    }
+
+    private onHit(): void {
+        if (!this.vitality.isAlive() && !this.isDestroyed) {
+            playCrateExplosion(this.scene, this.sprite);
+            this.emitter.emit('explosion', this);
+            this.destroy();
         }
     }
 }

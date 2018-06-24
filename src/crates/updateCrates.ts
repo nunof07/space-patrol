@@ -10,7 +10,7 @@ export function updateCrates(
     crates.forEach(crate => {
         crate.update(time, delta);
 
-        if (crate.isAlive()) {
+        if (crate.vitality.isAlive()) {
             result = result.concat(crate);
         }
     });
