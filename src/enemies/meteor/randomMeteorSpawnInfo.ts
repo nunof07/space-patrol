@@ -16,6 +16,6 @@ export function randomMeteorSpawnInfo(
             composition !== undefined ? composition : randomMeteorType(engine),
         startX: Random.integer(0, scene.cameras.main.width)(engine),
         endX: Random.integer(0, scene.cameras.main.width)(engine),
-        speed: Random.integer(100, 500)(engine),
+        speed: Random.integer(150, 450)(engine),
     };
 }
