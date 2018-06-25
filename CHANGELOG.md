@@ -1,3 +1,23 @@
+# [1.13.0](https://github.com/nunof07/space-patrol/compare/v1.12.0...v1.13.0) (2018-06-25)
+
+
+### Bug Fixes
+
+* **crates:** decrease and randomize frequency ([e7b3114](https://github.com/nunof07/space-patrol/commit/e7b3114))
+* **meteor:** play explosion in center ([f78861b](https://github.com/nunof07/space-patrol/commit/f78861b))
+* **meteors:** change collission to circle ([6fa1d89](https://github.com/nunof07/space-patrol/commit/6fa1d89))
+* **meteors:** change delay between meteors and count ([612b78a](https://github.com/nunof07/space-patrol/commit/612b78a))
+* **meteors:** change large damage ([6c47d0b](https://github.com/nunof07/space-patrol/commit/6c47d0b))
+* **meteors:** change speed and count ([0023800](https://github.com/nunof07/space-patrol/commit/0023800))
+* **meteors:** correctly count and finish wave ([c199738](https://github.com/nunof07/space-patrol/commit/c199738))
+* **player:** change max health and shield ([2377acc](https://github.com/nunof07/space-patrol/commit/2377acc))
+* **powerups:** update health and shield amounts ([348096f](https://github.com/nunof07/space-patrol/commit/348096f))
+
+
+### Features
+
+* **meteors:** wave ([61fe76f](https://github.com/nunof07/space-patrol/commit/61fe76f))
+
 # [1.12.0](https://github.com/nunof07/space-patrol/compare/v1.11.0...v1.12.0) (2018-06-21)
 
 
