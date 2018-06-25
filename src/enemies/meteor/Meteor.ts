@@ -59,7 +59,7 @@ export class Meteor implements Component {
         this.destroy();
     }
 
-    private destroy(): void {
+    public destroy(): void {
         this.destructableImpl.destroy();
         this.isDestroyed = true;
     }

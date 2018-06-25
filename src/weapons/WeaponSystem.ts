@@ -1,4 +1,5 @@
 import { CompositeComponent } from '@src/core/CompositeComponent';
+import { Restartable } from '@src/core/Restartable';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { TriggerFactory } from '@src/weapons/TriggerFactory';
@@ -7,7 +8,7 @@ import { WeaponFactory } from '@src/weapons/WeaponFactory';
 import { WeaponSystemInfo } from '@src/weapons/WeaponSystemInfo';
 import * as Phaser from 'phaser';
 
-export class WeaponSystem implements System {
+export class WeaponSystem implements System, Restartable {
     private readonly scene: Phaser.Scene;
     private readonly player: PlayerSystem;
     private readonly info: WeaponSystemInfo;
@@ -45,5 +46,9 @@ export class WeaponSystem implements System {
 
     public get weaponComponent(): WeaponComponent {
         return this.weaponImpl;
+    }
+
+    public restart(): void {
+        this.weaponComponent.factory.level.restart();
     }
 }

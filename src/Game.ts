@@ -49,6 +49,7 @@ export class Game extends Phaser.Scene {
             new RandomInt(random, 10000, 20000)
         );
         const powerups = this.createPowerupSystem(player, weapons, crates);
+        const waves = this.createWaveSystem(player, weapons, random);
 
         return [
             new Background(this),
@@ -60,8 +61,8 @@ export class Game extends Phaser.Scene {
             new MusicSystem(this),
             new TitleSystem(this),
             new ScenarioSystem(this),
-            this.createWaveSystem(player, weapons, random),
-            new GameOverSystem(this, player),
+            waves,
+            new GameOverSystem(this, player, [crates, waves, weapons, player]),
         ];
     }
 

@@ -1,11 +1,12 @@
 import { addAnimation } from '@src/animation/addAnimation';
 import { Factory } from '@src/core/Factory';
+import { Restartable } from '@src/core/Restartable';
 import { Scalar } from '@src/core/Scalar';
 import { System } from '@src/core/System';
 import { Wave } from '@src/enemies/Wave';
 import * as Phaser from 'phaser';
 
-export class WaveSystem implements System {
+export class WaveSystem implements System, Restartable {
     private readonly scene: Phaser.Scene;
     private readonly factory: Factory<Wave>;
     private readonly delay: Scalar<number>;
@@ -35,18 +36,31 @@ export class WaveSystem implements System {
         }
     }
 
+    public restart(): void {
+        if (this.isActive) {
+            this.isActive = false;
+            this.wave.destroy();
+            this.timer.destroy();
+            this.startTimer();
+        }
+    }
+
     private startTimer(): void {
         this.timer = this.scene.time.addEvent({
             delay: this.delay.value,
             callback: () => {
-                this.wave = this.factory.create();
-                this.isActive = true;
-                this.wave.onComplete(() => {
-                    this.isActive = false;
-                    this.timer.destroy();
-                    this.startTimer();
-                });
+                this.createWave();
             },
+        });
+    }
+
+    private createWave(): void {
+        this.wave = this.factory.create();
+        this.isActive = true;
+        this.wave.onComplete(() => {
+            this.isActive = false;
+            this.timer.destroy();
+            this.startTimer();
         });
     }
 }

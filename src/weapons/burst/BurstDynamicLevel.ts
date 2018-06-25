@@ -83,4 +83,8 @@ export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
     public get bulletsCount(): number {
         return this.count;
     }
+
+    public restart(): void {
+        this.currentLevelImpl = 1;
+    }
 }

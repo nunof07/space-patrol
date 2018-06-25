@@ -1,5 +1,6 @@
 import { body } from '@src/physics/arcade/body';
 import { PlayerSpriteConfig } from '@src/player/PlayerSpriteConfig';
+import { playerSpritePosition } from '@src/player/playerSpritePosition';
 import * as Phaser from 'phaser';
 
 export function addPlayerSprite(
@@ -8,9 +9,10 @@ export function addPlayerSprite(
     center: { x: number; y: number },
     config: PlayerSpriteConfig
 ): Phaser.GameObjects.Sprite {
+    const position = playerSpritePosition(center, config);
     const sprite = scene.make.sprite({
-        x: center.x + (config.flip.x ? -1 : 1) * config.offset.x,
-        y: center.y + config.offset.y,
+        x: position.x,
+        y: position.y,
         depth: config.depth,
         key: 'sprites',
         frame: `player/${config.key}.png`,

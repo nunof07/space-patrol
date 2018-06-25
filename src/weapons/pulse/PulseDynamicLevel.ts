@@ -71,6 +71,10 @@ export class PulseDynamicLevel implements PulseLevel, WeaponLevel {
         return this.count;
     }
 
+    public restart(): void {
+        this.currentLevelImpl = 1;
+    }
+
     private current(): PulseLevel {
         return this.levels[this.currentLevelImpl - 1];
     }

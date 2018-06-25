@@ -3,4 +3,5 @@ import { Destructable } from '@src/health/Destructable';
 
 export interface DestructableComponent extends Component {
     readonly destructable: Destructable;
+    destroy(): void;
 }

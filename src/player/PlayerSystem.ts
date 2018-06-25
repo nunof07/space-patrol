@@ -1,14 +1,16 @@
+import { Restartable } from '@src/core/Restartable';
 import { System } from '@src/core/System';
 import { HealthComponent } from '@src/health/HealthComponent';
 import { Player } from '@src/player/Player';
 import { PlayerFactory } from '@src/player/PlayerFactory';
 import { PlayerHealthFactory } from '@src/player/PlayerHealthFactory';
 import { PlayerInput } from '@src/player/PlayerInputFactory';
+import { resetPlayer } from '@src/player/resetPlayer';
 import { switchShield } from '@src/player/switchShield';
 import { spriteChildren } from '@src/sprites/spriteChildren';
 import * as Phaser from 'phaser';
 
-export class PlayerSystem implements System {
+export class PlayerSystem implements System, Restartable {
     private readonly scene: Phaser.Scene;
     private playerImpl: Player;
     private healthImpl: HealthComponent;
@@ -44,5 +46,11 @@ export class PlayerSystem implements System {
 
     public get healthComponent(): HealthComponent {
         return this.healthImpl;
+    }
+
+    public restart(): void {
+        resetPlayer(this.scene, this.playerImpl.group);
+        this.healthImpl.restart();
+        this.create();
     }
 }

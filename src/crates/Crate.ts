@@ -65,7 +65,7 @@ export class Crate implements DestructableComponent {
         return this.destructableImpl;
     }
 
-    private destroy(): void {
+    public destroy(): void {
         this.destructableImpl.destroy();
         this.isDestroyed = true;
     }

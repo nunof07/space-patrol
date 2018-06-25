@@ -1,3 +1,4 @@
+import { Restartable } from '@src/core/Restartable';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { BulletFactory } from '@src/weapons/BulletFactory';
@@ -7,7 +8,8 @@ import { WeaponComponent } from '@src/weapons/WeaponComponent';
 import { WeaponSystem } from '@src/weapons/WeaponSystem';
 import * as Phaser from 'phaser';
 
-export class PulseSystem implements System, UpgradableWeaponSystem {
+export class PulseSystem
+    implements System, UpgradableWeaponSystem, Restartable {
     private system: WeaponSystem;
 
     constructor(scene: Phaser.Scene, player: PlayerSystem) {
@@ -33,5 +35,9 @@ export class PulseSystem implements System, UpgradableWeaponSystem {
 
     public get weaponComponent(): WeaponComponent {
         return this.system.weaponComponent;
+    }
+
+    public restart(): void {
+        this.system.restart();
     }
 }

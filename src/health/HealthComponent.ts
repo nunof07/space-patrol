@@ -1,4 +1,5 @@
 import { Component } from '@src/core/Component';
+import { Restartable } from '@src/core/Restartable';
 import { Health } from '@src/health/Health';
 import { healthHit } from '@src/health/healthHit';
 import { incHitpoints } from '@src/health/incHitpoints';
@@ -7,12 +8,13 @@ import { updateFilled } from '@src/health/updateFilled';
 import { Vitality } from '@src/health/Vitality';
 import * as Phaser from 'phaser';
 
-export class HealthComponent implements Component {
+export class HealthComponent implements Component, Restartable {
     private readonly emitter: Phaser.Events.EventEmitter;
     private readonly offset: {
         health: number;
         shield: number;
     };
+    private startHealth: Health;
     private healthImpl: Health;
 
     constructor(
@@ -25,6 +27,7 @@ export class HealthComponent implements Component {
         this.healthImpl = health;
         this.emitter = new Phaser.Events.EventEmitter();
         this.offset = offset;
+        this.startHealth = health;
     }
 
     public update(_time: number, _delta: number): void {
@@ -98,6 +101,10 @@ export class HealthComponent implements Component {
 
     public refreshFilled(): void {
         updateFilled(this.healthImpl);
+    }
+
+    public restart(): void {
+        this.healthImpl = this.newHealth(this.startHealth.vitality);
     }
 
     private newHealth(vitality: Vitality): Health {
