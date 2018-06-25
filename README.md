@@ -71,8 +71,8 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 
 | Player | Start | Max |
 | ------ | ----- | --- |
-| Health | 100   | 100 |
-| Shield | 0     | 100 |
+| Health | 200   | 200 |
+| Shield | 0     | 150 |
 
 ### Weapon stats
 
@@ -87,4 +87,4 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 | --------------- | --------- | ------ |
 | Meteor (Small)  | 75        | 50     |
 | Meteor (Medium) | 125       | 75     |
-| Meteor (Large)  | 200       | 125    |
+| Meteor (Large)  | 200       | 200    |
