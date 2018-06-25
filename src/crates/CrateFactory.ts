@@ -1,4 +1,5 @@
 import { Factory } from '@src/core/Factory';
+import { ScalarOf } from '@src/core/ScalarOf';
 import { Crate } from '@src/crates/Crate';
 import { crateSpriteFrame } from '@src/crates/crateSpriteFrame';
 import { PowerupType } from '@src/crates/PowerupType';
@@ -36,7 +37,7 @@ export class CrateFactory implements Factory<Crate> {
     private addHealth(parent: Phaser.GameObjects.Sprite): HealthComponent {
         return new HealthFactory(
             this.scene,
-            parent,
+            new ScalarOf(parent),
             new Vitality(new Hitpoints(150, 150), new Hitpoints(0, 0)),
             {
                 width: 1,

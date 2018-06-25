@@ -24,6 +24,7 @@ export class PlayerSystem implements System {
             this.playerImpl
         ).create();
         new PlayerInput(this.scene, this.playerImpl, this.healthImpl).setup();
+        this.refreshShield();
     }
 
     public update(time: number, delta: number): void {

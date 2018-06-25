@@ -16,9 +16,9 @@ export function switchShield(
     if (health.shield.percentage > 0) {
         let shieldSprite;
 
-        if (health.shield.percentage < 0.33333) {
+        if (health.shield.percentage < 0.5) {
             shieldSprite = 'shield1';
-        } else if (health.shield.percentage < 0.66666) {
+        } else if (health.shield.percentage < 0.75) {
             shieldSprite = 'shield2';
         } else {
             shieldSprite = 'shield3';

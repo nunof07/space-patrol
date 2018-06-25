@@ -27,9 +27,10 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 #### Graphics
 
 -   [Big Rook Games](http://bigrookgames.com/), [Undead Empire](https://opengameart.org/content/undeadempire-tileset-64x64-repack-floor-lava-walls-and-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/): Crate smoke explosion, burst weapon explosion.
+-   [Jonas Wagner](http://29a.ch/), [JS WARS](https://opengameart.org/content/asteroid-explosions-rocket-mine-and-laser) - [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/): Meteor and enemy explosion.
 -   [Kenney](http://kenney.nl/), [Platformer Pack Redux](http://kenney.nl/assets/platformer-pack-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Health and shield powerups.
 -   [Kenney](http://kenney.nl/), [Sokoban](http://kenney.nl/assets/sokoban) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Crates.
--   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, and stars background.
+-   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, meteors, and stars background.
 -   [Skorpio](https://opengameart.org/users/skorpio), [Sci-fi effects](https://opengameart.org/content/sci-fi-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Player explosion and stars background.
 -   [Skorpio](https://opengameart.org/users/skorpio), [Space Ship Construction Kit](https://opengameart.org/content/space-ship-construction-kit) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Nebula.
 -   [Tatermand](https://opengameart.org/users/tatermand), [Space Game Art Pack (Extended)](https://opengameart.org/content/space-game-art-pack-extended) - [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/): Sspace dust, nebula, and star.
@@ -47,6 +48,7 @@ All audio effects from [Sonniss](https://sonniss.com), [GDC 2018](https://sonnis
 -   Gamemaster Audio, "gun_silenced_sniper1_shot_01": Burst weapon fire and hit.
 -   Glitchedtones, "User Interface Notification Bubbles 04": Weapon upgrade.
 -   Glitchedtones, "User Interface Shut Down 01": Game over.
+-   Lukas Tvrdon, "Distant Blast 17": Explosion.
 -   Olivier Girardot, "Bullet Impact 22": Pulse weapon hit.
 -   Phil Michalski, "PM_CS_beep_denied5": Powerup picked.
 -   Tone Manufacture - Michael F. Bates, "TM_GLITCH UI_Glitches dry_53": Pulse weapon fire.
@@ -69,8 +71,8 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 
 | Player | Start | Max |
 | ------ | ----- | --- |
-| Health | 100   | 100 |
-| Shield | 0     | 100 |
+| Health | 200   | 200 |
+| Shield | 0     | 150 |
 
 ### Weapon stats
 
@@ -78,3 +80,20 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 | ------ | ---- | ------ | ------- | ------- | ------- | ------- | ------- | ------- |
 | Pulse  | 150  | 10     | 1       | 2       | 4       | 6       | 10      | 18      |
 | Burst  | 1000 | 50     | 2       | 4       | 6       | 8       | 10      | 12      |
+
+### Powerup stats
+
+| Powerup | Change     |
+| ------- | ---------- |
+| Pulse   | +1 level   |
+| Burst   | +1 level   |
+| Health  | +50 health |
+| Shield  | +50 shield |
+
+### Enemy stats
+
+| Enemy           | Hitpoints | Damage |
+| --------------- | --------- | ------ |
+| Meteor (Small)  | 75        | 50     |
+| Meteor (Medium) | 125       | 75     |
+| Meteor (Large)  | 200       | 200    |

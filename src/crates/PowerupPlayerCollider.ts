@@ -53,12 +53,12 @@ export class PowerupPlayerCollider {
     }
 
     private healthPowerup(): void {
-        this.player.healthComponent.incHealth(25);
+        this.player.healthComponent.incHealth(50);
         this.player.healthComponent.refreshFilled();
     }
 
     private shieldPowerup(): void {
-        if (this.player.healthComponent.incShield(25)) {
+        if (this.player.healthComponent.incShield(50)) {
             this.scene.sound.play('powerup_shield');
         }
         this.player.healthComponent.refreshFilled();

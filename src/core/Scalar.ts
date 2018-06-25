@@ -1,1 +1,3 @@
-export type Scalar<T> = T | (() => T);
+export interface Scalar<T> {
+    readonly value: T;
+}
