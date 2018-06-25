@@ -85,6 +85,7 @@ export class MeteorWave implements Wave {
             this.weapons.burst.weaponComponent.weapon
         );
         this.playerCollider.setup(meteor);
+        this.created += 1;
 
         return meteor;
     }

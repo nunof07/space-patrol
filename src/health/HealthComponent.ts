@@ -76,6 +76,7 @@ export class HealthComponent implements Component {
 
     public destroy(): void {
         this.healthImpl.graphics.destroy();
+        this.healthImpl.vitality.destroy();
     }
 
     public incHealth(amount: number): void {
