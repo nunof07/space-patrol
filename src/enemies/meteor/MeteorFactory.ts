@@ -8,9 +8,9 @@ import { HealthComponent } from '@src/health/HealthComponent';
 import { HealthFactory } from '@src/health/HealthFactory';
 import { Hitpoints } from '@src/health/Hitpoints';
 import { Vitality } from '@src/health/Vitality';
+import { body } from '@src/physics/arcade/body';
 import * as Phaser from 'phaser';
 import * as Random from 'random-js';
-import { body } from '@src/physics/arcade/body';
 
 export class MeteorFactory implements Factory<Meteor> {
     private readonly scene: Phaser.Scene;
@@ -55,12 +55,7 @@ export class MeteorFactory implements Factory<Meteor> {
         body(sprite).setCircle(
             Math.min(sprite.displayWidth, sprite.displayHeight) * 0.5
         );
-        this.scene.physics.moveTo(
-            sprite,
-            this.info.endX,
-            this.scene.cameras.main.height,
-            this.info.speed
-        );
+        this.moveToDestination(sprite);
 
         return sprite;
     }
@@ -80,5 +75,14 @@ export class MeteorFactory implements Factory<Meteor> {
                 },
             }
         ).create();
+    }
+
+    private moveToDestination(sprite: Phaser.GameObjects.Sprite): void {
+        this.scene.physics.moveTo(
+            sprite,
+            this.info.endX,
+            this.scene.cameras.main.height,
+            this.info.speed
+        );
     }
 }
