@@ -39,11 +39,15 @@ export class Game extends Phaser.Scene {
     }
 
     private createSystems(): ReadonlyArray<System> {
+        const random = engine();
         const player = new PlayerSystem(this);
         const weapons = new WeaponsSystem(this, player);
-        const crates = new CratesSystem(this, weapons);
+        const crates = new CratesSystem(
+            this,
+            weapons,
+            new RandomInt(random, 10000, 20000)
+        );
         const powerups = this.createPowerupSystem(player, weapons, crates);
-        const random = engine();
 
         return [
             new Background(this),
