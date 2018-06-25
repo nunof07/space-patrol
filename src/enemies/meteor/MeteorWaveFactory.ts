@@ -29,8 +29,8 @@ export class MeteorWaveFactory implements Factory<Wave> {
     public create(): Wave {
         const wave = new MeteorWave(this.scene, this.player, this.weapons, {
             composition: randomMeteorType(this.engine),
-            count: new RandomInt(this.engine, 20, 100).value,
-            delay: new RandomInt(this.engine, 200, 2000),
+            count: new RandomInt(this.engine, 20, 50).value,
+            delay: new RandomInt(this.engine, 50, 500),
             engine: this.engine,
         });
         wave.next();

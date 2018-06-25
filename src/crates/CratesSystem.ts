@@ -17,7 +17,11 @@ export class CratesSystem implements System {
     private readonly delay: Scalar<number>;
     private crates: ReadonlyArray<Crate>;
 
-    constructor(scene: Phaser.Scene, weapons: WeaponsSystem, delay: Scalar<number>) {
+    constructor(
+        scene: Phaser.Scene,
+        weapons: WeaponsSystem,
+        delay: Scalar<number>
+    ) {
         this.scene = scene;
         this.factory = new CrateFactory(scene);
         this.crates = [];
@@ -30,7 +34,7 @@ export class CratesSystem implements System {
     public create(): void {
         addAnimation(this.scene, 'crateExplosion', 'crates/smoke_plume_', 10);
         this.scene.time.addEvent({
-            delay: this.delay.value;,
+            delay: this.delay.value,
             loop: true,
             callback: () => {
                 const crate = this.factory.create();
