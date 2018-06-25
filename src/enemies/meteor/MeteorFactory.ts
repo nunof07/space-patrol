@@ -10,6 +10,7 @@ import { Hitpoints } from '@src/health/Hitpoints';
 import { Vitality } from '@src/health/Vitality';
 import * as Phaser from 'phaser';
 import * as Random from 'random-js';
+import { body } from '@src/physics/arcade/body';
 
 export class MeteorFactory implements Factory<Meteor> {
     private readonly scene: Phaser.Scene;
@@ -51,6 +52,9 @@ export class MeteorFactory implements Factory<Meteor> {
         sprite.y = -sprite.originY * sprite.displayHeight;
         sprite.setOrigin(0.5, 0);
         this.scene.physics.world.enable(sprite);
+        body(sprite).setCircle(
+            Math.min(sprite.displayWidth, sprite.displayHeight) * 0.5
+        );
         this.scene.physics.moveTo(
             sprite,
             this.info.endX,
