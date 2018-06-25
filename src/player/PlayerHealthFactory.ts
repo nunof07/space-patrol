@@ -22,7 +22,7 @@ export class PlayerHealthFactory implements Factory<HealthComponent> {
         const health = new HealthFactory(
             this.scene,
             new ScalarOf(cockpit(this.player.group)),
-            new Vitality(new Hitpoints(100, 100), new Hitpoints(100, 0)),
+            new Vitality(new Hitpoints(200, 200), new Hitpoints(150, 0)),
             {
                 width: 2.5,
                 offset: {
