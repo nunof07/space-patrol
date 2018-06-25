@@ -5,6 +5,7 @@ import { PowerupPlayerCollider } from '@src/crates/PowerupPlayerCollider';
 import { PowerupSystem } from '@src/crates/PowerupSystem';
 import { MeteorWaveFactory } from '@src/enemies/meteor/MeteorWaveFactory';
 import { WaveSystem } from '@src/enemies/WaveSystem';
+import { GameOverSystem } from '@src/GameOverSystem';
 import { MusicSystem } from '@src/MusicSystem';
 import { PauseSystem } from '@src/PauseSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
@@ -60,6 +61,7 @@ export class Game extends Phaser.Scene {
             new TitleSystem(this),
             new ScenarioSystem(this),
             this.createWaveSystem(player, weapons, random),
+            new GameOverSystem(this, player),
         ];
     }
 
