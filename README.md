@@ -81,6 +81,15 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 | Pulse  | 150  | 10     | 1       | 2       | 4       | 6       | 10      | 18      |
 | Burst  | 1000 | 50     | 2       | 4       | 6       | 8       | 10      | 12      |
 
+### Powerup stats
+
+| Powerup | Change     |
+| ------- | ---------- |
+| Pulse   | +1 level   |
+| Burst   | +1 level   |
+| Health  | +50 health |
+| Shield  | +50 shield |
+
 ### Enemy stats
 
 | Enemy           | Hitpoints | Damage |
