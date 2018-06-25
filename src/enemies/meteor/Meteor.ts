@@ -4,6 +4,7 @@ import { playExplosion } from '@src/enemies/playExplosion';
 import { Destructable } from '@src/health/Destructable';
 import { HealthComponent } from '@src/health/HealthComponent';
 import { Vitality } from '@src/health/Vitality';
+import { centerPosition } from '@src/sprites/centerPosition';
 import { isOffCameraDown } from '@src/sprites/isOffCameraDown';
 import * as Phaser from 'phaser';
 
@@ -53,7 +54,7 @@ export class Meteor implements Component {
     }
 
     public explode(): void {
-        playExplosion(this.scene, this.sprite);
+        playExplosion(this.scene, centerPosition(this.sprite));
         this.scene.sound.play('explosion');
         this.destroy();
     }
