@@ -4,12 +4,14 @@ import { Restartable } from '@src/core/Restartable';
 import { Scalar } from '@src/core/Scalar';
 import { System } from '@src/core/System';
 import { Wave } from '@src/enemies/Wave';
+import { Destructable } from '@src/health/Destructable';
 import * as Phaser from 'phaser';
 
 export class WaveSystem implements System, Restartable {
     private readonly scene: Phaser.Scene;
     private readonly factory: Factory<Wave>;
     private readonly delay: Scalar<number>;
+    private readonly emitter: Phaser.Events.EventEmitter;
     private wave: Wave;
     private isActive: boolean;
     private timer: Phaser.Time.TimerEvent;
@@ -23,6 +25,7 @@ export class WaveSystem implements System, Restartable {
         this.factory = factory;
         this.delay = delay;
         this.isActive = false;
+        this.emitter = new Phaser.Events.EventEmitter();
     }
 
     public create(): void {
@@ -45,6 +48,10 @@ export class WaveSystem implements System, Restartable {
         }
     }
 
+    public onDeath(callback: (destructable: Destructable) => void): void {
+        this.emitter.on('death', callback);
+    }
+
     private startTimer(): void {
         this.timer = this.scene.time.addEvent({
             delay: this.delay.value,
@@ -56,6 +63,9 @@ export class WaveSystem implements System, Restartable {
 
     private createWave(): void {
         this.wave = this.factory.create();
+        this.wave.onDeath(destructable => {
+            this.emitter.emit('death', destructable);
+        });
         this.isActive = true;
         this.wave.onComplete(() => {
             this.isActive = false;

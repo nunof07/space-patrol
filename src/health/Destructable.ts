@@ -9,6 +9,7 @@ export class Destructable implements Component {
     private readonly spriteImpl: Phaser.GameObjects.Sprite;
     private readonly healthImpl: HealthComponent;
     private readonly emitter: Phaser.Events.EventEmitter;
+    private isDead: boolean;
 
     constructor(
         scene: Phaser.Scene,
@@ -19,6 +20,7 @@ export class Destructable implements Component {
         this.spriteImpl = sprite;
         this.healthImpl = health;
         this.emitter = new Phaser.Events.EventEmitter();
+        this.isDead = false;
     }
 
     public update(time: number, delta: number): void {
@@ -27,15 +29,30 @@ export class Destructable implements Component {
 
     public hit(damage: number): void {
         if (this.healthImpl.hit(damage)) {
-            flyOffText(this.scene, `-${damage}`, this.spriteImpl, true);
+            flyOffText(this.scene, `-${damage}`, {
+                position: this.spriteImpl,
+                down: true,
+            });
             flashDamage(this.scene, this.spriteImpl, 510, () => {
                 this.emitter.emit('damage', this);
+
+                if (
+                    !this.healthImpl.health().vitality.isAlive() &&
+                    !this.isDead
+                ) {
+                    this.isDead = true;
+                    this.emitter.emit('death', this);
+                }
             });
         }
     }
 
     public onDamage(callback: (destructable: Destructable) => void): void {
         this.emitter.on('damage', callback);
+    }
+
+    public onDeath(callback: (destructable: Destructable) => void): void {
+        this.emitter.on('death', callback);
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {

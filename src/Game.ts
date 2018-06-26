@@ -1,4 +1,5 @@
 import { CompositeSystem } from '@src/core/CompositeSystem';
+import { Restartable } from '@src/core/Restartable';
 import { System } from '@src/core/System';
 import { CratesSystem } from '@src/crates/CratesSystem';
 import { PowerupPlayerCollider } from '@src/crates/PowerupPlayerCollider';
@@ -6,6 +7,7 @@ import { PowerupSystem } from '@src/crates/PowerupSystem';
 import { MeteorWaveFactory } from '@src/enemies/meteor/MeteorWaveFactory';
 import { WaveSystem } from '@src/enemies/WaveSystem';
 import { GameOverSystem } from '@src/GameOverSystem';
+import { HighscoreSystem } from '@src/highscore/HighscoreSystem';
 import { MusicSystem } from '@src/MusicSystem';
 import { PauseSystem } from '@src/PauseSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
@@ -43,13 +45,12 @@ export class Game extends Phaser.Scene {
         const random = engine();
         const player = new PlayerSystem(this);
         const weapons = new WeaponsSystem(this, player);
-        const crates = new CratesSystem(
-            this,
-            weapons,
-            new RandomInt(random, 10000, 20000)
-        );
+        const crates = this.createCratesSystem(weapons, random);
         const powerups = this.createPowerupSystem(player, weapons, crates);
         const waves = this.createWaveSystem(player, weapons, random);
+        const highscore = new HighscoreSystem(this, waves);
+        let restartables: ReadonlyArray<Restartable>;
+        restartables = [crates, waves, weapons, highscore, player];
 
         return [
             new Background(this),
@@ -62,8 +63,20 @@ export class Game extends Phaser.Scene {
             new TitleSystem(this),
             new ScenarioSystem(this),
             waves,
-            new GameOverSystem(this, player, [crates, waves, weapons, player]),
+            new GameOverSystem(this, player, restartables),
+            highscore,
         ];
+    }
+
+    private createCratesSystem(
+        weapons: WeaponsSystem,
+        random: Random.Engine
+    ): CratesSystem {
+        return new CratesSystem(
+            this,
+            weapons,
+            new RandomInt(random, 10000, 20000)
+        );
     }
 
     private createPowerupSystem(

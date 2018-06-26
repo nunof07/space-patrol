@@ -10,7 +10,10 @@ export function hitPlayer(
     hit: Hit
 ): void {
     if (player.healthComponent.hit(hit.damage)) {
-        flyOffText(scene, `-${hit.damage}`, hit.position, true);
+        flyOffText(scene, `-${hit.damage}`, {
+            position: hit.position,
+            down: true,
+        });
         flashDamage(scene, hit.part, 2000, () => {
             player.refreshShield();
         });

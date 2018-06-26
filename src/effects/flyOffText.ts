@@ -1,20 +1,32 @@
 import { Position } from '@src/core/Position';
+import { flyOffTextInfo } from '@src/effects/flyOffTextInfo';
 import { addText } from '@src/text/addText';
 import * as Phaser from 'phaser';
 
 export function flyOffText(
     scene: Phaser.Scene,
     text: string,
-    position: Position,
-    down: boolean
+    info: {
+        position: Position;
+        down: boolean;
+        size?: number;
+        tint?: number;
+        duration?: number;
+        distance?: number;
+    }
 ): void {
-    const textObj = addText(scene, position, text, 16);
+    const parsed = flyOffTextInfo(info);
+    const textObj = addText(scene, info.position, text, parsed.size);
+
+    if (parsed.tint !== undefined) {
+        textObj.tint = parsed.tint;
+    }
     scene.tweens.add({
         targets: textObj,
-        y: position.y + (down ? 1 : -1) * 100,
+        y: parsed.position.y + (parsed.down ? 1 : -1) * parsed.distance,
         alpha: 0,
         ease: 'Quad.easeInOut',
-        duration: 400,
+        duration: parsed.duration,
         onComplete: (): void => {
             textObj.destroy();
         },
