@@ -1,3 +1,16 @@
+# [1.14.0](https://github.com/nunof07/space-patrol/compare/v1.13.0...v1.14.0) (2018-06-26)
+
+
+### Bug Fixes
+
+* **gameover:** player and wave restart ([2ff9ee0](https://github.com/nunof07/space-patrol/commit/2ff9ee0))
+
+
+### Features
+
+* **gameover:** restart game wip ([5853229](https://github.com/nunof07/space-patrol/commit/5853229))
+* **gameover:** show title ([e03205d](https://github.com/nunof07/space-patrol/commit/e03205d))
+
 # [1.13.0](https://github.com/nunof07/space-patrol/compare/v1.12.0...v1.13.0) (2018-06-25)
 
 
