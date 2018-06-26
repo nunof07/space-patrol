@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/nunof07/space-patrol/compare/v1.14.0...v1.15.0) (2018-06-26)
+
+
+### Features
+
+* **highscore:** system ([e807e5e](https://github.com/nunof07/space-patrol/commit/e807e5e))
+
 # [1.14.0](https://github.com/nunof07/space-patrol/compare/v1.13.0...v1.14.0) (2018-06-26)
 
 
