@@ -23,4 +23,10 @@ export class Player {
     > {
         return this.particlesImpl;
     }
+
+    public destroy(): void {
+        this.groupImpl.getChildren().forEach(object => {
+            object.destroy();
+        });
+    }
 }

@@ -1,3 +1,4 @@
+import { Restartable } from '@src/core/Restartable';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { BulletFactory } from '@src/weapons/BulletFactory';
@@ -8,7 +9,8 @@ import { WeaponComponent } from '@src/weapons/WeaponComponent';
 import { WeaponSystem } from '@src/weapons/WeaponSystem';
 import * as Phaser from 'phaser';
 
-export class BurstSystem implements System, UpgradableWeaponSystem {
+export class BurstSystem
+    implements System, UpgradableWeaponSystem, Restartable {
     private readonly scene: Phaser.Scene;
     private system: WeaponSystem;
 
@@ -40,5 +42,9 @@ export class BurstSystem implements System, UpgradableWeaponSystem {
 
     public get weaponComponent(): WeaponComponent {
         return this.system.weaponComponent;
+    }
+
+    public restart(): void {
+        this.system.restart();
     }
 }

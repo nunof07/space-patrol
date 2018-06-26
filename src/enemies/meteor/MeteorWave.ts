@@ -4,6 +4,7 @@ import { MeteorPlayerCollider } from '@src/enemies/meteor/MeteorPlayerCollider';
 import { MeteorWaveInfo } from '@src/enemies/meteor/MeteorWaveInfo';
 import { randomMeteorSpawnInfo } from '@src/enemies/meteor/randomMeteorSpawnInfo';
 import { Wave } from '@src/enemies/Wave';
+import { destroyDestructables } from '@src/health/destroyDestructables';
 import { updateDestructables } from '@src/health/updateDestructables';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { DestructableBulletCollider } from '@src/weapons/DestructableBulletCollider';
@@ -62,6 +63,15 @@ export class MeteorWave implements Wave {
                     this.next();
                 },
             });
+        }
+    }
+
+    public destroy(): void {
+        destroyDestructables(this.meteors);
+        this.meteors = [];
+
+        if (this.timer !== undefined) {
+            this.timer.destroy();
         }
     }
 

@@ -1,11 +1,12 @@
 import { CompositeSystem } from '@src/core/CompositeSystem';
+import { Restartable } from '@src/core/Restartable';
 import { System } from '@src/core/System';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { BurstSystem } from '@src/weapons/burst/BurstSystem';
 import { PulseSystem } from '@src/weapons/pulse/PulseSystem';
 import * as Phaser from 'phaser';
 
-export class WeaponsSystem implements System {
+export class WeaponsSystem implements System, Restartable {
     private readonly systems: CompositeSystem;
     private readonly pulseImpl: PulseSystem;
     private readonly burstImpl: BurstSystem;
@@ -30,5 +31,10 @@ export class WeaponsSystem implements System {
 
     public get burst(): BurstSystem {
         return this.burstImpl;
+    }
+
+    public restart(): void {
+        this.pulseImpl.restart();
+        this.burstImpl.restart();
     }
 }

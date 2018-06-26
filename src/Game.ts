@@ -5,6 +5,7 @@ import { PowerupPlayerCollider } from '@src/crates/PowerupPlayerCollider';
 import { PowerupSystem } from '@src/crates/PowerupSystem';
 import { MeteorWaveFactory } from '@src/enemies/meteor/MeteorWaveFactory';
 import { WaveSystem } from '@src/enemies/WaveSystem';
+import { GameOverSystem } from '@src/GameOverSystem';
 import { MusicSystem } from '@src/MusicSystem';
 import { PauseSystem } from '@src/PauseSystem';
 import { PlayerSystem } from '@src/player/PlayerSystem';
@@ -48,6 +49,7 @@ export class Game extends Phaser.Scene {
             new RandomInt(random, 10000, 20000)
         );
         const powerups = this.createPowerupSystem(player, weapons, crates);
+        const waves = this.createWaveSystem(player, weapons, random);
 
         return [
             new Background(this),
@@ -59,7 +61,8 @@ export class Game extends Phaser.Scene {
             new MusicSystem(this),
             new TitleSystem(this),
             new ScenarioSystem(this),
-            this.createWaveSystem(player, weapons, random),
+            waves,
+            new GameOverSystem(this, player, [crates, waves, weapons, player]),
         ];
     }
 
