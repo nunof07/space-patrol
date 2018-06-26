@@ -105,6 +105,7 @@ export class HealthComponent implements Component, Restartable {
 
     public restart(): void {
         this.healthImpl = this.newHealth(this.startHealth.vitality);
+        this.refreshFilled();
     }
 
     private newHealth(vitality: Vitality): Health {

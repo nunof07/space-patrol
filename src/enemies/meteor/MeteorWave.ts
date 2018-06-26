@@ -68,6 +68,11 @@ export class MeteorWave implements Wave {
 
     public destroy(): void {
         destroyDestructables(this.meteors);
+        this.meteors = [];
+
+        if (this.timer !== undefined) {
+            this.timer.destroy();
+        }
     }
 
     private createMeteor(): Meteor {

@@ -1,3 +1,4 @@
+import { body } from '@src/physics/arcade/body';
 import { PlayerSpriteConfig } from '@src/player/PlayerSpriteConfig';
 import { playerSpritePosition } from '@src/player/playerSpritePosition';
 import * as Phaser from 'phaser';
@@ -10,4 +11,7 @@ export function resetPlayerSprite(
     const position = playerSpritePosition(center, config);
     sprite.x = position.x;
     sprite.y = position.y;
+    sprite.setRotation(0);
+    body(sprite).setAngularVelocity(0);
+    body(sprite).setVelocity(0, 0);
 }

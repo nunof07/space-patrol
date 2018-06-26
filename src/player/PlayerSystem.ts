@@ -51,6 +51,6 @@ export class PlayerSystem implements System, Restartable {
     public restart(): void {
         resetPlayer(this.scene, this.playerImpl.group);
         this.healthImpl.restart();
-        this.create();
+        this.refreshShield();
     }
 }
