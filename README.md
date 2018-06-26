@@ -30,7 +30,7 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 -   [Jonas Wagner](http://29a.ch/), [JS WARS](https://opengameart.org/content/asteroid-explosions-rocket-mine-and-laser) - [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/): Meteor and enemy explosion.
 -   [Kenney](http://kenney.nl/), [Platformer Pack Redux](http://kenney.nl/assets/platformer-pack-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Health and shield powerups.
 -   [Kenney](http://kenney.nl/), [Sokoban](http://kenney.nl/assets/sokoban) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Crates.
--   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, meteors, and stars background.
+-   [Kenney](http://kenney.nl/), [Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux) - [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): Player ship, shield, meteors, enemies (black and blue), and stars background.
 -   [Skorpio](https://opengameart.org/users/skorpio), [Sci-fi effects](https://opengameart.org/content/sci-fi-effects) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Player explosion and stars background.
 -   [Skorpio](https://opengameart.org/users/skorpio), [Space Ship Construction Kit](https://opengameart.org/content/space-ship-construction-kit) - [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/), [GPL 3.0](http://www.gnu.org/licenses/gpl-3.0.html): Nebula.
 -   [Tatermand](https://opengameart.org/users/tatermand), [Space Game Art Pack (Extended)](https://opengameart.org/content/space-game-art-pack-extended) - [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/): Sspace dust, nebula, and star.
@@ -101,3 +101,5 @@ Each enemy destroyed increases the highscore by the amount of the enemy's hitpoi
 | Meteor (Small)  | 75        | 50     |
 | Meteor (Medium) | 125       | 75     |
 | Meteor (Large)  | 200       | 200    |
+| Blue            | 75        | 20     |
+| Black           | 100       | 30     |
