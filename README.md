@@ -67,6 +67,10 @@ See [package.json](https://github.com/nunof07/space-patrol/blob/master/package.j
 
 ## Gameplay
 
+Continuous waves of enemies with randomly generated parameters.
+
+Each enemy destroyed increases the highscore by the amount of the enemy's hitpoints.
+
 ### Player stats
 
 | Player | Start | Max |

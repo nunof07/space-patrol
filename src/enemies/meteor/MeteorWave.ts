@@ -5,6 +5,7 @@ import { MeteorWaveInfo } from '@src/enemies/meteor/MeteorWaveInfo';
 import { randomMeteorSpawnInfo } from '@src/enemies/meteor/randomMeteorSpawnInfo';
 import { Wave } from '@src/enemies/Wave';
 import { destroyDestructables } from '@src/health/destroyDestructables';
+import { Destructable } from '@src/health/Destructable';
 import { updateDestructables } from '@src/health/updateDestructables';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { DestructableBulletCollider } from '@src/weapons/DestructableBulletCollider';
@@ -75,6 +76,10 @@ export class MeteorWave implements Wave {
         }
     }
 
+    public onDeath(callback: (destructable: Destructable) => void): void {
+        this.emitter.on('death', callback);
+    }
+
     private createMeteor(): Meteor {
         const factory = new MeteorFactory(
             this.scene,
@@ -86,6 +91,16 @@ export class MeteorWave implements Wave {
             this.info.engine
         );
         const meteor = factory.create();
+        this.setupMeteorColliders(meteor);
+        meteor.destructable.onDeath(destructable => {
+            this.emitter.emit('death', destructable);
+        });
+        this.created += 1;
+
+        return meteor;
+    }
+
+    private setupMeteorColliders(meteor: Meteor): void {
         this.bulletCollider.setup(
             meteor,
             this.weapons.pulse.weaponComponent.weapon
@@ -95,8 +110,5 @@ export class MeteorWave implements Wave {
             this.weapons.burst.weaponComponent.weapon
         );
         this.playerCollider.setup(meteor);
-        this.created += 1;
-
-        return meteor;
     }
 }
