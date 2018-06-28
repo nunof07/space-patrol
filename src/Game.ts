@@ -6,6 +6,7 @@ import { PowerupPlayerCollider } from '@src/crates/PowerupPlayerCollider';
 import { PowerupSystem } from '@src/crates/PowerupSystem';
 import { BlueWaveFactory } from '@src/enemies/blue/BlueWaveFactory';
 import { MeteorWaveFactory } from '@src/enemies/meteor/MeteorWaveFactory';
+import { RandomWaveFactory } from '@src/enemies/RandomWaveFactory';
 import { WaveSystem } from '@src/enemies/WaveSystem';
 import { GameOverSystem } from '@src/GameOverSystem';
 import { HighscoreSystem } from '@src/highscore/HighscoreSystem';
@@ -21,7 +22,6 @@ import { TitleSystem } from '@src/TitleSystem';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
 import * as Phaser from 'phaser';
 import * as Random from 'random-js';
-import { RandomWaveFactory } from '@src/enemies/RandomWaveFactory';
 
 export class Game extends Phaser.Scene {
     private readonly systems: CompositeSystem;
