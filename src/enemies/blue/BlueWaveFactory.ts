@@ -28,8 +28,8 @@ export class BlueWaveFactory implements Factory<Wave> {
 
     public create(): Wave {
         const wave = new EnemyWave(this.scene, this.player, this.weapons, {
-            count: new RandomInt(this.engine, 10, 40).value,
-            delay: new RandomInt(this.engine, 100, 1000),
+            count: new RandomInt(this.engine, 20, 100).value,
+            delay: new RandomInt(this.engine, 100, 600),
             engine: this.engine,
             factory: new BlueFactory(this.scene, this.engine),
         });

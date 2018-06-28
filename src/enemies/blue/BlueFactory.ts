@@ -26,7 +26,7 @@ export class BlueFactory implements Factory<Blue> {
             health: new ScalarOf(75),
             startX: x,
             endX: x,
-            speed: new RandomInt(this.engine, 120, 200),
+            speed: new RandomInt(this.engine, 80, 180),
             circle: false,
             enemy: (
                 sceneE: Phaser.Scene,
