@@ -1,5 +1,6 @@
 import { Factory } from '@src/core/Factory';
-import { MeteorWave } from '@src/enemies/meteor/MeteorWave';
+import { EnemyWave } from '@src/enemies/EnemyWave';
+import { MeteorFactory } from '@src/enemies/meteor/MeteorFactory';
 import { randomMeteorType } from '@src/enemies/meteor/randomMeteorType';
 import { Wave } from '@src/enemies/Wave';
 import { PlayerSystem } from '@src/player/PlayerSystem';
@@ -27,11 +28,15 @@ export class MeteorWaveFactory implements Factory<Wave> {
     }
 
     public create(): Wave {
-        const wave = new MeteorWave(this.scene, this.player, this.weapons, {
-            composition: randomMeteorType(this.engine),
+        const wave = new EnemyWave(this.scene, this.player, this.weapons, {
             count: new RandomInt(this.engine, 20, 80).value,
             delay: new RandomInt(this.engine, 50, 500),
             engine: this.engine,
+            factory: new MeteorFactory(
+                this.scene,
+                randomMeteorType(this.engine),
+                this.engine
+            ),
         });
         wave.next();
 

@@ -1,18 +1,14 @@
-import { Component } from '@src/core/Component';
+import { Enemy } from '@src/enemies/Enemy';
+import { EnemyBase } from '@src/enemies/EnemyBase';
 import { MeteorSize } from '@src/enemies/meteor/MeteorSize';
-import { playExplosion } from '@src/enemies/playExplosion';
 import { Destructable } from '@src/health/Destructable';
 import { HealthComponent } from '@src/health/HealthComponent';
 import { Vitality } from '@src/health/Vitality';
-import { centerPosition } from '@src/sprites/centerPosition';
-import { isOffCameraDown } from '@src/sprites/isOffCameraDown';
 import * as Phaser from 'phaser';
 
-export class Meteor implements Component {
-    private readonly scene: Phaser.Scene;
-    private readonly destructableImpl: Destructable;
+export class Meteor implements Enemy {
     private readonly sizeImpl: MeteorSize;
-    private isDestroyed: boolean;
+    private readonly enemy: Enemy;
 
     constructor(
         scene: Phaser.Scene,
@@ -20,25 +16,16 @@ export class Meteor implements Component {
         health: HealthComponent,
         size: MeteorSize
     ) {
-        this.scene = scene;
-        this.isDestroyed = false;
-        this.destructableImpl = new Destructable(scene, sprite, health);
-        this.destructableImpl.onDamage(() => {
-            this.onHit();
-        });
         this.sizeImpl = size;
+        this.enemy = new EnemyBase(scene, sprite, health);
     }
 
     public update(time: number, delta: number): void {
-        this.destructableImpl.update(time, delta);
-
-        if (isOffCameraDown(this.scene, this.destructableImpl.sprite)) {
-            this.destroy();
-        }
+        this.enemy.update(time, delta);
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {
-        return this.destructableImpl.sprite;
+        return this.enemy.sprite;
     }
 
     public get size(): MeteorSize {
@@ -46,27 +33,18 @@ export class Meteor implements Component {
     }
 
     public get vitality(): Vitality {
-        return this.destructableImpl.healthComponent.health().vitality;
+        return this.enemy.vitality;
     }
 
     public get destructable(): Destructable {
-        return this.destructableImpl;
+        return this.enemy.destructable;
     }
 
     public explode(): void {
-        playExplosion(this.scene, centerPosition(this.sprite));
-        this.scene.sound.play('explosion');
-        this.destroy();
+        this.enemy.explode();
     }
 
     public destroy(): void {
-        this.destructableImpl.destroy();
-        this.isDestroyed = true;
-    }
-
-    private onHit(): void {
-        if (!this.vitality.isAlive() && !this.isDestroyed) {
-            this.explode();
-        }
+        this.enemy.destroy();
     }
 }

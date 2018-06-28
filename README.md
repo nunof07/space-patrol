@@ -98,8 +98,8 @@ Each enemy destroyed increases the highscore by the amount of the enemy's hitpoi
 
 | Enemy           | Hitpoints | Damage |
 | --------------- | --------- | ------ |
-| Meteor (Small)  | 75        | 50     |
-| Meteor (Medium) | 125       | 75     |
-| Meteor (Large)  | 200       | 200    |
+| Meteor (Small)  | 50        | -      |
+| Meteor (Medium) | 75        | -      |
+| Meteor (Large)  | 150       | -      |
 | Blue            | 75        | 20     |
 | Black           | 100       | 30     |

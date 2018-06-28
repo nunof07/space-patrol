@@ -1235,24 +1235,24 @@
                     }
                 },
                 {
-                    "filename": "effects/explosion_0007.png",
+                    "filename": "enemies/blue.png",
                     "frame": {
                         "x": 1319,
                         "y": 1550,
-                        "w": 48,
-                        "h": 48
+                        "w": 49,
+                        "h": 38
                     },
                     "rotated": false,
-                    "trimmed": true,
+                    "trimmed": false,
                     "spriteSourceSize": {
-                        "x": 11,
-                        "y": 11,
-                        "w": 48,
-                        "h": 48
+                        "x": 0,
+                        "y": 0,
+                        "w": 49,
+                        "h": 38
                     },
                     "sourceSize": {
-                        "w": 70,
-                        "h": 70
+                        "w": 49,
+                        "h": 38
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1260,11 +1260,11 @@
                     }
                 },
                 {
-                    "filename": "enemies/blue.png",
+                    "filename": "player/cockpit.png",
                     "frame": {
                         "x": 2586,
                         "y": 931,
-                        "w": 98,
+                        "w": 51,
                         "h": 75
                     },
                     "rotated": false,
@@ -1272,11 +1272,11 @@
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 98,
+                        "w": 51,
                         "h": 75
                     },
                     "sourceSize": {
-                        "w": 98,
+                        "w": 51,
                         "h": 75
                     },
                     "pivot": {
@@ -1335,35 +1335,10 @@
                     }
                 },
                 {
-                    "filename": "player/cockpit.png",
+                    "filename": "player/burst_explosion_0002.png",
                     "frame": {
                         "x": 4043,
                         "y": 55,
-                        "w": 51,
-                        "h": 75
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 51,
-                        "h": 75
-                    },
-                    "sourceSize": {
-                        "w": 51,
-                        "h": 75
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "player/burst_explosion_0002.png",
-                    "frame": {
-                        "x": 1749,
-                        "y": 1905,
                         "w": 50,
                         "h": 59
                     },
@@ -1385,24 +1360,24 @@
                     }
                 },
                 {
-                    "filename": "crates/powerup_pulse.png",
+                    "filename": "effects/explosion_0007.png",
                     "frame": {
                         "x": 2655,
                         "y": 1996,
-                        "w": 39,
-                        "h": 43
+                        "w": 48,
+                        "h": 48
                     },
                     "rotated": false,
-                    "trimmed": false,
+                    "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 39,
-                        "h": 43
+                        "x": 11,
+                        "y": 11,
+                        "w": 48,
+                        "h": 48
                     },
                     "sourceSize": {
-                        "w": 39,
-                        "h": 43
+                        "w": 70,
+                        "h": 70
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1485,10 +1460,35 @@
                     }
                 },
                 {
-                    "filename": "crates/powerup_shield.png",
+                    "filename": "crates/crate_health.png",
                     "frame": {
                         "x": 1749,
-                        "y": 2023,
+                        "y": 1905,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 128,
+                        "h": 128
+                    },
+                    "sourceSize": {
+                        "w": 128,
+                        "h": 128
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "crates/powerup_shield.png",
+                    "frame": {
+                        "x": 1383,
+                        "y": 2010,
                         "w": 26,
                         "h": 20
                     },
@@ -1560,7 +1560,7 @@
                     }
                 },
                 {
-                    "filename": "crates/crate_health.png",
+                    "filename": "crates/crate_health_damaged.png",
                     "frame": {
                         "x": 3790,
                         "y": 1259,
@@ -1585,11 +1585,11 @@
                     }
                 },
                 {
-                    "filename": "enemies/black.png",
+                    "filename": "neutrals/meteor-brown-big-01.png",
                     "frame": {
                         "x": 3618,
                         "y": 946,
-                        "w": 93,
+                        "w": 101,
                         "h": 84
                     },
                     "rotated": false,
@@ -1597,11 +1597,11 @@
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 93,
+                        "w": 101,
                         "h": 84
                     },
                     "sourceSize": {
-                        "w": 93,
+                        "w": 101,
                         "h": 84
                     },
                     "pivot": {
@@ -1610,11 +1610,11 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-brown-med-01.png",
+                    "filename": "crates/powerup_pulse.png",
                     "frame": {
                         "x": 3535,
                         "y": 728,
-                        "w": 43,
+                        "w": 39,
                         "h": 43
                     },
                     "rotated": false,
@@ -1622,11 +1622,11 @@
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 43,
+                        "w": 39,
                         "h": 43
                     },
                     "sourceSize": {
-                        "w": 43,
+                        "w": 39,
                         "h": 43
                     },
                     "pivot": {
@@ -1635,24 +1635,24 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-brown-med-02.png",
+                    "filename": "enemies/black.png",
                     "frame": {
                         "x": 1319,
-                        "y": 1600,
-                        "w": 45,
-                        "h": 40
+                        "y": 1590,
+                        "w": 47,
+                        "h": 42
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 45,
-                        "h": 40
+                        "w": 47,
+                        "h": 42
                     },
                     "sourceSize": {
-                        "w": 45,
-                        "h": 40
+                        "w": 47,
+                        "h": 42
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1660,7 +1660,7 @@
                     }
                 },
                 {
-                    "filename": "crates/crate_health_damaged.png",
+                    "filename": "crates/crate_pulse.png",
                     "frame": {
                         "x": 2965,
                         "y": 777,
@@ -1685,20 +1685,20 @@
                     }
                 },
                 {
-                    "filename": "effects/explosion_0010.png",
+                    "filename": "effects/explosion_0016.png",
                     "frame": {
-                        "x": 2686,
+                        "x": 2639,
                         "y": 931,
-                        "w": 58,
-                        "h": 58
+                        "w": 61,
+                        "h": 69
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 6,
-                        "y": 6,
-                        "w": 58,
-                        "h": 58
+                        "x": 2,
+                        "y": 0,
+                        "w": 61,
+                        "h": 69
                     },
                     "sourceSize": {
                         "w": 70,
@@ -1710,7 +1710,7 @@
                     }
                 },
                 {
-                    "filename": "crates/crate_pulse.png",
+                    "filename": "crates/crate_pulse_damaged.png",
                     "frame": {
                         "x": 3745,
                         "y": 556,
@@ -1735,60 +1735,10 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-grey-med-02.png",
-                    "frame": {
-                        "x": 4043,
-                        "y": 132,
-                        "w": 45,
-                        "h": 40
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 45,
-                        "h": 40
-                    },
-                    "sourceSize": {
-                        "w": 45,
-                        "h": 40
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "crates/crate_pulse_damaged.png",
-                    "frame": {
-                        "x": 1801,
-                        "y": 1905,
-                        "w": 128,
-                        "h": 128
-                    },
-                    "rotated": false,
-                    "trimmed": false,
-                    "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 128,
-                        "h": 128
-                    },
-                    "sourceSize": {
-                        "w": 128,
-                        "h": 128
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
                     "filename": "player/burst_explosion_0004.png",
                     "frame": {
-                        "x": 3713,
-                        "y": 946,
+                        "x": 1879,
+                        "y": 1905,
                         "w": 55,
                         "h": 62
                     },
@@ -1812,8 +1762,8 @@
                 {
                     "filename": "player/burst_explosion_0006.png",
                     "frame": {
-                        "x": 2965,
-                        "y": 907,
+                        "x": 3721,
+                        "y": 946,
                         "w": 56,
                         "h": 60
                     },
@@ -1837,8 +1787,8 @@
                 {
                     "filename": "player/burst_explosion_0007.png",
                     "frame": {
-                        "x": 3095,
-                        "y": 777,
+                        "x": 2965,
+                        "y": 907,
                         "w": 56,
                         "h": 60
                     },
@@ -1862,8 +1812,8 @@
                 {
                     "filename": "player/burst_explosion_0003.png",
                     "frame": {
-                        "x": 3745,
-                        "y": 492,
+                        "x": 3095,
+                        "y": 777,
                         "w": 53,
                         "h": 61
                     },
@@ -1885,24 +1835,49 @@
                     }
                 },
                 {
-                    "filename": "player/burst_explosion_0005.png",
+                    "filename": "effects/explosion_0010.png",
                     "frame": {
                         "x": 2752,
                         "y": 1988,
-                        "w": 56,
+                        "w": 58,
                         "h": 58
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 3,
-                        "y": 4,
-                        "w": 56,
+                        "x": 6,
+                        "y": 6,
+                        "w": 58,
                         "h": 58
                     },
                     "sourceSize": {
-                        "w": 64,
-                        "h": 64
+                        "w": 70,
+                        "h": 70
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "neutrals/meteor-brown-med-02.png",
+                    "frame": {
+                        "x": 4043,
+                        "y": 116,
+                        "w": 45,
+                        "h": 40
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 45,
+                        "h": 40
+                    },
+                    "sourceSize": {
+                        "w": 45,
+                        "h": 40
                     },
                     "pivot": {
                         "x": 0.5,
@@ -2010,7 +1985,7 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-brown-big-01.png",
+                    "filename": "neutrals/meteor-grey-big-01.png",
                     "frame": {
                         "x": 3920,
                         "y": 556,
@@ -2035,24 +2010,24 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-grey-med-01.png",
+                    "filename": "neutrals/meteor-grey-med-02.png",
                     "frame": {
-                        "x": 1319,
-                        "y": 1642,
-                        "w": 43,
-                        "h": 43
+                        "x": 3576,
+                        "y": 728,
+                        "w": 45,
+                        "h": 40
                     },
-                    "rotated": false,
+                    "rotated": true,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 43,
-                        "h": 43
+                        "w": 45,
+                        "h": 40
                     },
                     "sourceSize": {
-                        "w": 43,
-                        "h": 43
+                        "w": 45,
+                        "h": 40
                     },
                     "pivot": {
                         "x": 0.5,
@@ -2060,24 +2035,49 @@
                     }
                 },
                 {
-                    "filename": "crates/powerup_burst.png",
+                    "filename": "effects/explosion_0012.png",
                     "frame": {
-                        "x": 4043,
-                        "y": 174,
-                        "w": 39,
-                        "h": 42
+                        "x": 3745,
+                        "y": 492,
+                        "w": 64,
+                        "h": 62
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 3,
+                        "y": 4,
+                        "w": 64,
+                        "h": 62
+                    },
+                    "sourceSize": {
+                        "w": 70,
+                        "h": 70
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "neutrals/meteor-brown-med-01.png",
+                    "frame": {
+                        "x": 1319,
+                        "y": 1634,
+                        "w": 43,
+                        "h": 43
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 39,
-                        "h": 42
+                        "w": 43,
+                        "h": 43
                     },
                     "sourceSize": {
-                        "w": 39,
-                        "h": 42
+                        "w": 43,
+                        "h": 43
                     },
                     "pivot": {
                         "x": 0.5,
@@ -2087,8 +2087,8 @@
                 {
                     "filename": "effects/explosion_0005.png",
                     "frame": {
-                        "x": 3745,
-                        "y": 686,
+                        "x": 2702,
+                        "y": 931,
                         "w": 40,
                         "h": 40
                     },
@@ -2110,24 +2110,74 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-grey-big-01.png",
+                    "filename": "crates/powerup_burst.png",
                     "frame": {
-                        "x": 1931,
-                        "y": 1905,
-                        "w": 101,
-                        "h": 84
+                        "x": 2705,
+                        "y": 1996,
+                        "w": 39,
+                        "h": 42
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 101,
-                        "h": 84
+                        "w": 39,
+                        "h": 42
                     },
                     "sourceSize": {
-                        "w": 101,
-                        "h": 84
+                        "w": 39,
+                        "h": 42
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "effects/explosion_0015.png",
+                    "frame": {
+                        "x": 1879,
+                        "y": 1969,
+                        "w": 68,
+                        "h": 67
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 1,
+                        "y": 1,
+                        "w": 68,
+                        "h": 67
+                    },
+                    "sourceSize": {
+                        "w": 70,
+                        "h": 70
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "neutrals/meteor-grey-med-01.png",
+                    "frame": {
+                        "x": 2965,
+                        "y": 969,
+                        "w": 43,
+                        "h": 43
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 43,
+                        "h": 43
+                    },
+                    "sourceSize": {
+                        "w": 43,
+                        "h": 43
                     },
                     "pivot": {
                         "x": 0.5,
@@ -2162,7 +2212,7 @@
                 {
                     "filename": "neutrals/meteor-grey-big-02.png",
                     "frame": {
-                        "x": 3153,
+                        "x": 3150,
                         "y": 777,
                         "w": 89,
                         "h": 82
@@ -2185,60 +2235,10 @@
                     }
                 },
                 {
-                    "filename": "effects/explosion_0016.png",
-                    "frame": {
-                        "x": 3800,
-                        "y": 492,
-                        "w": 61,
-                        "h": 69
-                    },
-                    "rotated": true,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 2,
-                        "y": 0,
-                        "w": 61,
-                        "h": 69
-                    },
-                    "sourceSize": {
-                        "w": 70,
-                        "h": 70
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "effects/explosion_0015.png",
+                    "filename": "effects/explosion_0014.png",
                     "frame": {
                         "x": 3553,
                         "y": 1839,
-                        "w": 68,
-                        "h": 67
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 1,
-                        "y": 1,
-                        "w": 68,
-                        "h": 67
-                    },
-                    "sourceSize": {
-                        "w": 70,
-                        "h": 70
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "effects/explosion_0014.png",
-                    "frame": {
-                        "x": 3566,
-                        "y": 1596,
                         "w": 66,
                         "h": 65
                     },
@@ -2262,7 +2262,7 @@
                 {
                     "filename": "effects/explosion_0013.png",
                     "frame": {
-                        "x": 3683,
+                        "x": 3566,
                         "y": 1596,
                         "w": 66,
                         "h": 64
@@ -2285,20 +2285,20 @@
                     }
                 },
                 {
-                    "filename": "effects/explosion_0012.png",
+                    "filename": "effects/explosion_0011.png",
                     "frame": {
-                        "x": 3012,
-                        "y": 1917,
-                        "w": 64,
-                        "h": 62
+                        "x": 3683,
+                        "y": 1596,
+                        "w": 62,
+                        "h": 60
                     },
                     "rotated": false,
                     "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 3,
-                        "y": 4,
-                        "w": 64,
-                        "h": 62
+                        "x": 4,
+                        "y": 5,
+                        "w": 62,
+                        "h": 60
                     },
                     "sourceSize": {
                         "w": 70,
@@ -2310,9 +2310,34 @@
                     }
                 },
                 {
+                    "filename": "player/burst_explosion_0005.png",
+                    "frame": {
+                        "x": 3012,
+                        "y": 1917,
+                        "w": 56,
+                        "h": 58
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 3,
+                        "y": 4,
+                        "w": 56,
+                        "h": 58
+                    },
+                    "sourceSize": {
+                        "w": 64,
+                        "h": 64
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
                     "filename": "player/burst_explosion_0008.png",
                     "frame": {
-                        "x": 2810,
+                        "x": 2812,
                         "y": 1988,
                         "w": 56,
                         "h": 58
@@ -2360,35 +2385,10 @@
                     }
                 },
                 {
-                    "filename": "effects/explosion_0011.png",
+                    "filename": "effects/explosion_0017.png",
                     "frame": {
                         "x": 3790,
                         "y": 1389,
-                        "w": 62,
-                        "h": 60
-                    },
-                    "rotated": false,
-                    "trimmed": true,
-                    "spriteSourceSize": {
-                        "x": 4,
-                        "y": 5,
-                        "w": 62,
-                        "h": 60
-                    },
-                    "sourceSize": {
-                        "w": 70,
-                        "h": 70
-                    },
-                    "pivot": {
-                        "x": 0.5,
-                        "y": 0.5
-                    }
-                },
-                {
-                    "filename": "effects/explosion_0017.png",
-                    "frame": {
-                        "x": 3791,
-                        "y": 1053,
                         "w": 57,
                         "h": 56
                     },
@@ -2412,8 +2412,8 @@
                 {
                     "filename": "effects/explosion_0009.png",
                     "frame": {
-                        "x": 3835,
-                        "y": 686,
+                        "x": 3791,
+                        "y": 1053,
                         "w": 56,
                         "h": 54
                     },
