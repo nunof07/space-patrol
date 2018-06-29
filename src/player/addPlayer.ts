@@ -7,8 +7,21 @@ import { engine as engineConfig } from '@src/player/config/engine';
 import { shield as shieldConfig } from '@src/player/config/shield';
 import { weaponBurst } from '@src/player/config/weaponBurst';
 import { wing as wingConfig } from '@src/player/config/wing';
+import { PlayerSpriteConfig } from '@src/player/PlayerSpriteConfig';
 import { mainCameraCenter } from '@src/scene/mainCameraCenter';
 import * as Phaser from 'phaser';
+
+function shield1(): PlayerSpriteConfig {
+    return shieldConfig(1, false, -21 * 0.5);
+}
+
+function shield2(): PlayerSpriteConfig {
+    return shieldConfig(2, false, -21 * 0.5);
+}
+
+function shield3(): PlayerSpriteConfig {
+    return shieldConfig(3, false, -10 * 0.5);
+}
 
 export function addPlayer(
     scene: Phaser.Scene
@@ -26,9 +39,9 @@ export function addPlayer(
         addPlayerSprite('beamRight', scene, center, beamConfig(false)),
         addPlayerSprite('wingLeft', scene, center, wingConfig(true)),
         addPlayerSprite('wingRIght', scene, center, wingConfig(false)),
-        addPlayerSprite('shield1', scene, center, shieldConfig(1, false, -21)),
-        addPlayerSprite('shield2', scene, center, shieldConfig(2, false, -21)),
-        addPlayerSprite('shield3', scene, center, shieldConfig(3, false, -10)),
+        addPlayerSprite('shield1', scene, center, shield1()),
+        addPlayerSprite('shield2', scene, center, shield2()),
+        addPlayerSprite('shield3', scene, center, shield3()),
         addPlayerSprite('weaponBurstLeft', scene, center, weaponBurst(true)),
         addPlayerSprite('weaponBurstRIght', scene, center, weaponBurst(false)),
     ]);

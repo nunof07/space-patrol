@@ -42,8 +42,8 @@ export class CrateFactory implements Factory<Crate> {
             {
                 width: 1,
                 offset: {
-                    health: -0.6,
-                    shield: -0.72,
+                    health: -0.4,
+                    shield: -0.52,
                 },
             }
         ).create();
@@ -60,8 +60,8 @@ export class CrateFactory implements Factory<Crate> {
             'sprites',
             crateSpriteFrame(powerup, false)
         );
-        sprite.scaleX = 0.5;
-        sprite.scaleY = 0.5;
+        sprite.scaleX = 0.3;
+        sprite.scaleY = 0.3;
         sprite.y = startPosition(sprite).y;
         sprite.depth = 500;
         sprite.active = visible;

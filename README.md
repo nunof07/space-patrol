@@ -83,7 +83,7 @@ Each enemy destroyed increases the highscore by the amount of the enemy's hitpoi
 | Weapon | Step | Damage | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 | Level 6 |
 | ------ | ---- | ------ | ------- | ------- | ------- | ------- | ------- | ------- |
 | Pulse  | 150  | 10     | 1       | 2       | 4       | 6       | 10      | 18      |
-| Burst  | 1000 | 50     | 2       | 4       | 6       | 8       | 10      | 12      |
+| Burst  | 1000 | 75     | 2       | 4       | 6       | 8       | 10      | 12      |
 
 ### Powerup stats
 

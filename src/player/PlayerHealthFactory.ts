@@ -26,8 +26,8 @@ export class PlayerHealthFactory implements Factory<HealthComponent> {
             {
                 width: 2.5,
                 offset: {
-                    health: 1.6,
-                    shield: 1.72,
+                    health: 1.1,
+                    shield: 1.22,
                 },
             }
         ).create();

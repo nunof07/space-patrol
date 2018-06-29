@@ -25,6 +25,8 @@ export function addPlayerSprite(
     sprite.name = name;
     scene.physics.world.enable(sprite);
     body(sprite).enable = config.active;
+    body(sprite).width = sprite.displayWidth;
+    body(sprite).height = sprite.displayHeight;
 
     return sprite;
 }
