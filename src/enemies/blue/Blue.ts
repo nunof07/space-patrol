@@ -1,5 +1,6 @@
 import { Enemy } from '@src/enemies/Enemy';
 import { EnemyBase } from '@src/enemies/EnemyBase';
+import { EnemyWeaponComponent } from '@src/enemies/EnemyWeaponComponent';
 import { Destructable } from '@src/health/Destructable';
 import { HealthComponent } from '@src/health/HealthComponent';
 import { Vitality } from '@src/health/Vitality';
@@ -7,17 +8,21 @@ import * as Phaser from 'phaser';
 
 export class Blue implements Enemy {
     private readonly enemy: Enemy;
+    private readonly weapon: EnemyWeaponComponent;
 
     constructor(
         scene: Phaser.Scene,
         sprite: Phaser.GameObjects.Sprite,
-        health: HealthComponent
+        health: HealthComponent,
+        weapon: EnemyWeaponComponent
     ) {
         this.enemy = new EnemyBase(scene, sprite, health);
+        this.weapon = weapon;
     }
 
     public update(time: number, delta: number): void {
         this.enemy.update(time, delta);
+        this.weapon.update(time, delta);
     }
 
     public get sprite(): Phaser.GameObjects.Sprite {
@@ -38,5 +43,6 @@ export class Blue implements Enemy {
 
     public destroy(): void {
         this.enemy.destroy();
+        this.weapon.destroy();
     }
 }

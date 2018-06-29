@@ -31,7 +31,7 @@ export class BlueWaveFactory implements Factory<Wave> {
             count: new RandomInt(this.engine, 20, 100).value,
             delay: new RandomInt(this.engine, 100, 600),
             engine: this.engine,
-            factory: new BlueFactory(this.scene, this.engine),
+            factory: new BlueFactory(this.scene, this.engine, this.player),
         });
         wave.next();
 

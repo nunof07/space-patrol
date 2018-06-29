@@ -9,6 +9,7 @@ describe('core/CachedScalar', () => {
             const cached = new CachedScalar(
                 new AsyncScalar(() => {
                     x += 1;
+
                     return x;
                 })
             );
