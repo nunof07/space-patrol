@@ -29,12 +29,12 @@ export class BlackFactory implements Factory<ArmedEnemy> {
     }
 
     public create(): ArmedEnemy {
-        const x = this.startX();
+        const startX = this.startX();
         const factory = new EnemyFactory(this.scene, {
             frame: new ScalarOf('enemies/black.png'),
             health: new ScalarOf(125),
-            startX: x,
-            endX: x,
+            startX,
+            endX: this.endX(startX),
             speed: new RandomInt(this.engine, 50, 100),
             circle: false,
             enemy: (
@@ -57,6 +57,14 @@ export class BlackFactory implements Factory<ArmedEnemy> {
     private startX(): Scalar<number> {
         return new CachedScalar(
             new RandomInt(this.engine, 0, this.scene.cameras.main.width)
+        );
+    }
+
+    private endX(startX: Scalar<number>): Scalar<number> {
+        return new RandomInt(
+            this.engine,
+            startX.value - 200,
+            startX.value + 200
         );
     }
 
