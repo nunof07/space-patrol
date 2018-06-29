@@ -32,6 +32,7 @@ export class EnemyBulletFactory {
                     lifespan: this.info.lifespan,
                     speed: this.info.speed,
                     startPosition: parent,
+                    damage: this.info.damage,
                 });
                 bullet.create();
                 result = result.concat(bullet);

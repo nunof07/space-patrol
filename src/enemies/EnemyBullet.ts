@@ -48,7 +48,7 @@ export class EnemyBullet implements Bullet {
     }
 
     public get damage(): number {
-        return 20;
+        return this.info.damage;
     }
 
     public get hitAudioKey(): string {

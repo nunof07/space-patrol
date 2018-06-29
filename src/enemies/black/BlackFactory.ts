@@ -13,7 +13,7 @@ import { RandomInt } from '@src/random/RandomInt';
 import * as Phaser from 'phaser';
 import * as Random from 'random-js';
 
-export class BlueFactory implements Factory<ArmedEnemy> {
+export class BlackFactory implements Factory<ArmedEnemy> {
     private readonly scene: Phaser.Scene;
     private readonly engine: Random.Engine;
     private readonly collider: EnemyBulletPlayerCollider;
@@ -31,11 +31,11 @@ export class BlueFactory implements Factory<ArmedEnemy> {
     public create(): ArmedEnemy {
         const x = this.startX();
         const factory = new EnemyFactory(this.scene, {
-            frame: new ScalarOf('enemies/blue.png'),
-            health: new ScalarOf(75),
+            frame: new ScalarOf('enemies/black.png'),
+            health: new ScalarOf(125),
             startX: x,
             endX: x,
-            speed: new RandomInt(this.engine, 80, 180),
+            speed: new RandomInt(this.engine, 50, 100),
             circle: false,
             enemy: (
                 sceneE: Phaser.Scene,
@@ -66,7 +66,7 @@ export class BlueFactory implements Factory<ArmedEnemy> {
         const bullets = this.scene.add.group({
             defaultKey: 'sprites',
             defaultFrame: 'enemies/laser_blue.png',
-            maxSize: 15,
+            maxSize: 30,
         });
         this.collider.setup(bullets);
 
@@ -75,10 +75,10 @@ export class BlueFactory implements Factory<ArmedEnemy> {
             new EnemyBulletFactory(this.scene, bullets, {
                 count: 1,
                 lifespan: 10000,
-                speed: 200,
-                damage: 20,
+                speed: 150,
+                damage: 35,
             }),
-            [4000]
+            [500, 500, 3500]
         );
     }
 }

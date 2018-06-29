@@ -6,7 +6,7 @@ import { HealthComponent } from '@src/health/HealthComponent';
 import { Vitality } from '@src/health/Vitality';
 import * as Phaser from 'phaser';
 
-export class Blue implements Enemy {
+export class ArmedEnemy implements Enemy {
     private readonly enemy: Enemy;
     private readonly weapon: EnemyWeaponComponent;
 

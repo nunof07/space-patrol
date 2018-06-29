@@ -5,4 +5,5 @@ export interface EnemyBulletInfo {
     readonly lifespan: number;
     readonly speed: number;
     readonly angle: number;
+    readonly damage: number;
 }

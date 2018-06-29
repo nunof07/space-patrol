@@ -7,22 +7,24 @@ import * as Phaser from 'phaser';
 export class EnemyWeaponComponent implements Component {
     private readonly parent: Phaser.GameObjects.Sprite;
     private readonly factory: EnemyBulletFactory;
-    private readonly step: number;
+    private readonly steps: ReadonlyArray<number>;
     private bullets: ReadonlyArray<Bullet>;
     private lastFired: number;
     private isDestroyed: boolean;
+    private currentStep: number;
 
     constructor(
         parent: Phaser.GameObjects.Sprite,
         factory: EnemyBulletFactory,
-        step: number
+        steps: ReadonlyArray<number>
     ) {
         this.parent = parent;
         this.factory = factory;
-        this.step = step;
+        this.steps = steps;
         this.lastFired = 0;
         this.isDestroyed = false;
         this.bullets = [];
+        this.currentStep = 0;
     }
 
     public update(time: number, delta: number): void {
@@ -33,7 +35,7 @@ export class EnemyWeaponComponent implements Component {
 
         if (time > this.lastFired) {
             this.fire();
-            this.lastFired = time + this.step;
+            this.setLastFired(time);
         }
     }
 
@@ -48,5 +50,14 @@ export class EnemyWeaponComponent implements Component {
         });
         this.bullets = [];
         this.isDestroyed = true;
+    }
+
+    private setLastFired(time: number): void {
+        this.lastFired = time + this.steps[this.currentStep];
+        this.currentStep += 1;
+
+        if (this.currentStep >= this.steps.length) {
+            this.currentStep = 0;
+        }
     }
 }
