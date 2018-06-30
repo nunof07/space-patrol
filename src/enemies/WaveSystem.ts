@@ -15,6 +15,7 @@ export class WaveSystem implements System, Restartable {
     private wave: Wave;
     private isActive: boolean;
     private timer: Phaser.Time.TimerEvent;
+    private countImpl: number;
 
     constructor(
         scene: Phaser.Scene,
@@ -26,6 +27,7 @@ export class WaveSystem implements System, Restartable {
         this.delay = delay;
         this.isActive = false;
         this.emitter = new Phaser.Events.EventEmitter();
+        this.countImpl = 0;
     }
 
     public create(): void {
@@ -45,12 +47,17 @@ export class WaveSystem implements System, Restartable {
             this.wave.destroy();
             this.timer.destroy();
             this.factory.restart();
+            this.countImpl = 0;
             this.startTimer();
         }
     }
 
     public onDeath(callback: (destructable: Destructable) => void): void {
         this.emitter.on('death', callback);
+    }
+
+    public get count(): number {
+        return this.countImpl;
     }
 
     private startTimer(): void {
@@ -73,5 +80,6 @@ export class WaveSystem implements System, Restartable {
             this.timer.destroy();
             this.startTimer();
         });
+        this.countImpl += 1;
     }
 }
