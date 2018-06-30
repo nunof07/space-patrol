@@ -7,11 +7,11 @@ export function meteorHitpoints(
 ): number {
     switch (size) {
         case MeteorSize.Large:
-            return 200;
+            return 300;
         case MeteorSize.Medium:
-            return 125;
+            return 75;
         case MeteorSize.Small:
         default:
-            return 75;
+            return 50;
     }
 }

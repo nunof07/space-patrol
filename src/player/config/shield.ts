@@ -10,7 +10,7 @@ export function shield(
         offset: { x: 0, y: offsetY },
         depth: 1010,
         flip: { x: false, y: false },
-        scale: 1.2,
+        scale: 0.6,
         active: visible,
         visible: visible,
     };

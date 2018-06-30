@@ -1,24 +1,25 @@
 import { addAnimation } from '@src/animation/addAnimation';
-import { Factory } from '@src/core/Factory';
 import { Restartable } from '@src/core/Restartable';
 import { Scalar } from '@src/core/Scalar';
 import { System } from '@src/core/System';
 import { Wave } from '@src/enemies/Wave';
+import { WaveFactory } from '@src/enemies/WaveFactory';
 import { Destructable } from '@src/health/Destructable';
 import * as Phaser from 'phaser';
 
 export class WaveSystem implements System, Restartable {
     private readonly scene: Phaser.Scene;
-    private readonly factory: Factory<Wave>;
+    private readonly factory: WaveFactory;
     private readonly delay: Scalar<number>;
     private readonly emitter: Phaser.Events.EventEmitter;
     private wave: Wave;
     private isActive: boolean;
     private timer: Phaser.Time.TimerEvent;
+    private countImpl: number;
 
     constructor(
         scene: Phaser.Scene,
-        factory: Factory<Wave>,
+        factory: WaveFactory,
         delay: Scalar<number>
     ) {
         this.scene = scene;
@@ -26,6 +27,7 @@ export class WaveSystem implements System, Restartable {
         this.delay = delay;
         this.isActive = false;
         this.emitter = new Phaser.Events.EventEmitter();
+        this.countImpl = 0;
     }
 
     public create(): void {
@@ -44,12 +46,18 @@ export class WaveSystem implements System, Restartable {
             this.isActive = false;
             this.wave.destroy();
             this.timer.destroy();
+            this.factory.restart();
+            this.countImpl = 0;
             this.startTimer();
         }
     }
 
     public onDeath(callback: (destructable: Destructable) => void): void {
         this.emitter.on('death', callback);
+    }
+
+    public get count(): number {
+        return this.countImpl;
     }
 
     private startTimer(): void {
@@ -72,5 +80,6 @@ export class WaveSystem implements System, Restartable {
             this.timer.destroy();
             this.startTimer();
         });
+        this.countImpl += 1;
     }
 }

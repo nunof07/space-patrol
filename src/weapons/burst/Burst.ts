@@ -60,7 +60,7 @@ export class Burst implements Bullet {
     }
 
     public get damage(): number {
-        return 50;
+        return 75;
     }
 
     public get hitAudioKey(): string {

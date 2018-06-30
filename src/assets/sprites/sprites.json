@@ -135,24 +135,24 @@
                     }
                 },
                 {
-                    "filename": "effects/explosion_0001.png",
+                    "filename": "enemies/laser_blue.png",
                     "frame": {
                         "x": 1,
                         "y": 2038,
                         "w": 9,
-                        "h": 8
+                        "h": 9
                     },
                     "rotated": false,
-                    "trimmed": true,
+                    "trimmed": false,
                     "spriteSourceSize": {
-                        "x": 30,
-                        "y": 31,
+                        "x": 0,
+                        "y": 0,
                         "w": 9,
-                        "h": 8
+                        "h": 9
                     },
                     "sourceSize": {
-                        "w": 70,
-                        "h": 70
+                        "w": 9,
+                        "h": 9
                     },
                     "pivot": {
                         "x": 0.5,
@@ -403,6 +403,31 @@
                     "sourceSize": {
                         "w": 300,
                         "h": 300
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "effects/explosion_0001.png",
+                    "frame": {
+                        "x": 55,
+                        "y": 2031,
+                        "w": 9,
+                        "h": 8
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 30,
+                        "y": 31,
+                        "w": 9,
+                        "h": 8
+                    },
+                    "sourceSize": {
+                        "w": 70,
+                        "h": 70
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1210,24 +1235,24 @@
                     }
                 },
                 {
-                    "filename": "effects/explosion_0007.png",
+                    "filename": "enemies/blue.png",
                     "frame": {
                         "x": 1319,
                         "y": 1550,
-                        "w": 48,
-                        "h": 48
+                        "w": 49,
+                        "h": 38
                     },
                     "rotated": false,
-                    "trimmed": true,
+                    "trimmed": false,
                     "spriteSourceSize": {
-                        "x": 11,
-                        "y": 11,
-                        "w": 48,
-                        "h": 48
+                        "x": 0,
+                        "y": 0,
+                        "w": 49,
+                        "h": 38
                     },
                     "sourceSize": {
-                        "w": 70,
-                        "h": 70
+                        "w": 49,
+                        "h": 38
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1335,24 +1360,24 @@
                     }
                 },
                 {
-                    "filename": "crates/powerup_pulse.png",
+                    "filename": "effects/explosion_0007.png",
                     "frame": {
                         "x": 2655,
                         "y": 1996,
-                        "w": 39,
-                        "h": 43
+                        "w": 48,
+                        "h": 48
                     },
                     "rotated": false,
-                    "trimmed": false,
+                    "trimmed": true,
                     "spriteSourceSize": {
-                        "x": 0,
-                        "y": 0,
-                        "w": 39,
-                        "h": 43
+                        "x": 11,
+                        "y": 11,
+                        "w": 48,
+                        "h": 48
                     },
                     "sourceSize": {
-                        "w": 39,
-                        "h": 43
+                        "w": 70,
+                        "h": 70
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1585,11 +1610,11 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-brown-med-01.png",
+                    "filename": "crates/powerup_pulse.png",
                     "frame": {
                         "x": 3535,
                         "y": 728,
-                        "w": 43,
+                        "w": 39,
                         "h": 43
                     },
                     "rotated": false,
@@ -1597,11 +1622,11 @@
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 43,
+                        "w": 39,
                         "h": 43
                     },
                     "sourceSize": {
-                        "w": 43,
+                        "w": 39,
                         "h": 43
                     },
                     "pivot": {
@@ -1610,24 +1635,24 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-brown-med-02.png",
+                    "filename": "enemies/black.png",
                     "frame": {
                         "x": 1319,
-                        "y": 1600,
-                        "w": 45,
-                        "h": 40
+                        "y": 1590,
+                        "w": 47,
+                        "h": 42
                     },
                     "rotated": false,
                     "trimmed": false,
                     "spriteSourceSize": {
                         "x": 0,
                         "y": 0,
-                        "w": 45,
-                        "h": 40
+                        "w": 47,
+                        "h": 42
                     },
                     "sourceSize": {
-                        "w": 45,
-                        "h": 40
+                        "w": 47,
+                        "h": 42
                     },
                     "pivot": {
                         "x": 0.5,
@@ -1835,7 +1860,7 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-grey-med-02.png",
+                    "filename": "neutrals/meteor-brown-med-02.png",
                     "frame": {
                         "x": 4043,
                         "y": 116,
@@ -1985,6 +2010,31 @@
                     }
                 },
                 {
+                    "filename": "neutrals/meteor-grey-med-02.png",
+                    "frame": {
+                        "x": 3576,
+                        "y": 728,
+                        "w": 45,
+                        "h": 40
+                    },
+                    "rotated": true,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 45,
+                        "h": 40
+                    },
+                    "sourceSize": {
+                        "w": 45,
+                        "h": 40
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
                     "filename": "effects/explosion_0012.png",
                     "frame": {
                         "x": 3745,
@@ -2010,10 +2060,10 @@
                     }
                 },
                 {
-                    "filename": "neutrals/meteor-grey-med-01.png",
+                    "filename": "neutrals/meteor-brown-med-01.png",
                     "frame": {
                         "x": 1319,
-                        "y": 1642,
+                        "y": 1634,
                         "w": 43,
                         "h": 43
                     },
@@ -2062,7 +2112,7 @@
                 {
                     "filename": "crates/powerup_burst.png",
                     "frame": {
-                        "x": 2696,
+                        "x": 2705,
                         "y": 1996,
                         "w": 39,
                         "h": 42
@@ -2103,6 +2153,31 @@
                     "sourceSize": {
                         "w": 70,
                         "h": 70
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "neutrals/meteor-grey-med-01.png",
+                    "frame": {
+                        "x": 2965,
+                        "y": 969,
+                        "w": 43,
+                        "h": 43
+                    },
+                    "rotated": false,
+                    "trimmed": false,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 43,
+                        "h": 43
+                    },
+                    "sourceSize": {
+                        "w": 43,
+                        "h": 43
                     },
                     "pivot": {
                         "x": 0.5,

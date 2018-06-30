@@ -12,6 +12,7 @@ export class HighscoreSystem implements System, Restartable {
     private readonly scoreImpl: Score;
     private readonly waves: WaveSystem;
     private text: Phaser.GameObjects.BitmapText;
+    private count: Phaser.GameObjects.BitmapText;
 
     constructor(scene: Phaser.Scene, waves: WaveSystem) {
         this.scene = scene;
@@ -20,9 +21,8 @@ export class HighscoreSystem implements System, Restartable {
     }
 
     public create(): void {
-        this.text = addText(this.scene, { x: 32, y: 32 }, '0', 32);
-        this.text.setOrigin(0, 0.5);
-        this.text.x = 32;
+        this.count = this.createText(32, 'WAVE 1');
+        this.text = this.createText(64, '0');
         this.waves.onDeath(destructable => {
             const amount = destructable.healthComponent.health().vitality.health
                 .max;
@@ -40,6 +40,7 @@ export class HighscoreSystem implements System, Restartable {
 
     public update(_time: number, _delta: number): void {
         this.text.setText(this.scoreImpl.value.toString());
+        this.count.setText(`WAVE ${this.waves.count}`);
     }
 
     public get score(): Score {
@@ -48,5 +49,16 @@ export class HighscoreSystem implements System, Restartable {
 
     public restart(): void {
         this.scoreImpl.reset();
+    }
+
+    private createText(
+        y: number,
+        value: string
+    ): Phaser.GameObjects.BitmapText {
+        const text = addText(this.scene, { x: 32, y }, value, 32);
+        text.setOrigin(0, 0.5);
+        text.x = 32;
+
+        return text;
     }
 }

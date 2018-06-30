@@ -24,7 +24,7 @@ export class Crate implements DestructableComponent {
         powerupType: PowerupType
     ) {
         this.scene = scene;
-        this.speed = 2;
+        this.speed = 1.5;
         this.emitter = new Phaser.Events.EventEmitter();
         this.isDamaged = false;
         this.powerupTypeImpl = powerupType;

@@ -31,7 +31,7 @@ export class BurstDynamicLevel implements BurstLevel, WeaponLevel {
         const sign = index < this.count / 2 ? -1 : 1;
 
         return {
-            x: center.x + sign * 28,
+            x: center.x + sign * 28 * 0.5,
             y: center.y,
         };
     }

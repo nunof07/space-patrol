@@ -8,10 +8,13 @@ export function config(
 ): PlayerSpriteConfig {
     return {
         key,
-        offset,
+        offset: {
+            x: offset.x * 0.5,
+            y: offset.y * 0.5,
+        },
         depth,
         flip,
-        scale: 1,
+        scale: 0.5,
         active: true,
         visible: true,
     };
