@@ -1,4 +1,5 @@
 import { asType } from '@src/core/asType';
+import { ScalarOf } from '@src/core/ScalarOf';
 import { MeteorSize } from '@src/enemies/meteor/MeteorSize';
 import { MeteorType } from '@src/enemies/meteor/MeteorType';
 import { randomMeteorSpawnInfo } from '@src/enemies/meteor/randomMeteorSpawnInfo';
@@ -29,16 +30,16 @@ describe('enemies/meteor', () => {
                     },
                 },
             });
-            const result = randomMeteorSpawnInfo(scene, engine());
+            const result = randomMeteorSpawnInfo(scene, engine(), {
+                composition: MeteorType.Metal,
+                maxSize: 3,
+                speed: new ScalarOf(100),
+            });
             expectToBeMeteorSize(result.size);
-            expect(result.composition).to.be.oneOf([
-                MeteorType.Metal,
-                MeteorType.Rock,
-            ]);
+            expect(result.composition).to.equal(MeteorType.Metal);
             expectToBeInMainCamera(result.startX);
             expectToBeInMainCamera(result.endX);
-            expect(result.speed).to.be.a('number');
-            expect(result.speed).to.be.greaterThan(0);
+            expect(result.speed).to.equal(100);
         });
     });
 });

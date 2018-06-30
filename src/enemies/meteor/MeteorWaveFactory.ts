@@ -1,19 +1,22 @@
-import { Factory } from '@src/core/Factory';
+import { Scalar } from '@src/core/Scalar';
 import { EnemyWave } from '@src/enemies/EnemyWave';
 import { MeteorFactory } from '@src/enemies/meteor/MeteorFactory';
+import { MeteorType } from '@src/enemies/meteor/MeteorType';
 import { randomMeteorType } from '@src/enemies/meteor/randomMeteorType';
 import { Wave } from '@src/enemies/Wave';
+import { WaveFactory } from '@src/enemies/WaveFactory';
 import { PlayerSystem } from '@src/player/PlayerSystem';
 import { RandomInt } from '@src/random/RandomInt';
 import { WeaponsSystem } from '@src/weapons/WeaponsSystem';
 import * as Phaser from 'phaser';
 import * as Random from 'random-js';
 
-export class MeteorWaveFactory implements Factory<Wave> {
+export class MeteorWaveFactory implements WaveFactory {
     private readonly scene: Phaser.Scene;
     private readonly player: PlayerSystem;
     private readonly weapons: WeaponsSystem;
     private readonly engine: Random.Engine;
+    private level: number;
 
     constructor(
         scene: Phaser.Scene,
@@ -25,21 +28,60 @@ export class MeteorWaveFactory implements Factory<Wave> {
         this.player = player;
         this.weapons = weapons;
         this.engine = engine;
+        this.level = 1;
     }
 
     public create(): Wave {
         const wave = new EnemyWave(this.scene, this.player, this.weapons, {
-            count: new RandomInt(this.engine, 20, 80).value,
-            delay: new RandomInt(this.engine, 50, 500),
+            count: this.count(),
+            delay: this.delay(),
             engine: this.engine,
             factory: new MeteorFactory(
                 this.scene,
-                randomMeteorType(this.engine),
+                {
+                    composition: this.composition(),
+                    maxSize: this.maxSize(),
+                    speed: this.speed(),
+                },
                 this.engine
             ),
         });
         wave.next();
+        this.level += 1;
 
         return wave;
+    }
+
+    public restart(): void {
+        this.level = 1;
+    }
+
+    private count(): number {
+        const min = (this.level - 1) * 5 + 10;
+        const max = (this.level - 1) * 25 + 50;
+
+        return new RandomInt(this.engine, min, max).value;
+    }
+
+    private delay(): Scalar<number> {
+        const min = Math.max(200 - (this.level - 1) * 20, 25);
+        const max = Math.max(1500 - (this.level - 1) * 50, 250);
+
+        return new RandomInt(this.engine, min, max);
+    }
+
+    private speed(): Scalar<number> {
+        const min = (this.level - 1) * 10 + 50;
+        const max = (this.level - 1) * 50 + 250;
+
+        return new RandomInt(this.engine, min, max);
+    }
+
+    private maxSize(): number {
+        return Math.min(this.level, 11);
+    }
+
+    private composition(): MeteorType {
+        return randomMeteorType(this.engine);
     }
 }

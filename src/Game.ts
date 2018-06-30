@@ -104,8 +104,8 @@ export class Game extends Phaser.Scene {
             new RandomWaveFactory(
                 [
                     new MeteorWaveFactory(this, player, weapons, random),
-                    new BlueWaveFactory(this, player, weapons, random),
-                    new BlackWaveFactory(this, player, weapons, random),
+                    // new BlueWaveFactory(this, player, weapons, random),
+                    // new BlackWaveFactory(this, player, weapons, random),
                 ],
                 random
             ),
