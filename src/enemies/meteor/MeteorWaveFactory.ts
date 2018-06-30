@@ -3,6 +3,8 @@ import { EnemyWave } from '@src/enemies/EnemyWave';
 import { MeteorFactory } from '@src/enemies/meteor/MeteorFactory';
 import { MeteorType } from '@src/enemies/meteor/MeteorType';
 import { randomMeteorType } from '@src/enemies/meteor/randomMeteorType';
+import { randomCount } from '@src/enemies/randomCount';
+import { randomDelay } from '@src/enemies/randomDelay';
 import { Wave } from '@src/enemies/Wave';
 import { WaveFactory } from '@src/enemies/WaveFactory';
 import { PlayerSystem } from '@src/player/PlayerSystem';
@@ -33,8 +35,8 @@ export class MeteorWaveFactory implements WaveFactory {
 
     public create(): Wave {
         const wave = new EnemyWave(this.scene, this.player, this.weapons, {
-            count: this.count(),
-            delay: this.delay(),
+            count: randomCount(this.level, this.engine, 10, 50),
+            delay: randomDelay(this.level, this.engine),
             engine: this.engine,
             factory: new MeteorFactory(
                 this.scene,
@@ -54,20 +56,6 @@ export class MeteorWaveFactory implements WaveFactory {
 
     public restart(): void {
         this.level = 1;
-    }
-
-    private count(): number {
-        const min = (this.level - 1) * 5 + 10;
-        const max = (this.level - 1) * 25 + 50;
-
-        return new RandomInt(this.engine, min, max).value;
-    }
-
-    private delay(): Scalar<number> {
-        const min = Math.max(200 - (this.level - 1) * 20, 25);
-        const max = Math.max(1500 - (this.level - 1) * 50, 250);
-
-        return new RandomInt(this.engine, min, max);
     }
 
     private speed(): Scalar<number> {

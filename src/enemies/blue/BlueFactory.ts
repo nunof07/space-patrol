@@ -17,15 +17,18 @@ export class BlueFactory implements Factory<ArmedEnemy> {
     private readonly scene: Phaser.Scene;
     private readonly engine: Random.Engine;
     private readonly collider: EnemyBulletPlayerCollider;
+    private readonly speed: Scalar<number>;
 
     constructor(
         scene: Phaser.Scene,
         engine: Random.Engine,
-        player: PlayerSystem
+        player: PlayerSystem,
+        speed: Scalar<number>
     ) {
         this.scene = scene;
         this.engine = engine;
         this.collider = new EnemyBulletPlayerCollider(scene, player);
+        this.speed = speed;
     }
 
     public create(): ArmedEnemy {
@@ -35,7 +38,7 @@ export class BlueFactory implements Factory<ArmedEnemy> {
             health: new ScalarOf(75),
             startX: x,
             endX: x,
-            speed: new RandomInt(this.engine, 80, 180),
+            speed: this.speed,
             circle: false,
             enemy: (
                 sceneE: Phaser.Scene,
