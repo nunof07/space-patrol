@@ -1,3 +1,25 @@
+# [1.16.0](https://github.com/nunof07/space-patrol/compare/v1.15.0...v1.16.0) (2018-06-30)
+
+
+### Bug Fixes
+
+* **enemies:** increasing black difficulty ([f91b0c7](https://github.com/nunof07/space-patrol/commit/f91b0c7))
+* **enemies:** increasing difficulty for blue ([beab848](https://github.com/nunof07/space-patrol/commit/beab848))
+* **enemies:** move black enemy in diagonal ([9a68b0d](https://github.com/nunof07/space-patrol/commit/9a68b0d))
+* **enemies:** re-add other waves ([d40462e](https://github.com/nunof07/space-patrol/commit/d40462e))
+* **enemies:** update blue count, speed and delay ([22fc64d](https://github.com/nunof07/space-patrol/commit/22fc64d))
+* **meteors:** increasing difficulty ([ccf39d4](https://github.com/nunof07/space-patrol/commit/ccf39d4))
+* **player:** shrink 50% ([c4aee15](https://github.com/nunof07/space-patrol/commit/c4aee15))
+
+
+### Features
+
+* **enemies:** black enemey ([34bc89f](https://github.com/nunof07/space-patrol/commit/34bc89f))
+* **enemies:** blue wave ([5a2be2c](https://github.com/nunof07/space-patrol/commit/5a2be2c))
+* **enemies:** make blue fire ([8668421](https://github.com/nunof07/space-patrol/commit/8668421))
+* **enemies:** random wave ([5a4452b](https://github.com/nunof07/space-patrol/commit/5a4452b))
+* **waves:** wave counter ([f8084c7](https://github.com/nunof07/space-patrol/commit/f8084c7))
+
 # [1.15.0](https://github.com/nunof07/space-patrol/compare/v1.14.0...v1.15.0) (2018-06-26)
 
 
