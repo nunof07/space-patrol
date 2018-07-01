@@ -59,8 +59,8 @@ export class MeteorWaveFactory implements WaveFactory {
     }
 
     private speed(): Scalar<number> {
-        const min = (this.level - 1) * 10 + 50;
-        const max = (this.level - 1) * 50 + 250;
+        const min = (this.level - 1) * 20 + 50;
+        const max = (this.level - 1) * 60 + 250;
 
         return new RandomInt(this.engine, min, max);
     }

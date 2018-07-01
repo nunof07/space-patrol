@@ -35,7 +35,12 @@ export class BlackWaveFactory implements WaveFactory {
             count: randomCount(this.level, this.engine, 10, 15),
             delay: this.delay(),
             engine: this.engine,
-            factory: new BlackFactory(this.scene, this.engine, this.player),
+            factory: new BlackFactory(
+                this.scene,
+                this.engine,
+                this.player,
+                this.speed()
+            ),
         });
         wave.next();
 
@@ -47,8 +52,15 @@ export class BlackWaveFactory implements WaveFactory {
     }
 
     private delay(): Scalar<number> {
-        const min = Math.max(1000 - (this.level - 1) * 100, 200);
-        const max = Math.max(4000 - (this.level - 1) * 250, 500);
+        const min = Math.max(1000 - (this.level - 1) * 100, 100);
+        const max = Math.max(4000 - (this.level - 1) * 500, 200);
+
+        return new RandomInt(this.engine, min, max);
+    }
+
+    private speed(): Scalar<number> {
+        const min = Math.min(350, (this.level - 1) * 10 + 50);
+        const max = Math.min(400, (this.level - 1) * 40 + 100);
 
         return new RandomInt(this.engine, min, max);
     }

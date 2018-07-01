@@ -16,7 +16,9 @@
 
 Shoot 'em up space game made with [Phaser 3](http://phaser.io/).
 
-Work in progress.
+[Play!](https://nunof07.github.io/space-patrol/dist/)
+
+![Space Patrol](space-patrol.gif)
 
 ## Credits
 
@@ -42,7 +44,7 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 All audio effects from [Sonniss](https://sonniss.com), [GDC 2018](https://sonniss.com/gameaudiogdc18/) - [GDC Bundle](https://sonniss.com/gdc-bundle-license/):
 
 -   3maze, "drop_multiple_boxes_003": Crate explosion.
--   Airborne Sound, "Drone,Cyber,Deep,Pulse,Disturbing,Invasive,Loop": Ambient music.
+-   Airborne Sound, "Drone,Cyber,Deep,Pulse,Disturbing,Invasive,Loop": Ambient sound.
 -   Fox Audio Post-Production, "Droid_Vocal_23": Shield upgrade.
 -   Fox Audio Post-Production, "SFX_Sub_Sonic_Bass_28": Player explosion.
 -   Gamemaster Audio, "gun_silenced_sniper1_shot_01": Burst weapon fire and hit.
@@ -101,5 +103,9 @@ Each enemy destroyed increases the highscore by the amount of the enemy's hitpoi
 | Meteor (Small)  | 50        | -      |
 | Meteor (Medium) | 75        | -      |
 | Meteor (Large)  | 300       | -      |
-| Blue            | 75        | 20     |
-| Black           | 125       | 35     |
+| Blue            | 120       | 20     |
+| Black           | 200       | 35     |
+
+## Project Stats
+
+-   103 hours to complete.
