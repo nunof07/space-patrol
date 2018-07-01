@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/nunof07/space-patrol/compare/v1.16.0...v1.16.1) (2018-07-01)
+
+
+### Bug Fixes
+
+* adjust difficulty ([c05e8d7](https://github.com/nunof07/space-patrol/commit/c05e8d7))
+
 # [1.16.0](https://github.com/nunof07/space-patrol/compare/v1.15.0...v1.16.0) (2018-06-30)
 
 
