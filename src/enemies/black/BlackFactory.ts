@@ -17,25 +17,28 @@ export class BlackFactory implements Factory<ArmedEnemy> {
     private readonly scene: Phaser.Scene;
     private readonly engine: Random.Engine;
     private readonly collider: EnemyBulletPlayerCollider;
+    private speed: Scalar<number>;
 
     constructor(
         scene: Phaser.Scene,
         engine: Random.Engine,
-        player: PlayerSystem
+        player: PlayerSystem,
+        speed: Scalar<number>
     ) {
         this.scene = scene;
         this.engine = engine;
         this.collider = new EnemyBulletPlayerCollider(scene, player);
+        this.speed = speed;
     }
 
     public create(): ArmedEnemy {
         const startX = this.startX();
         const factory = new EnemyFactory(this.scene, {
             frame: new ScalarOf('enemies/black.png'),
-            health: new ScalarOf(125),
+            health: new ScalarOf(200),
             startX,
             endX: this.endX(startX),
-            speed: new RandomInt(this.engine, 50, 100),
+            speed: this.speed,
             circle: false,
             enemy: (
                 sceneE: Phaser.Scene,

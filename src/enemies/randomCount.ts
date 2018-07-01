@@ -7,8 +7,8 @@ export function randomCount(
     startMin: number,
     startMax: number
 ): number {
-    const min = (level - 1) * 5 + startMin;
-    const max = (level - 1) * 25 + startMax;
+    const min = (level - 1) * 10 + startMin;
+    const max = (level - 1) * 30 + startMax;
 
     return new RandomInt(engine, min, max).value;
 }

@@ -53,8 +53,8 @@ export class BlueWaveFactory implements WaveFactory {
     }
 
     private speed(): Scalar<number> {
-        const min = Math.min(200, (this.level - 1) * 10 + 40);
-        const max = Math.min(220, (this.level - 1) * 40 + 80);
+        const min = Math.min(250, (this.level - 1) * 10 + 40);
+        const max = Math.min(300, (this.level - 1) * 40 + 80);
 
         return new RandomInt(this.engine, min, max);
     }

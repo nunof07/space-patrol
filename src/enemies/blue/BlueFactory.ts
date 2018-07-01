@@ -35,7 +35,7 @@ export class BlueFactory implements Factory<ArmedEnemy> {
         const x = this.startX();
         const factory = new EnemyFactory(this.scene, {
             frame: new ScalarOf('enemies/blue.png'),
-            health: new ScalarOf(75),
+            health: new ScalarOf(120),
             startX: x,
             endX: x,
             speed: this.speed,
