@@ -18,6 +18,8 @@ Shoot 'em up space game made with [Phaser 3](http://phaser.io/).
 
 [Play!](https://nunof07.github.io/space-patrol/dist/)
 
+![Space Patrol](space-patrol.gif)
+
 ## Credits
 
 Everything not mentioned below was made by [Nuno Freitas](https://github.com/nunof07/) (programming and game design).
