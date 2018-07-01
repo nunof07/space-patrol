@@ -16,7 +16,7 @@
 
 Shoot 'em up space game made with [Phaser 3](http://phaser.io/).
 
-Work in progress.
+[Play!](https://nunof07.github.io/space-patrol/dist/)
 
 ## Credits
 
@@ -42,7 +42,7 @@ Everything not mentioned below was made by [Nuno Freitas](https://github.com/nun
 All audio effects from [Sonniss](https://sonniss.com), [GDC 2018](https://sonniss.com/gameaudiogdc18/) - [GDC Bundle](https://sonniss.com/gdc-bundle-license/):
 
 -   3maze, "drop_multiple_boxes_003": Crate explosion.
--   Airborne Sound, "Drone,Cyber,Deep,Pulse,Disturbing,Invasive,Loop": Ambient music.
+-   Airborne Sound, "Drone,Cyber,Deep,Pulse,Disturbing,Invasive,Loop": Ambient sound.
 -   Fox Audio Post-Production, "Droid_Vocal_23": Shield upgrade.
 -   Fox Audio Post-Production, "SFX_Sub_Sonic_Bass_28": Player explosion.
 -   Gamemaster Audio, "gun_silenced_sniper1_shot_01": Burst weapon fire and hit.
